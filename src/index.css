@@ -1,0 +1,237 @@
+/**
+ * file: src/index.css
+ * description: 全局样式 · Tailwind v4 DS Tokens 主题与自托管字体
+ * author: YanYuCloudCube Team
+ * version: v1.0.0
+ * created: 2026-10-11
+ * updated: 2026-10-11
+ * status: active
+ * tags: [style],[theme],[global]
+ *
+ * copyright: YanYuCloudCube Team
+ * license: MIT
+ *
+ * brief: 全局样式 · Tailwind v4 DS Tokens 主题与自托管字体
+ *
+ * dependencies: —
+ * exports: —
+ */
+@import 'tailwindcss';
+
+/* 自托管字体（@fontsource，离线可用，替代 Google Fonts CDN）
+   注：裁剪 Noto Sans SC 600 字重以压缩 CSS；Tailwind font-semibold 的中文
+   按 CSS 字体匹配规则回退至 700 面，Inter/JetBrains Mono 600 不受影响 */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/600.css';
+@import '@fontsource/noto-sans-sc/400.css';
+@import '@fontsource/noto-sans-sc/500.css';
+@import '@fontsource/noto-sans-sc/700.css';
+
+@theme {
+  --color-bg-primary: #0a1628;
+  --color-bg-gradient-end: #071222;
+  --color-bg-secondary: #0f1f38;
+  --color-bg-tertiary: #15294a;
+  --color-bg-surface: #0d1b32;
+  --color-brand: #00e0b8;
+  --color-brand-hover: #00c9a4;
+  --color-brand-light: #33e7c6;
+  --color-brand-glow: rgba(0, 224, 184, 0.18);
+  --color-info: #00b4d8;
+  --color-purple: #9d7cd8;
+  --color-danger: #ff7a45;
+  --color-warning: #ffb830;
+  --color-text-primary: #e8f0f8;
+  --color-text-secondary: #8a97a8;
+  --color-text-tertiary: #5c697a;
+  --color-border: #1e2f47;
+  --color-border-subtle: #16253b;
+  --color-border-bright: #294060;
+
+  --font-sans: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+@layer base {
+  * {
+    border-color: #1e2f47;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background: linear-gradient(180deg, #0a1628 0%, #071222 100%);
+    color: #e8f0f8;
+  }
+
+  /* Custom scrollbar for tech UI */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #081220;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1b2e49;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00e0b8;
+  }
+}
+
+/* Glassmorphism & tech utility classes */
+.glass-panel {
+  background: rgba(15, 31, 56, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #1e2f47;
+  border-radius: 8px;
+  box-shadow:
+    0 0 2px rgba(0, 224, 184, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel:hover {
+  border-color: rgba(0, 224, 184, 0.35);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.35),
+    0 0 8px rgba(0, 224, 184, 0.12);
+  transform: translateY(-1px);
+}
+
+.glass-panel-glow {
+  background: rgba(15, 31, 56, 0.88);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(0, 224, 184, 0.45);
+  border-radius: 8px;
+  box-shadow:
+    0 0 16px rgba(0, 224, 184, 0.12),
+    inset 0 0 12px rgba(0, 224, 184, 0.05);
+}
+
+.glass-input {
+  background: rgba(21, 41, 74, 0.8);
+  border: 1px solid #1e2f47;
+  border-radius: 6px;
+  transition: all 0.2s ease-out;
+}
+
+.glass-input:focus {
+  border-color: #00e0b8;
+  box-shadow: 0 0 0 2px rgba(0, 224, 184, 0.25);
+  outline: none;
+}
+
+/* Shimmer animated border for running / active cards */
+@keyframes borderShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.card-running-shimmer {
+  position: relative;
+  border-left: 2px solid #00e0b8 !important;
+  background-clip: padding-box;
+}
+
+.card-running-shimmer::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 224, 184, 0.5),
+    rgba(0, 180, 216, 0.2),
+    rgba(157, 124, 216, 0.4),
+    rgba(0, 224, 184, 0.5)
+  );
+  background-size: 300% 300%;
+  z-index: -1;
+  animation: borderShimmer 8s linear infinite;
+  opacity: 0.65;
+}
+
+/* Pipeline flowing animation */
+@keyframes flowLight {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.pipeline-flowing {
+  background: linear-gradient(90deg, #00e0b8 0%, #00b4d8 50%, #9d7cd8 100%);
+  background-size: 200% 100%;
+  animation: flowLight 2.5s linear infinite;
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 6px rgba(0, 224, 184, 0.25);
+    border-color: rgba(0, 224, 184, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(0, 224, 184, 0.6);
+    border-color: rgba(0, 224, 184, 0.85);
+  }
+}
+
+.pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Clock slow spin for YYC3 core */
+@keyframes slowSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-slow {
+  animation: slowSpin 60s linear infinite;
+}
+
+@keyframes dataParticle {
+  0% {
+    stroke-dashoffset: 60;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.data-stream-line {
+  stroke-dasharray: 6 6;
+  animation: dataParticle 1.5s linear infinite;
+}
+
+/* --------------------------------------------------------------
+ * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元
+ * Words Initiate Quadrants, Language Serves as Core for Future
+ * © 2025-2026 YanYuCloudCube Team. All Rights Reserved.
+ * -------------------------------------------------------------- */

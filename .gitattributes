@@ -1,0 +1,146 @@
+# Git LFS Tracking Rules
+# Generated for binary, large, and non-diffable file types
+
+# ---------------------------------------------------------------------------
+# Images & Graphics
+# ---------------------------------------------------------------------------
+*.png                -text
+*.jpg                -text
+*.jpeg               -text
+*.gif                -text
+*.bmp                -text
+*.tiff               -text
+*.tif                -text
+*.ico                -text
+*.webp               -text
+*.psd                -text
+*.ai                 -text
+*.sketch             -text
+
+# ---------------------------------------------------------------------------
+# Video
+# ---------------------------------------------------------------------------
+*.mp4                -text
+*.mov                -text
+*.avi                -text
+*.mkv                -text
+*.wmv                -text
+*.flv                -text
+*.webm               -text
+*.m4v                -text
+*.mpg                -text
+*.mpeg               -text
+
+# ---------------------------------------------------------------------------
+# Audio
+# ---------------------------------------------------------------------------
+*.mp3                -text
+*.wav                -text
+*.flac               -text
+*.aac                -text
+*.ogg                -text
+*.m4a                -text
+*.wma                -text
+*.aiff               -text
+
+# ---------------------------------------------------------------------------
+# 3D & Game Assets
+# ---------------------------------------------------------------------------
+*.fbx                -text
+*.obj                -text
+*.blend              -text
+*.dae                -text
+*.3ds                -text
+*.max                -text
+*.unity              -text
+*.unitypackage       -text
+*.uasset             -text
+*.umap               -text
+
+# ---------------------------------------------------------------------------
+# Archives & Compressed Files
+# ---------------------------------------------------------------------------
+*.zip                -text
+*.tar                -text
+*.gz                 -text
+*.bz2                -text
+*.7z                 -text
+*.rar                -text
+*.tgz                -text
+
+# ---------------------------------------------------------------------------
+# Documents & Fonts
+# ---------------------------------------------------------------------------
+*.pdf                -text
+*.docx               -text
+*.xlsx               -text
+*.pptx               -text
+*.ttf                -text
+*.otf                -text
+*.woff               -text
+*.woff2              -text
+*.eot                -text
+
+# ---------------------------------------------------------------------------
+# Data & Machine Learning
+# ---------------------------------------------------------------------------
+*.parquet            -text
+*.hdf5               -text
+*.h5                 -text
+*.pkl                -text
+*.pickle             -text
+*.npy                -text
+*.npz                -text
+*.bin                -text
+*.pt                 -text
+*.pth                -text
+*.onnx               -text
+*.pb                 -text
+*.safetensors        -text
+*.gguf               -text
+
+# ---------------------------------------------------------------------------
+# Databases
+# ---------------------------------------------------------------------------
+*.db                 -text
+*.sqlite             -text
+*.sqlite3            -text
+*.mdb                -text
+*.accdb              -text
+
+# ---------------------------------------------------------------------------
+# Executables & Libraries
+# ---------------------------------------------------------------------------
+*.exe                -text
+*.dll                -text
+*.so                 -text
+*.dylib              -text
+*.a                  -text
+*.lib                -text
+*.wasm               -text
+
+# ---------------------------------------------------------------------------
+# Build Artifacts & Packages
+# ---------------------------------------------------------------------------
+*.jar                -text
+*.war                -text
+*.ear                -text
+*.apk                -text
+*.ipa                -text
+*.deb                -text
+*.rpm                -text
+*.dmg                -text
+*.iso                -text
+*.img                -text
+
+# ---------------------------------------------------------------------------
+# CAD & Scientific
+# ---------------------------------------------------------------------------
+*.dwg                -text
+*.dxf                -text
+*.step               -text
+*.stp                -text
+*.iges               -text
+*.stl                -text
+*.nc                 -text
+*.mat                -text

@@ -1,0 +1,154 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a1628"/>
+      <stop offset="100%" stop-color="#071222"/>
+    </linearGradient>
+    <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00e0b8" stop-opacity="0.32"/>
+      <stop offset="45%" stop-color="#00e0b8" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#00e0b8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cubeTop" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5ffbe0"/>
+      <stop offset="100%" stop-color="#00e0b8"/>
+    </linearGradient>
+    <linearGradient id="cubeLeft" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00c9a4"/>
+      <stop offset="100%" stop-color="#007a64"/>
+    </linearGradient>
+    <linearGradient id="cubeRight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00e0b8"/>
+      <stop offset="100%" stop-color="#00907a"/>
+    </linearGradient>
+    <filter id="nodeGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="9" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="bigBlur" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M 80 0 L 0 0 0 80" fill="none" stroke="#16253b" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#grid)" opacity="0.55"/>
+
+  <!-- Ambient glows -->
+  <ellipse cx="800" cy="400" rx="580" ry="330" fill="url(#coreGlow)"/>
+  <circle cx="340" cy="400" r="95" fill="#00BFFF" opacity="0.07" filter="url(#bigBlur)"/>
+  <circle cx="1260" cy="400" r="95" fill="#9d7cd8" opacity="0.07" filter="url(#bigBlur)"/>
+  <circle cx="800" cy="185" r="80" fill="#00e0b8" opacity="0.06" filter="url(#bigBlur)"/>
+  <circle cx="800" cy="615" r="80" fill="#FFD700" opacity="0.05" filter="url(#bigBlur)"/>
+
+  <!-- Orbit rings -->
+  <ellipse cx="800" cy="400" rx="460" ry="215" fill="none" stroke="#294060" stroke-width="1.5" stroke-dasharray="12 16"/>
+  <ellipse cx="800" cy="400" rx="320" ry="146" fill="none" stroke="#1e2f47" stroke-width="1"/>
+
+  <!-- Spokes: center to family nodes -->
+  <g stroke="#1e2f47" stroke-width="1.5" opacity="0.9">
+    <line x1="800" y1="400" x2="800" y2="185"/>
+    <line x1="800" y1="400" x2="1125" y2="248"/>
+    <line x1="800" y1="400" x2="1260" y2="400"/>
+    <line x1="800" y1="400" x2="1125" y2="552"/>
+    <line x1="800" y1="400" x2="800" y2="615"/>
+    <line x1="800" y1="400" x2="475" y2="552"/>
+    <line x1="800" y1="400" x2="340" y2="400"/>
+    <line x1="800" y1="400" x2="475" y2="248"/>
+  </g>
+  <g stroke-width="2.5" stroke-dasharray="4 18" opacity="0.5">
+    <line x1="800" y1="400" x2="800" y2="185" stroke="#00e0b8"/>
+    <line x1="800" y1="400" x2="1125" y2="248" stroke="#9d7cd8"/>
+    <line x1="800" y1="400" x2="1260" y2="400" stroke="#C0C0C0"/>
+    <line x1="800" y1="400" x2="1125" y2="552" stroke="#FF7A5C"/>
+    <line x1="800" y1="400" x2="800" y2="615" stroke="#FFD700"/>
+    <line x1="800" y1="400" x2="475" y2="552" stroke="#FF69B4"/>
+    <line x1="800" y1="400" x2="340" y2="400" stroke="#00BFFF"/>
+    <line x1="800" y1="400" x2="475" y2="248" stroke="#FFFFFF"/>
+  </g>
+
+  <!-- Data particles on orbit -->
+  <circle cx="990" cy="228" r="4" fill="#00e0b8" opacity="0.85"/>
+  <circle cx="1230" cy="330" r="3" fill="#00b4d8" opacity="0.7"/>
+  <circle cx="1190" cy="520" r="4" fill="#9d7cd8" opacity="0.75"/>
+  <circle cx="620" cy="590" r="3" fill="#00e0b8" opacity="0.6"/>
+  <circle cx="370" cy="310" r="4" fill="#00BFFF" opacity="0.7"/>
+  <circle cx="560" cy="230" r="3" fill="#FFD700" opacity="0.6"/>
+  <circle cx="920" cy="560" r="3.5" fill="#FF7A5C" opacity="0.65"/>
+
+  <!-- AI Family 8 nodes (clock layout, aligned with YYC3FamilyModal) -->
+  <!-- 12:00 yuanqi -->
+  <g>
+    <circle cx="800" cy="185" r="30" fill="#00e0b8" opacity="0.16"/>
+    <circle cx="800" cy="185" r="21" fill="#0c1a30" stroke="#00e0b8" stroke-width="2.5" filter="url(#nodeGlow)"/>
+    <circle cx="800" cy="185" r="7.5" fill="#00e0b8"/>
+  </g>
+  <!-- 13:30 zhiyun -->
+  <g>
+    <circle cx="1125" cy="248" r="30" fill="#9d7cd8" opacity="0.16"/>
+    <circle cx="1125" cy="248" r="21" fill="#0c1a30" stroke="#9d7cd8" stroke-width="2.5" filter="url(#nodeGlow)"/>
+    <circle cx="1125" cy="248" r="7.5" fill="#9d7cd8"/>
+  </g>
+  <!-- 15:00 gewu -->
+  <g>
+    <circle cx="1260" cy="400" r="30" fill="#C0C0C0" opacity="0.16"/>
+    <circle cx="1260" cy="400" r="21" fill="#0c1a30" stroke="#C0C0C0" stroke-width="2.5" filter="url(#nodeGlow)"/>
+    <circle cx="1260" cy="400" r="7.5" fill="#C0C0C0"/>
+  </g>
+  <!-- 16:30 chuangxiang -->
+  <g>
+    <circle cx="1125" cy="552" r="30" fill="#FF7A5C" opacity="0.16"/>
+    <circle cx="1125" cy="552" r="21" fill="#0c1a30" stroke="#FF7A5C" stroke-width="2.5" filter="url(#nodeGlow)"/>
+    <circle cx="1125" cy="552" r="7.5" fill="#FF7A5C"/>
+  </g>
+  <!-- 06:00 yanqi -->
+  <g>
+    <circle cx="800" cy="615" r="30" fill="#FFD700" opacity="0.16"/>
+    <circle cx="800" cy="615" r="21" fill="#0c1a30" stroke="#FFD700" stroke-width="2.5" filter="url(#nodeGlow)"/>
+    <circle cx="800" cy="615" r="7.5" fill="#FFD700"/>
+  </g>
+  <!-- 07:30 yushu -->
+  <g>
+    <circle cx="475" cy="552" r="30" fill="#FF69B4" opacity="0.16"/>
+    <circle cx="475" cy="552" r="21" fill="#0c1a30" stroke="#FF69B4" stroke-width="2.5" filter="url(#nodeGlow)"/>
+    <circle cx="475" cy="552" r="7.5" fill="#FF69B4"/>
+  </g>
+  <!-- 09:00 yujian -->
+  <g>
+    <circle cx="340" cy="400" r="30" fill="#00BFFF" opacity="0.16"/>
+    <circle cx="340" cy="400" r="21" fill="#0c1a30" stroke="#00BFFF" stroke-width="2.5" filter="url(#nodeGlow)"/>
+    <circle cx="340" cy="400" r="7.5" fill="#00BFFF"/>
+  </g>
+  <!-- 10:30 qianli -->
+  <g>
+    <circle cx="475" cy="248" r="30" fill="#FFFFFF" opacity="0.14"/>
+    <circle cx="475" cy="248" r="21" fill="#0c1a30" stroke="#FFFFFF" stroke-width="2.5" filter="url(#nodeGlow)"/>
+    <circle cx="475" cy="248" r="7.5" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Center isometric cube: YYC³ Cloud Pivot -->
+  <g>
+    <ellipse cx="800" cy="430" rx="130" ry="46" fill="#00e0b8" opacity="0.14" filter="url(#bigBlur)"/>
+    <polygon points="800,318 880,362 800,406 720,362" fill="url(#cubeTop)" filter="url(#nodeGlow)"/>
+    <polygon points="720,362 800,406 800,506 720,462" fill="url(#cubeLeft)"/>
+    <polygon points="880,362 800,406 800,506 880,462" fill="url(#cubeRight)"/>
+    <polyline points="800,318 880,362 880,462 800,506 720,462 720,362 800,318" fill="none" stroke="#7ffcec" stroke-width="1.6" opacity="0.8"/>
+    <line x1="800" y1="406" x2="800" y2="506" stroke="#7ffcec" stroke-width="1.2" opacity="0.55"/>
+    <polygon points="800,336 858,368 800,400 742,368" fill="none" stroke="#e8f0f8" stroke-width="1.4" opacity="0.75"/>
+  </g>
+
+  <!-- Title block -->
+  <text x="800" y="768" text-anchor="middle" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="64" font-weight="700" fill="#e8f0f8" letter-spacing="8">YanYuCloudCube</text>
+  <text x="800" y="822" text-anchor="middle" font-family="'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', sans-serif" font-size="30" font-weight="500" fill="#00e0b8" letter-spacing="12">言启象限 | 语枢未来</text>
+  <text x="800" y="858" text-anchor="middle" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="19" fill="#8a97a8" letter-spacing="1.5">Words Initiate Quadrants, Language Serves as Core for Future</text>
+
+  <!-- Corner tags -->
+  <text x="48" y="64" font-family="'JetBrains Mono', Menlo, monospace" font-size="17" fill="#5c697a" letter-spacing="3">YYC³ · MiniMax-H3 DiffSynth 数字人生产线 v2.1 PRO</text>
+  <text x="1552" y="868" text-anchor="end" font-family="'JetBrains Mono', Menlo, monospace" font-size="15" fill="#5c697a" letter-spacing="1">© 2025-2026 YanYuCloudCube Team. All Rights Reserved.</text>
+</svg>

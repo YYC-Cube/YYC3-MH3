@@ -1,0 +1,18 @@
+{
+  "scanned": 124,
+  "mdHeaderNew": 0,
+  "mdHeaderUpdated": 0,
+  "brandAdded": 0,
+  "historyAdded": 0,
+  "codeHeaderAdded": 0,
+  "footerAdded": 0,
+  "unchanged": 124,
+  "byType": {
+    "md": 73,
+    "py": 1,
+    "yaml": 1,
+    "html": 1,
+    "code": 48
+  },
+  "files": []
+}
