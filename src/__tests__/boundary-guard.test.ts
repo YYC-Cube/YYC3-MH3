@@ -19,18 +19,18 @@
  *
  *       分层矩阵（键 = 所在层，值 = 允许引用的内部层；同层互引天然放行）：
  *         types      → —                          （叶：类型契约）
- *         config     → —                          （叶：构建期注入常量）
+ *         config     → types                      （叶：常量配置 + 路由映射，仅类型契约引用）
  *         domains    → types                      （纯域函数 + 出站端口）
  *         data       → types                      （静态演示快照）
  *         adapters   → types + domains + data + config（memory 适配器；config 为 local 适配器演进预留）
  *         components → types + domains + data + config（UI 区块，禁触 adapters/app/views）
  *         views      → components 及以下            （页面编排壳，禁触 adapters/app）
- *         app        → 全下层层 + adapters          （hooks 装配 + 组合根，禁触 views）
- *         根（App.tsx）不设限（仅入口消费，不在扫描范围）
+ *         app        → 全下层层 + adapters + views （路由层挂载视图 + hooks 装配 + 组合根）
  *
- *       Next 16 迁移期豁免（05 清单 §4.3 绞杀者模式）：src/app/*（路由层）挂载
- *       根入口 App.tsx 属合法入口消费 —— app 层 → 根入口白名单放行，
- *       P3 视图路由化完成后本豁免随根入口退役而移除。
+ *       Next 16 P3 演进（05 清单 §4.3）：app 层由「hooks 装配 + 组合根」演进为
+ *       「路由层 + hooks 装配 + 组合根」—— 路由 page.tsx 挂载 views 属 App Router
+ *       架构必然，矩阵放行 app → views；根入口 App.tsx 已退役，P1 迁移期白名单
+ *       （app → 根入口）随之移除，恢复全量严格扫描。
  *
  * dependencies: node:fs, node:path, vitest
  * exports: —
@@ -55,19 +55,17 @@ const LAYER_DIRS: Readonly<Record<string, string>> = {
 };
 const CONFIG_LEAF = path.join(SRC_ROOT, "config.ts");
 
-/** Next 16 迁移期根入口白名单：app 路由层挂载合法（绞杀者模式，见文件头注） */
-const ROOT_ENTRIES: ReadonlySet<string> = new Set([path.join(SRC_ROOT, "App.tsx")]);
-
 /** 依赖方向矩阵：键 = 所在层，值 = 允许引用的内部层（跨层方向铁律，同层放行） */
 const ALLOWED: Readonly<Record<string, readonly string[]>> = {
   types: [],
-  config: [],
+  // P3：路由映射常量入 config（NavTabId ↔ href），config → types 为纯类型契约引用（无环，安全）
+  config: ["types"],
   domains: ["types"],
   data: ["types"],
   adapters: ["types", "domains", "data", "config"],
   components: ["types", "domains", "data", "config"],
   views: ["types", "domains", "data", "config", "components"],
-  app: ["types", "domains", "data", "config", "components", "adapters"],
+  app: ["types", "domains", "data", "config", "components", "adapters", "views"],
 };
 
 /** 判定单条依赖边是否越界（纯函数，供检测器自证用例） */
@@ -164,16 +162,13 @@ describe("[boundary-guard] 六域分层 · 依赖方向零越界", () => {
       for (const spec of extractInternalSpecs(content)) {
         const resolved = path.resolve(path.dirname(file), spec);
         const target = layerOf(resolved);
-        // 迁移期豁免：app 路由层（入口消费点）→ 根入口白名单放行（对齐 resolveCandidates 扩展名语义）
-        const isRootEntryMount =
-          layer === "app" && resolveCandidates(resolved).some((c) => ROOT_ENTRIES.has(c));
         if (target !== null) {
           if (isEdgeViolation(layer, target)) {
             violations.push(
               `${path.relative(PROJECT_ROOT, file)}: ${spec} → ${layer} ⇒ ${target} 越界（矩阵见文件头）`,
             );
           }
-        } else if (!isRootEntryMount) {
+        } else {
           violations.push(
             `${path.relative(PROJECT_ROOT, file)}: ${spec} → 引用未纳入六域分层的内部文件`,
           );

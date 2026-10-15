@@ -34,12 +34,12 @@ import {
   Share2,
   ShieldCheck,
 } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
-import { APP_PORT } from "../../config";
+import { APP_PORT, hrefForTab, tabFromPathname } from "../../config";
 import { NavTabId } from "../../types";
+
 export interface SidebarProps {
-  activeTab: NavTabId;
-  onSelectTab: (tab: NavTabId) => void;
   collapsed: boolean;
   onToggleCollapse: () => void;
 }
@@ -145,12 +145,12 @@ const NAV_ITEMS: NavItemDef[] = [
   },
 ];
 
-export const Sidebar: React.FC<SidebarProps> = ({
-  activeTab,
-  onSelectTab,
-  collapsed,
-  onToggleCollapse,
-}) => {
+export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse }) => {
+  // P3：激活态/导航从 props 迁至路由事实源（清单 §1.6 —— usePathname 反查 + router.push）
+  const pathname = usePathname();
+  const router = useRouter();
+  const activeTab = tabFromPathname(pathname ?? "/");
+  const onSelectTab = (tab: NavTabId) => router.push(hrefForTab(tab));
   return (
     <aside
       className={`h-screen bg-[#0c1a30] border-r border-[#30363d] flex flex-col transition-all duration-200 select-none z-30 relative ${
