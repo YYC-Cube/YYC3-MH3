@@ -20,7 +20,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { INITIAL_LOGS, OPS_METRICS, SERVICES_LIST, SYSTEM_ALARMS } from "../data/ops";
 import { AlarmItem, LogEntry, OpsMetric, ServiceStatus } from "../types";
-import { createPorts } from "./composition";
+import { getPorts } from "./composition";
 
 /**
  * 遥测域状态（服务 / 指标 / 告警 / 日志四事件表）：
@@ -32,7 +32,8 @@ import { createPorts } from "./composition";
  * - 竞态防护：卸载取消（cancelled 旗标），StrictMode 双挂载幂等。
  */
 export function useOpsTelemetry() {
-  const telemetry = useMemo(() => createPorts().telemetry, []);
+  // P2：组合根单例 —— 降级状态机与留痕日志全局一份
+  const telemetry = useMemo(() => getPorts().telemetry, []);
 
   const [services, setServices] = useState<ServiceStatus[]>(SERVICES_LIST);
   const [metrics, setMetrics] = useState<OpsMetric[]>(OPS_METRICS);

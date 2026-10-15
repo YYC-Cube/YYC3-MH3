@@ -16,13 +16,13 @@
  *   - robots noindex：site.json robots.index=false 隐私语义接管（配合 public/robots.txt）
  *   - 全局样式与 @fontsource 自托管字体经 "@/index.css" 注入（无外部 CDN，offline-guard 红线）
  *
- * dependencies: next (Metadata/Viewport 类型), react, ./sw-register, @/index.css
+ * dependencies: next (Metadata/Viewport 类型), ./contexts, ./sw-register, @/index.css
  * exports: default (RootLayout), metadata, viewport
  */
 import type { Metadata, Viewport } from "next";
-import React from "react";
 
 import "@/index.css";
+import { AppProviders } from "./contexts";
 import { SwRegister } from "./sw-register";
 
 /** 品牌元数据（index.html + .figma/make/site.json 转录，P0 资产保全） */
@@ -62,7 +62,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="zh-CN" className="dark">
       <body className="bg-[#0a1628] text-[#e8f0f8] font-sans antialiased overflow-hidden selection:bg-[#00e0b8]/30 selection:text-[#00e0b8]">
         <SwRegister />
-        {children}
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );

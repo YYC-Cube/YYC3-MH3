@@ -17,11 +17,13 @@
  * exports: App
  */
 import { lazy, Suspense, useState } from "react";
-import { useAuthSession } from "./app/useAuthSession";
+import {
+  useAuthContext,
+  useOpsTelemetryContext,
+  useProductionDataContext,
+  useToastContext,
+} from "./app/contexts";
 import { useKeyboardShortcuts } from "./app/useKeyboardShortcuts";
-import { useOpsTelemetry } from "./app/useOpsTelemetry";
-import { useProductionData } from "./app/useProductionData";
-import { useToast } from "./app/useToast";
 import { NewBatchModal } from "./components/batch/NewBatchModal";
 import { ToastContainer } from "./components/common/Toast";
 import { ViewFallback } from "./components/common/ViewFallback";
@@ -93,21 +95,21 @@ export default function App() {
   const [isNewBatchModalOpen, setIsNewBatchModalOpen] = useState(false);
   const [isYYC3Open, setIsYYC3Open] = useState(false);
 
-  // 领域状态 Hook（应用层按域装配）
-  const { toasts, showToast, dismissToast } = useToast();
+  // 领域状态（P2：Context 化 —— AppProviders 持有，跨路由段共享）
+  const { toasts, showToast, dismissToast } = useToastContext();
   const { currentUser, isLoginViewOpen, setIsLoginViewOpen, login, bypassLogin, logout } =
-    useAuthSession();
+    useAuthContext();
   const { batches, seeds, activeBatchId, setActiveBatchId, adoptSeed, createBatch } =
-    useProductionData();
+    useProductionDataContext();
 
-  // 遥测事件表状态 Hook（应用层按域装配，TelemetryPort 端口消费）
+  // 遥测事件表状态（P2：Context 化，TelemetryPort 端口消费）
   const {
     services: opsServices,
     metrics: opsMetrics,
     alarms: opsAlarms,
     logs: opsLogs,
     resolveAlarm: opsResolveAlarm,
-  } = useOpsTelemetry();
+  } = useOpsTelemetryContext();
 
   // Global Keyboard Shortcuts (Ctrl+B, Ctrl+K, Ctrl+/)
   useKeyboardShortcuts({

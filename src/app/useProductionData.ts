@@ -22,7 +22,7 @@ import { INITIAL_SEEDS } from "../data/seed";
 import { createBatchItem } from "../domains/batch";
 import { createSeedFromAdoption } from "../domains/seed";
 import { BatchItem, NewBatchDraft, SeedItem } from "../types";
-import { createPorts } from "./composition";
+import { getPorts } from "./composition";
 
 /**
  * 生产数据域状态（批次 / 种子 / 当前选中批次）：
@@ -34,7 +34,8 @@ import { createPorts } from "./composition";
  * - 批次创建：构造规则在领域层（createBatchItem），本 Hook 只做状态前置与选中。
  */
 export function useProductionData() {
-  const seedRepo = useMemo(() => createPorts().seeds, []);
+  // P2：组合根单例 —— 全树共享装配（AppProviders 与视图水合同源）
+  const seedRepo = useMemo(() => getPorts().seeds, []);
 
   const [batches, setBatches] = useState<BatchItem[]>(INITIAL_BATCHES);
   const [seeds, setSeeds] = useState<SeedItem[]>(INITIAL_SEEDS);

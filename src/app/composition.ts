@@ -12,9 +12,10 @@
  * license: MIT
  *
  * brief: 组合根 — dev 装配 local（Registry API 供数，内置降级），静态/测试装配 memory 快照
+ *        + Next 16 P2 单例化（getPorts：模块级缓存，跨组件共享装配实例）
  *
  * dependencies: ../domains/batch/ports, ../domains/seed/ports, ../domains/ops/ports, ../adapters/memory/*, ../adapters/local/*
- * exports: AppPorts, createPorts
+ * exports: AppPorts, createPorts, getPorts
  */
 import { createLocalBatchRepository } from "../adapters/local/batchRepository";
 import { createLocalSeedRepository } from "../adapters/local/seedRepository";
@@ -60,6 +61,23 @@ export function createPorts(): AppPorts {
     seeds: createMemorySeedRepository(),
     telemetry: createMemoryTelemetry(),
   };
+}
+
+/** 模块级单例缓存（Next 16 P2：多组件消费端口共享同一装配，防重复初始化） */
+let portsSingleton: AppPorts | null = null;
+
+/**
+ * 组合根单例入口（P2 起 UI/Provider 层统一经此取端口）：
+ *
+ * - 同一 JS 上下文内装配唯一 —— dev local 适配器的降级状态机与 telemetry 留痕
+ *   全局一份；静态/测试 memory 快照同理
+ * - createPorts 保留原始「每次新实例」语义，供测试隔离使用
+ */
+export function getPorts(): AppPorts {
+  if (portsSingleton === null) {
+    portsSingleton = createPorts();
+  }
+  return portsSingleton;
 }
 
 /* --------------------------------------------------------------
