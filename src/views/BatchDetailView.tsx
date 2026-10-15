@@ -25,21 +25,16 @@ import {
   RotateCcw,
   Wrench,
   Zap,
-  ZoomIn
-} from "lucide-react"
-import React, { useState } from "react"
-import { Badge, Button, Modal } from "../components/common"
-import { RadarScoreChart } from "../components/pipeline/RadarScoreChart"
-import { findCurrentBatch } from "../domains/batch"
-import { BatchItem, NavigateExtra, NavTabId } from "../types"
+  ZoomIn,
+} from "lucide-react";
+import React, { useState } from "react";
+import { Badge, Button, Modal } from "../components/common";
+import { RadarScoreChart } from "../components/pipeline/RadarScoreChart";
+import { findCurrentBatch } from "../domains/batch";
+import { BatchItem, NavigateExtra, NavTabId } from "../types";
 
 /** 批次详情内容页签（timeline/artifacts/compare/mutation/anomalies） */
-export type BatchDetailTab =
-  | "timeline"
-  | "artifacts"
-  | "compare"
-  | "mutation"
-  | "anomalies"
+export type BatchDetailTab = "timeline" | "artifacts" | "compare" | "mutation" | "anomalies";
 
 const BATCH_DETAIL_TABS: { id: BatchDetailTab; label: string }[] = [
   { id: "artifacts", label: "a. 生产产物矩阵 (5项)" },
@@ -47,17 +42,13 @@ const BATCH_DETAIL_TABS: { id: BatchDetailTab; label: string }[] = [
   { id: "mutation", label: "c. Seed 变异测试发射器" },
   { id: "anomalies", label: "d. 异常帧定位与标注工具" },
   { id: "timeline", label: "五阶段全流程时间轴" },
-]
+];
 
 export interface BatchDetailViewProps {
-  batchId?: string
-  batches: BatchItem[]
-  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void
-  onShowToast: (
-    type: "success" | "error" | "warning" | "info",
-    msg: string,
-    sub?: string,
-  ) => void
+  batchId?: string;
+  batches: BatchItem[];
+  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void;
+  onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
 export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
@@ -66,22 +57,22 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
   onNavigate,
   onShowToast,
 }) => {
-  const currentBatch = findCurrentBatch(batches, batchId)
-  const [activeTab, setActiveTab] = useState<BatchDetailTab>("artifacts")
+  const currentBatch = findCurrentBatch(batches, batchId);
+  const [activeTab, setActiveTab] = useState<BatchDetailTab>("artifacts");
 
   // Export dropdown
-  const [isExportOpen, setIsExportOpen] = useState(false)
+  const [isExportOpen, setIsExportOpen] = useState(false);
 
   // Zoom artifact modal
   const [zoomedArtifact, setZoomedArtifact] = useState<{
-    title: string
-    image: string
-    meta: string
-  } | null>(null)
+    title: string;
+    image: string;
+    meta: string;
+  } | null>(null);
 
   // Mutation launcher state
-  const [mutationCount] = useState(4)
-  const [isGeneratingMutations, setIsGeneratingMutations] = useState(false)
+  const [mutationCount] = useState(4);
+  const [isGeneratingMutations, setIsGeneratingMutations] = useState(false);
 
   // Anomalies list
   const [anomalies, setAnomalies] = useState([
@@ -97,30 +88,24 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
       severity: "low",
       fixed: true,
     },
-  ])
+  ]);
 
   const handleLaunchMutations = () => {
-    setIsGeneratingMutations(true)
+    setIsGeneratingMutations(true);
     setTimeout(() => {
-      setIsGeneratingMutations(false)
+      setIsGeneratingMutations(false);
       onShowToast(
         "success",
         `成功生成 ${mutationCount} 组变异批次`,
         "已自动加入队列，包含 Seed±1 与 CFG±0.5 变异",
-      )
-    }, 1500)
-  }
+      );
+    }, 1500);
+  };
 
   const handleFixAnomaly = (frame: number) => {
-    setAnomalies((prev) =>
-      prev.map((a) => (a.frame === frame ? { ...a, fixed: true } : a)),
-    )
-    onShowToast(
-      "success",
-      `第 ${frame} 帧异常已应用时序平滑补丁`,
-      "微表情已重新对齐",
-    )
-  }
+    setAnomalies((prev) => prev.map((a) => (a.frame === frame ? { ...a, fixed: true } : a)));
+    onShowToast("success", `第 ${frame} 帧异常已应用时序平滑补丁`, "微表情已重新对齐");
+  };
 
   // 数据守卫：无匹配批次时渲染空态（mock 数据恒非空，此分支仅作类型兜底）
   if (!currentBatch) {
@@ -128,7 +113,7 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
       <div className="flex-1 flex items-center justify-center p-6 text-sm text-[#8a97a8] bg-[#0a1628]">
         暂无批次数据
       </div>
-    )
+    );
   }
 
   return (
@@ -140,9 +125,7 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
             variant="ghost"
             size="sm"
             icon={<ArrowLeft className="w-4 h-4" />}
-            onClick={() =>
-              onNavigate("workbench", { batchId: currentBatch.id })
-            }
+            onClick={() => onNavigate("workbench", { batchId: currentBatch.id })}
           >
             返回工作台
           </Button>
@@ -152,13 +135,9 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
                 {currentBatch.id}
               </span>
               <Badge variant="brand">{currentBatch.mode}</Badge>
-              <span className="text-xs text-[#8a97a8]">
-                · Seed: {currentBatch.seed}
-              </span>
+              <span className="text-xs text-[#8a97a8]">· Seed: {currentBatch.seed}</span>
             </div>
-            <h1 className="text-base font-semibold text-[#e8f0f8] mt-0.5">
-              {currentBatch.name}
-            </h1>
+            <h1 className="text-base font-semibold text-[#e8f0f8] mt-0.5">{currentBatch.name}</h1>
           </div>
         </div>
 
@@ -195,8 +174,8 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
               <div className="absolute right-0 top-10 w-44 rounded-xl bg-[#0c1a30] border border-[#1e2f47] shadow-xl p-1.5 space-y-1 z-30 animate-in fade-in zoom-in-95 backdrop-blur-md">
                 <button
                   onClick={() => {
-                    onShowToast("success", "PDF 格式生产质量全量报告已导出")
-                    setIsExportOpen(false)
+                    onShowToast("success", "PDF 格式生产质量全量报告已导出");
+                    setIsExportOpen(false);
                   }}
                   className="w-full text-left px-3 py-2 rounded-lg text-xs text-[#e8f0f8] hover:bg-[#15294a] hover:text-[#00e0b8] flex items-center gap-2 transition-colors cursor-pointer"
                 >
@@ -205,8 +184,8 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
                 </button>
                 <button
                   onClick={() => {
-                    onShowToast("success", "Markdown 格式报告与参数已导出")
-                    setIsExportOpen(false)
+                    onShowToast("success", "Markdown 格式报告与参数已导出");
+                    setIsExportOpen(false);
                   }}
                   className="w-full text-left px-3 py-2 rounded-lg text-xs text-[#e8f0f8] hover:bg-[#15294a] hover:text-[#00e0b8] flex items-center gap-2 transition-colors cursor-pointer"
                 >
@@ -222,8 +201,8 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
             size="sm"
             icon={<RotateCcw className="w-3.5 h-3.5" />}
             onClick={() => {
-              onNavigate("workbench", { batchId: currentBatch.id })
-              onShowToast("info", "已在工作台载入当前批次配置")
+              onNavigate("workbench", { batchId: currentBatch.id });
+              onShowToast("info", "已在工作台载入当前批次配置");
             }}
           >
             基于此重新生成
@@ -278,10 +257,11 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`pb-2.5 font-medium transition-colors cursor-pointer relative ${activeTab === tab.id
-                ? "text-[#00e0b8] font-semibold"
-                : "text-[#8a97a8] hover:text-[#e8f0f8]"
-                }`}
+              className={`pb-2.5 font-medium transition-colors cursor-pointer relative ${
+                activeTab === tab.id
+                  ? "text-[#00e0b8] font-semibold"
+                  : "text-[#8a97a8] hover:text-[#e8f0f8]"
+              }`}
             >
               {tab.label}
               {activeTab === tab.id && (
@@ -309,20 +289,17 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
             {
               title: "3. SyncNet 唇齿微运动时序热力图",
               meta: "音视频唇形对齐平均误差 0.042s (合格)",
-              thumb:
-                "/placeholders/person.svg",
+              thumb: "/placeholders/person.svg",
             },
             {
               title: "4. 48kHz 音频 PCM 声学特征频谱",
               meta: "MFCC 13维倒谱系数 · 音素边界标定",
-              thumb:
-                "/placeholders/person.svg",
+              thumb: "/placeholders/person.svg",
             },
             {
               title: "5. 帧间时序连续性光流深度图 (Depth Map)",
               meta: "MiDaS v3 深度估计 · 帧间平滑度 93.5",
-              thumb:
-                "/placeholders/person.svg",
+              thumb: "/placeholders/person.svg",
             },
           ].map((item, idx) => (
             <div
@@ -331,9 +308,7 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
             >
               <div>
                 <div className="flex items-center justify-between text-xs mb-1.5">
-                  <span className="font-semibold text-[#e8f0f8]">
-                    {item.title}
-                  </span>
+                  <span className="font-semibold text-[#e8f0f8]">{item.title}</span>
                   <button
                     onClick={() =>
                       setZoomedArtifact({
@@ -361,9 +336,7 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
                 <Button
                   variant="ghost"
                   size="xs"
-                  onClick={() =>
-                    onShowToast("success", `已下载产物: ${item.title}`)
-                  }
+                  onClick={() => onShowToast("success", `已下载产物: ${item.title}`)}
                 >
                   下载
                 </Button>
@@ -426,9 +399,7 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
                   key={i}
                   className="flex items-center justify-between p-2.5 rounded-lg bg-[#15294a] border border-[#1e2f47]"
                 >
-                  <span className="font-medium text-[#e8f0f8]">
-                    {row.label}
-                  </span>
+                  <span className="font-medium text-[#e8f0f8]">{row.label}</span>
                   <div className="flex items-center gap-4 font-mono">
                     <span className="text-[#00e0b8] font-bold">{row.curr}</span>
                     <span className="text-[#5c697a]">vs {row.base}</span>
@@ -450,9 +421,7 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
       {activeTab === "mutation" && (
         <div className="p-5 rounded-xl bg-[#0f1f38] border border-[#1e2f47] space-y-4 text-xs">
           <div>
-            <h3 className="text-sm font-semibold text-[#e8f0f8]">
-              一键发起 Seed 参数微变异矩阵
-            </h3>
+            <h3 className="text-sm font-semibold text-[#e8f0f8]">一键发起 Seed 参数微变异矩阵</h3>
             <p className="text-[#8a97a8] mt-1">
               基于当前高分基线 Seed #{currentBatch.seed}
               ，在近邻超参数空间微调，自动批量寻找更优表现点。
@@ -462,9 +431,7 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="p-3.5 rounded-xl bg-[#15294a] border border-[#1e2f47] space-y-1">
               <span className="text-[#8a97a8]">变异维度 1: 种子抖动</span>
-              <div className="font-mono text-sm text-[#00e0b8] font-bold">
-                Seed ± 1, ± 10
-              </div>
+              <div className="font-mono text-sm text-[#00e0b8] font-bold">Seed ± 1, ± 10</div>
             </div>
             <div className="p-3.5 rounded-xl bg-[#15294a] border border-[#1e2f47] space-y-1">
               <span className="text-[#8a97a8]">变异维度 2: CFG 阶梯</span>
@@ -481,9 +448,7 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
           </div>
 
           <div className="pt-2 flex items-center justify-between border-t border-[#1e2f47]/60">
-            <span className="text-[#8a97a8]">
-              预计创建 4 组衍生测试批次，预计显存占用 19.4GB
-            </span>
+            <span className="text-[#8a97a8]">预计创建 4 组衍生测试批次，预计显存占用 19.4GB</span>
             <Button
               variant="primary"
               size="md"
@@ -502,9 +467,7 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
         <div className="p-5 rounded-xl bg-[#0f1f38] border border-[#1e2f47] space-y-4 text-xs">
           <div className="flex items-center justify-between pb-2 border-b border-[#1e2f47]">
             <div>
-              <h3 className="text-sm font-semibold text-[#e8f0f8]">
-                异常帧定位与缺陷标注工具
-              </h3>
+              <h3 className="text-sm font-semibold text-[#e8f0f8]">异常帧定位与缺陷标注工具</h3>
               <p className="text-[#8a97a8]">
                 基于 SyncNet 误差阈值与面部关键点突变检测定位的问题帧
               </p>
@@ -518,10 +481,11 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
             {anomalies.map((ano) => (
               <div
                 key={ano.frame}
-                className={`p-3.5 rounded-xl border transition-all flex items-center justify-between gap-4 ${ano.fixed
-                  ? "bg-[#15294a]/40 border-[#1e2f47] opacity-60"
-                  : "bg-[#15294a] border-[#ff7a45]/50"
-                  }`}
+                className={`p-3.5 rounded-xl border transition-all flex items-center justify-between gap-4 ${
+                  ano.fixed
+                    ? "bg-[#15294a]/40 border-[#1e2f47] opacity-60"
+                    : "bg-[#15294a] border-[#ff7a45]/50"
+                }`}
               >
                 <div className="flex items-center gap-3">
                   <span className="font-mono text-sm font-bold text-[#00e0b8]">
@@ -555,9 +519,7 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
       {/* TAB Timeline */}
       {activeTab === "timeline" && (
         <div className="p-5 rounded-xl bg-[#0f1f38] border border-[#1e2f47] space-y-4 text-xs">
-          <h3 className="font-semibold text-[#e8f0f8]">
-            五阶段耗时分解与自检指标
-          </h3>
+          <h3 className="font-semibold text-[#e8f0f8]">五阶段耗时分解与自检指标</h3>
           <div className="relative pl-6 space-y-6 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#1e2f47]">
             {[
               {
@@ -596,16 +558,12 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
                   <span className="w-1.5 h-1.5 rounded-full bg-[#00e0b8]" />
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-[#e8f0f8]">
-                    {item.stage}
-                  </span>
+                  <span className="text-xs font-semibold text-[#e8f0f8]">{item.stage}</span>
                   <span className="font-mono text-xs text-[#00e0b8] font-semibold">
                     {item.time}
                   </span>
                 </div>
-                <p className="text-xs text-[#8a97a8] mt-0.5 leading-relaxed">
-                  {item.desc}
-                </p>
+                <p className="text-xs text-[#8a97a8] mt-0.5 leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -628,15 +586,13 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
                 className="w-full h-auto object-contain"
               />
             </div>
-            <div className="text-xs text-[#8a97a8] font-mono">
-              {zoomedArtifact.meta}
-            </div>
+            <div className="text-xs text-[#8a97a8] font-mono">{zoomedArtifact.meta}</div>
           </div>
         </Modal>
       )}
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

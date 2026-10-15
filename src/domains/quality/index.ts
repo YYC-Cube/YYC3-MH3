@@ -23,8 +23,8 @@
  * 空集合返回 0（避免 NaN 向上游泄漏）。
  */
 export function averageDimensionScore(items: { score: number }[]): number {
-  if (items.length === 0) return 0
-  return items.reduce((acc, curr) => acc + curr.score, 0) / items.length
+  if (items.length === 0) return 0;
+  return items.reduce((acc, curr) => acc + curr.score, 0) / items.length;
 }
 
 /* --------------------------------------------------------------

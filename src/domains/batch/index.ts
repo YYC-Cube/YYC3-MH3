@@ -16,18 +16,15 @@
  * dependencies: ../../types
  * exports: findCurrentBatch, createBatchId, createBatchItem
  */
-import { BatchItem, NewBatchDraft } from "../../types"
+import { BatchItem, NewBatchDraft } from "../../types";
 
 /**
  * 定位当前批次：优先精确匹配 activeId，未命中回退首个批次。
  * 返回 undefined 仅当批次库为空（调用方据此渲染空态守卫）。
  */
-export function findCurrentBatch(
-  batches: BatchItem[],
-  activeId?: string,
-): BatchItem | undefined {
-  if (!activeId) return batches[0]
-  return batches.find((b) => b.id === activeId) ?? batches[0]
+export function findCurrentBatch(batches: BatchItem[], activeId?: string): BatchItem | undefined {
+  if (!activeId) return batches[0];
+  return batches.find((b) => b.id === activeId) ?? batches[0];
 }
 
 /**
@@ -35,9 +32,9 @@ export function findCurrentBatch(
  * now 参数注入便于测试确定性，默认当前时间。
  */
 export function createBatchId(existingCount: number, now = new Date()): string {
-  const datePart = now.toISOString().slice(0, 10).replace(/-/g, "")
-  const seqPart = String(existingCount + 90).padStart(3, "0")
-  return `BATCH-${datePart}-${seqPart}`
+  const datePart = now.toISOString().slice(0, 10).replace(/-/g, "");
+  const seqPart = String(existingCount + 90).padStart(3, "0");
+  return `BATCH-${datePart}-${seqPart}`;
 }
 
 /**
@@ -72,7 +69,7 @@ export function createBatchItem(
     vramUsageGb: 19.4,
     previewThumbnail: "/placeholders/person.svg",
     tags: [draft.mode, "五步流水线"],
-  }
+  };
 }
 
 /* --------------------------------------------------------------

@@ -16,22 +16,22 @@
  * dependencies: ../../types, ../../domains/batch/ports, ../../domains/ops/ports, ../memory/batchRepository, ./http
  * exports: LocalBatchOptions, createLocalBatchRepository
  */
-import type { BatchRepository } from "../../domains/batch/ports"
-import type { TelemetryPort } from "../../domains/ops/ports"
-import type { BatchItem } from "../../types"
-import { createMemoryBatchRepository } from "../memory/batchRepository"
+import type { BatchRepository } from "../../domains/batch/ports";
+import type { TelemetryPort } from "../../domains/ops/ports";
+import type { BatchItem } from "../../types";
+import { createMemoryBatchRepository } from "../memory/batchRepository";
 import {
   createResilientGateway,
   makeTraceEntry,
   RegistryError,
   type LocalAdapterOptions,
-} from "./http"
+} from "./http";
 
 export interface LocalBatchOptions extends LocalAdapterOptions {
   /** 降级回退通道（缺省自建 memory） */
-  memory?: BatchRepository
+  memory?: BatchRepository;
   /** 降级/恢复留痕通道（组合根注入共享遥测实例） */
-  telemetry?: Pick<TelemetryPort, "appendLog">
+  telemetry?: Pick<TelemetryPort, "appendLog">;
 }
 
 /**
@@ -42,22 +42,22 @@ export interface LocalBatchOptions extends LocalAdapterOptions {
  * - 其余失败回退 memory 同型方法；降级/恢复经 telemetry.appendLog 留痕
  */
 export function createLocalBatchRepository(options: LocalBatchOptions = {}): BatchRepository {
-  const memory = options.memory ?? createMemoryBatchRepository()
+  const memory = options.memory ?? createMemoryBatchRepository();
   const gateway = createResilientGateway(options, (t) => {
-    void options.telemetry?.appendLog(makeTraceEntry("批次仓储", t.degraded, t.detail))
-  })
+    void options.telemetry?.appendLog(makeTraceEntry("批次仓储", t.degraded, t.detail));
+  });
 
   return {
     listAll: () => gateway<BatchItem[]>("/batches").catch(() => memory.listAll()),
     getById: async (id: string) => {
       try {
-        return await gateway<BatchItem>(`/batches/${encodeURIComponent(id)}`)
+        return await gateway<BatchItem>(`/batches/${encodeURIComponent(id)}`);
       } catch (err) {
-        if (err instanceof RegistryError && err.kind === "not_found") return null
-        return memory.getById(id)
+        if (err instanceof RegistryError && err.kind === "not_found") return null;
+        return memory.getById(id);
       }
     },
-  }
+  };
 }
 
 /* --------------------------------------------------------------

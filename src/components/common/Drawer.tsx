@@ -16,16 +16,16 @@
  * dependencies: react, lucide-react
  * exports: DrawerProps, Drawer
  */
-import React, { useEffect } from "react"
-import { X } from "lucide-react"
+import React, { useEffect } from "react";
+import { X } from "lucide-react";
 
 export interface DrawerProps {
-  isOpen: boolean
-  onClose: () => void
-  title?: React.ReactNode
-  children: React.ReactNode
-  footer?: React.ReactNode
-  width?: string
+  isOpen: boolean;
+  onClose: () => void;
+  title?: React.ReactNode;
+  children: React.ReactNode;
+  footer?: React.ReactNode;
+  width?: string;
 }
 
 export const Drawer: React.FC<DrawerProps> = ({
@@ -39,14 +39,14 @@ export const Drawer: React.FC<DrawerProps> = ({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
-        onClose()
+        onClose();
       }
-    }
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [isOpen, onClose])
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
@@ -76,8 +76,8 @@ export const Drawer: React.FC<DrawerProps> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

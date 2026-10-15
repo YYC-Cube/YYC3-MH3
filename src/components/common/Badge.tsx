@@ -16,14 +16,14 @@
  * dependencies: react
  * exports: BadgeProps, Badge
  */
-import React from "react"
+import React from "react";
 
 export interface BadgeProps {
-  children: React.ReactNode
-  variant?: "brand" | "info" | "purple" | "danger" | "warning" | "neutral"
-  size?: "xs" | "sm" | "md"
-  pulse?: boolean
-  className?: string
+  children: React.ReactNode;
+  variant?: "brand" | "info" | "purple" | "danger" | "warning" | "neutral";
+  size?: "xs" | "sm" | "md";
+  pulse?: boolean;
+  className?: string;
 }
 
 export const Badge: React.FC<BadgeProps> = ({
@@ -37,7 +37,7 @@ export const Badge: React.FC<BadgeProps> = ({
     xs: "text-[10px] px-1.5 py-0.2",
     sm: "text-xs px-2 py-0.5",
     md: "text-xs px-2.5 py-1",
-  }[size]
+  }[size];
 
   const variantClasses = {
     brand: "bg-[#00d4aa]/10 text-[#00d4aa] border border-[#00d4aa]/30",
@@ -46,7 +46,7 @@ export const Badge: React.FC<BadgeProps> = ({
     danger: "bg-[#EE4C2C]/15 text-[#EE4C2C] border border-[#EE4C2C]/35",
     warning: "bg-[#f1c40f]/15 text-[#f1c40f] border border-[#f1c40f]/35",
     neutral: "bg-[#30363d]/40 text-[#8b949e] border border-[#30363d]",
-  }[variant]
+  }[variant];
 
   const dotColor = {
     brand: "bg-[#00d4aa]",
@@ -55,7 +55,7 @@ export const Badge: React.FC<BadgeProps> = ({
     danger: "bg-[#EE4C2C]",
     warning: "bg-[#f1c40f]",
     neutral: "bg-[#8b949e]",
-  }[variant]
+  }[variant];
 
   return (
     <span
@@ -66,15 +66,13 @@ export const Badge: React.FC<BadgeProps> = ({
           <span
             className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${dotColor}`}
           />
-          <span
-            className={`relative inline-flex rounded-full h-1.5 w-1.5 ${dotColor}`}
-          />
+          <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${dotColor}`} />
         </span>
       )}
       {children}
     </span>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

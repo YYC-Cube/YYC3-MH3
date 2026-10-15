@@ -16,10 +16,10 @@
  * dependencies: vitest/config, @vitejs/plugin-react, @tailwindcss/vite, node:path
  * exports: —
  */
-import { defineConfig } from "vitest/config"
-import react from "@vitejs/plugin-react"
-import tailwindcss from "@tailwindcss/vite"
-import path from "node:path"
+import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import path from "node:path";
 
 // Vitest 配置 — 冒烟测试（jsdom 环境）
 export default defineConfig({
@@ -36,7 +36,7 @@ export default defineConfig({
     css: false,
     include: ["src/**/*.{test,spec}.{ts,tsx}", "server/**/*.test.ts"],
   },
-})
+});
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

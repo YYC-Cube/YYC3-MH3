@@ -16,22 +16,15 @@
  * dependencies: react, ../../types, lucide-react
  * exports: TerminalLogPanelProps, TerminalLogPanel
  */
-import {
-  AlertTriangle,
-  ArrowDown,
-  Search,
-  Terminal,
-  Trash2,
-  Wrench,
-} from "lucide-react"
-import React, { useEffect, useRef, useState } from "react"
-import { LogEntry } from "../../types"
+import { AlertTriangle, ArrowDown, Search, Terminal, Trash2, Wrench } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { LogEntry } from "../../types";
 
 export interface TerminalLogPanelProps {
-  logs: LogEntry[]
-  onClear?: () => void
-  onTroubleshootFix?: (actionType: string) => void
-  className?: string
+  logs: LogEntry[];
+  onClear?: () => void;
+  onTroubleshootFix?: (actionType: string) => void;
+  className?: string;
 }
 
 export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
@@ -40,59 +33,60 @@ export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
   onTroubleshootFix,
   className = "",
 }) => {
-  const [levelFilter, setLevelFilter] =
-    useState<"all" | "info" | "warn" | "error" | "success">("all")
-  const [searchQuery, setSearchQuery] = useState("")
-  const [autoScroll, setAutoScroll] = useState(true)
-  const scrollRef = useRef<HTMLDivElement>(null)
+  const [levelFilter, setLevelFilter] = useState<"all" | "info" | "warn" | "error" | "success">(
+    "all",
+  );
+  const [searchQuery, setSearchQuery] = useState("");
+  const [autoScroll, setAutoScroll] = useState(true);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom
   useEffect(() => {
     if (autoScroll && scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [logs, autoScroll])
+  }, [logs, autoScroll]);
 
   const filteredLogs = logs.filter((log) => {
-    if (levelFilter !== "all" && log.level !== levelFilter) return false
+    if (levelFilter !== "all" && log.level !== levelFilter) return false;
     if (searchQuery) {
-      const q = searchQuery.toLowerCase()
+      const q = searchQuery.toLowerCase();
       return (
         log.message.toLowerCase().includes(q) ||
         log.stage.toLowerCase().includes(q) ||
         log.timestamp.includes(q)
-      )
+      );
     }
-    return true
-  })
+    return true;
+  });
 
   const getLevelColor = (level: LogEntry["level"]) => {
     switch (level) {
       case "info":
-        return "text-[#00b4d8]"
+        return "text-[#00b4d8]";
       case "warn":
-        return "text-[#f1c40f]"
+        return "text-[#f1c40f]";
       case "error":
-        return "text-[#EE4C2C]"
+        return "text-[#EE4C2C]";
       case "success":
-        return "text-[#00d4aa]"
+        return "text-[#00d4aa]";
       default:
-        return "text-[#8b949e]"
+        return "text-[#8b949e]";
     }
-  }
+  };
 
   const getLevelBadge = (level: LogEntry["level"]) => {
     switch (level) {
       case "info":
-        return "bg-[#00b4d8]/15 text-[#00b4d8] border-[#00b4d8]/30"
+        return "bg-[#00b4d8]/15 text-[#00b4d8] border-[#00b4d8]/30";
       case "warn":
-        return "bg-[#f1c40f]/15 text-[#f1c40f] border-[#f1c40f]/30"
+        return "bg-[#f1c40f]/15 text-[#f1c40f] border-[#f1c40f]/30";
       case "error":
-        return "bg-[#EE4C2C]/15 text-[#EE4C2C] border-[#EE4C2C]/30"
+        return "bg-[#EE4C2C]/15 text-[#EE4C2C] border-[#EE4C2C]/30";
       case "success":
-        return "bg-[#00d4aa]/15 text-[#00d4aa] border-[#00d4aa]/30"
+        return "bg-[#00d4aa]/15 text-[#00d4aa] border-[#00d4aa]/30";
     }
-  }
+  };
 
   return (
     <div
@@ -102,9 +96,7 @@ export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
       <div className="px-3 py-2 bg-[#0c1a30] border-b border-[#30363d] flex flex-wrap items-center justify-between gap-2 text-xs">
         <div className="flex items-center gap-2">
           <Terminal className="w-3.5 h-3.5 text-[#00d4aa]" />
-          <span className="font-semibold text-[#e6edf3] font-sans">
-            本地执行引擎实时终端
-          </span>
+          <span className="font-semibold text-[#e6edf3] font-sans">本地执行引擎实时终端</span>
           <span className="text-[10px] px-1.5 py-0.2 rounded bg-[#122340] text-[#8b949e] border border-[#30363d]">
             {filteredLogs.length} 条记录
           </span>
@@ -116,10 +108,11 @@ export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
             <button
               key={lvl}
               onClick={() => setLevelFilter(lvl)}
-              className={`px-2 py-0.5 text-[10px] rounded uppercase transition-colors cursor-pointer ${levelFilter === lvl
+              className={`px-2 py-0.5 text-[10px] rounded uppercase transition-colors cursor-pointer ${
+                levelFilter === lvl
                   ? "bg-[#071425] text-[#00d4aa] font-bold shadow-xs"
                   : "text-[#8b949e] hover:text-[#e6edf3]"
-                }`}
+              }`}
             >
               {lvl}
             </button>
@@ -141,10 +134,11 @@ export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
 
           <button
             onClick={() => setAutoScroll((p) => !p)}
-            className={`p-1 rounded border transition-colors cursor-pointer ${autoScroll
+            className={`p-1 rounded border transition-colors cursor-pointer ${
+              autoScroll
                 ? "bg-[#00d4aa]/20 border-[#00d4aa] text-[#00d4aa]"
                 : "bg-[#122340] border-[#30363d] text-[#8b949e]"
-              }`}
+            }`}
             title="锁定滚轮到底部"
           >
             <ArrowDown className="w-3 h-3" />
@@ -188,12 +182,8 @@ export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
                 >
                   {log.level}
                 </span>
-                <span className="text-[#8b949e] text-[11px] flex-shrink-0">
-                  [{log.stage}]
-                </span>
-                <span
-                  className={`flex-1 break-all ${getLevelColor(log.level)}`}
-                >
+                <span className="text-[#8b949e] text-[11px] flex-shrink-0">[{log.stage}]</span>
+                <span className={`flex-1 break-all ${getLevelColor(log.level)}`}>
                   {log.message}
                 </span>
               </div>
@@ -207,9 +197,7 @@ export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
                   </div>
                   {log.actionable && onTroubleshootFix && (
                     <button
-                      onClick={() =>
-                        onTroubleshootFix(log.actionable!.actionType)
-                      }
+                      onClick={() => onTroubleshootFix(log.actionable!.actionType)}
                       className="px-2 py-0.5 rounded bg-[#EE4C2C]/20 hover:bg-[#EE4C2C]/30 text-[#EE4C2C] border border-[#EE4C2C]/50 flex items-center gap-1 font-semibold transition-colors cursor-pointer"
                     >
                       <Wrench className="w-3 h-3" />
@@ -236,8 +224,8 @@ export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
         <div className="text-[10px] text-[#5a6268]">UTF-8 · SSE 保持长连接</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

@@ -28,25 +28,17 @@ import {
   Search,
   Sliders,
   Square,
-  Upload
-} from "lucide-react"
-import React, { useEffect, useState } from "react"
-import {
-  Badge,
-  Button,
-  Input,
-  Modal,
-  Select,
-  Slider,
-  Switch
-} from "../components/common"
-import { PipelineBar } from "../components/pipeline/PipelineBar"
-import { RadarScoreChart } from "../components/pipeline/RadarScoreChart"
-import { TerminalLogPanel } from "../components/pipeline/TerminalLogPanel"
-import { VideoPreviewPlayer } from "../components/pipeline/VideoPreviewPlayer"
-import { findCurrentBatch } from "../domains/batch"
-import { advancePipeline } from "../domains/pipeline"
-import { generateSeedNumber } from "../domains/seed"
+  Upload,
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Badge, Button, Input, Modal, Select, Slider, Switch } from "../components/common";
+import { PipelineBar } from "../components/pipeline/PipelineBar";
+import { RadarScoreChart } from "../components/pipeline/RadarScoreChart";
+import { TerminalLogPanel } from "../components/pipeline/TerminalLogPanel";
+import { VideoPreviewPlayer } from "../components/pipeline/VideoPreviewPlayer";
+import { findCurrentBatch } from "../domains/batch";
+import { advancePipeline } from "../domains/pipeline";
+import { generateSeedNumber } from "../domains/seed";
 import {
   BatchItem,
   BatchMode,
@@ -55,19 +47,15 @@ import {
   ParameterTemplate,
   PipelineStageKey,
   SeedItem,
-} from "../types"
+} from "../types";
 
 export interface WorkbenchViewProps {
-  batches: BatchItem[]
-  activeBatchId?: string
-  onSelectBatch: (id: string) => void
-  onAdoptSeed: (seed: Partial<SeedItem>) => void
-  onShowToast: (
-    type: "success" | "error" | "warning" | "info",
-    msg: string,
-    sub?: string,
-  ) => void
-  initialLogs: LogEntry[]
+  batches: BatchItem[];
+  activeBatchId?: string;
+  onSelectBatch: (id: string) => void;
+  onAdoptSeed: (seed: Partial<SeedItem>) => void;
+  onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
+  initialLogs: LogEntry[];
 }
 
 const PRESET_TEMPLATES: ParameterTemplate[] = [
@@ -107,38 +95,34 @@ const PRESET_TEMPLATES: ParameterTemplate[] = [
     fp8: false,
     desc: "极速生成，眼睑微表情自然，面部高饱和",
   },
-]
+];
 
 const INITIAL_KEYFRAMES: KeyframePreview[] = [
   {
     frameNumber: 15,
     timeSec: 0.5,
-    thumbnail:
-      "/placeholders/person.svg",
+    thumbnail: "/placeholders/person.svg",
     lipScore: 96.2,
     expressionScore: 94.0,
   },
   {
     frameNumber: 45,
     timeSec: 1.5,
-    thumbnail:
-      "/placeholders/person.svg",
+    thumbnail: "/placeholders/person.svg",
     lipScore: 95.8,
     expressionScore: 93.5,
   },
   {
     frameNumber: 90,
     timeSec: 3.0,
-    thumbnail:
-      "/placeholders/person.svg",
+    thumbnail: "/placeholders/person.svg",
     lipScore: 96.5,
     expressionScore: 95.0,
   },
   {
     frameNumber: 142,
     timeSec: 4.7,
-    thumbnail:
-      "/placeholders/person.svg",
+    thumbnail: "/placeholders/person.svg",
     lipScore: 94.1,
     expressionScore: 89.2,
     anomaly: "微表情迟滞",
@@ -146,20 +130,18 @@ const INITIAL_KEYFRAMES: KeyframePreview[] = [
   {
     frameNumber: 195,
     timeSec: 6.5,
-    thumbnail:
-      "/placeholders/person.svg",
+    thumbnail: "/placeholders/person.svg",
     lipScore: 97.0,
     expressionScore: 96.1,
   },
   {
     frameNumber: 240,
     timeSec: 8.0,
-    thumbnail:
-      "/placeholders/person.svg",
+    thumbnail: "/placeholders/person.svg",
     lipScore: 95.9,
     expressionScore: 94.5,
   },
-]
+];
 
 export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
   batches,
@@ -169,110 +151,106 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
   onShowToast,
   initialLogs,
 }) => {
-  const currentBatch = findCurrentBatch(batches, activeBatchId)
+  const currentBatch = findCurrentBatch(batches, activeBatchId);
 
   // Parameters State
-  const [mode, setMode] = useState<BatchMode>(currentBatch?.mode || "Ref2VA")
-  const [prompt, setPrompt] = useState(currentBatch?.prompt ?? "")
+  const [mode, setMode] = useState<BatchMode>(currentBatch?.mode || "Ref2VA");
+  const [prompt, setPrompt] = useState(currentBatch?.prompt ?? "");
   const [negativePrompt, setNegativePrompt] = useState(
     "blurry, deformed mouth, low resolution, bad teeth alignment, unnatural eye movement, flickering hair",
-  )
-  const [seedNumber, setSeedNumber] = useState(currentBatch?.seed ?? 0)
-  const [steps, setSteps] = useState(30)
-  const [guidanceScale, setGuidanceScale] = useState(7.5)
-  const [denoiseStrength, setDenoiseStrength] = useState(0.65)
-  const [fps, setFps] = useState(currentBatch?.fps ?? 24)
-  const [resolution, setResolution] = useState(currentBatch?.resolution ?? "1080p")
-  const [fp8Optimization, setFp8Optimization] = useState(true)
+  );
+  const [seedNumber, setSeedNumber] = useState(currentBatch?.seed ?? 0);
+  const [steps, setSteps] = useState(30);
+  const [guidanceScale, setGuidanceScale] = useState(7.5);
+  const [denoiseStrength, setDenoiseStrength] = useState(0.65);
+  const [fps, setFps] = useState(currentBatch?.fps ?? 24);
+  const [resolution, setResolution] = useState(currentBatch?.resolution ?? "1080p");
+  const [fp8Optimization, setFp8Optimization] = useState(true);
 
   // Execution & Live Stream State
-  const [isRunning, setIsRunning] = useState(currentBatch?.status === "running")
+  const [isRunning, setIsRunning] = useState(currentBatch?.status === "running");
   const [currentStage, setCurrentStage] = useState<PipelineStageKey>(
     currentBatch?.currentStage ?? "generation",
-  )
-  const [progress, setProgress] = useState(currentBatch?.progress ?? 0)
-  const [logs, setLogs] = useState<LogEntry[]>(initialLogs)
-  const [keyframes] = useState<KeyframePreview[]>(INITIAL_KEYFRAMES)
+  );
+  const [progress, setProgress] = useState(currentBatch?.progress ?? 0);
+  const [logs, setLogs] = useState<LogEntry[]>(initialLogs);
+  const [keyframes] = useState<KeyframePreview[]>(INITIAL_KEYFRAMES);
 
   // Review & Adoption State
-  const [, setReviewScore] = useState(5)
+  const [, setReviewScore] = useState(5);
   const [defectChecks, setDefectChecks] = useState<{ [key: string]: boolean }>({
     lipSyncAccurate: true,
     microExpressionNatural: true,
     noTemporalFlicker: true,
     edgeSharpened: true,
-  })
-  const [isAdopted, setIsAdopted] = useState(false)
+  });
+  const [isAdopted, setIsAdopted] = useState(false);
 
   // Modals state
-  const [isDiffModalOpen, setIsDiffModalOpen] = useState(false)
-  const [isImportModalOpen, setIsImportModalOpen] = useState(false)
-  const [importJsonText, setImportJsonText] = useState("")
+  const [isDiffModalOpen, setIsDiffModalOpen] = useState(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [importJsonText, setImportJsonText] = useState("");
 
   // Sync state when active batch changes
   useEffect(() => {
     if (currentBatch) {
-      setMode(currentBatch.mode)
-      setPrompt(currentBatch.prompt)
-      setSeedNumber(currentBatch.seed)
-      setFps(currentBatch.fps)
-      setResolution(currentBatch.resolution)
-      setCurrentStage(currentBatch.currentStage)
-      setProgress(currentBatch.progress)
-      setIsRunning(currentBatch.status === "running")
-      setIsAdopted(false)
+      setMode(currentBatch.mode);
+      setPrompt(currentBatch.prompt);
+      setSeedNumber(currentBatch.seed);
+      setFps(currentBatch.fps);
+      setResolution(currentBatch.resolution);
+      setCurrentStage(currentBatch.currentStage);
+      setProgress(currentBatch.progress);
+      setIsRunning(currentBatch.status === "running");
+      setIsAdopted(false);
     }
-  }, [currentBatch?.id])
+  }, [currentBatch?.id]);
 
   // Simulated live execution loop
   useEffect(() => {
-    let timer: number | null = null
+    let timer: number | null = null;
     if (isRunning && progress < 100) {
       timer = window.setInterval(() => {
         setProgress((prev) => {
-          const { progress, stage, completed } = advancePipeline(prev)
-          setCurrentStage(stage)
+          const { progress, stage, completed } = advancePipeline(prev);
+          setCurrentStage(stage);
           if (completed) {
-            setIsRunning(false)
+            setIsRunning(false);
             onShowToast(
               "success",
               "五步闭环流水线生成完毕",
               "已自动聚合多维评分，等待人工质检验收",
-            )
+            );
           }
-          return progress
-        })
-      }, 1000)
+          return progress;
+        });
+      }, 1000);
     }
     return () => {
-      if (timer) clearInterval(timer)
-    }
-  }, [isRunning, progress])
+      if (timer) clearInterval(timer);
+    };
+  }, [isRunning, progress]);
 
   // Template quick switch
   const handleApplyTemplate = (tmpl: ParameterTemplate) => {
-    setMode(tmpl.mode)
-    setSteps(tmpl.steps)
-    setGuidanceScale(tmpl.guidanceScale)
-    setDenoiseStrength(tmpl.denoiseStrength)
-    setResolution(tmpl.resolution)
-    setFps(tmpl.fps)
-    setFp8Optimization(tmpl.fp8)
-    onShowToast("info", `已载入模板: ${tmpl.name}`)
-  }
+    setMode(tmpl.mode);
+    setSteps(tmpl.steps);
+    setGuidanceScale(tmpl.guidanceScale);
+    setDenoiseStrength(tmpl.denoiseStrength);
+    setResolution(tmpl.resolution);
+    setFps(tmpl.fps);
+    setFp8Optimization(tmpl.fp8);
+    onShowToast("info", `已载入模板: ${tmpl.name}`);
+  };
 
   const handleToggleRun = () => {
     if (isRunning) {
-      setIsRunning(false)
-      onShowToast("info", "流水线已暂停")
+      setIsRunning(false);
+      onShowToast("info", "流水线已暂停");
     } else {
-      if (progress >= 100) setProgress(0)
-      setIsRunning(true)
-      onShowToast(
-        "success",
-        "启动生成批次",
-        `采用 Seed #${seedNumber} 进行五步闭环生产`,
-      )
+      if (progress >= 100) setProgress(0);
+      setIsRunning(true);
+      onShowToast("success", "启动生成批次", `采用 Seed #${seedNumber} 进行五步闭环生产`);
       setLogs((prev) => [
         ...prev,
         {
@@ -282,19 +260,19 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
           stage: "生成引擎",
           message: `[DiffSynth] 接收到执行请求，参数：Steps=${steps}, CFG=${guidanceScale}, Seed=${seedNumber}`,
         },
-      ])
+      ]);
     }
-  }
+  };
 
   const handleRandomSeed = () => {
-    const newSeed = generateSeedNumber()
-    setSeedNumber(newSeed)
-    onShowToast("info", "已生成全新探索 Seed", `Seed: #${newSeed}`)
-  }
+    const newSeed = generateSeedNumber();
+    setSeedNumber(newSeed);
+    onShowToast("info", "已生成全新探索 Seed", `Seed: #${newSeed}`);
+  };
 
   const handleAdoptSeed = () => {
-    if (!currentBatch) return
-    setIsAdopted(true)
+    if (!currentBatch) return;
+    setIsAdopted(true);
     onAdoptSeed({
       seedNumber,
       name: `${currentBatch.name.slice(0, 8)}-优质基因回写`,
@@ -308,22 +286,22 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
         motionScale: 1.05,
         cfgLipSync: 8.8,
       },
-    })
+    });
     onShowToast(
       "success",
       "优质 Seed 成功回写种子库！",
       `Seed #${seedNumber} 已作为基线沉淀，可随时发起衍生变异。`,
-    )
-  }
+    );
+  };
 
   const handleImportBatchJson = () => {
     try {
-      onShowToast("success", "已批量导入 3 组批次参数", "已加入批次队列末尾")
-      setIsImportModalOpen(false)
+      onShowToast("success", "已批量导入 3 组批次参数", "已加入批次队列末尾");
+      setIsImportModalOpen(false);
     } catch {
-      onShowToast("error", "JSON 格式解析失败")
+      onShowToast("error", "JSON 格式解析失败");
     }
-  }
+  };
 
   // 数据守卫：无匹配批次时渲染空态（mock 数据恒非空，此分支仅作类型兜底）
   if (!currentBatch) {
@@ -331,7 +309,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
       <div className="flex-1 flex items-center justify-center p-6 text-sm text-[#8a97a8] bg-[#0a1628]">
         暂无批次数据
       </div>
-    )
+    );
   }
 
   return (
@@ -350,9 +328,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
               className="px-2.5 py-1 rounded-full bg-[#15294a] hover:bg-[#182f54] text-[#8a97a8] hover:text-[#00e0b8] border border-[#1e2f47] hover:border-[#00e0b8]/40 text-[11px] font-medium whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5"
             >
               <span>{tmpl.name}</span>
-              <span className="text-[10px] text-[#5c697a] font-mono">
-                {tmpl.mode}
-              </span>
+              <span className="text-[10px] text-[#5c697a] font-mono">{tmpl.mode}</span>
             </button>
           ))}
         </div>
@@ -382,9 +358,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
         {/* LEFT COLUMN: Batch Queue (Width: 260px) */}
         <div className="w-64 border-r border-[#1e2f47] bg-[#0c1a30] flex flex-col flex-shrink-0">
           <div className="p-3 border-b border-[#1e2f47] flex items-center justify-between">
-            <span className="text-xs font-semibold text-[#e8f0f8]">
-              批次任务队列
-            </span>
+            <span className="text-xs font-semibold text-[#e8f0f8]">批次任务队列</span>
             <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#15294a] text-[#00e0b8] border border-[#1e2f47]">
               {batches.length} 批次
             </span>
@@ -403,52 +377,48 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
 
           <div className="flex-1 overflow-y-auto p-2 space-y-1.5">
             {batches.map((b) => {
-              const isSelected = b.id === currentBatch.id
-              const isRunningCard = b.status === "running"
+              const isSelected = b.id === currentBatch.id;
+              const isRunningCard = b.status === "running";
 
               return (
                 <div
                   key={b.id}
                   onClick={() => onSelectBatch(b.id)}
-                  className={`p-2.5 rounded-lg border transition-all cursor-pointer relative ${isRunningCard
-                    ? "card-running-shimmer bg-[#15294a]"
-                    : isSelected
-                      ? "bg-[#15294a] border-[#00e0b8] shadow-[0_0_12px_rgba(0,224,184,0.18)]"
-                      : "bg-[#0f1f38] border-[#1e2f47] hover:border-[#294060]"
-                    }`}
+                  className={`p-2.5 rounded-lg border transition-all cursor-pointer relative ${
+                    isRunningCard
+                      ? "card-running-shimmer bg-[#15294a]"
+                      : isSelected
+                        ? "bg-[#15294a] border-[#00e0b8] shadow-[0_0_12px_rgba(0,224,184,0.18)]"
+                        : "bg-[#0f1f38] border-[#1e2f47] hover:border-[#294060]"
+                  }`}
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span className="font-mono text-[11px] font-semibold text-[#00e0b8]">
                       {b.id}
                     </span>
-                    <span className="text-[10px] text-[#8a97a8] font-mono">
-                      {b.duration}
-                    </span>
+                    <span className="text-[10px] text-[#8a97a8] font-mono">{b.duration}</span>
                   </div>
-                  <div className="text-xs font-medium text-[#e8f0f8] truncate mb-1.5">
-                    {b.name}
-                  </div>
+                  <div className="text-xs font-medium text-[#e8f0f8] truncate mb-1.5">{b.name}</div>
                   <div className="flex items-center justify-between text-[10px]">
                     <span className="font-mono px-1.5 py-0.2 rounded bg-[#0a1628] text-[#00b4d8] border border-[#1e2f47]">
                       {b.mode}
                     </span>
                     <span
-                      className={`font-mono font-semibold ${b.status === "running"
-                        ? "text-[#00e0b8] animate-pulse"
-                        : b.status === "completed"
-                          ? "text-[#00e0b8]"
-                          : b.status === "failed"
-                            ? "text-[#ff7a45]"
-                            : "text-[#ffb830]"
-                        }`}
+                      className={`font-mono font-semibold ${
+                        b.status === "running"
+                          ? "text-[#00e0b8] animate-pulse"
+                          : b.status === "completed"
+                            ? "text-[#00e0b8]"
+                            : b.status === "failed"
+                              ? "text-[#ff7a45]"
+                              : "text-[#ffb830]"
+                      }`}
                     >
-                      {b.status === "running"
-                        ? `${b.progress}% 运行中`
-                        : b.status}
+                      {b.status === "running" ? `${b.progress}% 运行中` : b.status}
                     </span>
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
 
@@ -478,19 +448,21 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
               <div className="flex rounded-lg bg-[#15294a] p-0.5 border border-[#1e2f47]">
                 <button
                   onClick={() => setMode("Ref2VA")}
-                  className={`px-3 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer ${mode === "Ref2VA"
-                    ? "bg-[#00e0b8] text-[#0a1628] font-bold shadow-xs"
-                    : "text-[#8a97a8] hover:text-[#e8f0f8]"
-                    }`}
+                  className={`px-3 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer ${
+                    mode === "Ref2VA"
+                      ? "bg-[#00e0b8] text-[#0a1628] font-bold shadow-xs"
+                      : "text-[#8a97a8] hover:text-[#e8f0f8]"
+                  }`}
                 >
                   Ref2VA (单图音画对齐)
                 </button>
                 <button
                   onClick={() => setMode("FL2VA")}
-                  className={`px-3 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer ${mode === "FL2VA"
-                    ? "bg-[#00e0b8] text-[#0a1628] font-bold shadow-xs"
-                    : "text-[#8a97a8] hover:text-[#e8f0f8]"
-                    }`}
+                  className={`px-3 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer ${
+                    mode === "FL2VA"
+                      ? "bg-[#00e0b8] text-[#0a1628] font-bold shadow-xs"
+                      : "text-[#8a97a8] hover:text-[#e8f0f8]"
+                  }`}
                 >
                   FL2VA (关键帧长镜头)
                 </button>
@@ -523,9 +495,9 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
                 size="sm"
                 icon={<Square className="w-3.5 h-3.5" />}
                 onClick={() => {
-                  setIsRunning(false)
-                  setProgress(0)
-                  onShowToast("warning", "批次已重置终止")
+                  setIsRunning(false);
+                  setProgress(0);
+                  onShowToast("warning", "批次已重置终止");
                 }}
               >
                 终止
@@ -566,9 +538,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs font-medium text-[#8a97a8]">
                 <span>提示词 (Prompt)</span>
-                <span className="text-[11px] font-mono text-[#5c697a]">
-                  {prompt.length} 字符
-                </span>
+                <span className="text-[11px] font-mono text-[#5c697a]">{prompt.length} 字符</span>
               </div>
               <textarea
                 value={prompt}
@@ -670,11 +640,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
             logs={logs}
             onClear={() => setLogs([])}
             onTroubleshootFix={(action) => {
-              onShowToast(
-                "success",
-                "已触发排障修复",
-                `已自动执行自愈动作: ${action}`,
-              )
+              onShowToast("success", "已触发排障修复", `已自动执行自愈动作: ${action}`);
             }}
           />
         </div>
@@ -682,9 +648,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
         {/* RIGHT COLUMN: Video Preview + Real-time Keyframe Stream + Quality Review + Seed Adoption */}
         <div className="w-96 border-l border-[#1e2f47] bg-[#0c1a30] flex flex-col flex-shrink-0 overflow-y-auto p-4 space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-[#1e2f47]">
-            <span className="text-xs font-semibold text-[#e8f0f8]">
-              实时渲染产物与质量复核
-            </span>
+            <span className="text-xs font-semibold text-[#e8f0f8]">实时渲染产物与质量复核</span>
             <Badge variant="brand" size="xs">
               Score: {currentBatch.score} 分
             </Badge>
@@ -696,9 +660,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
             batchId={currentBatch.id}
             seedNumber={seedNumber}
             score={currentBatch.score}
-            onSnapshot={() =>
-              onShowToast("success", "截图已保存", "已添加至当前批次关键帧库")
-            }
+            onSnapshot={() => onShowToast("success", "截图已保存", "已添加至当前批次关键帧库")}
           />
 
           {/* Real-time Keyframe Streamer Strip (Requirement 2.1) */}
@@ -708,9 +670,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
                 <Camera className="w-3.5 h-3.5 text-[#00e0b8]" />
                 <span>生成中实时抽帧流 (Keyframe Stream)</span>
               </div>
-              <span className="font-mono text-[10px] text-[#00e0b8]">
-                5s 抽样
-              </span>
+              <span className="font-mono text-[10px] text-[#00e0b8]">5s 抽样</span>
             </div>
 
             <div className="flex gap-2 overflow-x-auto pb-1">
@@ -747,9 +707,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
           {/* Human Review & Defect Checklist */}
           <div className="p-3.5 rounded-xl bg-[#0f1f38] border border-[#1e2f47] space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-[#e8f0f8]">
-                人工复核与缺陷标记
-              </span>
+              <span className="text-xs font-semibold text-[#e8f0f8]">人工复核与缺陷标记</span>
               <div className="flex items-center gap-1 text-[#ffb830]">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -842,9 +800,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
                 onClick={handleAdoptSeed}
                 disabled={isAdopted}
               >
-                {isAdopted
-                  ? "已成功采纳并沉淀回写"
-                  : "采纳为优质 Seed 并回写种子库"}
+                {isAdopted ? "已成功采纳并沉淀回写" : "采纳为优质 Seed 并回写种子库"}
               </Button>
               <p className="text-[10px] text-[#5c697a] text-center mt-1.5">
                 完成五步闭环：自动更新种子基因参数，反哺后续批次迭代
@@ -892,21 +848,17 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
         title="参数历史版本对比与回滚 (Parameter Version Diff)"
         footer={
           <>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsDiffModalOpen(false)}
-            >
+            <Button variant="ghost" size="sm" onClick={() => setIsDiffModalOpen(false)}>
               关闭
             </Button>
             <Button
               variant="primary"
               size="sm"
               onClick={() => {
-                setSteps(32)
-                setGuidanceScale(7.2)
-                setIsDiffModalOpen(false)
-                onShowToast("success", "已回滚到 v2.0 黄金基线参数")
+                setSteps(32);
+                setGuidanceScale(7.2);
+                setIsDiffModalOpen(false);
+                onShowToast("success", "已回滚到 v2.0 黄金基线参数");
               }}
             >
               一键回滚到此历史版本
@@ -915,9 +867,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
         }
       >
         <div className="space-y-3 text-xs">
-          <p className="text-[#8a97a8]">
-            当前配置 vs 历史推荐基准 (v2.0 Benchmark)
-          </p>
+          <p className="text-[#8a97a8]">当前配置 vs 历史推荐基准 (v2.0 Benchmark)</p>
           <div className="p-3 rounded-lg bg-[#15294a] border border-[#1e2f47] space-y-2 font-mono">
             <div className="flex justify-between py-1 border-b border-[#1e2f47]/50">
               <span className="text-[#8a97a8]">参数项</span>
@@ -950,11 +900,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
         title="批量参数导入 (Batch JSON Import)"
         footer={
           <>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsImportModalOpen(false)}
-            >
+            <Button variant="ghost" size="sm" onClick={() => setIsImportModalOpen(false)}>
               取消
             </Button>
             <Button variant="primary" size="sm" onClick={handleImportBatchJson}>
@@ -977,8 +923,8 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

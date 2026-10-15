@@ -90,7 +90,7 @@ export const DESIGN_SYSTEM_COLORS = [
     role: "卡片边界线、表格分割线、面板极细描边",
     sample: "border-[#1e2f47]",
   },
-]
+];
 
 export const DESIGN_SYSTEM_TYPOGRAPHY = [
   {
@@ -133,10 +133,9 @@ export const DESIGN_SYSTEM_TYPOGRAPHY = [
     size: "13px",
     weight: "500 Mono",
     font: "JetBrains Mono",
-    sample:
-      "2025-04-12T10:24:18.102Z [INFO] VRAM: 19.4GB / 24.0GB · Score: 94.6",
+    sample: "2025-04-12T10:24:18.102Z [INFO] VRAM: 19.4GB / 24.0GB · Score: 94.6",
   },
-]
+];
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

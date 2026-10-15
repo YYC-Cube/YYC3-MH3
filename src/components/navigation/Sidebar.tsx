@@ -32,24 +32,24 @@ import {
   Palette,
   Settings,
   Share2,
-  ShieldCheck
-} from "lucide-react"
-import React from "react"
-import { APP_PORT } from "../../config"
-import { NavTabId } from "../../types"
+  ShieldCheck,
+} from "lucide-react";
+import React from "react";
+import { APP_PORT } from "../../config";
+import { NavTabId } from "../../types";
 export interface SidebarProps {
-  activeTab: NavTabId
-  onSelectTab: (tab: NavTabId) => void
-  collapsed: boolean
-  onToggleCollapse: () => void
+  activeTab: NavTabId;
+  onSelectTab: (tab: NavTabId) => void;
+  collapsed: boolean;
+  onToggleCollapse: () => void;
 }
 
 interface NavItemDef {
-  id: NavTabId
-  label: string
-  icon: React.ReactNode
-  badge?: string
-  category: "system" | "core" | "advanced" | "ops"
+  id: NavTabId;
+  label: string;
+  icon: React.ReactNode;
+  badge?: string;
+  category: "system" | "core" | "advanced" | "ops";
 }
 
 const NAV_ITEMS: NavItemDef[] = [
@@ -143,7 +143,7 @@ const NAV_ITEMS: NavItemDef[] = [
     icon: <Settings className="w-4 h-4" />,
     category: "ops",
   },
-]
+];
 
 export const Sidebar: React.FC<SidebarProps> = ({
   activeTab,
@@ -153,8 +153,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   return (
     <aside
-      className={`h-screen bg-[#0c1a30] border-r border-[#30363d] flex flex-col transition-all duration-200 select-none z-30 relative ${collapsed ? "w-16" : "w-60"
-        }`}
+      className={`h-screen bg-[#0c1a30] border-r border-[#30363d] flex flex-col transition-all duration-200 select-none z-30 relative ${
+        collapsed ? "w-16" : "w-60"
+      }`}
     >
       {/* Brand Header */}
       <div className="h-14 px-3.5 border-b border-[#1e2f47] flex items-center justify-between">
@@ -165,7 +166,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               alt="YYC3 Logo"
               className="w-5 h-5 object-contain"
               onError={(e) => {
-                ; (e.target as HTMLElement).style.display = "none"
+                (e.target as HTMLElement).style.display = "none";
               }}
             />
           </div>
@@ -188,11 +189,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           className="p-1 rounded hover:bg-[#122340] text-[#8b949e] hover:text-[#e6edf3] transition-colors cursor-pointer"
           title={collapsed ? "展开侧边栏 (Ctrl+B)" : "收起侧边栏 (Ctrl+B)"}
         >
-          {collapsed ? (
-            <ChevronRight className="w-4 h-4" />
-          ) : (
-            <ChevronLeft className="w-4 h-4" />
-          )}
+          {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
         </button>
       </div>
 
@@ -206,39 +203,38 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           )}
           {NAV_ITEMS.filter((i) => i.category === "system").map((item) => {
-            const isActive = activeTab === item.id
+            const isActive = activeTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => onSelectTab(item.id)}
-                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${isActive
-                  ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
-                  : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
-                  }`}
+                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${
+                  isActive
+                    ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
+                    : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
+                }`}
                 title={collapsed ? item.label : undefined}
               >
                 {isActive && (
                   <span className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-[#00d4aa] rounded-r" />
                 )}
-                <span
-                  className={`${isActive ? "text-[#00d4aa]" : "group-hover:text-[#e6edf3]"
-                    }`}
-                >
+                <span className={`${isActive ? "text-[#00d4aa]" : "group-hover:text-[#e6edf3]"}`}>
                   {item.icon}
                 </span>
                 {!collapsed && <span className="truncate">{item.label}</span>}
                 {!collapsed && item.badge && (
                   <span
-                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${isActive
-                      ? "bg-[#00d4aa] text-[#071425] font-bold"
-                      : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
-                      }`}
+                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${
+                      isActive
+                        ? "bg-[#00d4aa] text-[#071425] font-bold"
+                        : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
+                    }`}
                   >
                     {item.badge}
                   </span>
                 )}
               </button>
-            )
+            );
           })}
         </div>
 
@@ -250,39 +246,38 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           )}
           {NAV_ITEMS.filter((i) => i.category === "core").map((item) => {
-            const isActive = activeTab === item.id
+            const isActive = activeTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => onSelectTab(item.id)}
-                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${isActive
-                  ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
-                  : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
-                  }`}
+                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${
+                  isActive
+                    ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
+                    : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
+                }`}
                 title={collapsed ? item.label : undefined}
               >
                 {isActive && (
                   <span className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-[#00d4aa] rounded-r" />
                 )}
-                <span
-                  className={`${isActive ? "text-[#00d4aa]" : "group-hover:text-[#e6edf3]"
-                    }`}
-                >
+                <span className={`${isActive ? "text-[#00d4aa]" : "group-hover:text-[#e6edf3]"}`}>
                   {item.icon}
                 </span>
                 {!collapsed && <span className="truncate">{item.label}</span>}
                 {!collapsed && item.badge && (
                   <span
-                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${isActive
-                      ? "bg-[#00d4aa] text-[#071425] font-bold"
-                      : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
-                      }`}
+                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${
+                      isActive
+                        ? "bg-[#00d4aa] text-[#071425] font-bold"
+                        : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
+                    }`}
                   >
                     {item.badge}
                   </span>
                 )}
               </button>
-            )
+            );
           })}
         </div>
 
@@ -294,39 +289,38 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           )}
           {NAV_ITEMS.filter((i) => i.category === "advanced").map((item) => {
-            const isActive = activeTab === item.id
+            const isActive = activeTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => onSelectTab(item.id)}
-                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${isActive
-                  ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
-                  : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
-                  }`}
+                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${
+                  isActive
+                    ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
+                    : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
+                }`}
                 title={collapsed ? item.label : undefined}
               >
                 {isActive && (
                   <span className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-[#00d4aa] rounded-r" />
                 )}
-                <span
-                  className={`${isActive ? "text-[#00d4aa]" : "group-hover:text-[#e6edf3]"
-                    }`}
-                >
+                <span className={`${isActive ? "text-[#00d4aa]" : "group-hover:text-[#e6edf3]"}`}>
                   {item.icon}
                 </span>
                 {!collapsed && <span className="truncate">{item.label}</span>}
                 {!collapsed && item.badge && (
                   <span
-                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${isActive
-                      ? "bg-[#00d4aa] text-[#071425] font-bold"
-                      : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
-                      }`}
+                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${
+                      isActive
+                        ? "bg-[#00d4aa] text-[#071425] font-bold"
+                        : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
+                    }`}
                   >
                     {item.badge}
                   </span>
                 )}
               </button>
-            )
+            );
           })}
         </div>
 
@@ -338,39 +332,38 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           )}
           {NAV_ITEMS.filter((i) => i.category === "ops").map((item) => {
-            const isActive = activeTab === item.id
+            const isActive = activeTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => onSelectTab(item.id)}
-                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${isActive
-                  ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
-                  : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
-                  }`}
+                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${
+                  isActive
+                    ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
+                    : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
+                }`}
                 title={collapsed ? item.label : undefined}
               >
                 {isActive && (
                   <span className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-[#00d4aa] rounded-r" />
                 )}
-                <span
-                  className={`${isActive ? "text-[#00d4aa]" : "group-hover:text-[#e6edf3]"
-                    }`}
-                >
+                <span className={`${isActive ? "text-[#00d4aa]" : "group-hover:text-[#e6edf3]"}`}>
                   {item.icon}
                 </span>
                 {!collapsed && <span className="truncate">{item.label}</span>}
                 {!collapsed && item.badge && (
                   <span
-                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${isActive
-                      ? "bg-[#00d4aa] text-[#071425] font-bold"
-                      : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
-                      }`}
+                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${
+                      isActive
+                        ? "bg-[#00d4aa] text-[#071425] font-bold"
+                        : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
+                    }`}
                   >
                     {item.badge}
                   </span>
                 )}
               </button>
-            )
+            );
           })}
         </div>
       </div>
@@ -394,17 +387,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           </div>
         ) : (
-          <div
-            className="flex justify-center"
-            title="本地数据安全保障 · 100%离线可用"
-          >
+          <div className="flex justify-center" title="本地数据安全保障 · 100%离线可用">
             <ShieldCheck className="w-4 h-4 text-[#00d4aa]" />
           </div>
         )}
       </div>
     </aside>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

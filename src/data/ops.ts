@@ -16,7 +16,7 @@
  * dependencies: ../types
  * exports: INITIAL_LOGS, OPS_METRICS, SERVICES_LIST, SYSTEM_ALARMS
  */
-import { AlarmItem, LogEntry, OpsMetric, ServiceStatus } from "../types"
+import { AlarmItem, LogEntry, OpsMetric, ServiceStatus } from "../types";
 
 export const INITIAL_LOGS: LogEntry[] = [
   {
@@ -32,16 +32,14 @@ export const INITIAL_LOGS: LogEntry[] = [
     timestamp: "10:24:20.441",
     level: "info",
     stage: "生成引擎",
-    message:
-      "[Ref2VA] 加载参考人脸特征向量并注入 Cross-Attention Key/Value 缓存，特征置信度 99.4%",
+    message: "[Ref2VA] 加载参考人脸特征向量并注入 Cross-Attention Key/Value 缓存，特征置信度 99.4%",
   },
   {
     id: "LOG-003",
     timestamp: "10:24:45.890",
     level: "info",
     stage: "生成引擎",
-    message:
-      "[DDIM Sampler] 30/30 扩散步数完成，平均耗时 0.82s/step，生成 300 帧 (10.0s 4K 视频)",
+    message: "[DDIM Sampler] 30/30 扩散步数完成，平均耗时 0.82s/step，生成 300 帧 (10.0s 4K 视频)",
   },
   {
     id: "LOG-004",
@@ -67,7 +65,7 @@ export const INITIAL_LOGS: LogEntry[] = [
     message:
       "[Temporal Stability] 时序连续性打分 93.5，下颌线轮廓无跳帧伪影，正在进行 5 维雷达投影聚合...",
   },
-]
+];
 
 export const OPS_METRICS: OpsMetric[] = [
   {
@@ -133,7 +131,7 @@ export const OPS_METRICS: OpsMetric[] = [
     diskIops: 420,
     temp: 68,
   },
-]
+];
 
 export const SERVICES_LIST: ServiceStatus[] = [
   {
@@ -181,15 +179,14 @@ export const SERVICES_LIST: ServiceStatus[] = [
     pids: 1,
     memory: "42 MB",
   },
-]
+];
 
 export const SYSTEM_ALARMS: AlarmItem[] = [
   {
     id: "ALARM-0412-01",
     level: "warning",
     title: "显存预警：瞬时 VRAM 达到 22.8 GB (阈值 22.0 GB)",
-    description:
-      "批次 BATCH-20250412-086 在执行 1080x1920 60FPS 双参考帧扩散时发生显存峰值告警。",
+    description: "批次 BATCH-20250412-086 在执行 1080x1920 60FPS 双参考帧扩散时发生显存峰值告警。",
     timestamp: "09:30:15",
     resolved: false,
     recommendation: "建议开启 FP8 权重缓存或降低 Batch Concurrent 并发数至 1。",
@@ -205,7 +202,7 @@ export const SYSTEM_ALARMS: AlarmItem[] = [
     recommendation: "点击一键清空超过 24h 的中间评估缓存，预计释放 98 GB。",
     actionLabel: "一键清理临时缓存",
   },
-]
+];
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

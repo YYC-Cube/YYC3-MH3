@@ -17,19 +17,19 @@
  * dependencies: ../../types, ../../domains/ops/ports, ../memory/telemetryRepository, ./http
  * exports: LocalTelemetryOptions, createLocalTelemetry
  */
-import { TelemetryPort } from "../../domains/ops/ports"
-import { AlarmItem, LogEntry, OpsMetric, ServiceStatus } from "../../types"
-import { createMemoryTelemetry } from "../memory/telemetryRepository"
+import { TelemetryPort } from "../../domains/ops/ports";
+import { AlarmItem, LogEntry, OpsMetric, ServiceStatus } from "../../types";
+import { createMemoryTelemetry } from "../memory/telemetryRepository";
 import {
   createResilientGateway,
   makeTraceEntry,
   RegistryError,
   type LocalAdapterOptions,
-} from "./http"
+} from "./http";
 
 export interface LocalTelemetryOptions extends LocalAdapterOptions {
   /** 降级回退与留痕通道（缺省自建；组合根可注入共享实例） */
-  memory?: TelemetryPort
+  memory?: TelemetryPort;
 }
 
 /**
@@ -43,30 +43,27 @@ export interface LocalTelemetryOptions extends LocalAdapterOptions {
  * - 降级/恢复事件经 memory.appendLog 留痕（Runbook §3.3），状态翻转口径
  */
 export function createLocalTelemetry(options: LocalTelemetryOptions = {}): TelemetryPort {
-  const memory = options.memory ?? createMemoryTelemetry()
+  const memory = options.memory ?? createMemoryTelemetry();
   const gateway = createResilientGateway(options, (t) => {
-    void memory.appendLog(makeTraceEntry("遥测聚合", t.degraded, t.detail))
-  })
+    void memory.appendLog(makeTraceEntry("遥测聚合", t.degraded, t.detail));
+  });
 
   return {
-    listServices: () =>
-      gateway<ServiceStatus[]>("/services").catch(() => memory.listServices()),
-    listMetrics: () =>
-      gateway<OpsMetric[]>("/metrics").catch(() => memory.listMetrics()),
-    listAlarms: () =>
-      gateway<AlarmItem[]>("/alarms").catch(() => memory.listAlarms()),
+    listServices: () => gateway<ServiceStatus[]>("/services").catch(() => memory.listServices()),
+    listMetrics: () => gateway<OpsMetric[]>("/metrics").catch(() => memory.listMetrics()),
+    listAlarms: () => gateway<AlarmItem[]>("/alarms").catch(() => memory.listAlarms()),
     resolveAlarm: (id: string) =>
       gateway<AlarmItem>(`/alarms/${encodeURIComponent(id)}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ resolved: true }),
       }).catch((err: unknown) => {
-        if (err instanceof RegistryError && err.kind === "not_found") return null
-        return memory.resolveAlarm(id)
+        if (err instanceof RegistryError && err.kind === "not_found") return null;
+        return memory.resolveAlarm(id);
       }),
     listLogs: () => memory.listLogs(),
     appendLog: (entry: LogEntry) => memory.appendLog(entry),
-  }
+  };
 }
 
 /* --------------------------------------------------------------

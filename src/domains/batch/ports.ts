@@ -16,7 +16,7 @@
  * dependencies: ../../types
  * exports: BatchRepository
  */
-import { BatchItem } from "../../types"
+import { BatchItem } from "../../types";
 
 /**
  * 批次仓储端口（读模型 — 契约仅定义 GET，批次创建属运行时 UI 态）。
@@ -29,8 +29,8 @@ import { BatchItem } from "../../types"
  * async 签名与 local 适配器对齐，memory 实现以已决 Promise 包装。
  */
 export interface BatchRepository {
-  listAll(): Promise<BatchItem[]>
-  getById(id: string): Promise<BatchItem | null>
+  listAll(): Promise<BatchItem[]>;
+  getById(id: string): Promise<BatchItem | null>;
 }
 
 /* --------------------------------------------------------------

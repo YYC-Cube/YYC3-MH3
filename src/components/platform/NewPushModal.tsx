@@ -16,9 +16,9 @@
  * dependencies: react, lucide-react, ../common, ../../types
  * exports: NewPushModalProps, NewPushModal
  */
-import { Check } from "lucide-react"
-import { Button, Input, Modal } from "../common"
-import { SocialPlatformKey } from "../../types"
+import { Check } from "lucide-react";
+import { Button, Input, Modal } from "../common";
+import { SocialPlatformKey } from "../../types";
 
 /** 可选分发平台清单（展示名） */
 const PUSH_PLATFORM_OPTIONS: { id: SocialPlatformKey; name: string }[] = [
@@ -28,15 +28,15 @@ const PUSH_PLATFORM_OPTIONS: { id: SocialPlatformKey; name: string }[] = [
   { id: "kuaishou", name: "快手 (高频短视频)" },
   { id: "redbook", name: "小红书 (美妆/穿搭)" },
   { id: "nas", name: "本地 NAS 4K 归档" },
-]
+];
 
 export interface NewPushModalProps {
-  isOpen: boolean
-  onClose: () => void
-  selectedPlatforms: SocialPlatformKey[]
-  onTogglePlatform: (p: SocialPlatformKey) => void
+  isOpen: boolean;
+  onClose: () => void;
+  selectedPlatforms: SocialPlatformKey[];
+  onTogglePlatform: (p: SocialPlatformKey) => void;
   /** 确认分发（任务创建/关闭弹窗/通知编排由视图层完成） */
-  onConfirm: () => void
+  onConfirm: () => void;
 }
 
 /** 新建多平台矩阵分发推送作业弹窗（组件常驻挂载，仅弹层随 isOpen 显隐） */
@@ -70,32 +70,29 @@ export function NewPushModal({
           </label>
           <div className="grid grid-cols-2 gap-2">
             {PUSH_PLATFORM_OPTIONS.map((plat) => {
-              const isSelected = selectedPlatforms.includes(plat.id)
+              const isSelected = selectedPlatforms.includes(plat.id);
               return (
                 <button
                   key={plat.id}
                   onClick={() => onTogglePlatform(plat.id)}
-                  className={`p-2 rounded-lg border text-left transition-colors flex items-center justify-between cursor-pointer ${isSelected
-                    ? "bg-[#00e0b8]/15 border-[#00e0b8] text-[#00e0b8] font-semibold"
-                    : "bg-[#15294a] border-[#1e2f47] text-[#8a97a8]"
-                    }`}
+                  className={`p-2 rounded-lg border text-left transition-colors flex items-center justify-between cursor-pointer ${
+                    isSelected
+                      ? "bg-[#00e0b8]/15 border-[#00e0b8] text-[#00e0b8] font-semibold"
+                      : "bg-[#15294a] border-[#1e2f47] text-[#8a97a8]"
+                  }`}
                 >
                   <span>{plat.name}</span>
                   {isSelected && <Check className="w-3.5 h-3.5" />}
                 </button>
-              )
+              );
             })}
           </div>
         </div>
 
-        <Input
-          label="目标发布账号认证矩阵"
-          value="@企业级官方认证号群组"
-          readOnly
-        />
+        <Input label="目标发布账号认证矩阵" value="@企业级官方认证号群组" readOnly />
       </div>
     </Modal>
-  )
+  );
 }
 
 /* --------------------------------------------------------------

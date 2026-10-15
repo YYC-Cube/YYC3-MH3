@@ -16,38 +16,38 @@
  * dependencies: react
  * exports: useKeyboardShortcuts
  */
-import { useEffect, useRef } from "react"
+import { useEffect, useRef } from "react";
 
 export interface ShortcutHandlers {
-  onToggleSidebar: () => void
-  onToggleSearch: () => void
-  onToggleYYC3: () => void
+  onToggleSidebar: () => void;
+  onToggleSearch: () => void;
+  onToggleYYC3: () => void;
 }
 
 /** 全局快捷键：Ctrl/⌘+B 折叠侧栏 · Ctrl/⌘+K 全局搜索 · Ctrl/⌘+/ YYC³ 协同 */
 export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
   // ref 桥接：监听器全生命周期仅注册一次，且始终调用最新回调（防闭包过期）
-  const handlersRef = useRef(handlers)
-  handlersRef.current = handlers
+  const handlersRef = useRef(handlers);
+  handlersRef.current = handlers;
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "b") {
-        e.preventDefault()
-        handlersRef.current.onToggleSidebar()
+        e.preventDefault();
+        handlersRef.current.onToggleSidebar();
       }
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault()
-        handlersRef.current.onToggleSearch()
+        e.preventDefault();
+        handlersRef.current.onToggleSearch();
       }
       if ((e.ctrlKey || e.metaKey) && e.key === "/") {
-        e.preventDefault()
-        handlersRef.current.onToggleYYC3()
+        e.preventDefault();
+        handlersRef.current.onToggleYYC3();
       }
-    }
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [])
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 }
 
 /* --------------------------------------------------------------

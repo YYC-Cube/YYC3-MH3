@@ -16,46 +16,40 @@
  * dependencies: react, lucide-react
  * exports: ToastItem, ToastProps, ToastContainer
  */
-import React from "react"
-import { CheckCircle2, AlertTriangle, AlertCircle, Info, X } from "lucide-react"
+import React from "react";
+import { CheckCircle2, AlertTriangle, AlertCircle, Info, X } from "lucide-react";
 
 export interface ToastItem {
-  id: string
-  type: "success" | "error" | "warning" | "info"
-  message: string
-  subMessage?: string
+  id: string;
+  type: "success" | "error" | "warning" | "info";
+  message: string;
+  subMessage?: string;
 }
 
 export interface ToastProps {
-  toasts: ToastItem[]
-  onDismiss: (id: string) => void
+  toasts: ToastItem[];
+  onDismiss: (id: string) => void;
 }
 
 export const ToastContainer: React.FC<ToastProps> = ({ toasts, onDismiss }) => {
-  if (toasts.length === 0) return null
+  if (toasts.length === 0) return null;
 
   return (
     <div className="fixed top-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none">
       {toasts.map((toast) => {
         const icons = {
-          success: (
-            <CheckCircle2 className="w-4 h-4 text-[#00d4aa] flex-shrink-0" />
-          ),
-          error: (
-            <AlertCircle className="w-4 h-4 text-[#EE4C2C] flex-shrink-0" />
-          ),
-          warning: (
-            <AlertTriangle className="w-4 h-4 text-[#f1c40f] flex-shrink-0" />
-          ),
+          success: <CheckCircle2 className="w-4 h-4 text-[#00d4aa] flex-shrink-0" />,
+          error: <AlertCircle className="w-4 h-4 text-[#EE4C2C] flex-shrink-0" />,
+          warning: <AlertTriangle className="w-4 h-4 text-[#f1c40f] flex-shrink-0" />,
           info: <Info className="w-4 h-4 text-[#00b4d8] flex-shrink-0" />,
-        }[toast.type]
+        }[toast.type];
 
         const borders = {
           success: "border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.2)]",
           error: "border-[#EE4C2C]/40 shadow-[0_0_12px_rgba(238,76,44,0.2)]",
           warning: "border-[#f1c40f]/40 shadow-[0_0_12px_rgba(241,196,15,0.2)]",
           info: "border-[#00b4d8]/40 shadow-[0_0_12px_rgba(0,180,216,0.2)]",
-        }[toast.type]
+        }[toast.type];
 
         return (
           <div
@@ -64,9 +58,7 @@ export const ToastContainer: React.FC<ToastProps> = ({ toasts, onDismiss }) => {
           >
             <div className="mt-0.5">{icons}</div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-[#e6edf3]">
-                {toast.message}
-              </p>
+              <p className="text-xs font-semibold text-[#e6edf3]">{toast.message}</p>
               {toast.subMessage && (
                 <p className="text-[11px] text-[#8b949e] mt-0.5 leading-relaxed">
                   {toast.subMessage}
@@ -80,11 +72,11 @@ export const ToastContainer: React.FC<ToastProps> = ({ toasts, onDismiss }) => {
               <X className="w-3.5 h-3.5" />
             </button>
           </div>
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

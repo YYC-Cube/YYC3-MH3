@@ -16,17 +16,17 @@
  * dependencies: ./Button, ./Input, ./Select, ./Slider
  * exports: —
  */
-export * from "./Button"
-export * from "./Input"
-export * from "./Select"
-export * from "./Slider"
-export * from "./Switch"
-export * from "./Badge"
-export * from "./Card"
-export * from "./Tabs"
-export * from "./Modal"
-export * from "./Drawer"
-export * from "./Toast"
+export * from "./Button";
+export * from "./Input";
+export * from "./Select";
+export * from "./Slider";
+export * from "./Switch";
+export * from "./Badge";
+export * from "./Card";
+export * from "./Tabs";
+export * from "./Modal";
+export * from "./Drawer";
+export * from "./Toast";
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

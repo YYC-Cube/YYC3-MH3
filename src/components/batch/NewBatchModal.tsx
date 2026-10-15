@@ -16,29 +16,28 @@
  * dependencies: react, ../common, ../../types
  * exports: NewBatchModalProps, NewBatchModal
  */
-import { useState } from "react"
-import { Button, Input, Modal, Select } from "../common"
-import { BatchMode, NewBatchDraft } from "../../types"
+import { useState } from "react";
+import { Button, Input, Modal, Select } from "../common";
+import { BatchMode, NewBatchDraft } from "../../types";
 
 /** Select 下拉值为运行时 string，收窄至 BatchMode 联合的类型守卫 */
-const isBatchMode = (v: string): v is BatchMode =>
-  v === "Ref2VA" || v === "FL2VA"
+const isBatchMode = (v: string): v is BatchMode => v === "Ref2VA" || v === "FL2VA";
 
 export interface NewBatchModalProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
   /** 提交草案（创建/导航/通知编排由 App 完成） */
-  onSubmit: (draft: NewBatchDraft) => void
+  onSubmit: (draft: NewBatchDraft) => void;
 }
 
 /** 新建生产批次弹窗（组件常驻挂载，仅弹层随 isOpen 显隐） */
 export function NewBatchModal({ isOpen, onClose, onSubmit }: NewBatchModalProps) {
-  const [name, setName] = useState("企业定制发言-科技合伙人数字人")
-  const [mode, setMode] = useState<BatchMode>("Ref2VA")
-  const [seed, setSeed] = useState(48920194)
+  const [name, setName] = useState("企业定制发言-科技合伙人数字人");
+  const [mode, setMode] = useState<BatchMode>("Ref2VA");
+  const [seed, setSeed] = useState(48920194);
   const [prompt, setPrompt] = useState(
     "Professional corporate spokesperson speaking confidently, natural micro-smile, 4k ultra-detailed face skin pores",
-  )
+  );
 
   return (
     <Modal
@@ -61,19 +60,15 @@ export function NewBatchModal({ isOpen, onClose, onSubmit }: NewBatchModalProps)
       }
     >
       <div className="space-y-4 text-xs">
-        <Input
-          label="批次任务名称"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        <Input label="批次任务名称" value={name} onChange={(e) => setName(e.target.value)} />
 
         <div className="grid grid-cols-2 gap-4">
           <Select
             label="驱动模式"
             value={mode}
             onChange={(e) => {
-              const v = e.target.value
-              if (isBatchMode(v)) setMode(v)
+              const v = e.target.value;
+              if (isBatchMode(v)) setMode(v);
             }}
             options={[
               { value: "Ref2VA", label: "Ref2VA (单参考人脸对齐)" },
@@ -90,9 +85,7 @@ export function NewBatchModal({ isOpen, onClose, onSubmit }: NewBatchModalProps)
         </div>
 
         <div className="space-y-1.5">
-          <label className="block text-xs font-medium text-[#8a97a8]">
-            提示词描述 (Prompt)
-          </label>
+          <label className="block text-xs font-medium text-[#8a97a8]">提示词描述 (Prompt)</label>
           <textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
@@ -102,7 +95,7 @@ export function NewBatchModal({ isOpen, onClose, onSubmit }: NewBatchModalProps)
         </div>
       </div>
     </Modal>
-  )
+  );
 }
 
 /* --------------------------------------------------------------

@@ -25,20 +25,16 @@ import {
   ShieldAlert,
   Tv,
   Wrench,
-} from "lucide-react"
-import React, { useState } from "react"
-import { Badge, Button, Card, Modal } from "../components/common"
-import { BatchItem, NavigateExtra, NavTabId } from "../types"
+} from "lucide-react";
+import React, { useState } from "react";
+import { Badge, Button, Card, Modal } from "../components/common";
+import { BatchItem, NavigateExtra, NavTabId } from "../types";
 
 export interface DashboardViewProps {
-  batches: BatchItem[]
-  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void
-  onNewBatchClick: () => void
-  onShowToast: (
-    type: "success" | "error" | "warning" | "info",
-    msg: string,
-    sub?: string,
-  ) => void
+  batches: BatchItem[];
+  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void;
+  onNewBatchClick: () => void;
+  onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
@@ -47,20 +43,20 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onNewBatchClick,
   onShowToast,
 }) => {
-  const [isBigScreenMode, setIsBigScreenMode] = useState(false)
-  const [trendPeriod] = useState<"weekly" | "monthly">("weekly")
-  const [filterQuery, setFilterQuery] = useState("")
-  const [statusFilter] = useState<string>("all")
-  const [isHwModalOpen, setIsHwModalOpen] = useState(false)
+  const [isBigScreenMode, setIsBigScreenMode] = useState(false);
+  const [trendPeriod] = useState<"weekly" | "monthly">("weekly");
+  const [filterQuery, setFilterQuery] = useState("");
+  const [statusFilter] = useState<string>("all");
+  const [isHwModalOpen, setIsHwModalOpen] = useState(false);
 
   const filteredBatches = batches.filter((b) => {
-    if (statusFilter !== "all" && b.status !== statusFilter) return false
+    if (statusFilter !== "all" && b.status !== statusFilter) return false;
     if (filterQuery) {
-      const q = filterQuery.toLowerCase()
-      return b.id.toLowerCase().includes(q) || b.name.toLowerCase().includes(q)
+      const q = filterQuery.toLowerCase();
+      return b.id.toLowerCase().includes(q) || b.name.toLowerCase().includes(q);
     }
-    return true
-  })
+    return true;
+  });
 
   const getStatusBadge = (status: BatchItem["status"]) => {
     switch (status) {
@@ -69,30 +65,32 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <Badge variant="brand" pulse>
             运行中
           </Badge>
-        )
+        );
       case "completed":
-        return <Badge variant="brand">已完成</Badge>
+        return <Badge variant="brand">已完成</Badge>;
       case "failed":
-        return <Badge variant="danger">异常终止</Badge>
+        return <Badge variant="danger">异常终止</Badge>;
       case "queued":
-        return <Badge variant="warning">等待调度</Badge>
+        return <Badge variant="warning">等待调度</Badge>;
       default:
-        return <Badge variant="neutral">已暂停</Badge>
+        return <Badge variant="neutral">已暂停</Badge>;
     }
-  }
+  };
 
   return (
     <div
-      className={`flex-1 overflow-y-auto p-6 space-y-6 bg-[#0a1628] transition-all duration-300 ${isBigScreenMode ? "max-w-none p-8" : ""
-        }`}
+      className={`flex-1 overflow-y-auto p-6 space-y-6 bg-[#0a1628] transition-all duration-300 ${
+        isBigScreenMode ? "max-w-none p-8" : ""
+      }`}
     >
       {/* Top Welcome & Big Screen Mode Toggle (Requirement 2.1) */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2.5">
             <h1
-              className={`font-bold text-[#e8f0f8] tracking-tight ${isBigScreenMode ? "text-2xl" : "text-xl"
-                }`}
+              className={`font-bold text-[#e8f0f8] tracking-tight ${
+                isBigScreenMode ? "text-2xl" : "text-xl"
+              }`}
             >
               总览驾驶舱 · Executive Cockpit
             </h1>
@@ -112,13 +110,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             size="sm"
             icon={<Tv className="w-3.5 h-3.5" />}
             onClick={() => {
-              setIsBigScreenMode((p) => !p)
+              setIsBigScreenMode((p) => !p);
               onShowToast(
                 "info",
-                isBigScreenMode
-                  ? "已退出大屏投屏模式"
-                  : "已切换至 2K/4K 生产大屏模式",
-              )
+                isBigScreenMode ? "已退出大屏投屏模式" : "已切换至 2K/4K 生产大屏模式",
+              );
             }}
           >
             {isBigScreenMode ? "退出大屏视角" : "大屏投屏模式 (2K/4K)"}
@@ -129,11 +125,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             size="sm"
             icon={<Wrench className="w-3.5 h-3.5 text-[#00e0b8]" />}
             onClick={() => {
-              onShowToast(
-                "success",
-                "显存整理完成",
-                "已清理 2.8GB 冗余激活值缓存",
-              )
+              onShowToast("success", "显存整理完成", "已清理 2.8GB 冗余激活值缓存");
             }}
           >
             一键显存整理
@@ -158,12 +150,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <ShieldAlert className="w-5 h-5 text-[#ff7a45] flex-shrink-0" />
           </div>
           <div>
-            <span className="font-semibold text-[#e8f0f8]">
-              全局告警聚合提示：
-            </span>
+            <span className="font-semibold text-[#e8f0f8]">全局告警聚合提示：</span>
             <span className="text-[#8a97a8]">
-              检测到 1 处瞬时显存超标警告 (批次 086 峰值
-              22.8GB)，已由看门狗降级保护。
+              检测到 1 处瞬时显存超标警告 (批次 086 峰值 22.8GB)，已由看门狗降级保护。
             </span>
           </div>
         </div>
@@ -179,9 +168,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Card 1 */}
         <div className="p-4 rounded-xl bg-[#0f1f38] border border-[#1e2f47] card-running-shimmer transition-all flex flex-col justify-between">
           <div className="flex items-center justify-between text-xs text-[#8a97a8]">
-            <span>
-              产出批次总数 ({trendPeriod === "weekly" ? "本周" : "本月"})
-            </span>
+            <span>产出批次总数 ({trendPeriod === "weekly" ? "本周" : "本月"})</span>
             <span className="text-[#00e0b8] flex items-center font-mono">
               +18.4%
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -206,10 +193,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <stop offset="100%" stopColor="#00e0b8" stopOpacity="0.0" />
                 </linearGradient>
               </defs>
-              <path
-                d="M 0 20 Q 25 15, 50 10 T 100 4 L 100 24 L 0 24 Z"
-                fill="url(#grad1)"
-              />
+              <path d="M 0 20 Q 25 15, 50 10 T 100 4 L 100 24 L 0 24 Z" fill="url(#grad1)" />
               <path
                 d="M 0 20 Q 25 15, 50 10 T 100 4"
                 fill="none"
@@ -247,16 +231,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <stop offset="100%" stopColor="#00b4d8" stopOpacity="0.0" />
                 </linearGradient>
               </defs>
-              <path
-                d="M 0 18 Q 30 14, 60 8 T 100 5 L 100 24 L 0 24 Z"
-                fill="url(#grad2)"
-              />
-              <path
-                d="M 0 18 Q 30 14, 60 8 T 100 5"
-                fill="none"
-                stroke="#00b4d8"
-                strokeWidth="2"
-              />
+              <path d="M 0 18 Q 30 14, 60 8 T 100 5 L 100 24 L 0 24 Z" fill="url(#grad2)" />
+              <path d="M 0 18 Q 30 14, 60 8 T 100 5" fill="none" stroke="#00b4d8" strokeWidth="2" />
             </svg>
           </div>
         </div>
@@ -265,9 +241,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div className="p-4 rounded-xl bg-[#0f1f38] border border-[#1e2f47] card-running-shimmer transition-all flex flex-col justify-between">
           <div className="flex items-center justify-between text-xs text-[#8a97a8]">
             <span>平均单批推理耗时</span>
-            <span className="text-[#00e0b8] flex items-center font-mono">
-              -6.2s
-            </span>
+            <span className="text-[#00e0b8] flex items-center font-mono">-6.2s</span>
           </div>
           <div className="mt-2 flex items-baseline gap-2">
             <span className="text-3xl font-bold text-[#e8f0f8] font-mono drop-shadow-[0_0_12px_rgba(157,124,216,0.35)]">
@@ -287,10 +261,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <stop offset="100%" stopColor="#9d7cd8" stopOpacity="0.0" />
                 </linearGradient>
               </defs>
-              <path
-                d="M 0 6 Q 35 12, 70 16 T 100 20 L 100 24 L 0 24 Z"
-                fill="url(#grad3)"
-              />
+              <path d="M 0 6 Q 35 12, 70 16 T 100 20 L 100 24 L 0 24 Z" fill="url(#grad3)" />
               <path
                 d="M 0 6 Q 35 12, 70 16 T 100 20"
                 fill="none"
@@ -331,16 +302,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <h2 className="text-sm font-semibold text-[#e8f0f8]">
                 五步闭环生产流水线 · 实时吞吐流转图
               </h2>
-              <p className="text-xs text-[#8a97a8]">
-                任务从生成至 Seed 基因回写的端到端自动化漏斗
-              </p>
+              <p className="text-xs text-[#8a97a8]">任务从生成至 Seed 基因回写的端到端自动化漏斗</p>
             </div>
             <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="xs"
-                onClick={() => onNavigate("workbench")}
-              >
+              <Button variant="outline" size="xs" onClick={() => onNavigate("workbench")}>
                 流水线看板
               </Button>
             </div>
@@ -395,18 +360,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               >
                 <div className="flex items-center justify-between text-[10px] text-[#5c697a]">
                   <span>STAGE {node.step}</span>
-                  <span className="text-[#00e0b8] font-mono font-bold">
-                    {node.pass}
-                  </span>
+                  <span className="text-[#00e0b8] font-mono font-bold">{node.pass}</span>
                 </div>
-                <div className="text-xs font-semibold text-[#e8f0f8]">
-                  {node.title}
-                </div>
+                <div className="text-xs font-semibold text-[#e8f0f8]">{node.title}</div>
                 <div className="font-mono text-lg font-bold text-[#e8f0f8]">
                   {node.num}{" "}
-                  <span className="text-[10px] text-[#8a97a8] font-normal">
-                    {node.unit}
-                  </span>
+                  <span className="text-[10px] text-[#8a97a8] font-normal">{node.unit}</span>
                 </div>
               </div>
             ))}
@@ -429,9 +388,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         {/* Local Hardware Live Meters with Modal Drilldown */}
         <div className="lg:col-span-4 p-5 rounded-xl bg-[#0f1f38] border border-[#1e2f47] flex flex-col justify-between shadow-lg">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-[#e8f0f8]">
-              本地硬件算力负载
-            </h2>
+            <h2 className="text-sm font-semibold text-[#e8f0f8]">本地硬件算力负载</h2>
             <button
               onClick={() => setIsHwModalOpen(true)}
               className="text-[11px] text-[#00e0b8] hover:underline flex items-center gap-1 cursor-pointer"
@@ -457,9 +414,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div>
               <div className="flex justify-between text-[#8a97a8] mb-1">
                 <span>显存占用 (FP8 缓冲已启用)</span>
-                <span className="font-mono text-[#00b4d8] font-bold">
-                  19.4 / 24.0 GB
-                </span>
+                <span className="font-mono text-[#00b4d8] font-bold">19.4 / 24.0 GB</span>
               </div>
               <div className="w-full bg-[#15294a] h-2 rounded-full overflow-hidden">
                 <div
@@ -472,15 +427,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div>
               <div className="flex justify-between text-[#8a97a8] mb-1">
                 <span>系统内存 (DDR5 64GB)</span>
-                <span className="font-mono text-[#e8f0f8] font-semibold">
-                  26.2 / 64.0 GB
-                </span>
+                <span className="font-mono text-[#e8f0f8] font-semibold">26.2 / 64.0 GB</span>
               </div>
               <div className="w-full bg-[#15294a] h-2 rounded-full overflow-hidden">
-                <div
-                  className="bg-[#9d7cd8] h-full"
-                  style={{ width: "40.9%" }}
-                />
+                <div className="bg-[#9d7cd8] h-full" style={{ width: "40.9%" }} />
               </div>
             </div>
           </div>
@@ -514,11 +464,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               />
             </div>
 
-            <Button
-              variant="outline"
-              size="xs"
-              onClick={() => onNavigate("nightly")}
-            >
+            <Button variant="outline" size="xs" onClick={() => onNavigate("nightly")}>
               夜间批量
             </Button>
             <Button variant="primary" size="xs" onClick={onNewBatchClick}>
@@ -560,9 +506,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         <div className="font-mono text-[#00e0b8] font-semibold text-xs group-hover:underline">
                           {b.id}
                         </div>
-                        <div className="text-[#e8f0f8] font-medium truncate max-w-xs">
-                          {b.name}
-                        </div>
+                        <div className="text-[#e8f0f8] font-medium truncate max-w-xs">{b.name}</div>
                       </div>
                     </div>
                   </td>
@@ -577,9 +521,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <td className="py-3 px-3">
                     <div className="flex items-center gap-2">
                       {getStatusBadge(b.status)}
-                      <span className="text-[11px] text-[#8a97a8] font-mono">
-                        {b.progress}%
-                      </span>
+                      <span className="text-[11px] text-[#8a97a8] font-mono">{b.progress}%</span>
                     </div>
                   </td>
                   <td className="py-3 px-3">
@@ -591,12 +533,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <td className="py-3 px-3">
                     {b.score > 0 ? (
                       <span
-                        className={`font-mono font-bold text-xs ${b.score >= 90
-                          ? "text-[#00e0b8]"
-                          : b.score >= 80
-                            ? "text-[#00b4d8]"
-                            : "text-[#ff7a45]"
-                          }`}
+                        className={`font-mono font-bold text-xs ${
+                          b.score >= 90
+                            ? "text-[#00e0b8]"
+                            : b.score >= 80
+                              ? "text-[#00b4d8]"
+                              : "text-[#ff7a45]"
+                        }`}
                       >
                         {b.score} 分
                       </span>
@@ -604,17 +547,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       <span className="text-[#5c697a]">--</span>
                     )}
                   </td>
-                  <td
-                    className="py-3 px-3 text-right"
-                    onClick={(e) => e.stopPropagation()}
-                  >
+                  <td className="py-3 px-3 text-right" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center justify-end gap-1.5">
                       <Button
                         variant="secondary"
                         size="xs"
-                        onClick={() =>
-                          onNavigate("batch-detail", { batchId: b.id })
-                        }
+                        onClick={() => onNavigate("batch-detail", { batchId: b.id })}
                       >
                         复盘
                       </Button>
@@ -622,7 +560,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         variant="ghost"
                         size="xs"
                         onClick={() => {
-                          onShowToast("info", `已加入重跑队列: ${b.id}`)
+                          onShowToast("info", `已加入重跑队列: ${b.id}`);
                         }}
                       >
                         <RotateCcw className="w-3.5 h-3.5" />
@@ -651,9 +589,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="h-44 w-full bg-[#15294a] rounded-xl p-3 flex items-end gap-2 border border-[#1e2f47]">
             {[14, 18, 22.8, 16.8, 21.2, 17.5, 19.4].map((v, i) => (
               <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                <span className="text-[10px] text-[#00e0b8] font-bold">
-                  {v}G
-                </span>
+                <span className="text-[10px] text-[#00e0b8] font-bold">{v}G</span>
                 <div
                   className="w-full bg-gradient-to-t from-[#00b4d8] to-[#00e0b8] rounded-t"
                   style={{ height: `${(v / 24) * 100}%` }}
@@ -665,8 +601,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

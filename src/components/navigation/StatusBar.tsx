@@ -16,22 +16,18 @@
  * dependencies: react, lucide-react, ../../config, ../../types
  * exports: StatusBarProps, StatusBar
  */
-import { HardDrive, ShieldCheck } from "lucide-react"
-import { APP_PORT } from "../../config"
-import { ShowToast } from "../../types"
+import { HardDrive, ShieldCheck } from "lucide-react";
+import { APP_PORT } from "../../config";
+import { ShowToast } from "../../types";
 
 export interface StatusBarProps {
-  onNavigateOps: () => void
-  onOpenYYC3: () => void
-  onShowToast: ShowToast
+  onNavigateOps: () => void;
+  onOpenYYC3: () => void;
+  onShowToast: ShowToast;
 }
 
 /** 工业风底部状态栏（Requirement 2.3） */
-export function StatusBar({
-  onNavigateOps,
-  onOpenYYC3,
-  onShowToast,
-}: StatusBarProps) {
+export function StatusBar({ onNavigateOps, onOpenYYC3, onShowToast }: StatusBarProps) {
   return (
     <footer className="h-6 px-4 bg-[#081220] border-t border-[#1e2f47] flex items-center justify-between text-[11px] font-mono text-[#8a97a8] select-none z-30">
       <div className="flex items-center gap-3">
@@ -54,9 +50,9 @@ export function StatusBar({
         <span className="text-[#1e2f47]">|</span>
         <button
           onClick={() => {
-            const localUrl = `http://127.0.0.1:${APP_PORT}`
-            navigator.clipboard.writeText(localUrl)
-            onShowToast("success", "已复制本地预览服务地址", localUrl)
+            const localUrl = `http://127.0.0.1:${APP_PORT}`;
+            navigator.clipboard.writeText(localUrl);
+            onShowToast("success", "已复制本地预览服务地址", localUrl);
           }}
           className="hover:text-[#00e0b8] transition-colors cursor-pointer"
           title="点击复制地址"
@@ -73,7 +69,7 @@ export function StatusBar({
         </button>
       </div>
     </footer>
-  )
+  );
 }
 
 /* --------------------------------------------------------------

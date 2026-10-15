@@ -16,14 +16,14 @@
  * dependencies: react
  * exports: SwitchProps, Switch
  */
-import React from "react"
+import React from "react";
 
 export interface SwitchProps {
-  checked: boolean
-  onChange: (checked: boolean) => void
-  label?: string
-  description?: string
-  disabled?: boolean
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  label?: string;
+  description?: string;
+  disabled?: boolean;
 }
 
 export const Switch: React.FC<SwitchProps> = ({
@@ -49,33 +49,25 @@ export const Switch: React.FC<SwitchProps> = ({
         />
         <div
           className={`w-9 h-5 rounded-full transition-colors duration-200 ease-in-out border ${
-            checked
-              ? "bg-[#00d4aa] border-[#00d4aa]"
-              : "bg-[#122340] border-[#30363d]"
+            checked ? "bg-[#00d4aa] border-[#00d4aa]" : "bg-[#122340] border-[#30363d]"
           }`}
         >
           <div
             className={`w-3.5 h-3.5 mt-[2px] ml-[2px] rounded-full transition-transform duration-200 ease-in-out ${
-              checked
-                ? "translate-x-4 bg-[#071425]"
-                : "translate-x-0 bg-[#8b949e]"
+              checked ? "translate-x-4 bg-[#071425]" : "translate-x-0 bg-[#8b949e]"
             }`}
           />
         </div>
       </div>
       {(label || description) && (
         <div className="flex flex-col">
-          {label && (
-            <span className="text-xs font-medium text-[#e6edf3]">{label}</span>
-          )}
-          {description && (
-            <span className="text-[11px] text-[#8b949e]">{description}</span>
-          )}
+          {label && <span className="text-xs font-medium text-[#e6edf3]">{label}</span>}
+          {description && <span className="text-[11px] text-[#8b949e]">{description}</span>}
         </div>
       )}
     </label>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

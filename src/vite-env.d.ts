@@ -20,7 +20,7 @@
 
 /** 构建期由 vite.config.ts define 注入（来源：PORT 环境变量），禁止在业务代码硬编码端口 */
 interface ImportMetaEnv {
-  readonly VITE_APP_PORT: string
+  readonly VITE_APP_PORT: string;
 }
 
 /* --------------------------------------------------------------

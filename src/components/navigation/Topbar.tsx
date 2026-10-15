@@ -27,43 +27,42 @@ import {
   Info,
   Plus,
   Search,
-  Sparkles
-} from "lucide-react"
-import React, { useEffect, useRef, useState } from "react"
-import { AuthUser, NavigateExtra, NavTabId, NotificationItem } from "../../types"
-import { Badge } from "../common"
+  Sparkles,
+} from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { AuthUser, NavigateExtra, NavTabId, NotificationItem } from "../../types";
+import { Badge } from "../common";
 
 /** 通知中心分类页签 */
-export type NotifTab = "all" | "alarm" | "completed" | "system"
+export type NotifTab = "all" | "alarm" | "completed" | "system";
 
 const NOTIF_TABS: { id: NotifTab; label: string }[] = [
   { id: "all", label: "全部" },
   { id: "alarm", label: "告警预警" },
   { id: "completed", label: "批次完成" },
   { id: "system", label: "系统自愈" },
-]
+];
 
 export interface TopbarProps {
-  activeTab: NavTabId
-  currentUser?: AuthUser | null
-  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void
-  onOpenSearch: () => void
-  onNewBatchClick: () => void
-  onOpenYYC3: () => void
-  onOpenLogin: () => void
-  onLogout: () => void
-  onShowToast: (
-    type: "success" | "error" | "warning" | "info",
-    msg: string,
-    sub?: string,
-  ) => void
+  activeTab: NavTabId;
+  currentUser?: AuthUser | null;
+  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void;
+  onOpenSearch: () => void;
+  onNewBatchClick: () => void;
+  onOpenYYC3: () => void;
+  onOpenLogin: () => void;
+  onLogout: () => void;
+  onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
-const TAB_TITLES: Record<NavTabId, {
-  parent: string
-  current: string
-  siblings: { id: NavTabId; label: string }[]
-}> = {
+const TAB_TITLES: Record<
+  NavTabId,
+  {
+    parent: string;
+    current: string;
+    siblings: { id: NavTabId; label: string }[];
+  }
+> = {
   "design-system": {
     parent: "MiniMax-H3 设计体系",
     current: "设计规范与全量组件库",
@@ -178,15 +177,14 @@ const TAB_TITLES: Record<NavTabId, {
       { id: "models", label: "本地模型管理" },
     ],
   },
-}
+};
 
 const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   {
     id: "notif-1",
     type: "completed",
     title: "批次 BATCH-20250412-088 已完成",
-    description:
-      "科技发布会数字人 4K 60FPS 渲染完成，5维综合得分 96.8分，已自动回写 S级 Seed。",
+    description: "科技发布会数字人 4K 60FPS 渲染完成，5维综合得分 96.8分，已自动回写 S级 Seed。",
     timestamp: "10:05",
     read: false,
     targetTab: "batch-detail",
@@ -196,8 +194,7 @@ const INITIAL_NOTIFICATIONS: NotificationItem[] = [
     id: "notif-2",
     type: "alarm",
     title: "显存峰值告警：达到 22.8 GB",
-    description:
-      "批次 086 在双关键帧扩散时触发 VRAM 阈值警示，已由智云·守护自动优化。",
+    description: "批次 086 在双关键帧扩散时触发 VRAM 阈值警示，已由智云·守护自动优化。",
     timestamp: "09:32",
     read: false,
     targetTab: "ops",
@@ -212,7 +209,7 @@ const INITIAL_NOTIFICATIONS: NotificationItem[] = [
     read: true,
     targetTab: "ops",
   },
-]
+];
 
 export const Topbar: React.FC<TopbarProps> = ({
   activeTab,
@@ -225,61 +222,50 @@ export const Topbar: React.FC<TopbarProps> = ({
   onLogout,
   onShowToast,
 }) => {
-  const meta = TAB_TITLES[activeTab] || TAB_TITLES.dashboard
-  const [isBreadcrumbOpen, setIsBreadcrumbOpen] = useState(false)
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false)
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
-  const [activeNotifTab, setActiveNotifTab] = useState<NotifTab>("all")
-  const [notifications, setNotifications] = useState<NotificationItem[]>(
-    INITIAL_NOTIFICATIONS,
-  )
+  const meta = TAB_TITLES[activeTab] || TAB_TITLES.dashboard;
+  const [isBreadcrumbOpen, setIsBreadcrumbOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [activeNotifTab, setActiveNotifTab] = useState<NotifTab>("all");
+  const [notifications, setNotifications] = useState<NotificationItem[]>(INITIAL_NOTIFICATIONS);
 
-  const notifRef = useRef<HTMLDivElement>(null)
-  const breadcrumbRef = useRef<HTMLDivElement>(null)
-  const userMenuRef = useRef<HTMLDivElement>(null)
+  const notifRef = useRef<HTMLDivElement>(null);
+  const breadcrumbRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   // Click outside to close menus
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
-        setIsNotificationOpen(false)
+        setIsNotificationOpen(false);
       }
-      if (
-        breadcrumbRef.current &&
-        !breadcrumbRef.current.contains(e.target as Node)
-      ) {
-        setIsBreadcrumbOpen(false)
+      if (breadcrumbRef.current && !breadcrumbRef.current.contains(e.target as Node)) {
+        setIsBreadcrumbOpen(false);
       }
-      if (
-        userMenuRef.current &&
-        !userMenuRef.current.contains(e.target as Node)
-      ) {
-        setIsUserMenuOpen(false)
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setIsUserMenuOpen(false);
       }
-    }
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  const unreadCount = notifications.filter((n) => !n.read).length
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   const filteredNotifs = notifications.filter((n) => {
-    if (activeNotifTab === "all") return true
-    return n.type === activeNotifTab
-  })
+    if (activeNotifTab === "all") return true;
+    return n.type === activeNotifTab;
+  });
 
   const handleMarkAllRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
-    onShowToast("info", "所有通知已标为已读")
-  }
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    onShowToast("info", "所有通知已标为已读");
+  };
 
   return (
     <header className="h-14 px-4 bg-[#0c1a30] border-b border-[#1e2f47] flex items-center justify-between select-none z-30 relative">
       {/* Left Breadcrumb with secondary jump dropdown */}
-      <div
-        className="flex items-center gap-2 text-xs relative"
-        ref={breadcrumbRef}
-      >
+      <div className="flex items-center gap-2 text-xs relative" ref={breadcrumbRef}>
         <span className="text-[#8a97a8] font-medium">{meta.parent}</span>
         <ChevronRight className="w-3.5 h-3.5 text-[#5c697a]" />
 
@@ -302,18 +288,17 @@ export const Topbar: React.FC<TopbarProps> = ({
               <button
                 key={sib.id}
                 onClick={() => {
-                  onNavigate(sib.id)
-                  setIsBreadcrumbOpen(false)
+                  onNavigate(sib.id);
+                  setIsBreadcrumbOpen(false);
                 }}
-                className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-colors flex items-center justify-between cursor-pointer ${sib.id === activeTab
-                  ? "bg-[#00e0b8]/15 text-[#00e0b8] font-semibold"
-                  : "text-[#8a97a8] hover:text-[#e8f0f8] hover:bg-[#15294a]"
-                  }`}
+                className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-colors flex items-center justify-between cursor-pointer ${
+                  sib.id === activeTab
+                    ? "bg-[#00e0b8]/15 text-[#00e0b8] font-semibold"
+                    : "text-[#8a97a8] hover:text-[#e8f0f8] hover:bg-[#15294a]"
+                }`}
               >
                 <span>{sib.label}</span>
-                {sib.id === activeTab && (
-                  <Check className="w-3.5 h-3.5 text-[#00e0b8]" />
-                )}
+                {sib.id === activeTab && <Check className="w-3.5 h-3.5 text-[#00e0b8]" />}
               </button>
             ))}
           </div>
@@ -393,9 +378,7 @@ export const Topbar: React.FC<TopbarProps> = ({
               <div className="p-3.5 border-b border-[#1e2f47] flex items-center justify-between bg-[#0f1f38]/60">
                 <div className="flex items-center gap-2">
                   <Bell className="w-4 h-4 text-[#00e0b8]" />
-                  <span className="font-semibold text-xs text-[#e8f0f8]">
-                    系统与生产通知
-                  </span>
+                  <span className="font-semibold text-xs text-[#e8f0f8]">系统与生产通知</span>
                   {unreadCount > 0 && (
                     <Badge variant="brand" size="xs">
                       {unreadCount} 未读
@@ -416,10 +399,11 @@ export const Topbar: React.FC<TopbarProps> = ({
                   <button
                     key={t.id}
                     onClick={() => setActiveNotifTab(t.id)}
-                    className={`px-2.5 py-1 rounded-md text-[11px] transition-colors cursor-pointer ${activeNotifTab === t.id
-                      ? "bg-[#15294a] text-[#00e0b8] font-semibold border border-[#1e2f47]"
-                      : "text-[#8a97a8] hover:text-[#e8f0f8]"
-                      }`}
+                    className={`px-2.5 py-1 rounded-md text-[11px] transition-colors cursor-pointer ${
+                      activeNotifTab === t.id
+                        ? "bg-[#15294a] text-[#00e0b8] font-semibold border border-[#1e2f47]"
+                        : "text-[#8a97a8] hover:text-[#e8f0f8]"
+                    }`}
                   >
                     {t.label}
                   </button>
@@ -429,20 +413,18 @@ export const Topbar: React.FC<TopbarProps> = ({
               {/* Notification list */}
               <div className="max-h-72 overflow-y-auto divide-y divide-[#1e2f47]/50 text-xs">
                 {filteredNotifs.length === 0 ? (
-                  <div className="p-6 text-center text-[#5c697a] text-xs">
-                    暂无此类通知记录
-                  </div>
+                  <div className="p-6 text-center text-[#5c697a] text-xs">暂无此类通知记录</div>
                 ) : (
                   filteredNotifs.map((n) => (
                     <div
                       key={n.id}
                       onClick={() => {
-                        if (n.targetTab)
-                          onNavigate(n.targetTab, { batchId: n.targetId })
-                        setIsNotificationOpen(false)
+                        if (n.targetTab) onNavigate(n.targetTab, { batchId: n.targetId });
+                        setIsNotificationOpen(false);
                       }}
-                      className={`p-3.5 hover:bg-[#15294a]/50 transition-colors cursor-pointer flex items-start gap-3 ${!n.read ? "bg-[#00e0b8]/5" : ""
-                        }`}
+                      className={`p-3.5 hover:bg-[#15294a]/50 transition-colors cursor-pointer flex items-start gap-3 ${
+                        !n.read ? "bg-[#00e0b8]/5" : ""
+                      }`}
                     >
                       <div className="mt-0.5">
                         {n.type === "alarm" ? (
@@ -456,8 +438,9 @@ export const Topbar: React.FC<TopbarProps> = ({
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-0.5">
                           <span
-                            className={`font-semibold truncate ${!n.read ? "text-[#e8f0f8]" : "text-[#8a97a8]"
-                              }`}
+                            className={`font-semibold truncate ${
+                              !n.read ? "text-[#e8f0f8]" : "text-[#8a97a8]"
+                            }`}
                           >
                             {n.title}
                           </span>
@@ -500,9 +483,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                 </div>
                 <div className="text-[11px] font-mono text-[#00e0b8]">
                   @{currentUser?.username || "admin"} ·{" "}
-                  {currentUser?.role === "admin"
-                    ? "超级管理员 (Full Access)"
-                    : "操作员"}
+                  {currentUser?.role === "admin" ? "超级管理员 (Full Access)" : "操作员"}
                 </div>
                 <div className="text-[10px] text-[#5c697a] font-mono mt-1">
                   设备: {currentUser?.device || "Workstation RTX 4090"}
@@ -512,8 +493,8 @@ export const Topbar: React.FC<TopbarProps> = ({
               <div className="space-y-1">
                 <button
                   onClick={() => {
-                    setIsUserMenuOpen(false)
-                    onOpenLogin()
+                    setIsUserMenuOpen(false);
+                    onOpenLogin();
                   }}
                   className="w-full text-left px-2.5 py-1.5 rounded-lg text-[#e8f0f8] hover:bg-[#15294a] hover:text-[#00e0b8] flex items-center gap-2 transition-colors cursor-pointer"
                 >
@@ -523,8 +504,8 @@ export const Topbar: React.FC<TopbarProps> = ({
 
                 <button
                   onClick={() => {
-                    setIsUserMenuOpen(false)
-                    onLogout()
+                    setIsUserMenuOpen(false);
+                    onLogout();
                   }}
                   className="w-full text-left px-2.5 py-1.5 rounded-lg text-[#ff7a45] hover:bg-[#ff7a45]/15 flex items-center gap-2 transition-colors cursor-pointer"
                 >
@@ -537,8 +518,8 @@ export const Topbar: React.FC<TopbarProps> = ({
         </div>
       </div>
     </header>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

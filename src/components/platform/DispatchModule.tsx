@@ -16,16 +16,16 @@
  * dependencies: react, lucide-react, ../common, ./PlatformBadge, ../../types
  * exports: DispatchModuleProps, DispatchModule
  */
-import { Cpu, Download, RefreshCw, Send } from "lucide-react"
-import { PushTaskItem, ShowToast } from "../../types"
-import { Badge, Button, Card } from "../common"
-import { PlatformBadge } from "./PlatformBadge"
+import { Cpu, Download, RefreshCw, Send } from "lucide-react";
+import { PushTaskItem, ShowToast } from "../../types";
+import { Badge, Button, Card } from "../common";
+import { PlatformBadge } from "./PlatformBadge";
 
 export interface DispatchModuleProps {
-  pushTasks: PushTaskItem[]
+  pushTasks: PushTaskItem[];
   /** 打开新建推送作业弹窗（弹窗状态存视图层） */
-  onNewPushClick: () => void
-  onShowToast: ShowToast
+  onNewPushClick: () => void;
+  onShowToast: ShowToast;
 }
 
 /** 多卡算力槽位展示元数据（与 GpuSlot 契约互补的展示字段：配色/状态文案/功耗） */
@@ -72,7 +72,7 @@ const GPU_SLOT_RENDER_META = [
     temperature: 54,
     shimmer: false,
   },
-]
+];
 
 /** 多语种音素字典展示数据（展示语义与 PhonemeLanguage 契约存在措辞差异，如实本地化） */
 const PHONEME_DICT = [
@@ -104,13 +104,9 @@ const PHONEME_DICT = [
     acc: "95.8%",
     status: "可加载",
   },
-]
+];
 
-export function DispatchModule({
-  pushTasks,
-  onNewPushClick,
-  onShowToast,
-}: DispatchModuleProps) {
+export function DispatchModule({ pushTasks, onNewPushClick, onShowToast }: DispatchModuleProps) {
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Section: One-Click Push & Distribution Matrix */}
@@ -144,21 +140,12 @@ export function DispatchModule({
             </thead>
             <tbody className="divide-y divide-[#1e2f47]/50">
               {pushTasks.map((task) => (
-                <tr
-                  key={task.id}
-                  className="hover:bg-[#15294a]/40 transition-colors"
-                >
+                <tr key={task.id} className="hover:bg-[#15294a]/40 transition-colors">
                   <td className="py-3 px-3">
-                    <div className="font-mono text-[#00e0b8] font-bold">
-                      {task.id}
-                    </div>
-                    <div className="text-[#e8f0f8] font-medium truncate max-w-xs">
-                      {task.title}
-                    </div>
+                    <div className="font-mono text-[#00e0b8] font-bold">{task.id}</div>
+                    <div className="text-[#e8f0f8] font-medium truncate max-w-xs">{task.title}</div>
                   </td>
-                  <td className="py-3 px-3 font-mono text-[#8a97a8]">
-                    {task.batchId}
-                  </td>
+                  <td className="py-3 px-3 font-mono text-[#8a97a8]">{task.batchId}</td>
                   <td className="py-3 px-3">
                     <div className="flex flex-wrap gap-1">
                       {task.platforms.map((p) => (
@@ -166,24 +153,18 @@ export function DispatchModule({
                       ))}
                     </div>
                   </td>
-                  <td className="py-3 px-3 text-[#e8f0f8]">
-                    {task.targetAccount}
-                  </td>
+                  <td className="py-3 px-3 text-[#e8f0f8]">{task.targetAccount}</td>
                   <td className="py-3 px-3 w-40">
                     <div className="space-y-1">
                       <div className="flex justify-between font-mono text-[10px]">
                         <span
                           className={
-                            task.status === "completed"
-                              ? "text-[#00e0b8]"
-                              : "text-[#8a97a8]"
+                            task.status === "completed" ? "text-[#00e0b8]" : "text-[#8a97a8]"
                           }
                         >
                           {task.status === "completed" ? "已完成" : "传输中"}
                         </span>
-                        <span className="text-[#00e0b8] font-bold">
-                          {task.progress}%
-                        </span>
+                        <span className="text-[#00e0b8] font-bold">{task.progress}%</span>
                       </div>
                       <div className="w-full bg-[#15294a] h-1.5 rounded-full overflow-hidden">
                         <div
@@ -193,29 +174,21 @@ export function DispatchModule({
                       </div>
                     </div>
                   </td>
-                  <td className="py-3 px-3 font-mono text-[#00b4d8]">
-                    {task.speed}
-                  </td>
-                  <td className="py-3 px-3 font-mono text-[#8a97a8]">
-                    {task.estRemaining}
-                  </td>
+                  <td className="py-3 px-3 font-mono text-[#00b4d8]">{task.speed}</td>
+                  <td className="py-3 px-3 font-mono text-[#8a97a8]">{task.estRemaining}</td>
                   <td className="py-3 px-3 text-right">
                     <div className="flex items-center justify-end gap-1.5">
                       <Button
                         variant="secondary"
                         size="xs"
-                        onClick={() =>
-                          onShowToast("info", `已查看推送日志: ${task.id}`)
-                        }
+                        onClick={() => onShowToast("info", `已查看推送日志: ${task.id}`)}
                       >
                         日志
                       </Button>
                       <Button
                         variant="ghost"
                         size="xs"
-                        onClick={() =>
-                          onShowToast("success", `已重新分发作业: ${task.id}`)
-                        }
+                        onClick={() => onShowToast("success", `已重新分发作业: ${task.id}`)}
                       >
                         <RefreshCw className="w-3.5 h-3.5" />
                       </Button>
@@ -313,28 +286,19 @@ export function DispatchModule({
               className="p-3 rounded-lg bg-[#15294a] border border-[#1e2f47] space-y-1.5"
             >
               <div className="flex justify-between items-center">
-                <span className="font-semibold text-[#e8f0f8] font-sans">
-                  {lang.name}
-                </span>
+                <span className="font-semibold text-[#e8f0f8] font-sans">{lang.name}</span>
                 <Badge variant="brand" size="xs">
                   {lang.code}
                 </Badge>
               </div>
               <div className="flex justify-between font-mono text-[11px] text-[#8a97a8]">
                 <span>{lang.count}</span>
-                <span className="text-[#00e0b8] font-bold">
-                  精度 {lang.acc}
-                </span>
+                <span className="text-[#00e0b8] font-bold">精度 {lang.acc}</span>
               </div>
               <div className="flex justify-between items-center pt-1 border-t border-[#1e2f47]/50 text-[10px]">
                 <span className="text-[#5c697a]">{lang.status}</span>
                 <button
-                  onClick={() =>
-                    onShowToast(
-                      "success",
-                      `已切换 ${lang.name} 作为当前对齐基准`,
-                    )
-                  }
+                  onClick={() => onShowToast("success", `已切换 ${lang.name} 作为当前对齐基准`)}
                   className="text-[#00e0b8] hover:underline cursor-pointer"
                 >
                   设为主词典
@@ -349,12 +313,8 @@ export function DispatchModule({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="p-4 rounded-xl bg-[#0f1f38] border border-[#1e2f47] space-y-3">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-[#e8f0f8]">
-              多平台账号授权认证状态
-            </span>
-            <span className="text-[10px] text-[#00e0b8] font-mono">
-              5/5 授权有效
-            </span>
+            <span className="font-semibold text-[#e8f0f8]">多平台账号授权认证状态</span>
+            <span className="text-[10px] text-[#00e0b8] font-mono">5/5 授权有效</span>
           </div>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between items-center p-1.5 rounded bg-[#15294a]">
@@ -380,16 +340,14 @@ export function DispatchModule({
 
         <div className="p-4 rounded-xl bg-[#0f1f38] border border-[#1e2f47] space-y-3">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-[#e8f0f8]">
-              推送异常自动重试策略
-            </span>
+            <span className="font-semibold text-[#e8f0f8]">推送异常自动重试策略</span>
             <Badge variant="brand" size="xs">
               自愈中
             </Badge>
           </div>
           <p className="text-xs text-[#8a97a8] leading-relaxed">
-            网络抖动或平台限流时，采用指数退避算法（30s、60s、120s）自动重试，失败满
-            3 次自动转入人工复核队列。
+            网络抖动或平台限流时，采用指数退避算法（30s、60s、120s）自动重试，失败满 3
+            次自动转入人工复核队列。
           </p>
           <Button
             variant="outline"
@@ -402,7 +360,7 @@ export function DispatchModule({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 /* --------------------------------------------------------------

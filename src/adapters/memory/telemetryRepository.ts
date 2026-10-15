@@ -16,13 +16,13 @@
  * dependencies: ../../types, ../../domains/ops/ports, ../../data/ops
  * exports: createMemoryTelemetry
  */
-import { INITIAL_LOGS, OPS_METRICS, SERVICES_LIST, SYSTEM_ALARMS } from "../../data/ops"
-import { TelemetryPort } from "../../domains/ops/ports"
-import { AlarmItem, LogEntry } from "../../types"
+import { INITIAL_LOGS, OPS_METRICS, SERVICES_LIST, SYSTEM_ALARMS } from "../../data/ops";
+import { TelemetryPort } from "../../domains/ops/ports";
+import { AlarmItem, LogEntry } from "../../types";
 
 /** 深拷贝 — 四事件表均为 JSON 纯结构（无函数/循环引用），安全 */
 function deepCopy<T>(value: T): T {
-  return JSON.parse(JSON.stringify(value)) as T
+  return JSON.parse(JSON.stringify(value)) as T;
 }
 
 /**
@@ -34,34 +34,34 @@ function deepCopy<T>(value: T): T {
  * 外部篡改不污染适配器状态。
  */
 export function createMemoryTelemetry(): TelemetryPort {
-  let logs: LogEntry[] = deepCopy(INITIAL_LOGS)
-  let alarms: AlarmItem[] = deepCopy(SYSTEM_ALARMS)
+  let logs: LogEntry[] = deepCopy(INITIAL_LOGS);
+  let alarms: AlarmItem[] = deepCopy(SYSTEM_ALARMS);
 
   return {
     async listServices() {
-      return deepCopy(SERVICES_LIST)
+      return deepCopy(SERVICES_LIST);
     },
     async listMetrics() {
-      return deepCopy(OPS_METRICS)
+      return deepCopy(OPS_METRICS);
     },
     async listAlarms() {
-      return deepCopy(alarms)
+      return deepCopy(alarms);
     },
     async listLogs() {
-      return deepCopy(logs)
+      return deepCopy(logs);
     },
     async appendLog(entry) {
-      const record = deepCopy(entry)
-      logs = [record, ...logs]
-      return deepCopy(record)
+      const record = deepCopy(entry);
+      logs = [record, ...logs];
+      return deepCopy(record);
     },
     async resolveAlarm(id) {
-      const target = alarms.find((a) => a.id === id)
-      if (!target) return null
-      target.resolved = true
-      return deepCopy(target)
+      const target = alarms.find((a) => a.id === id);
+      if (!target) return null;
+      target.resolved = true;
+      return deepCopy(target);
     },
-  }
+  };
 }
 
 /* --------------------------------------------------------------

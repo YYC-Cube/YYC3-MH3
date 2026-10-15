@@ -16,13 +16,13 @@
  * dependencies: ../../types, ../../domains/batch/ports, ../../data/batch
  * exports: createMemoryBatchRepository
  */
-import { INITIAL_BATCHES } from "../../data/batch"
-import { BatchRepository } from "../../domains/batch/ports"
-import { BatchItem } from "../../types"
+import { INITIAL_BATCHES } from "../../data/batch";
+import { BatchRepository } from "../../domains/batch/ports";
+import { BatchItem } from "../../types";
 
 /** 深拷贝 — BatchItem/SeedItem 均为 JSON 纯结构（无函数/循环引用），安全 */
 function deepCopy<T>(value: T): T {
-  return JSON.parse(JSON.stringify(value)) as T
+  return JSON.parse(JSON.stringify(value)) as T;
 }
 
 /**
@@ -30,17 +30,17 @@ function deepCopy<T>(value: T): T {
  * 以演示快照为种子，所有出借均为深拷贝，外部篡改不污染仓库状态。
  */
 export function createMemoryBatchRepository(): BatchRepository {
-  let snapshot: BatchItem[] = deepCopy(INITIAL_BATCHES)
+  let snapshot: BatchItem[] = deepCopy(INITIAL_BATCHES);
 
   return {
     async listAll() {
-      return deepCopy(snapshot)
+      return deepCopy(snapshot);
     },
     async getById(id) {
-      const found = snapshot.find((b) => b.id === id)
-      return found ? deepCopy(found) : null
+      const found = snapshot.find((b) => b.id === id);
+      return found ? deepCopy(found) : null;
     },
-  }
+  };
 }
 
 /* --------------------------------------------------------------

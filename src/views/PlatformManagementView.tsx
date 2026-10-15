@@ -16,14 +16,14 @@
  * dependencies: react, lucide-react, ../components/common, ../components/platform/*, ../types
  * exports: PlatformManagementViewProps, PlatformManagementView
  */
-import { FileSpreadsheet, Send } from "lucide-react"
-import { useState, type FC } from "react"
-import { Button, Modal } from "../components/common"
-import { AnalyticsModule } from "../components/platform/AnalyticsModule"
-import { ConfigModule } from "../components/platform/ConfigModule"
-import { DispatchModule } from "../components/platform/DispatchModule"
-import { MediaModule } from "../components/platform/MediaModule"
-import { NewPushModal } from "../components/platform/NewPushModal"
+import { FileSpreadsheet, Send } from "lucide-react";
+import { useState, type FC } from "react";
+import { Button, Modal } from "../components/common";
+import { AnalyticsModule } from "../components/platform/AnalyticsModule";
+import { ConfigModule } from "../components/platform/ConfigModule";
+import { DispatchModule } from "../components/platform/DispatchModule";
+import { MediaModule } from "../components/platform/MediaModule";
+import { NewPushModal } from "../components/platform/NewPushModal";
 import {
   MediaClipItem,
   NavTabId,
@@ -31,17 +31,17 @@ import {
   PushTaskItem,
   ShowToast,
   SocialPlatformKey,
-} from "../types"
+} from "../types";
 
 /** 平台管理子模块页签 ID */
-export type PlatformModule = "dispatch" | "media" | "analytics" | "config"
+export type PlatformModule = "dispatch" | "media" | "analytics" | "config";
 
 const MODULE_TABS: { id: PlatformModule; label: string }[] = [
   { id: "dispatch", label: "1. 生产调度台 (Task Dispatch & Push)" },
   { id: "media", label: "2. 媒体处理中心 (Media Timeline Studio)" },
   { id: "analytics", label: "3. 数据分析中心 (Data Analytics BI)" },
   { id: "config", label: "4. 系统配置管理 (System Config & Audits)" },
-]
+];
 
 /** 推送任务演示快照（状态种子 — 存视图层，模块切换不重置） */
 const INITIAL_PUSH_TASKS: PushTaskItem[] = [
@@ -81,7 +81,7 @@ const INITIAL_PUSH_TASKS: PushTaskItem[] = [
     targetAccount: "@美妆灵动官",
     retryCount: 0,
   },
-]
+];
 
 /** 媒体片段演示快照（状态种子 — 存视图层，模块切换不重置） */
 const INITIAL_CLIPS: MediaClipItem[] = [
@@ -115,39 +115,37 @@ const INITIAL_CLIPS: MediaClipItem[] = [
     aspectRatio: "9:16",
     audioAligned: true,
   },
-]
+];
 
 export interface PlatformManagementViewProps {
-  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void
-  onShowToast: ShowToast
+  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void;
+  onShowToast: ShowToast;
 }
 
-export const PlatformManagementView: FC<PlatformManagementViewProps> = ({
-  onShowToast,
-}) => {
-  const [activeModule, setActiveModule] = useState<PlatformModule>("dispatch")
+export const PlatformManagementView: FC<PlatformManagementViewProps> = ({ onShowToast }) => {
+  const [activeModule, setActiveModule] = useState<PlatformModule>("dispatch");
 
   // Push Tasks（视图层持有 — 模块切换保持状态，与拆分前行为一致）
-  const [pushTasks, setPushTasks] = useState<PushTaskItem[]>(INITIAL_PUSH_TASKS)
+  const [pushTasks, setPushTasks] = useState<PushTaskItem[]>(INITIAL_PUSH_TASKS);
 
   // Media Clips（视图层持有 — 模块切换保持状态）
-  const [clips] = useState<MediaClipItem[]>(INITIAL_CLIPS)
-  const [activeClipId, setActiveClipId] = useState("clip-1")
-  const [timelinePlayHead] = useState(4.2)
+  const [clips] = useState<MediaClipItem[]>(INITIAL_CLIPS);
+  const [activeClipId, setActiveClipId] = useState("clip-1");
+  const [timelinePlayHead] = useState(4.2);
 
-  const [isExportReportModalOpen, setIsExportReportModalOpen] = useState(false)
+  const [isExportReportModalOpen, setIsExportReportModalOpen] = useState(false);
 
   // New Push Job Modal（状态存视图层：头部与调度台双入口触发）
-  const [isNewPushModalOpen, setIsNewPushModalOpen] = useState(false)
-  const [selectedPlatforms, setSelectedPlatforms] = useState<
-    SocialPlatformKey[]
-  >(["douyin", "channels", "nas"])
+  const [isNewPushModalOpen, setIsNewPushModalOpen] = useState(false);
+  const [selectedPlatforms, setSelectedPlatforms] = useState<SocialPlatformKey[]>([
+    "douyin",
+    "channels",
+    "nas",
+  ]);
 
   const togglePlatform = (p: SocialPlatformKey) => {
-    setSelectedPlatforms((prev) =>
-      prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p],
-    )
-  }
+    setSelectedPlatforms((prev) => (prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]));
+  };
 
   const handleStartPush = () => {
     const newTask: PushTaskItem = {
@@ -161,15 +159,15 @@ export const PlatformManagementView: FC<PlatformManagementViewProps> = ({
       estRemaining: "02:10",
       targetAccount: "@矩阵认证主理人",
       retryCount: 0,
-    }
-    setPushTasks((prev) => [newTask, ...prev])
-    setIsNewPushModalOpen(false)
+    };
+    setPushTasks((prev) => [newTask, ...prev]);
+    setIsNewPushModalOpen(false);
     onShowToast(
       "success",
       "已启动多平台一键分发任务",
       "推送任务已入本地队列异步执行（演示，无外部出站）",
-    )
-  }
+    );
+  };
 
   return (
     <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#0a1628]">
@@ -177,9 +175,7 @@ export const PlatformManagementView: FC<PlatformManagementViewProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#1e2f47]">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-[#e8f0f8]">
-              平台管理中心 · Platform Hub
-            </h1>
+            <h1 className="text-xl font-bold text-[#e8f0f8]">平台管理中心 · Platform Hub</h1>
             <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#00e0b8]/15 text-[#00e0b8] border border-[#00e0b8]/30 font-mono">
               生产-编排-运维-管理-分析 全闭环
             </span>
@@ -215,10 +211,11 @@ export const PlatformManagementView: FC<PlatformManagementViewProps> = ({
           <button
             key={tab.id}
             onClick={() => setActiveModule(tab.id)}
-            className={`pb-3 font-medium transition-colors cursor-pointer relative ${activeModule === tab.id
-              ? "text-[#00e0b8] font-semibold text-sm"
-              : "text-[#8a97a8] hover:text-[#e8f0f8]"
-              }`}
+            className={`pb-3 font-medium transition-colors cursor-pointer relative ${
+              activeModule === tab.id
+                ? "text-[#00e0b8] font-semibold text-sm"
+                : "text-[#8a97a8] hover:text-[#e8f0f8]"
+            }`}
           >
             {tab.label}
             {activeModule === tab.id && (
@@ -245,9 +242,7 @@ export const PlatformManagementView: FC<PlatformManagementViewProps> = ({
           onShowToast={onShowToast}
         />
       )}
-      {activeModule === "analytics" && (
-        <AnalyticsModule onShowToast={onShowToast} />
-      )}
+      {activeModule === "analytics" && <AnalyticsModule onShowToast={onShowToast} />}
       {activeModule === "config" && <ConfigModule onShowToast={onShowToast} />}
 
       {/* New Push Job Modal */}
@@ -269,8 +264,8 @@ export const PlatformManagementView: FC<PlatformManagementViewProps> = ({
             variant="primary"
             size="sm"
             onClick={() => {
-              setIsExportReportModalOpen(false)
-              onShowToast("success", "报表生成成功，已保存至本地")
+              setIsExportReportModalOpen(false);
+              onShowToast("success", "报表生成成功，已保存至本地");
             }}
           >
             下载报表包 (Excel + PDF)
@@ -282,8 +277,8 @@ export const PlatformManagementView: FC<PlatformManagementViewProps> = ({
         </p>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

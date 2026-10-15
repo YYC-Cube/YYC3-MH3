@@ -16,7 +16,7 @@
  * dependencies: ../types
  * exports: INITIAL_BATCHES
  */
-import { BatchItem } from "../types"
+import { BatchItem } from "../types";
 
 export const INITIAL_BATCHES: BatchItem[] = [
   {
@@ -40,8 +40,7 @@ export const INITIAL_BATCHES: BatchItem[] = [
     resolution: "1080x1920",
     fps: 30,
     vramUsageGb: 19.4,
-    previewThumbnail:
-      "/placeholders/person.svg",
+    previewThumbnail: "/placeholders/person.svg",
     tags: ["金融播报", "Ref2VA", "4K增强", "口型S级"],
   },
   {
@@ -65,8 +64,7 @@ export const INITIAL_BATCHES: BatchItem[] = [
     resolution: "1080x1920",
     fps: 60,
     vramUsageGb: 21.2,
-    previewThumbnail:
-      "/placeholders/person.svg",
+    previewThumbnail: "/placeholders/person.svg",
     tags: ["科技发布", "FL2VA", "60FPS", "优质种子回写"],
   },
   {
@@ -90,8 +88,7 @@ export const INITIAL_BATCHES: BatchItem[] = [
     resolution: "720x1280",
     fps: 30,
     vramUsageGb: 16.8,
-    previewThumbnail:
-      "/placeholders/person.svg",
+    previewThumbnail: "/placeholders/person.svg",
     tags: ["电商带货", "高频口型"],
   },
   {
@@ -115,8 +112,7 @@ export const INITIAL_BATCHES: BatchItem[] = [
     resolution: "1080x1920",
     fps: 30,
     vramUsageGb: 22.8,
-    previewThumbnail:
-      "/placeholders/person.svg",
+    previewThumbnail: "/placeholders/person.svg",
     tags: ["文旅导游", "口型偏移", "需优化Seed"],
   },
   {
@@ -140,11 +136,10 @@ export const INITIAL_BATCHES: BatchItem[] = [
     resolution: "1080x1920",
     fps: 30,
     vramUsageGb: 0,
-    previewThumbnail:
-      "/placeholders/person.svg",
+    previewThumbnail: "/placeholders/person.svg",
     tags: ["医疗科普", "排队中"],
   },
-]
+];
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

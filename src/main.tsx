@@ -16,26 +16,24 @@
  * dependencies: react, react-dom/client, ./App
  * exports: —
  */
-import React from "react"
-import ReactDOM from "react-dom/client"
-import App from "./App"
-import "./index.css"
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-)
+);
 
 // PWA Service Worker：仅生产注册（dev 避开 HMR 通道）；静态资源离线化，/api 面由 SW 内守卫禁缓存
 if ("serviceWorker" in navigator && import.meta.env.PROD) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register(`${import.meta.env.BASE_URL}sw.js`)
-      .catch(() => {
-        /* SW 注册失败不阻塞应用 */
-      })
-  })
+    navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {
+      /* SW 注册失败不阻塞应用 */
+    });
+  });
 }
 
 /* --------------------------------------------------------------

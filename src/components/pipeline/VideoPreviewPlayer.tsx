@@ -26,16 +26,16 @@ import {
   Scan,
   Volume2,
   VolumeX,
-} from "lucide-react"
-import React, { useEffect, useRef, useState } from "react"
+} from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 
 export interface VideoPreviewPlayerProps {
-  posterUrl?: string
-  batchId?: string
-  seedNumber?: number
-  score?: number
-  onSnapshot?: () => void
-  className?: string
+  posterUrl?: string;
+  batchId?: string;
+  seedNumber?: number;
+  score?: number;
+  onSnapshot?: () => void;
+  className?: string;
 }
 
 export const VideoPreviewPlayer: React.FC<VideoPreviewPlayerProps> = ({
@@ -46,58 +46,58 @@ export const VideoPreviewPlayer: React.FC<VideoPreviewPlayerProps> = ({
   onSnapshot,
   className = "",
 }) => {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [currentFrame, setCurrentFrame] = useState(142)
-  const totalFrames = 300
-  const [playbackSpeed, setPlaybackSpeed] = useState(1.0)
-  const [isMuted, setIsMuted] = useState(false)
-  const [showLipBox, setShowLipBox] = useState(true)
-  const [flash, setFlash] = useState(false)
-  const timerRef = useRef<number | null>(null)
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentFrame, setCurrentFrame] = useState(142);
+  const totalFrames = 300;
+  const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
+  const [isMuted, setIsMuted] = useState(false);
+  const [showLipBox, setShowLipBox] = useState(true);
+  const [flash, setFlash] = useState(false);
+  const timerRef = useRef<number | null>(null);
 
   // Playback timer simulation
   useEffect(() => {
     if (isPlaying) {
-      const interval = 1000 / (30 * playbackSpeed)
+      const interval = 1000 / (30 * playbackSpeed);
       timerRef.current = window.setInterval(() => {
         setCurrentFrame((prev) => {
-          if (prev >= totalFrames) return 1
-          return prev + 1
-        })
-      }, interval)
+          if (prev >= totalFrames) return 1;
+          return prev + 1;
+        });
+      }, interval);
     } else {
-      if (timerRef.current) clearInterval(timerRef.current)
+      if (timerRef.current) clearInterval(timerRef.current);
     }
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current)
-    }
-  }, [isPlaying, playbackSpeed])
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [isPlaying, playbackSpeed]);
 
   // Space key handler
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.code === "Space" && (e.target as HTMLElement).tagName !== "INPUT") {
-        e.preventDefault()
-        setIsPlaying((p) => !p)
+        e.preventDefault();
+        setIsPlaying((p) => !p);
       }
-    }
-    window.addEventListener("keydown", handleKey)
-    return () => window.removeEventListener("keydown", handleKey)
-  }, [])
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, []);
 
   const handleStepFrame = (delta: number) => {
-    setIsPlaying(false)
-    setCurrentFrame((prev) => Math.max(1, Math.min(totalFrames, prev + delta)))
-  }
+    setIsPlaying(false);
+    setCurrentFrame((prev) => Math.max(1, Math.min(totalFrames, prev + delta)));
+  };
 
   const handleTakeSnapshot = () => {
-    setFlash(true)
-    setTimeout(() => setFlash(false), 200)
-    onSnapshot?.()
-  }
+    setFlash(true);
+    setTimeout(() => setFlash(false), 200);
+    onSnapshot?.();
+  };
 
-  const progressPercent = (currentFrame / totalFrames) * 100
-  const currentSeconds = (currentFrame / 30).toFixed(1)
+  const progressPercent = (currentFrame / totalFrames) * 100;
+  const currentSeconds = (currentFrame / 30).toFixed(1);
 
   return (
     <div
@@ -107,19 +107,18 @@ export const VideoPreviewPlayer: React.FC<VideoPreviewPlayerProps> = ({
       <div className="px-4 py-2.5 bg-[#071425]/90 border-b border-[#30363d] flex items-center justify-between text-xs">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-[#00d4aa]" />
-          <span className="font-mono text-[#e6edf3] font-semibold">
-            {batchId}
-          </span>
+          <span className="font-mono text-[#e6edf3] font-semibold">{batchId}</span>
           <span className="text-[#8b949e]">·</span>
           <span className="font-mono text-[#8b949e]">Seed: {seedNumber}</span>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowLipBox((p) => !p)}
-            className={`px-2 py-0.5 rounded text-[11px] font-medium border transition-colors flex items-center gap-1 cursor-pointer ${showLipBox
-              ? "bg-[#00d4aa]/20 border-[#00d4aa] text-[#00d4aa]"
-              : "bg-[#122340] border-[#30363d] text-[#8b949e]"
-              }`}
+            className={`px-2 py-0.5 rounded text-[11px] font-medium border transition-colors flex items-center gap-1 cursor-pointer ${
+              showLipBox
+                ? "bg-[#00d4aa]/20 border-[#00d4aa] text-[#00d4aa]"
+                : "bg-[#122340] border-[#30363d] text-[#8b949e]"
+            }`}
           >
             <Scan className="w-3 h-3" />
             SyncNet 唇形框
@@ -159,15 +158,11 @@ export const VideoPreviewPlayer: React.FC<VideoPreviewPlayerProps> = ({
               key={i}
               className="w-1 bg-[#00d4aa]/80 rounded-t transition-all duration-150"
               style={{
-                height: isPlaying
-                  ? `${(h * ((currentFrame % 5) + 3)) / 8}%`
-                  : `${h * 0.4}%`,
+                height: isPlaying ? `${(h * ((currentFrame % 5) + 3)) / 8}%` : `${h * 0.4}%`,
               }}
             />
           ))}
-          <span className="text-[10px] font-mono text-[#8b949e] ml-1.5 self-center">
-            48kHz PCM
-          </span>
+          <span className="text-[10px] font-mono text-[#8b949e] ml-1.5 self-center">48kHz PCM</span>
         </div>
 
         {/* Center Play Overlay on hover or paused */}
@@ -192,9 +187,9 @@ export const VideoPreviewPlayer: React.FC<VideoPreviewPlayerProps> = ({
       <div className="px-4 pt-3 pb-1 bg-[#0c1a30]">
         <div
           onClick={(e) => {
-            const rect = e.currentTarget.getBoundingClientRect()
-            const clickPos = (e.clientX - rect.left) / rect.width
-            setCurrentFrame(Math.floor(clickPos * totalFrames))
+            const rect = e.currentTarget.getBoundingClientRect();
+            const clickPos = (e.clientX - rect.left) / rect.width;
+            setCurrentFrame(Math.floor(clickPos * totalFrames));
           }}
           className="relative w-full h-1.5 bg-[#122340] rounded-full overflow-hidden cursor-pointer hover:h-2 transition-all"
         >
@@ -247,9 +242,7 @@ export const VideoPreviewPlayer: React.FC<VideoPreviewPlayerProps> = ({
 
           {/* Time & Frame counter */}
           <div className="font-mono text-[11px] text-[#8b949e] ml-2 flex items-center gap-1.5">
-            <span className="text-[#e6edf3] font-semibold">
-              {currentSeconds}s
-            </span>
+            <span className="text-[#e6edf3] font-semibold">{currentSeconds}s</span>
             <span>/</span>
             <span>10.0s</span>
             <span className="text-[#30363d]">|</span>
@@ -267,10 +260,11 @@ export const VideoPreviewPlayer: React.FC<VideoPreviewPlayerProps> = ({
               <button
                 key={s}
                 onClick={() => setPlaybackSpeed(s)}
-                className={`px-1.5 py-0.5 rounded text-[10px] font-mono transition-colors cursor-pointer ${playbackSpeed === s
-                  ? "bg-[#00d4aa] text-[#071425] font-bold"
-                  : "text-[#8b949e] hover:text-[#e6edf3]"
-                  }`}
+                className={`px-1.5 py-0.5 rounded text-[10px] font-mono transition-colors cursor-pointer ${
+                  playbackSpeed === s
+                    ? "bg-[#00d4aa] text-[#071425] font-bold"
+                    : "text-[#8b949e] hover:text-[#e6edf3]"
+                }`}
               >
                 {s}x
               </button>
@@ -292,17 +286,13 @@ export const VideoPreviewPlayer: React.FC<VideoPreviewPlayerProps> = ({
             onClick={() => setIsMuted((p) => !p)}
             className="p-1.5 rounded bg-[#122340] hover:bg-[#182e54] text-[#8b949e] hover:text-[#e6edf3] border border-[#30363d] transition-colors cursor-pointer"
           >
-            {isMuted ? (
-              <VolumeX className="w-4 h-4" />
-            ) : (
-              <Volume2 className="w-4 h-4" />
-            )}
+            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
           </button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

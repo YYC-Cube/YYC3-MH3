@@ -31,29 +31,25 @@ import {
   Scale,
   Shield,
   Sparkles,
-  Star
-} from "lucide-react"
-import React, { useState } from "react"
-import { Badge, Button, Input, Modal } from "../components/common"
-import { YYC3_MEMBERS } from "../data/yyc3Data"
-import { AgentNode, NavigateExtra, NavTabId } from "../types"
+  Star,
+} from "lucide-react";
+import React, { useState } from "react";
+import { Badge, Button, Input, Modal } from "../components/common";
+import { YYC3_MEMBERS } from "../data/yyc3Data";
+import { AgentNode, NavigateExtra, NavTabId } from "../types";
 
 /** Agent 工作流左侧面板页签 ID */
-export type AgentLeftTab = "agents" | "storyboards" | "templates"
+export type AgentLeftTab = "agents" | "storyboards" | "templates";
 
 const AGENT_LEFT_TABS: { id: AgentLeftTab; label: string }[] = [
   { id: "storyboards", label: "分镜队列" },
   { id: "agents", label: "AI Family (8)" },
   { id: "templates", label: "漫剧模板" },
-]
+];
 
 export interface AgentWorkflowViewProps {
-  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void
-  onShowToast: (
-    type: "success" | "error" | "warning" | "info",
-    msg: string,
-    sub?: string,
-  ) => void
+  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void;
+  onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
 // 8 Nodes directly aligned with YYC3 AI Family (Requirement 3.1)
@@ -199,27 +195,25 @@ const INITIAL_YYC3_NODES: AgentNode[] = [
       sandboxActive: true,
     },
   },
-]
+];
 
-export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
-  onShowToast,
-}) => {
-  const [nodes] = useState<AgentNode[]>(INITIAL_YYC3_NODES)
+export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({ onShowToast }) => {
+  const [nodes] = useState<AgentNode[]>(INITIAL_YYC3_NODES);
   const [selectedNodeId, setSelectedNodeId] = useState<string>(
     INITIAL_YYC3_NODES[2]!.id, // mock 常量数组恒非空，静态索引安全
-  ) // Default to Yuanqi
-  const selectedNode = nodes.find((n) => n.id === selectedNodeId) || nodes[0]
+  ); // Default to Yuanqi
+  const selectedNode = nodes.find((n) => n.id === selectedNodeId) || nodes[0];
 
-  const [isRunningWorkflow, setIsRunningWorkflow] = useState(false)
-  const [activeTabLeft, setActiveTabLeft] = useState<AgentLeftTab>("storyboards")
+  const [isRunningWorkflow, setIsRunningWorkflow] = useState(false);
+  const [activeTabLeft, setActiveTabLeft] = useState<AgentLeftTab>("storyboards");
 
   // Floating Draggable Card state (Requirement 3.2)
-  const [cardDocked, setCardDocked] = useState(true)
-  const [cardPosition] = useState({ x: 30, y: 30 })
+  const [cardDocked, setCardDocked] = useState(true);
+  const [cardPosition] = useState({ x: 30, y: 30 });
 
   // Modals state
-  const [isDebuggerOpen, setIsDebuggerOpen] = useState(false)
-  const [isExportTopoOpen, setIsExportTopoOpen] = useState(false)
+  const [isDebuggerOpen, setIsDebuggerOpen] = useState(false);
+  const [isExportTopoOpen, setIsExportTopoOpen] = useState(false);
 
   const [storyboards] = useState([
     {
@@ -249,47 +243,39 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
       memberName: "千里·伯乐",
       color: "#FFFFFF",
     },
-  ])
+  ]);
 
   const handleRunWorkflow = () => {
-    setIsRunningWorkflow(true)
-    onShowToast(
-      "info",
-      "正在启动 YYC³ 全链路多 Agent 协同流水线",
-      "8 位核心 AI 成员开始协同计算",
-    )
+    setIsRunningWorkflow(true);
+    onShowToast("info", "正在启动 YYC³ 全链路多 Agent 协同流水线", "8 位核心 AI 成员开始协同计算");
     setTimeout(() => {
-      setIsRunningWorkflow(false)
-      onShowToast(
-        "success",
-        "多 Agent 漫剧分镜生成完毕",
-        "分镜 #01~#03 已自动回写至生产批次队列",
-      )
-    }, 2200)
-  }
+      setIsRunningWorkflow(false);
+      onShowToast("success", "多 Agent 漫剧分镜生成完毕", "分镜 #01~#03 已自动回写至生产批次队列");
+    }, 2200);
+  };
 
   const renderRoleIcon = (memberId: string) => {
     switch (memberId) {
       case "yanqi":
-        return <Ear className="w-3.5 h-3.5" />
+        return <Ear className="w-3.5 h-3.5" />;
       case "yushu":
-        return <Brain className="w-3.5 h-3.5" />
+        return <Brain className="w-3.5 h-3.5" />;
       case "yujian":
-        return <Eye className="w-3.5 h-3.5" />
+        return <Eye className="w-3.5 h-3.5" />;
       case "qianli":
-        return <Star className="w-3.5 h-3.5 fill-current" />
+        return <Star className="w-3.5 h-3.5 fill-current" />;
       case "yuanqi":
-        return <GitBranch className="w-3.5 h-3.5" />
+        return <GitBranch className="w-3.5 h-3.5" />;
       case "zhiyun":
-        return <Shield className="w-3.5 h-3.5" />
+        return <Shield className="w-3.5 h-3.5" />;
       case "gewu":
-        return <Scale className="w-3.5 h-3.5" />
+        return <Scale className="w-3.5 h-3.5" />;
       case "chuangxiang":
-        return <Lightbulb className="w-3.5 h-3.5" />
+        return <Lightbulb className="w-3.5 h-3.5" />;
       default:
-        return <Sparkles className="w-3.5 h-3.5" />
+        return <Sparkles className="w-3.5 h-3.5" />;
     }
-  }
+  };
 
   // 数据守卫：无匹配节点时渲染空态（mock 数据恒非空，此分支仅作类型兜底）
   if (!selectedNode) {
@@ -297,7 +283,7 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
       <div className="flex-1 flex items-center justify-center text-sm text-[#8a97a8] bg-[#0a1628]">
         暂无 Agent 节点数据
       </div>
-    )
+    );
   }
 
   return (
@@ -354,10 +340,11 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
               <button
                 key={tab.id}
                 onClick={() => setActiveTabLeft(tab.id)}
-                className={`flex-1 py-1 text-center rounded-md text-[11px] transition-colors cursor-pointer ${activeTabLeft === tab.id
-                  ? "bg-[#15294a] text-[#00e0b8] font-semibold border border-[#1e2f47]"
-                  : "text-[#8a97a8] hover:text-[#e8f0f8]"
-                  }`}
+                className={`flex-1 py-1 text-center rounded-md text-[11px] transition-colors cursor-pointer ${
+                  activeTabLeft === tab.id
+                    ? "bg-[#15294a] text-[#00e0b8] font-semibold border border-[#1e2f47]"
+                    : "text-[#8a97a8] hover:text-[#e8f0f8]"
+                }`}
               >
                 {tab.label}
               </button>
@@ -377,19 +364,12 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
                   className="p-2.5 rounded-lg bg-[#0f1f38] border border-[#1e2f47] space-y-1.5 hover:border-[#00e0b8]/40 transition-colors cursor-pointer"
                 >
                   <div className="flex justify-between items-center">
-                    <span className="font-mono font-bold text-[#00e0b8]">
-                      {sb.id}
-                    </span>
-                    <span className="text-[10px] text-[#8a97a8] font-mono">
-                      {sb.duration}
-                    </span>
+                    <span className="font-mono font-bold text-[#00e0b8]">{sb.id}</span>
+                    <span className="text-[10px] text-[#8a97a8] font-mono">{sb.duration}</span>
                   </div>
                   <div className="text-[#e8f0f8] font-medium">{sb.title}</div>
                   <div className="flex items-center justify-between text-[10px] pt-1 border-t border-[#1e2f47]/50">
-                    <div
-                      className="flex items-center gap-1.5"
-                      style={{ color: sb.color }}
-                    >
+                    <div className="flex items-center gap-1.5" style={{ color: sb.color }}>
                       {renderRoleIcon(sb.memberId)}
                       <span className="font-semibold">{sb.memberName}</span>
                     </div>
@@ -409,8 +389,8 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
                 <div
                   key={ag.id}
                   onClick={() => {
-                    const matchedNode = nodes.find((n) => n.memberId === ag.id)
-                    if (matchedNode) setSelectedNodeId(matchedNode.id)
+                    const matchedNode = nodes.find((n) => n.memberId === ag.id);
+                    if (matchedNode) setSelectedNodeId(matchedNode.id);
                   }}
                   className="p-2 rounded-lg bg-[#0f1f38] border border-[#1e2f47] flex items-center justify-between hover:border-white/40 transition-colors cursor-pointer"
                 >
@@ -420,17 +400,13 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
                       style={{ backgroundColor: ag.roleColor }}
                     />
                     <div>
-                      <div className="font-medium text-[#e8f0f8]">
-                        {ag.name}
-                      </div>
+                      <div className="font-medium text-[#e8f0f8]">{ag.name}</div>
                       <div className="text-[10px] text-[#8a97a8] truncate max-w-[130px]">
                         {ag.roleDefinition}
                       </div>
                     </div>
                   </div>
-                  <span className="font-mono text-[10px] text-[#5c697a]">
-                    {ag.clockPosition}
-                  </span>
+                  <span className="font-mono text-[10px] text-[#5c697a]">{ag.clockPosition}</span>
                 </div>
               ))}
             </div>
@@ -455,9 +431,7 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
               ].map((t, i) => (
                 <div
                   key={i}
-                  onClick={() =>
-                    onShowToast("success", `已载入模板: ${t.name}`)
-                  }
+                  onClick={() => onShowToast("success", `已载入模板: ${t.name}`)}
                   className="p-2.5 rounded-lg bg-[#0f1f38] border border-[#1e2f47] hover:border-[#00e0b8]/40 transition-colors cursor-pointer space-y-1"
                 >
                   <div className="font-semibold text-[#e8f0f8]">{t.name}</div>
@@ -520,12 +494,7 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
               strokeDasharray="4 4"
             />
             {/* Yushu -> Qianli */}
-            <path
-              d="M 480 290 L 580 340"
-              fill="none"
-              stroke="#FFFFFF"
-              strokeWidth="2"
-            />
+            <path d="M 480 290 L 580 340" fill="none" stroke="#FFFFFF" strokeWidth="2" />
             {/* Qianli -> Zhiyun */}
             <path
               d="M 760 340 C 820 340, 820 300, 880 300"
@@ -545,7 +514,7 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
 
           {/* 8 AI Family Nodes (Requirement 3.1) */}
           {nodes.map((node) => {
-            const isSelected = selectedNode.id === node.id
+            const isSelected = selectedNode.id === node.id;
             return (
               <div
                 key={node.id}
@@ -554,48 +523,41 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
                   left: `${node.x}px`,
                   top: `${node.y}px`,
                   borderColor: isSelected ? "#ffffff" : node.roleColor,
-                  boxShadow: isSelected
-                    ? `0 0 20px ${node.roleColor}80`
-                    : undefined,
+                  boxShadow: isSelected ? `0 0 20px ${node.roleColor}80` : undefined,
                 }}
-                className={`absolute w-44 rounded-xl bg-[#0c1a30] border-2 transition-all cursor-pointer p-3 space-y-1.5 shadow-xl ${isSelected
-                  ? "shadow-[0_0_24px_rgba(0,224,184,0.35)] scale-105 z-20"
-                  : "hover:border-white/40 z-10"
-                  }`}
+                className={`absolute w-44 rounded-xl bg-[#0c1a30] border-2 transition-all cursor-pointer p-3 space-y-1.5 shadow-xl ${
+                  isSelected
+                    ? "shadow-[0_0_24px_rgba(0,224,184,0.35)] scale-105 z-20"
+                    : "hover:border-white/40 z-10"
+                }`}
               >
                 <div className="flex items-center justify-between">
-                  <div
-                    className="flex items-center gap-1.5"
-                    style={{ color: node.roleColor }}
-                  >
+                  <div className="flex items-center gap-1.5" style={{ color: node.roleColor }}>
                     {renderRoleIcon(node.memberId)}
                     <span className="text-[10px] font-mono font-bold uppercase">
                       {node.memberId}
                     </span>
                   </div>
                   <span
-                    className={`w-2 h-2 rounded-full ${node.status === "success"
-                      ? "bg-[#00e0b8]"
-                      : node.status === "active"
-                        ? "bg-[#00e0b8] animate-ping"
-                        : "bg-[#5c697a]"
-                      }`}
+                    className={`w-2 h-2 rounded-full ${
+                      node.status === "success"
+                        ? "bg-[#00e0b8]"
+                        : node.status === "active"
+                          ? "bg-[#00e0b8] animate-ping"
+                          : "bg-[#5c697a]"
+                    }`}
                   />
                 </div>
 
-                <div className="text-xs font-bold text-[#e8f0f8]">
-                  {node.label}
-                </div>
-                <div className="text-[10px] text-[#8a97a8] truncate">
-                  {node.role}
-                </div>
+                <div className="text-xs font-bold text-[#e8f0f8]">{node.label}</div>
+                <div className="text-[10px] text-[#8a97a8] truncate">{node.role}</div>
 
                 <div className="pt-1 flex items-center justify-between text-[10px] text-[#5c697a] border-t border-[#1e2f47]/50 font-mono">
                   <span>In: {node.inputs.length}</span>
                   <span>Out: {node.outputs.length}</span>
                 </div>
               </div>
-            )
+            );
           })}
         </div>
 
@@ -605,9 +567,7 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
           <div className="w-80 border-l border-[#1e2f47] bg-[#0c1a30] p-4 space-y-4 flex flex-col flex-shrink-0 text-xs overflow-y-auto">
             <div className="flex items-center justify-between pb-2 border-b border-[#1e2f47]">
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-[#e8f0f8]">
-                  节点属性配置
-                </span>
+                <span className="font-semibold text-[#e8f0f8]">节点属性配置</span>
                 <span
                   className="w-2.5 h-2.5 rounded-full"
                   style={{ backgroundColor: selectedNode.roleColor }}
@@ -626,26 +586,15 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
 
             <div className="space-y-3">
               <Input label="节点名称" value={selectedNode.label} readOnly />
-              <Input
-                label="对齐 AI Family"
-                value={selectedNode.role}
-                readOnly
-              />
+              <Input label="对齐 AI Family" value={selectedNode.role} readOnly />
 
               <div className="p-3 rounded-lg bg-[#15294a] border border-[#1e2f47] space-y-2">
-                <span className="font-semibold text-[#e8f0f8]">
-                  特征超参数与配置
-                </span>
+                <span className="font-semibold text-[#e8f0f8]">特征超参数与配置</span>
                 <div className="space-y-1 font-mono text-[11px] text-[#8a97a8]">
                   {Object.entries(selectedNode.config).map(([k, v]) => (
-                    <div
-                      key={k}
-                      className="flex justify-between py-1 border-b border-[#1e2f47]/50"
-                    >
+                    <div key={k} className="flex justify-between py-1 border-b border-[#1e2f47]/50">
                       <span>{k}:</span>
-                      <span className="text-[#00e0b8] font-bold">
-                        {String(v)}
-                      </span>
+                      <span className="text-[#00e0b8] font-bold">{String(v)}</span>
                     </div>
                   ))}
                 </div>
@@ -657,12 +606,7 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
                 variant="primary"
                 size="sm"
                 className="w-full"
-                onClick={() =>
-                  onShowToast(
-                    "success",
-                    `${selectedNode.label} 属性已更新并生效`,
-                  )
-                }
+                onClick={() => onShowToast("success", `${selectedNode.label} 属性已更新并生效`)}
               >
                 应用节点参数更改
               </Button>
@@ -677,9 +621,7 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
             <div className="flex items-center justify-between pb-1.5 border-b border-[#1e2f47] cursor-move select-none">
               <div className="flex items-center gap-2">
                 <Move className="w-3.5 h-3.5 text-[#00e0b8]" />
-                <span className="font-semibold text-[#e8f0f8]">
-                  {selectedNode.label}
-                </span>
+                <span className="font-semibold text-[#e8f0f8]">{selectedNode.label}</span>
               </div>
               <div className="flex items-center gap-1">
                 <button
@@ -714,9 +656,7 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
         maxWidth="lg"
       >
         <div className="space-y-3 text-xs font-mono">
-          <p className="text-[#8a97a8] font-sans">
-            当前断点停驻位置：[元启·天枢 (调度总控)] 节点
-          </p>
+          <p className="text-[#8a97a8] font-sans">当前断点停驻位置：[元启·天枢 (调度总控)] 节点</p>
           <div className="p-3 rounded-lg bg-[#15294a] border border-[#1e2f47] space-y-1.5">
             <div className="flex justify-between">
               <span className="text-[#8a97a8]">latent_tensor.shape:</span>
@@ -748,8 +688,8 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
             variant="primary"
             size="sm"
             onClick={() => {
-              setIsExportTopoOpen(false)
-              onShowToast("success", "工作流拓扑 JSON 清单已下载")
+              setIsExportTopoOpen(false);
+              onShowToast("success", "工作流拓扑 JSON 清单已下载");
             }}
           >
             下载完整拓扑 JSON
@@ -769,8 +709,8 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

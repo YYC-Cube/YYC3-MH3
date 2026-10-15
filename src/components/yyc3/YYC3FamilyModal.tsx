@@ -33,71 +33,64 @@ import {
   Sparkles,
   Star,
   X,
-  Zap
-} from "lucide-react"
-import React, { useEffect, useRef, useState } from "react"
-import { PRESET_CHAT_PROMPTS, YYC3_MEMBERS } from "../../data/yyc3Data"
-import { YYC3Member } from "../../types"
-import { Button } from "../common"
+  Zap,
+} from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { PRESET_CHAT_PROMPTS, YYC3_MEMBERS } from "../../data/yyc3Data";
+import { YYC3Member } from "../../types";
+import { Button } from "../common";
 
 /** 星期标签（getDay: 0=日 … 6=六）；周末（日/六）以粉色高亮 */
-const DAY_LABELS = ["日", "一", "二", "三", "四", "五", "六"] as const
+const DAY_LABELS = ["日", "一", "二", "三", "四", "五", "六"] as const;
 
 /**
  * 表盘自适应：测量容器可用宽高，对 520 基准表盘做等比缩放。
  * 表盘内部（成员环/SVG/中心圆）统一以 520 坐标系定位，整层 scale 保证
  * 移动端窄屏与全屏宽幅下均完整呈现且不破坏节点几何。
  */
-function useDialScale(
-  ref: React.RefObject<HTMLDivElement | null>,
-  enabled: boolean,
-) {
-  const [scale, setScale] = useState(1)
+function useDialScale(ref: React.RefObject<HTMLDivElement | null>, enabled: boolean) {
+  const [scale, setScale] = useState(1);
   useEffect(() => {
-    const el = ref.current
-    if (!el || !enabled) return
+    const el = ref.current;
+    if (!el || !enabled) return;
     const ro = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        const { width, height } = entry.contentRect
+        const { width, height } = entry.contentRect;
         if (width > 0 && height > 0) {
-          setScale(Math.min(1, width / 520, height / 520))
+          setScale(Math.min(1, width / 520, height / 520));
         }
       }
-    })
-    ro.observe(el)
-    return () => ro.disconnect()
-  }, [ref, enabled])
-  return scale
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [ref, enabled]);
+  return scale;
 }
 
 /** AI Family 可执行动作负载（参数注入 / 种子载入），供 ChatMessage.actionable 与 onApplyAction 共用 */
 export type FamilyActionPayload =
   | { guidanceScale: number; steps: number; denoiseStrength?: number }
-  | { seedNumber: number }
+  | { seedNumber: number };
 
 export interface YYC3FamilyModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onApplyAction?: (actionType: string, payload?: FamilyActionPayload) => void
-  onShowToast: (
-    type: "success" | "error" | "warning" | "info",
-    msg: string,
-    sub?: string,
-  ) => void
+  isOpen: boolean;
+  onClose: () => void;
+  onApplyAction?: (actionType: string, payload?: FamilyActionPayload) => void;
+  onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
 interface ChatMessage {
-  id: string
-  sender: "user" | "agent"
-  agentName?: string
-  agentColor?: string
-  text: string
-  timestamp: string
+  id: string;
+  sender: "user" | "agent";
+  agentName?: string;
+  agentColor?: string;
+  text: string;
+  timestamp: string;
   actionable?: {
-    label: string
-    actionType: string
-    payload?: FamilyActionPayload
-  }
+    label: string;
+    actionType: string;
+    payload?: FamilyActionPayload;
+  };
 }
 
 export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
@@ -108,12 +101,12 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
 }) => {
   const [selectedMember, setSelectedMember] = useState<YYC3Member>(
     YYC3_MEMBERS[4]!, // mock 常量数组恒非空，静态索引安全
-  ) // Default to Yuanqi / Tianxu
-  const [isFullscreen, setIsFullscreen] = useState(false)
-  const [isChatOpen, setIsChatOpen] = useState(false)
+  ); // Default to Yuanqi / Tianxu
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   // 真实时钟：单源 Date state，1s 走时（数字时间 / 三针角度 / 日期星期均由此派生）
-  const [now, setNow] = useState<Date>(() => new Date())
-  const [chatInput, setChatInput] = useState("")
+  const [now, setNow] = useState<Date>(() => new Date());
+  const [chatInput, setChatInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "msg-1",
@@ -128,117 +121,117 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
         payload: { guidanceScale: 7.5, steps: 30, denoiseStrength: 0.65 },
       },
     },
-  ])
+  ]);
 
   // Real-time clock tick — 1 秒 setInterval 真实走时（原参考实现已删，见 git 基线 8424ee1）
   useEffect(() => {
-    const timer = window.setInterval(() => setNow(new Date()), 1000)
-    return () => window.clearInterval(timer)
-  }, [])
+    const timer = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   // Keyboard shortcut Esc
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
-        onClose()
+        onClose();
       }
-    }
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [isOpen, onClose])
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   // 表盘自适应缩放（浮窗打开时启用测量）
-  const dialAreaRef = useRef<HTMLDivElement>(null)
-  const dialScale = useDialScale(dialAreaRef, isOpen)
+  const dialAreaRef = useRef<HTMLDivElement>(null);
+  const dialScale = useDialScale(dialAreaRef, isOpen);
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   // ===== 真实时钟派生（角度公式同原参考实现，-90° 使零位指向 12 点）=====
-  const hours = now.getHours() % 12
-  const minutes = now.getMinutes()
-  const seconds = now.getSeconds()
-  const hourAngle = hours * 30 + minutes * 0.5 - 90
-  const minuteAngle = minutes * 6 + seconds * 0.1 - 90
-  const secondAngle = seconds * 6 - 90
-  const pad2 = (n: number) => String(n).padStart(2, "0")
-  const currentTimeStr = `${pad2(now.getHours())}:${pad2(minutes)}:${pad2(seconds)}`
-  const dateStr = `${String(now.getFullYear()).slice(2)}/${pad2(now.getMonth() + 1)}/${pad2(now.getDate())}`
-  const dayIdx = now.getDay()
-  const dayLabel = DAY_LABELS[dayIdx] ?? "日"
-  const isWeekend = dayIdx === 0 || dayIdx === 6
+  const hours = now.getHours() % 12;
+  const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
+  const hourAngle = hours * 30 + minutes * 0.5 - 90;
+  const minuteAngle = minutes * 6 + seconds * 0.1 - 90;
+  const secondAngle = seconds * 6 - 90;
+  const pad2 = (n: number) => String(n).padStart(2, "0");
+  const currentTimeStr = `${pad2(now.getHours())}:${pad2(minutes)}:${pad2(seconds)}`;
+  const dateStr = `${String(now.getFullYear()).slice(2)}/${pad2(now.getMonth() + 1)}/${pad2(now.getDate())}`;
+  const dayIdx = now.getDay();
+  const dayLabel = DAY_LABELS[dayIdx] ?? "日";
+  const isWeekend = dayIdx === 0 || dayIdx === 6;
 
   // 表盘几何：viewBox 520 坐标系，经 preserveAspectRatio 随容器等比自适应。
   // 中心 (260,260) 与成员环一致。三针真实钟表比例（秒>分>时），长度基于表盘
   // 半径 210 分级递减，且全部收在成员环内沿（r=180）之内：
   //   时针 110（青绿主色 · 最短最粗）｜分针 145（信息蓝 · 中长）｜秒针 172（粉 · 最细最长）
-  const CLOCK_CX = 260
-  const CLOCK_CY = 260
-  const HAND_HOUR = 110
-  const HAND_MINUTE = 145
-  const HAND_SECOND = 172
+  const CLOCK_CX = 260;
+  const CLOCK_CY = 260;
+  const HAND_HOUR = 110;
+  const HAND_MINUTE = 145;
+  const HAND_SECOND = 172;
   const handTip = (angleDeg: number, len: number) => ({
     x: CLOCK_CX + Math.cos((angleDeg * Math.PI) / 180) * len,
     y: CLOCK_CY + Math.sin((angleDeg * Math.PI) / 180) * len,
-  })
-  const hourTip = handTip(hourAngle, HAND_HOUR)
-  const minuteTip = handTip(minuteAngle, HAND_MINUTE)
-  const secondTip = handTip(secondAngle, HAND_SECOND)
+  });
+  const hourTip = handTip(hourAngle, HAND_HOUR);
+  const minuteTip = handTip(minuteAngle, HAND_MINUTE);
+  const secondTip = handTip(secondAngle, HAND_SECOND);
 
   const renderMemberIcon = (type: YYC3Member["iconType"], color: string) => {
-    const iconProps = { className: "w-5 h-5", style: { color } }
+    const iconProps = { className: "w-5 h-5", style: { color } };
     switch (type) {
       case "speech":
-        return <Ear {...iconProps} />
+        return <Ear {...iconProps} />;
       case "brain":
-        return <Brain {...iconProps} />
+        return <Brain {...iconProps} />;
       case "eye":
-        return <Eye {...iconProps} />
+        return <Eye {...iconProps} />;
       case "star":
-        return <Star {...iconProps} className="w-5 h-5 fill-current" />
+        return <Star {...iconProps} className="w-5 h-5 fill-current" />;
       case "tree":
-        return <GitBranch {...iconProps} />
+        return <GitBranch {...iconProps} />;
       case "shield":
-        return <Shield {...iconProps} />
+        return <Shield {...iconProps} />;
       case "balance":
-        return <Scale {...iconProps} />
+        return <Scale {...iconProps} />;
       case "lightbulb":
-        return <Lightbulb {...iconProps} />
+        return <Lightbulb {...iconProps} />;
     }
-  }
+  };
 
   const handleSendMessage = (textToSend?: string) => {
-    const text = textToSend || chatInput
-    if (!text.trim()) return
+    const text = textToSend || chatInput;
+    if (!text.trim()) return;
 
     const newMsg: ChatMessage = {
       id: `usr-${Date.now()}`,
       sender: "user",
       text,
       timestamp: new Date().toLocaleTimeString().slice(0, 5),
-    }
+    };
 
-    setMessages((prev) => [...prev, newMsg])
-    if (!textToSend) setChatInput("")
+    setMessages((prev) => [...prev, newMsg]);
+    if (!textToSend) setChatInput("");
 
     // Simulate Agent intelligent reply
     setTimeout(() => {
-      let replyText = `已接收您的指令「${text}」。已通过 ${selectedMember.name} 调度本地 DiffSynth 推理引擎，参数约束已就绪。`
-      let actionLabel = "应用调优方案至流水线"
-      let payload: FamilyActionPayload = { guidanceScale: 7.2, steps: 32 }
+      let replyText = `已接收您的指令「${text}」。已通过 ${selectedMember.name} 调度本地 DiffSynth 推理引擎，参数约束已就绪。`;
+      let actionLabel = "应用调优方案至流水线";
+      let payload: FamilyActionPayload = { guidanceScale: 7.2, steps: 32 };
 
       if (selectedMember.id === "gewu") {
         replyText =
-          "针对第 142 帧轻微迟滞分析：系眨眼间隔（380ms）略高于黄金基准（250ms）。已生成唇形掩码平滑补偿权重，建议采用。"
-        actionLabel = "一键应用唇形时序补偿补丁"
+          "针对第 142 帧轻微迟滞分析：系眨眼间隔（380ms）略高于黄金基准（250ms）。已生成唇形掩码平滑补偿权重，建议采用。";
+        actionLabel = "一键应用唇形时序补偿补丁";
       } else if (selectedMember.id === "qianli") {
         replyText =
-          "已从种子库比对出与当前人物面容最贴合的 S 级基线 Seed #81923011，该种子具备 96.8 分抗抖动特性。"
-        actionLabel = "载入 S 级种子 #81923011"
-        payload = { seedNumber: 81923011 }
+          "已从种子库比对出与当前人物面容最贴合的 S 级基线 Seed #81923011，该种子具备 96.8 分抗抖动特性。";
+        actionLabel = "载入 S 级种子 #81923011";
+        payload = { seedNumber: 81923011 };
       } else if (selectedMember.id === "zhiyun") {
         replyText =
-          "已检测到当前 VRAM 占用 19.4GB。已执行显存碎片平滑整理与 24h 前临时切片清除，释放出 3.4GB 缓冲空间。"
-        actionLabel = "查看运维自愈日志"
+          "已检测到当前 VRAM 占用 19.4GB。已执行显存碎片平滑整理与 24h 前临时切片清除，释放出 3.4GB 缓冲空间。";
+        actionLabel = "查看运维自愈日志";
       }
 
       setMessages((prev) => [
@@ -256,18 +249,20 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
             payload,
           },
         },
-      ])
-    }, 700)
-  }
+      ]);
+    }, 700);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-[#071222]/85 backdrop-blur-md animate-in fade-in duration-200">
       <div
-        className={`bg-[#0a1628] border border-[#1e2f47] rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 relative ${isFullscreen ? "w-[98vw] h-[95vh]" : "w-full max-w-5xl h-[94dvh] md:h-[660px] md:max-h-[94dvh]"
-          }`}
+        className={`bg-[#0a1628] border border-[#1e2f47] rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 relative ${
+          isFullscreen
+            ? "w-[98vw] h-[95vh]"
+            : "w-full max-w-5xl h-[94dvh] md:h-[660px] md:max-h-[94dvh]"
+        }`}
         style={{
-          boxShadow:
-            "0 0 32px rgba(0, 224, 184, 0.08), 0 20px 48px rgba(0, 0, 0, 0.6)",
+          boxShadow: "0 0 32px rgba(0, 224, 184, 0.08), 0 20px 48px rgba(0, 0, 0, 0.6)",
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -290,9 +285,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                   智能协同生产系统
                 </span>
               </div>
-              <p className="text-[10px] text-[#8a97a8]">
-                全局智能协同生产中心 · 8位核心业务 Agent
-              </p>
+              <p className="text-[10px] text-[#8a97a8]">全局智能协同生产中心 · 8位核心业务 Agent</p>
             </div>
           </div>
 
@@ -372,7 +365,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
 
                   {/* 12 Clock Hour Ticks */}
                   {Array.from({ length: 12 }).map((_, i) => {
-                    const angle = i * 30
+                    const angle = i * 30;
                     return (
                       <div
                         key={i}
@@ -384,7 +377,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                           transform: `rotate(${angle}deg)`,
                         }}
                       />
-                    )
+                    );
                   })}
 
                   {/* Center Core: YYC³ 品牌圆盘（144→96 同比缩小，三针环绕外露）+ 数字时钟下移（图一布局） */}
@@ -417,9 +410,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                           className="font-semibold"
                           style={{
                             color: isWeekend ? "#FF006E" : "#8a97a8",
-                            textShadow: isWeekend
-                              ? "0 0 6px rgba(255,0,110,0.5)"
-                              : "none",
+                            textShadow: isWeekend ? "0 0 6px rgba(255,0,110,0.5)" : "none",
                           }}
                         >
                           周{dayLabel}
@@ -435,11 +426,11 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                     className="absolute inset-0 w-full h-full pointer-events-none z-0"
                   >
                     {YYC3_MEMBERS.map((m) => {
-                      const isSelected = selectedMember.id === m.id
-                      const rad = ((m.angle - 90) * Math.PI) / 180
-                      const r = 210
-                      const x = CLOCK_CX + r * Math.cos(rad)
-                      const y = CLOCK_CY + r * Math.sin(rad)
+                      const isSelected = selectedMember.id === m.id;
+                      const rad = ((m.angle - 90) * Math.PI) / 180;
+                      const r = 210;
+                      const x = CLOCK_CX + r * Math.cos(rad);
+                      const y = CLOCK_CY + r * Math.sin(rad);
 
                       return (
                         <line
@@ -454,7 +445,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                           opacity={isSelected ? 0.9 : 0.35}
                           className={isSelected ? "data-stream-line" : ""}
                         />
-                      )
+                      );
                     })}
 
                     {/* 真实时钟三针：根部隐于中心圆盘之下，长短/颜色按真实钟表分级 */}
@@ -495,30 +486,31 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
 
                   {/* 8 Member Nodes positioned along circumference */}
                   {YYC3_MEMBERS.map((m) => {
-                    const isSelected = selectedMember.id === m.id
-                    const rad = ((m.angle - 90) * Math.PI) / 180
-                    const r = 210
-                    const cx = 260
-                    const cy = 260
-                    const left = cx + r * Math.cos(rad) - 30
-                    const top = cy + r * Math.sin(rad) - 30
+                    const isSelected = selectedMember.id === m.id;
+                    const rad = ((m.angle - 90) * Math.PI) / 180;
+                    const r = 210;
+                    const cx = 260;
+                    const cy = 260;
+                    const left = cx + r * Math.cos(rad) - 30;
+                    const top = cy + r * Math.sin(rad) - 30;
 
                     return (
                       <div
                         key={m.id}
                         onClick={() => {
-                          setSelectedMember(m)
-                          setIsChatOpen(false)
+                          setSelectedMember(m);
+                          setIsChatOpen(false);
                         }}
                         style={{ left: `${left}px`, top: `${top}px` }}
                         className="absolute w-[60px] h-[60px] flex flex-col items-center justify-center cursor-pointer group z-20"
                       >
                         {/* Circle Node Icon */}
                         <div
-                          className={`relative w-12 h-12 rounded-full bg-[#0d1e36] flex items-center justify-center border-2 transition-all duration-200 group-hover:scale-110 ${isSelected
-                            ? "border-white shadow-[0_0_24px_rgba(255,255,255,0.7)] scale-110"
-                            : "border-[#1e2f47] hover:border-white/50"
-                            }`}
+                          className={`relative w-12 h-12 rounded-full bg-[#0d1e36] flex items-center justify-center border-2 transition-all duration-200 group-hover:scale-110 ${
+                            isSelected
+                              ? "border-white shadow-[0_0_24px_rgba(255,255,255,0.7)] scale-110"
+                              : "border-[#1e2f47] hover:border-white/50"
+                          }`}
                           style={{
                             borderColor: isSelected ? "#ffffff" : m.roleColor,
                             boxShadow: isSelected
@@ -526,10 +518,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                               : `0 0 8px ${m.roleColor}30`,
                           }}
                         >
-                          {renderMemberIcon(
-                            m.iconType,
-                            isSelected ? "#ffffff" : m.roleColor,
-                          )}
+                          {renderMemberIcon(m.iconType, isSelected ? "#ffffff" : m.roleColor)}
 
                           {/* Speaking indicator dot from screenshot */}
                           {m.isSpeaking && (
@@ -543,10 +532,11 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                         {/* Member Name and Clock text */}
                         <div className="mt-1 text-center whitespace-nowrap">
                           <div
-                            className={`text-[11px] font-semibold transition-colors ${isSelected
-                              ? "text-white"
-                              : "text-[#8a97a8] group-hover:text-[#e8f0f8]"
-                              }`}
+                            className={`text-[11px] font-semibold transition-colors ${
+                              isSelected
+                                ? "text-white"
+                                : "text-[#8a97a8] group-hover:text-[#e8f0f8]"
+                            }`}
                             style={{ color: isSelected ? m.roleColor : undefined }}
                           >
                             {m.name}
@@ -556,7 +546,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                           </div>
                         </div>
                       </div>
-                    )
+                    );
                   })}
                 </div>
               </div>
@@ -582,15 +572,10 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                   className="w-12 h-12 rounded-full bg-[#15294a] border-2 flex items-center justify-center shadow-md"
                   style={{ borderColor: selectedMember.roleColor }}
                 >
-                  {renderMemberIcon(
-                    selectedMember.iconType,
-                    selectedMember.roleColor,
-                  )}
+                  {renderMemberIcon(selectedMember.iconType, selectedMember.roleColor)}
                 </div>
                 <div>
-                  <h3 className="font-bold text-base text-[#e8f0f8]">
-                    {selectedMember.name}
-                  </h3>
+                  <h3 className="font-bold text-base text-[#e8f0f8]">{selectedMember.name}</h3>
                   <div className="text-xs text-[#8a97a8] font-mono mt-0.5">
                     {selectedMember.metaName}
                   </div>
@@ -683,36 +668,28 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                       <div className="text-[10px] text-[#8a97a8]">今日处理</div>
                       <div className="font-mono text-sm font-bold text-[#00e0b8] mt-0.5">
                         {selectedMember.metrics.todayTasks}{" "}
-                        <span className="text-[10px] text-[#8a97a8] font-normal">
-                          tasks
-                        </span>
+                        <span className="text-[10px] text-[#8a97a8] font-normal">tasks</span>
                       </div>
                     </div>
                     <div className="p-2.5 rounded-lg bg-[#15294a]/80 border border-[#1e2f47]">
                       <div className="text-[10px] text-[#8a97a8]">平均延迟</div>
                       <div className="font-mono text-sm font-bold text-[#00b4d8] mt-0.5">
                         {selectedMember.metrics.avgLatencyMs}{" "}
-                        <span className="text-[10px] text-[#8a97a8] font-normal">
-                          ms
-                        </span>
+                        <span className="text-[10px] text-[#8a97a8] font-normal">ms</span>
                       </div>
                     </div>
                     <div className="p-2.5 rounded-lg bg-[#15294a]/80 border border-[#1e2f47]">
                       <div className="text-[10px] text-[#8a97a8]">准确率</div>
                       <div className="font-mono text-sm font-bold text-[#00e0b8] mt-0.5">
                         {selectedMember.metrics.accuracyRate}{" "}
-                        <span className="text-[10px] text-[#8a97a8] font-normal">
-                          %
-                        </span>
+                        <span className="text-[10px] text-[#8a97a8] font-normal">%</span>
                       </div>
                     </div>
                     <div className="p-2.5 rounded-lg bg-[#15294a]/80 border border-[#1e2f47]">
                       <div className="text-[10px] text-[#8a97a8]">协作次数</div>
                       <div className="font-mono text-sm font-bold text-[#9d7cd8] mt-0.5">
                         {selectedMember.metrics.collabCalls}{" "}
-                        <span className="text-[10px] text-[#8a97a8] font-normal">
-                          calls
-                        </span>
+                        <span className="text-[10px] text-[#8a97a8] font-normal">calls</span>
                       </div>
                     </div>
                   </div>
@@ -737,7 +714,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                         "success",
                         `任务已分派给「${selectedMember.name}」`,
                         "将自动对当前生产线进行实时优化分析",
-                      )
+                      );
                     }}
                   >
                     任务分派
@@ -752,8 +729,9 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                   {messages.map((m) => (
                     <div
                       key={m.id}
-                      className={`flex flex-col ${m.sender === "user" ? "items-end" : "items-start"
-                        }`}
+                      className={`flex flex-col ${
+                        m.sender === "user" ? "items-end" : "items-start"
+                      }`}
                     >
                       {m.sender === "agent" && (
                         <div className="flex items-center gap-1.5 mb-1 text-[11px] font-semibold text-[#00e0b8]">
@@ -770,10 +748,11 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                         </div>
                       )}
                       <div
-                        className={`p-3 rounded-xl max-w-[90%] leading-relaxed ${m.sender === "user"
-                          ? "bg-[#00e0b8] text-[#0a1628] font-medium rounded-br-xs"
-                          : "bg-[#15294a] text-[#e8f0f8] border border-[#1e2f47] rounded-bl-xs"
-                          }`}
+                        className={`p-3 rounded-xl max-w-[90%] leading-relaxed ${
+                          m.sender === "user"
+                            ? "bg-[#00e0b8] text-[#0a1628] font-medium rounded-br-xs"
+                            : "bg-[#15294a] text-[#e8f0f8] border border-[#1e2f47] rounded-bl-xs"
+                        }`}
                       >
                         {m.text}
                       </div>
@@ -784,18 +763,10 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                           <Button
                             variant="secondary"
                             size="xs"
-                            icon={
-                              <CheckCircle2 className="w-3 h-3 text-[#00e0b8]" />
-                            }
+                            icon={<CheckCircle2 className="w-3 h-3 text-[#00e0b8]" />}
                             onClick={() => {
-                              onApplyAction?.(
-                                m.actionable!.actionType,
-                                m.actionable!.payload,
-                              )
-                              onShowToast(
-                                "success",
-                                "已应用 AI 推荐方案至当前流水线",
-                              )
+                              onApplyAction?.(m.actionable!.actionType, m.actionable!.payload);
+                              onShowToast("success", "已应用 AI 推荐方案至当前流水线");
                             }}
                           >
                             {m.actionable.label}
@@ -808,19 +779,17 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
 
                 {/* Preset Prompts Chips */}
                 <div className="p-2 border-t border-[#1e2f47] bg-[#0c1a30]/80 overflow-x-auto flex gap-1.5 flex-shrink-0">
-                  {(
-                    PRESET_CHAT_PROMPTS[selectedMember.id] ??
-                    PRESET_CHAT_PROMPTS.yuanqi ??
-                    []
-                  ).map((p, i) => (
-                    <button
-                      key={i}
-                      onClick={() => handleSendMessage(p)}
-                      className="text-[10px] px-2.5 py-1 rounded-full bg-[#15294a] text-[#8a97a8] hover:text-[#00e0b8] border border-[#1e2f47] hover:border-[#00e0b8]/40 whitespace-nowrap transition-colors cursor-pointer"
-                    >
-                      {p}
-                    </button>
-                  ))}
+                  {(PRESET_CHAT_PROMPTS[selectedMember.id] ?? PRESET_CHAT_PROMPTS.yuanqi ?? []).map(
+                    (p, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleSendMessage(p)}
+                        className="text-[10px] px-2.5 py-1 rounded-full bg-[#15294a] text-[#8a97a8] hover:text-[#00e0b8] border border-[#1e2f47] hover:border-[#00e0b8]/40 whitespace-nowrap transition-colors cursor-pointer"
+                      >
+                        {p}
+                      </button>
+                    ),
+                  )}
                 </div>
 
                 {/* Chat Input Bar */}
@@ -831,7 +800,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                     value={chatInput}
                     onChange={(e) => setChatInput(e.target.value)}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter") handleSendMessage()
+                      if (e.key === "Enter") handleSendMessage();
                     }}
                     className="flex-1 h-8 px-3 rounded-lg bg-[#0a1628] text-xs text-[#e8f0f8] placeholder-[#5c697a] border border-[#1e2f47] focus:outline-none focus:border-[#00e0b8]"
                   />
@@ -848,8 +817,8 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

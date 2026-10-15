@@ -16,19 +16,19 @@
  * dependencies: react
  * exports: CardProps, Card
  */
-import React from "react"
+import React from "react";
 
 export interface CardProps {
-  children: React.ReactNode
-  title?: React.ReactNode
-  subtitle?: string
-  badge?: React.ReactNode
-  action?: React.ReactNode
-  glow?: boolean
-  className?: string
-  bodyClassName?: string
-  onClick?: () => void
-  hoverable?: boolean
+  children: React.ReactNode;
+  title?: React.ReactNode;
+  subtitle?: string;
+  badge?: React.ReactNode;
+  action?: React.ReactNode;
+  glow?: boolean;
+  className?: string;
+  bodyClassName?: string;
+  onClick?: () => void;
+  hoverable?: boolean;
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -66,22 +66,16 @@ export const Card: React.FC<CardProps> = ({
             )}
             {badge}
             {subtitle && (
-              <span className="text-xs text-[#8b949e] font-normal truncate">
-                {subtitle}
-              </span>
+              <span className="text-xs text-[#8b949e] font-normal truncate">{subtitle}</span>
             )}
           </div>
-          {action && (
-            <div className="flex items-center gap-2 flex-shrink-0">
-              {action}
-            </div>
-          )}
+          {action && <div className="flex items-center gap-2 flex-shrink-0">{action}</div>}
         </div>
       )}
       <div className={`p-4 ${bodyClassName}`}>{children}</div>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

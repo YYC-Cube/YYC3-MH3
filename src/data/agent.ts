@@ -16,7 +16,7 @@
  * dependencies: ../types
  * exports: AGENT_NODES
  */
-import { AgentNode } from "../types"
+import { AgentNode } from "../types";
 
 export const AGENT_NODES: AgentNode[] = [
   {
@@ -107,7 +107,7 @@ export const AGENT_NODES: AgentNode[] = [
       autoFeedbackSeed: true,
     },
   },
-]
+];
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

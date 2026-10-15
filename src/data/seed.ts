@@ -16,7 +16,7 @@
  * dependencies: ../types
  * exports: INITIAL_SEEDS
  */
-import { SeedItem } from "../types"
+import { SeedItem } from "../types";
 
 export const INITIAL_SEEDS: SeedItem[] = [
   {
@@ -36,8 +36,7 @@ export const INITIAL_SEEDS: SeedItem[] = [
       motionScale: 1.05,
       cfgLipSync: 8.5,
     },
-    notes:
-      "适合中近景严肃商务播报，唇齿微表情极度精准，抗运动伪影能力极强。已沉淀为S级基线种子。",
+    notes: "适合中近景严肃商务播报，唇齿微表情极度精准，抗运动伪影能力极强。已沉淀为S级基线种子。",
     isFavorite: true,
   },
   {
@@ -57,8 +56,7 @@ export const INITIAL_SEEDS: SeedItem[] = [
       motionScale: 0.98,
       cfgLipSync: 9.0,
     },
-    notes:
-      "高频新闻早晚报首选种子，对于齿音、爆破音口型跟随度达到工业级95分以上。",
+    notes: "高频新闻早晚报首选种子，对于齿音、爆破音口型跟随度达到工业级95分以上。",
     isFavorite: true,
   },
   {
@@ -121,7 +119,7 @@ export const INITIAL_SEEDS: SeedItem[] = [
     notes: "正在测试高CFG下的口型极限驱动，偶发嘴角闪烁，待进一步调优。",
     isFavorite: false,
   },
-]
+];
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

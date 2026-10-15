@@ -16,46 +16,30 @@
  * dependencies: react, ../data/content, ../types, lucide-react
  * exports: PromptHubViewProps, PromptHubView
  */
-import {
-  Code,
-  FolderTree,
-  History,
-  Play,
-  Save,
-  Sparkles,
-  Star,
-  Tag
-} from "lucide-react"
-import React, { useState } from "react"
-import { Badge, Button, Modal } from "../components/common"
-import { PROMPT_TEMPLATES } from "../data/content"
-import { NavigateExtra, NavTabId } from "../types"
+import { Code, FolderTree, History, Play, Save, Sparkles, Star, Tag } from "lucide-react";
+import React, { useState } from "react";
+import { Badge, Button, Modal } from "../components/common";
+import { PROMPT_TEMPLATES } from "../data/content";
+import { NavigateExtra, NavTabId } from "../types";
 
 export interface PromptHubViewProps {
-  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void
-  onShowToast: (
-    type: "success" | "error" | "warning" | "info",
-    msg: string,
-    sub?: string,
-  ) => void
+  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void;
+  onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
-export const PromptHubView: React.FC<PromptHubViewProps> = ({
-  onShowToast,
-}) => {
+export const PromptHubView: React.FC<PromptHubViewProps> = ({ onShowToast }) => {
   const [selectedTemplateId, setSelectedTemplateId] = useState(
     PROMPT_TEMPLATES[0]!.id, // mock 常量数组恒非空，静态索引安全
-  )
+  );
   const activeTemplate =
-    PROMPT_TEMPLATES.find((p) => p.id === selectedTemplateId) ||
-    PROMPT_TEMPLATES[0]
+    PROMPT_TEMPLATES.find((p) => p.id === selectedTemplateId) || PROMPT_TEMPLATES[0];
 
-  const [editorText, setEditorText] = useState(activeTemplate?.text ?? "")
-  const [isTesting, setIsTesting] = useState(false)
+  const [editorText, setEditorText] = useState(activeTemplate?.text ?? "");
+  const [isTesting, setIsTesting] = useState(false);
   const [testResult, setTestResult] = useState<{
-    score: number
-    preview: string
-  } | null>(null)
+    score: number;
+    preview: string;
+  } | null>(null);
 
   // Variable mappings state
   const [variableValues, setVariableValues] = useState<Record<string, string>>({
@@ -63,40 +47,35 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({
     clothing_color: "dark navy",
     audio_emotion: "authoritative professional",
     influencer_name: "Luna",
-  })
+  });
 
   // Version diff modal
-  const [isDiffModalOpen, setIsDiffModalOpen] = useState(false)
+  const [isDiffModalOpen, setIsDiffModalOpen] = useState(false);
 
   // Batch test queue modal
-  const [isBatchTestModalOpen, setIsBatchTestModalOpen] = useState(false)
+  const [isBatchTestModalOpen, setIsBatchTestModalOpen] = useState(false);
 
   const handleSelectTemplate = (id: string) => {
-    setSelectedTemplateId(id)
-    const tmpl = PROMPT_TEMPLATES.find((p) => p.id === id)
+    setSelectedTemplateId(id);
+    const tmpl = PROMPT_TEMPLATES.find((p) => p.id === id);
     if (tmpl) {
-      setEditorText(tmpl.text)
-      setTestResult(null)
+      setEditorText(tmpl.text);
+      setTestResult(null);
     }
-  }
+  };
 
   const handleRunTestInference = () => {
-    setIsTesting(true)
-    setTestResult(null)
+    setIsTesting(true);
+    setTestResult(null);
     setTimeout(() => {
-      setIsTesting(false)
+      setIsTesting(false);
       setTestResult({
         score: 95.4,
-        preview:
-          "/placeholders/person.svg",
-      })
-      onShowToast(
-        "success",
-        "单步推理测试完成",
-        "置信度评分: 95.4分，已生成低分辨率对比样张",
-      )
-    }, 1500)
-  }
+        preview: "/placeholders/person.svg",
+      });
+      onShowToast("success", "单步推理测试完成", "置信度评分: 95.4分，已生成低分辨率对比样张");
+    }, 1500);
+  };
 
   // 数据守卫：无匹配模板时渲染空态（mock 数据恒非空，此分支仅作类型兜底）
   if (!activeTemplate) {
@@ -104,7 +83,7 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({
       <div className="flex-1 flex items-center justify-center p-6 text-sm text-[#8a97a8] bg-[#0a1628]">
         暂无提示词模板数据
       </div>
-    )
+    );
   }
 
   return (
@@ -114,9 +93,7 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({
         <div className="p-3.5 border-b border-[#1e2f47] flex items-center justify-between">
           <div className="flex items-center gap-2">
             <FolderTree className="w-4 h-4 text-[#00e0b8]" />
-            <span className="text-xs font-semibold text-[#e8f0f8]">
-              提示词分类目录
-            </span>
+            <span className="text-xs font-semibold text-[#e8f0f8]">提示词分类目录</span>
           </div>
           <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#15294a] text-[#8a97a8] border border-[#1e2f47]">
             {PROMPT_TEMPLATES.length} 模板
@@ -125,37 +102,32 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({
 
         <div className="flex-1 overflow-y-auto p-2 space-y-1">
           {PROMPT_TEMPLATES.map((tmpl) => {
-            const isSelected = tmpl.id === activeTemplate.id
+            const isSelected = tmpl.id === activeTemplate.id;
             return (
               <div
                 key={tmpl.id}
                 onClick={() => handleSelectTemplate(tmpl.id)}
-                className={`p-2.5 rounded-lg border transition-all cursor-pointer ${isSelected
-                  ? "bg-[#15294a] border-[#00e0b8] shadow-[0_0_12px_rgba(0,224,184,0.18)]"
-                  : "bg-[#0f1f38] border-[#1e2f47] hover:border-[#294060]"
-                  }`}
+                className={`p-2.5 rounded-lg border transition-all cursor-pointer ${
+                  isSelected
+                    ? "bg-[#15294a] border-[#00e0b8] shadow-[0_0_12px_rgba(0,224,184,0.18)]"
+                    : "bg-[#0f1f38] border-[#1e2f47] hover:border-[#294060]"
+                }`}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-[10px] font-mono text-[#00b4d8]">
-                    {tmpl.category}
-                  </span>
+                  <span className="text-[10px] font-mono text-[#00b4d8]">{tmpl.category}</span>
                   {tmpl.isBestPractice && (
                     <span className="text-[9px] px-1.5 py-0.2 rounded bg-[#00e0b8]/20 text-[#00e0b8] font-bold">
                       最佳实践
                     </span>
                   )}
                 </div>
-                <div className="text-xs font-medium text-[#e8f0f8] truncate mb-1">
-                  {tmpl.name}
-                </div>
+                <div className="text-xs font-medium text-[#e8f0f8] truncate mb-1">{tmpl.name}</div>
                 <div className="flex items-center justify-between text-[10px] text-[#8a97a8] font-mono">
                   <span>版本: {tmpl.version}</span>
-                  <span className="text-[#00e0b8] font-semibold">
-                    {tmpl.rating}分
-                  </span>
+                  <span className="text-[#00e0b8] font-semibold">{tmpl.rating}分</span>
                 </div>
               </div>
-            )
+            );
           })}
         </div>
 
@@ -187,9 +159,7 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({
         <div className="p-3 bg-[#0c1a30] border-b border-[#1e2f47] flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Code className="w-4 h-4 text-[#00e0b8]" />
-            <span className="text-xs font-semibold text-[#e8f0f8]">
-              {activeTemplate.name}
-            </span>
+            <span className="text-xs font-semibold text-[#e8f0f8]">{activeTemplate.name}</span>
             <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-[#15294a] text-[#8a97a8] border border-[#1e2f47]">
               {activeTemplate.version}
             </span>
@@ -204,11 +174,7 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({
             >
               保存修改
             </Button>
-            <Button
-              variant="secondary"
-              size="xs"
-              onClick={() => setIsBatchTestModalOpen(true)}
-            >
+            <Button variant="secondary" size="xs" onClick={() => setIsBatchTestModalOpen(true)}>
               批量测试队列
             </Button>
             <Button
@@ -300,9 +266,7 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({
         {/* Instant Inference Testbench */}
         <div className="p-3.5 rounded-xl bg-[#0f1f38] border border-[#1e2f47] space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-[#1e2f47]">
-            <span className="text-xs font-semibold text-[#e8f0f8]">
-              快速单步验证测试区
-            </span>
+            <span className="text-xs font-semibold text-[#e8f0f8]">快速单步验证测试区</span>
             <Badge variant="brand" size="xs">
               0.8s 极速推理
             </Badge>
@@ -345,11 +309,7 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({
                 className="w-full"
                 icon={<Star className="w-3.5 h-3.5 fill-current" />}
                 onClick={() => {
-                  onShowToast(
-                    "success",
-                    "已加入最佳实践库",
-                    "该模板已标记为企业级金牌提示词",
-                  )
+                  onShowToast("success", "已加入最佳实践库", "该模板已标记为企业级金牌提示词");
                 }}
               >
                 一键加入最佳实践库
@@ -358,9 +318,7 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({
           ) : (
             <div className="aspect-video rounded-xl bg-[#15294a]/40 border border-dashed border-[#1e2f47] flex flex-col items-center justify-center p-6 text-center text-xs text-[#5c697a]">
               <span>点击「单步推理测试」</span>
-              <span className="text-[11px] mt-1">
-                即刻调用本地模型验证替换后效果
-              </span>
+              <span className="text-[11px] mt-1">即刻调用本地模型验证替换后效果</span>
             </div>
           )}
         </div>
@@ -372,11 +330,7 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({
         onClose={() => setIsDiffModalOpen(false)}
         title="模板版本 Diff 对比 (Template Version Diff)"
         footer={
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsDiffModalOpen(false)}
-          >
+          <Button variant="ghost" size="sm" onClick={() => setIsDiffModalOpen(false)}>
             关闭
           </Button>
         }
@@ -406,23 +360,15 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({
         title="批量参数提示词测试队列 (Batch Inference Test)"
         footer={
           <>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsBatchTestModalOpen(false)}
-            >
+            <Button variant="ghost" size="sm" onClick={() => setIsBatchTestModalOpen(false)}>
               取消
             </Button>
             <Button
               variant="primary"
               size="sm"
               onClick={() => {
-                setIsBatchTestModalOpen(false)
-                onShowToast(
-                  "success",
-                  "已加入 4 组变量组合测试队列",
-                  "结果将在完成时通知",
-                )
+                setIsBatchTestModalOpen(false);
+                onShowToast("success", "已加入 4 组变量组合测试队列", "结果将在完成时通知");
               }}
             >
               启动批量测试
@@ -431,9 +377,7 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({
         }
       >
         <div className="space-y-3 text-xs">
-          <p className="text-[#8a97a8]">
-            自动交叉组合变量，生成 4 组测试样本进行对比：
-          </p>
+          <p className="text-[#8a97a8]">自动交叉组合变量，生成 4 组测试样本进行对比：</p>
           <div className="p-3 rounded-lg bg-[#15294a] space-y-1 font-mono text-[11px]">
             <div>1. [Female, dark navy suit, authoritative]</div>
             <div>2. [Female, crimson suit, authoritative]</div>
@@ -443,8 +387,8 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

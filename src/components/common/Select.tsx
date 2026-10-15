@@ -16,20 +16,19 @@
  * dependencies: react, lucide-react
  * exports: SelectOption, SelectProps, Select
  */
-import React from "react"
-import { ChevronDown } from "lucide-react"
+import React from "react";
+import { ChevronDown } from "lucide-react";
 
 export interface SelectOption {
-  value: string | number
-  label: string
-  badge?: string
+  value: string | number;
+  label: string;
+  badge?: string;
 }
 
-export interface SelectProps
-  extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string
-  hint?: string
-  options: SelectOption[]
+export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  label?: string;
+  hint?: string;
+  options: SelectOption[];
 }
 
 export const Select: React.FC<SelectProps> = ({
@@ -42,17 +41,13 @@ export const Select: React.FC<SelectProps> = ({
   onChange,
   ...props
 }) => {
-  const selectId =
-    id || (label ? label.toLowerCase().replace(/\s+/g, "-") : undefined)
+  const selectId = id || (label ? label.toLowerCase().replace(/\s+/g, "-") : undefined);
 
   return (
     <div className="w-full space-y-1.5">
       {label && (
         <div className="flex items-center justify-between">
-          <label
-            htmlFor={selectId}
-            className="block text-xs font-medium text-[#8b949e]"
-          >
+          <label htmlFor={selectId} className="block text-xs font-medium text-[#8b949e]">
             {label}
           </label>
           {hint && <span className="text-[11px] text-[#5a6268]">{hint}</span>}
@@ -81,8 +76,8 @@ export const Select: React.FC<SelectProps> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

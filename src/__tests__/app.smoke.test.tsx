@@ -16,27 +16,27 @@
  * dependencies: vitest, @testing-library/react, ../App
  * exports: —
  */
-import { describe, expect, it } from "vitest"
-import { render, screen } from "@testing-library/react"
-import App from "../App"
+import { describe, expect, it } from "vitest";
+import { render, screen } from "@testing-library/react";
+import App from "../App";
 
 describe("App 全局冒烟", () => {
   it("应用可完整挂载，底部状态栏显示本地优先标识", () => {
-    render(<App />)
-    expect(screen.getByText(/MiniMax-H3 v2\.1 PRO 本地优先/)).toBeInTheDocument()
-  })
+    render(<App />);
+    expect(screen.getByText(/MiniMax-H3 v2\.1 PRO 本地优先/)).toBeInTheDocument();
+  });
 
   it("默认路由挂载后载入设计体系视图", async () => {
-    render(<App />)
-    const matches = await screen.findAllByText(/设计规范与全量组件库/)
-    expect(matches.length).toBeGreaterThan(0)
-  })
+    render(<App />);
+    const matches = await screen.findAllByText(/设计规范与全量组件库/);
+    expect(matches.length).toBeGreaterThan(0);
+  });
 
   it("顶部状态栏显示 YYC³ AI 协同连接状态", () => {
-    render(<App />)
-    expect(screen.getByText(/YYC³ AI 协同已连接/)).toBeInTheDocument()
-  })
-})
+    render(<App />);
+    expect(screen.getByText(/YYC³ AI 协同已连接/)).toBeInTheDocument();
+  });
+});
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

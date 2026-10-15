@@ -16,44 +16,29 @@
  * dependencies: react
  * exports: InputProps, Input
  */
-import React from "react"
+import React from "react";
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string
-  hint?: string
-  error?: string
-  prefixIcon?: React.ReactNode
-  suffixIcon?: React.ReactNode
-  mono?: boolean
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  hint?: string;
+  error?: string;
+  prefixIcon?: React.ReactNode;
+  suffixIcon?: React.ReactNode;
+  mono?: boolean;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
-    {
-      label,
-      hint,
-      error,
-      prefixIcon,
-      suffixIcon,
-      mono = false,
-      className = "",
-      id,
-      ...props
-    },
+    { label, hint, error, prefixIcon, suffixIcon, mono = false, className = "", id, ...props },
     ref,
   ) => {
-    const inputId =
-      id || (label ? label.toLowerCase().replace(/\s+/g, "-") : undefined)
+    const inputId = id || (label ? label.toLowerCase().replace(/\s+/g, "-") : undefined);
 
     return (
       <div className="w-full space-y-1.5">
         {label && (
           <div className="flex items-center justify-between">
-            <label
-              htmlFor={inputId}
-              className="block text-xs font-medium text-[#8b949e]"
-            >
+            <label htmlFor={inputId} className="block text-xs font-medium text-[#8b949e]">
               {label}
             </label>
             {hint && <span className="text-[11px] text-[#5a6268]">{hint}</span>}
@@ -84,16 +69,14 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
         {error && (
-          <p className="text-[11px] text-[#EE4C2C] mt-1 flex items-center gap-1">
-            {error}
-          </p>
+          <p className="text-[11px] text-[#EE4C2C] mt-1 flex items-center gap-1">{error}</p>
         )}
       </div>
-    )
+    );
   },
-)
+);
 
-Input.displayName = "Input"
+Input.displayName = "Input";
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

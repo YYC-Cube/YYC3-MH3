@@ -11,10 +11,11 @@
 # license: MIT
 #
 # brief:
-#   - 门禁：tsc 严格类型检查 + Vitest 全量测试（110 用例 · 七类门禁）
+#   - 门禁：oxfmt 格式检查 + tsc 严格类型检查 + Vitest 全量测试（110 用例 · 七类门禁）
 #   - 构建冒烟：默认根基座 + BASE_PATH 子路径基座（Pages 部署形态回归）
-#   - 注：暂不引入 oxfmt --check 门禁 —— oxfmt@0.2.0 存在破坏性缺陷
-#     （格式化会删除 TS 类型字面量中的分号，产出非法语法），待上游修复后启用
+#   - 格式域限定（.oxfmtrc.json）：src/server/public/构建配置等代码文件；
+#     团队 Markdown 语料、Figma 平台托管文件（.figma/）、含注释槽位的 index.html
+#     与刻意字段序的 package.json/tsconfig.json 不入机器重排范围
 
 name: CI
 
@@ -52,6 +53,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Format check (oxfmt)
+        run: pnpm format:check
 
       - name: Typecheck (tsc strict)
         run: pnpm typecheck

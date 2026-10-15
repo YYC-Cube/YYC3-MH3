@@ -16,33 +16,21 @@
  * dependencies: react, lucide-react, ../components/common, ../types
  * exports: NightlyConsoleViewProps, NightlyConsoleView
  */
-import {
-  Bell,
-  Moon,
-  Zap
-} from "lucide-react"
-import React, { useState } from "react"
-import { Badge, Button, Card, Input, Switch } from "../components/common"
-import { NavigateExtra, NavTabId } from "../types"
+import { Bell, Moon, Zap } from "lucide-react";
+import React, { useState } from "react";
+import { Badge, Button, Card, Input, Switch } from "../components/common";
+import { NavigateExtra, NavTabId } from "../types";
 
 export interface NightlyConsoleViewProps {
-  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void
-  onShowToast: (
-    type: "success" | "error" | "warning" | "info",
-    msg: string,
-    sub?: string,
-  ) => void
+  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void;
+  onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
-export const NightlyConsoleView: React.FC<NightlyConsoleViewProps> = ({
-  onShowToast,
-}) => {
-  const [autoNas, setAutoNas] = useState(true)
-  const [autoShutdown, setAutoShutdown] = useState(false)
-  const [retryFp8, setRetryFp8] = useState(true)
-  const [webhookUrl, setWebhookUrl] = useState(
-    "http://127.0.0.1:3031/hooks/nightly-report",
-  )
+export const NightlyConsoleView: React.FC<NightlyConsoleViewProps> = ({ onShowToast }) => {
+  const [autoNas, setAutoNas] = useState(true);
+  const [autoShutdown, setAutoShutdown] = useState(false);
+  const [retryFp8, setRetryFp8] = useState(true);
+  const [webhookUrl, setWebhookUrl] = useState("http://127.0.0.1:3031/hooks/nightly-report");
 
   const nightlyBatches = [
     {
@@ -81,7 +69,7 @@ export const NightlyConsoleView: React.FC<NightlyConsoleViewProps> = ({
       seed: 0,
       priority: "低",
     },
-  ]
+  ];
 
   return (
     <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#040c17]">
@@ -98,8 +86,7 @@ export const NightlyConsoleView: React.FC<NightlyConsoleViewProps> = ({
             </Badge>
           </div>
           <p className="text-xs text-[#8a97a8] mt-1">
-            利用低峰夜间算力无人值守执行批量渲染与 Seed
-            变异压测，支持错误自愈与完成后休眠
+            利用低峰夜间算力无人值守执行批量渲染与 Seed 变异压测，支持错误自愈与完成后休眠
           </p>
         </div>
 
@@ -107,21 +94,13 @@ export const NightlyConsoleView: React.FC<NightlyConsoleViewProps> = ({
         <div className="flex items-center gap-4 bg-[#0c1828] p-2.5 rounded-xl border border-[#1e2a38]">
           <div className="text-right">
             <div className="text-[10px] text-[#8a97a8]">预计总产出时长</div>
-            <div className="font-mono text-sm font-bold text-[#00e0b8]">
-              4小时 35分钟
-            </div>
+            <div className="font-mono text-sm font-bold text-[#00e0b8]">4小时 35分钟</div>
           </div>
           <Button
             variant="primary"
             size="sm"
             icon={<Zap className="w-3.5 h-3.5 fill-current" />}
-            onClick={() =>
-              onShowToast(
-                "success",
-                "夜间计划已锁定",
-                "将于凌晨 02:00 自动唤醒执行",
-              )
-            }
+            onClick={() => onShowToast("success", "夜间计划已锁定", "将于凌晨 02:00 自动唤醒执行")}
           >
             保存并锁定计划
           </Button>
@@ -148,12 +127,8 @@ export const NightlyConsoleView: React.FC<NightlyConsoleViewProps> = ({
                 className="p-2.5 rounded-lg bg-[#081220] border border-[#1e2a38] flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
-                  <span className="font-mono text-[#00e0b8] font-bold">
-                    {task.id}
-                  </span>
-                  <span className="text-[#e8f0f8] font-medium">
-                    {task.name}
-                  </span>
+                  <span className="font-mono text-[#00e0b8] font-bold">{task.id}</span>
+                  <span className="text-[#e8f0f8] font-medium">{task.name}</span>
                 </div>
                 <div className="flex items-center gap-4 font-mono text-xs">
                   <span className="text-[#8a97a8]">
@@ -161,11 +136,7 @@ export const NightlyConsoleView: React.FC<NightlyConsoleViewProps> = ({
                   </span>
                   <Badge
                     variant={
-                      task.priority === "高"
-                        ? "brand"
-                        : task.priority === "中"
-                          ? "info"
-                          : "neutral"
+                      task.priority === "高" ? "brand" : task.priority === "中" ? "info" : "neutral"
                     }
                     size="xs"
                   >
@@ -219,9 +190,7 @@ export const NightlyConsoleView: React.FC<NightlyConsoleViewProps> = ({
                 variant="secondary"
                 size="xs"
                 icon={<Bell className="w-3.5 h-3.5 text-[#00e0b8]" />}
-                onClick={() =>
-                  onShowToast("success", "已发送测试推送消息至 Webhook")
-                }
+                onClick={() => onShowToast("success", "已发送测试推送消息至 Webhook")}
               >
                 发送测试通知
               </Button>
@@ -230,8 +199,8 @@ export const NightlyConsoleView: React.FC<NightlyConsoleViewProps> = ({
         </Card>
       </div>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

@@ -17,10 +17,10 @@
  * dependencies: react, ../data/ops, ./composition, ../types
  * exports: useOpsTelemetry
  */
-import { useEffect, useMemo, useState } from "react"
-import { INITIAL_LOGS, OPS_METRICS, SERVICES_LIST, SYSTEM_ALARMS } from "../data/ops"
-import { AlarmItem, LogEntry, OpsMetric, ServiceStatus } from "../types"
-import { createPorts } from "./composition"
+import { useEffect, useMemo, useState } from "react";
+import { INITIAL_LOGS, OPS_METRICS, SERVICES_LIST, SYSTEM_ALARMS } from "../data/ops";
+import { AlarmItem, LogEntry, OpsMetric, ServiceStatus } from "../types";
+import { createPorts } from "./composition";
 
 /**
  * 遥测域状态（服务 / 指标 / 告警 / 日志四事件表）：
@@ -32,31 +32,31 @@ import { createPorts } from "./composition"
  * - 竞态防护：卸载取消（cancelled 旗标），StrictMode 双挂载幂等。
  */
 export function useOpsTelemetry() {
-  const telemetry = useMemo(() => createPorts().telemetry, [])
+  const telemetry = useMemo(() => createPorts().telemetry, []);
 
-  const [services, setServices] = useState<ServiceStatus[]>(SERVICES_LIST)
-  const [metrics, setMetrics] = useState<OpsMetric[]>(OPS_METRICS)
-  const [alarms, setAlarms] = useState<AlarmItem[]>(SYSTEM_ALARMS)
-  const [logs, setLogs] = useState<LogEntry[]>(INITIAL_LOGS)
+  const [services, setServices] = useState<ServiceStatus[]>(SERVICES_LIST);
+  const [metrics, setMetrics] = useState<OpsMetric[]>(OPS_METRICS);
+  const [alarms, setAlarms] = useState<AlarmItem[]>(SYSTEM_ALARMS);
+  const [logs, setLogs] = useState<LogEntry[]>(INITIAL_LOGS);
 
   useEffect(() => {
-    let cancelled = false
+    let cancelled = false;
     void Promise.all([
       telemetry.listServices(),
       telemetry.listMetrics(),
       telemetry.listAlarms(),
       telemetry.listLogs(),
     ]).then(([s, m, a, l]) => {
-      if (cancelled) return
-      setServices(s)
-      setMetrics(m)
-      setAlarms(a)
-      setLogs(l)
-    })
+      if (cancelled) return;
+      setServices(s);
+      setMetrics(m);
+      setAlarms(a);
+      setLogs(l);
+    });
     return () => {
-      cancelled = true
-    }
-  }, [telemetry])
+      cancelled = true;
+    };
+  }, [telemetry]);
 
   return {
     services,
@@ -65,7 +65,7 @@ export function useOpsTelemetry() {
     logs,
     /** 告警处置写路径（TelemetryPort.resolveAlarm，06 契约 §2 #5） */
     resolveAlarm: (id: string) => telemetry.resolveAlarm(id),
-  }
+  };
 }
 
 /* --------------------------------------------------------------

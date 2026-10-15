@@ -16,12 +16,12 @@
  * dependencies: react, lucide-react, ../common, ../../config, ../../types
  * exports: ConfigModuleProps, ConfigModule
  */
-import { Badge, Button, Card, Input } from "../common"
-import { APP_PORT } from "../../config"
-import { ShowToast } from "../../types"
+import { Badge, Button, Card, Input } from "../common";
+import { APP_PORT } from "../../config";
+import { ShowToast } from "../../types";
 
 export interface ConfigModuleProps {
-  onShowToast: ShowToast
+  onShowToast: ShowToast;
 }
 
 export function ConfigModule({ onShowToast }: ConfigModuleProps) {
@@ -41,12 +41,7 @@ export function ConfigModule({ onShowToast }: ConfigModuleProps) {
             mono
             readOnly
           />
-          <Input
-            label="本地预览服务监听端口"
-            value={`${APP_PORT} (HTTP/SSE)`}
-            mono
-            readOnly
-          />
+          <Input label="本地预览服务监听端口" value={`${APP_PORT} (HTTP/SSE)`} mono readOnly />
           <div className="pt-2">
             <Button
               variant="secondary"
@@ -63,9 +58,7 @@ export function ConfigModule({ onShowToast }: ConfigModuleProps) {
         <div className="space-y-3">
           <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#15294a]">
             <div>
-              <span className="font-semibold text-[#e8f0f8]">
-                100% 离线数据主权锁
-              </span>
+              <span className="font-semibold text-[#e8f0f8]">100% 离线数据主权锁</span>
               <p className="text-[11px] text-[#8a97a8]">
                 强制阻断一切外部遥测回传与非受信任网络请求
               </p>
@@ -77,12 +70,8 @@ export function ConfigModule({ onShowToast }: ConfigModuleProps) {
 
           <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#15294a]">
             <div>
-              <span className="font-semibold text-[#e8f0f8]">
-                操作行为审计日志
-              </span>
-              <p className="text-[11px] text-[#8a97a8]">
-                记录批次发起、参数修改、Seed 采纳操作
-              </p>
+              <span className="font-semibold text-[#e8f0f8]">操作行为审计日志</span>
+              <p className="text-[11px] text-[#8a97a8]">记录批次发起、参数修改、Seed 采纳操作</p>
             </div>
             <Badge variant="brand" size="xs">
               WAL 存储中
@@ -101,7 +90,7 @@ export function ConfigModule({ onShowToast }: ConfigModuleProps) {
         </div>
       </Card>
     </div>
-  )
+  );
 }
 
 /* --------------------------------------------------------------

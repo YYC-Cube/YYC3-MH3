@@ -16,7 +16,7 @@
  * dependencies: —
  * exports: —
  */
-import "@testing-library/jest-dom/vitest"
+import "@testing-library/jest-dom/vitest";
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

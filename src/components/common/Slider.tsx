@@ -16,17 +16,17 @@
  * dependencies: react
  * exports: SliderProps, Slider
  */
-import React from "react"
+import React from "react";
 
 export interface SliderProps {
-  label?: string
-  min: number
-  max: number
-  step?: number
-  value: number
-  onChange: (value: number) => void
-  unit?: string
-  hint?: string
+  label?: string;
+  min: number;
+  max: number;
+  step?: number;
+  value: number;
+  onChange: (value: number) => void;
+  unit?: string;
+  hint?: string;
 }
 
 export const Slider: React.FC<SliderProps> = ({
@@ -39,10 +39,7 @@ export const Slider: React.FC<SliderProps> = ({
   unit = "",
   hint,
 }) => {
-  const percentage = Math.min(
-    100,
-    Math.max(0, ((value - min) / (max - min)) * 100),
-  )
+  const percentage = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100));
 
   return (
     <div className="w-full space-y-2 select-none">
@@ -81,8 +78,8 @@ export const Slider: React.FC<SliderProps> = ({
         </span>
       </div>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

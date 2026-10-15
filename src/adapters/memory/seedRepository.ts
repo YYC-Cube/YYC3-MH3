@@ -16,13 +16,13 @@
  * dependencies: ../../types, ../../domains/seed/ports, ../../data/seed
  * exports: createMemorySeedRepository
  */
-import { INITIAL_SEEDS } from "../../data/seed"
-import { SeedRepository } from "../../domains/seed/ports"
-import { SeedItem } from "../../types"
+import { INITIAL_SEEDS } from "../../data/seed";
+import { SeedRepository } from "../../domains/seed/ports";
+import { SeedItem } from "../../types";
 
 /** 深拷贝 — BatchItem/SeedItem 均为 JSON 纯结构（无函数/循环引用），安全 */
 function deepCopy<T>(value: T): T {
-  return JSON.parse(JSON.stringify(value)) as T
+  return JSON.parse(JSON.stringify(value)) as T;
 }
 
 /**
@@ -31,22 +31,22 @@ function deepCopy<T>(value: T): T {
  * App 现行 `setSeeds((prev) => [newSeed, ...prev])` 行为。
  */
 export function createMemorySeedRepository(): SeedRepository {
-  let snapshot: SeedItem[] = deepCopy(INITIAL_SEEDS)
+  let snapshot: SeedItem[] = deepCopy(INITIAL_SEEDS);
 
   return {
     async listAll() {
-      return deepCopy(snapshot)
+      return deepCopy(snapshot);
     },
     async getById(id) {
-      const found = snapshot.find((s) => s.id === id)
-      return found ? deepCopy(found) : null
+      const found = snapshot.find((s) => s.id === id);
+      return found ? deepCopy(found) : null;
     },
     async create(seed) {
-      const copy = deepCopy(seed)
-      snapshot = [copy, ...snapshot]
-      return deepCopy(copy)
+      const copy = deepCopy(seed);
+      snapshot = [copy, ...snapshot];
+      return deepCopy(copy);
     },
-  }
+  };
 }
 
 /* --------------------------------------------------------------

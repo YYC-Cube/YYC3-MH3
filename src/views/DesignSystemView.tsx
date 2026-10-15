@@ -25,9 +25,9 @@ import {
   Palette,
   Sliders,
   Sparkles,
-  Type
-} from "lucide-react"
-import React, { useState } from "react"
+  Type,
+} from "lucide-react";
+import React, { useState } from "react";
 import {
   Badge,
   Button,
@@ -39,27 +39,23 @@ import {
   Slider,
   Switch,
   Tabs,
-} from "../components/common"
-import { PipelineBar } from "../components/pipeline/PipelineBar"
-import { RadarScoreChart } from "../components/pipeline/RadarScoreChart"
-import { TerminalLogPanel } from "../components/pipeline/TerminalLogPanel"
-import { VideoPreviewPlayer } from "../components/pipeline/VideoPreviewPlayer"
-import { DESIGN_SYSTEM_COLORS, DESIGN_SYSTEM_TYPOGRAPHY } from "../data/design"
-import { getNextStage } from "../domains/pipeline"
-import { LogEntry, PipelineStageKey } from "../types"
+} from "../components/common";
+import { PipelineBar } from "../components/pipeline/PipelineBar";
+import { RadarScoreChart } from "../components/pipeline/RadarScoreChart";
+import { TerminalLogPanel } from "../components/pipeline/TerminalLogPanel";
+import { VideoPreviewPlayer } from "../components/pipeline/VideoPreviewPlayer";
+import { DESIGN_SYSTEM_COLORS, DESIGN_SYSTEM_TYPOGRAPHY } from "../data/design";
+import { getNextStage } from "../domains/pipeline";
+import { LogEntry, PipelineStageKey } from "../types";
 
 /** 设计系统分区页签 ID */
-export type DesignTab = "tokens" | "atoms" | "business" | "prompts"
+export type DesignTab = "tokens" | "atoms" | "business" | "prompts";
 
 export interface DesignSystemViewProps {
-  onOpenYYC3?: () => void
-  onOpenLogin?: () => void
-  onShowToast: (
-    type: "success" | "error" | "warning" | "info",
-    msg: string,
-    sub?: string,
-  ) => void
-  logs: LogEntry[]
+  onOpenYYC3?: () => void;
+  onOpenLogin?: () => void;
+  onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
+  logs: LogEntry[];
 }
 
 export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
@@ -68,43 +64,41 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
   onShowToast,
   logs,
 }) => {
-  const [activeTab, setActiveTab] = useState<DesignTab>("tokens")
-  const [copiedHex, setCopiedHex] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState<DesignTab>("tokens");
+  const [copiedHex, setCopiedHex] = useState<string | null>(null);
 
   // Form states in demo
-  const [demoInput, setDemoInput] = useState("DiffSynth-MiniMax-H3-v2.1-HQ")
-  const [demoInputErr, setDemoInputErr] = useState("")
-  const [demoSelect, setDemoSelect] = useState("Ref2VA")
-  const [demoSlider, setDemoSlider] = useState(7.5)
-  const [demoSwitch1, setDemoSwitch1] = useState(true)
-  const [demoSwitch2, setDemoSwitch2] = useState(false)
-  const [demoBtnLoading, setDemoBtnLoading] = useState(false)
+  const [demoInput, setDemoInput] = useState("DiffSynth-MiniMax-H3-v2.1-HQ");
+  const [demoInputErr, setDemoInputErr] = useState("");
+  const [demoSelect, setDemoSelect] = useState("Ref2VA");
+  const [demoSlider, setDemoSlider] = useState(7.5);
+  const [demoSwitch1, setDemoSwitch1] = useState(true);
+  const [demoSwitch2, setDemoSwitch2] = useState(false);
+  const [demoBtnLoading, setDemoBtnLoading] = useState(false);
 
   // Modal / Drawer demo states
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   // Pipeline demo state
-  const [demoPipelineStage, setDemoPipelineStage] = useState<PipelineStageKey>(
-    "fine_eval",
-  )
-  const [demoPipelineProgress, setDemoPipelineProgress] = useState(68)
+  const [demoPipelineStage, setDemoPipelineStage] = useState<PipelineStageKey>("fine_eval");
+  const [demoPipelineProgress, setDemoPipelineProgress] = useState(68);
 
   const handleCopyColor = (hex: string) => {
-    navigator.clipboard.writeText(hex)
-    setCopiedHex(hex)
-    onShowToast("success", `已复制色值 ${hex}`, "可直接粘贴到 CSS 或 Figma 中")
-    setTimeout(() => setCopiedHex(null), 2000)
-  }
+    navigator.clipboard.writeText(hex);
+    setCopiedHex(hex);
+    onShowToast("success", `已复制色值 ${hex}`, "可直接粘贴到 CSS 或 Figma 中");
+    setTimeout(() => setCopiedHex(null), 2000);
+  };
 
   const copyPromptText = (title: string, text: string) => {
-    navigator.clipboard.writeText(text)
+    navigator.clipboard.writeText(text);
     onShowToast(
       "success",
       `已复制 ${title} 提示词`,
       "已放入剪贴板，可直接发送给 AI 绘图/代码生成器",
-    )
-  }
+    );
+  };
 
   return (
     <div className="flex-1 overflow-y-auto p-6 space-y-8 bg-[#071425]">
@@ -136,11 +130,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
               size="sm"
               icon={<Sparkles className="w-4 h-4" />}
               onClick={() =>
-                onShowToast(
-                  "info",
-                  "设计规范已就绪",
-                  "当前系统遵循五步闭环流水线标准设计",
-                )
+                onShowToast("info", "设计规范已就绪", "当前系统遵循五步闭环流水线标准设计")
               }
             >
               导出设计规范 (JSON)
@@ -198,7 +188,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
               {DESIGN_SYSTEM_COLORS.map((c) => {
-                const isCopied = copiedHex === c.hex
+                const isCopied = copiedHex === c.hex;
                 return (
                   <div
                     key={c.hex}
@@ -223,21 +213,17 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
                           {c.hex}
                         </span>
                       </div>
-                      <div className="text-xs font-semibold text-[#e6edf3] truncate">
-                        {c.name}
-                      </div>
+                      <div className="text-xs font-semibold text-[#e6edf3] truncate">{c.name}</div>
                       <div className="text-[11px] text-[#8b949e] mt-1 leading-relaxed line-clamp-2">
                         {c.role}
                       </div>
                     </div>
                     <div className="mt-3 pt-2 border-t border-[#30363d]/60 flex items-center justify-between text-[10px] text-[#5a6268]">
                       <span>点击复制 HEX</span>
-                      <span className="font-mono text-[#8b949e]">
-                        {c.sample}
-                      </span>
+                      <span className="font-mono text-[#8b949e]">{c.sample}</span>
                     </div>
                   </div>
-                )
+                );
               })}
             </div>
           </div>
@@ -250,8 +236,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
                 排版与字体系统规范 (Typography System)
               </h2>
               <p className="text-xs text-[#8b949e] mt-0.5">
-                英文与数字基准 Inter，中文思源黑体，终端与数值统一采用 JetBrains
-                Mono
+                英文与数字基准 Inter，中文思源黑体，终端与数值统一采用 JetBrains Mono
               </p>
             </div>
 
@@ -268,15 +253,11 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
                     key={idx}
                     className="grid grid-cols-12 px-4 py-3 items-center text-xs hover:bg-[#122340]/40 transition-colors"
                   >
-                    <div className="col-span-3 font-medium text-[#e6edf3]">
-                      {t.level}
-                    </div>
+                    <div className="col-span-3 font-medium text-[#e6edf3]">{t.level}</div>
                     <div className="col-span-2 font-mono text-[#00d4aa] text-[11px]">
                       {t.size} · {t.weight}
                     </div>
-                    <div className="col-span-2 text-[#8b949e] text-[11px]">
-                      {t.font}
-                    </div>
+                    <div className="col-span-2 text-[#8b949e] text-[11px]">{t.font}</div>
                     <div
                       className="col-span-5 text-[#e6edf3] truncate"
                       style={{ fontSize: t.size }}
@@ -303,9 +284,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="p-4 rounded-xl bg-[#0c1a30] border border-[#30363d] space-y-2">
-                <span className="text-xs font-semibold text-[#00d4aa]">
-                  微动效时长 (0.15s)
-                </span>
+                <span className="text-xs font-semibold text-[#00d4aa]">微动效时长 (0.15s)</span>
                 <p className="text-xs text-[#8b949e] leading-relaxed">
                   用于按钮 hover/active、输入框聚焦光圈、Tooltip
                   滑出与下拉箭头展开，提供即时敏捷的操作触觉反馈。
@@ -318,19 +297,13 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
               </div>
 
               <div className="p-4 rounded-xl bg-[#0c1a30] border border-[#30363d] space-y-2">
-                <span className="text-xs font-semibold text-[#00b4d8]">
-                  面板切换过渡 (0.25s)
-                </span>
+                <span className="text-xs font-semibold text-[#00b4d8]">面板切换过渡 (0.25s)</span>
                 <p className="text-xs text-[#8b949e] leading-relaxed">
                   用于右侧抽屉滑入、模态框中心缩放淡出、标签页指示条平滑滑移。曲线采用
                   ease-out-cubic。
                 </p>
                 <div className="pt-2 flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="xs"
-                    onClick={() => setIsModalOpen(true)}
-                  >
+                  <Button variant="outline" size="xs" onClick={() => setIsModalOpen(true)}>
                     模态框进入体验
                   </Button>
                 </div>
@@ -341,8 +314,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
                   流水线粒子流 (2.5s 恒流)
                 </span>
                 <p className="text-xs text-[#8b949e] leading-relaxed">
-                  用于五阶段执行进度条的光流通道与节点呼吸灯，直观表达后台 CUDA
-                  神经渲染工作状态。
+                  用于五阶段执行进度条的光流通道与节点呼吸灯，直观表达后台 CUDA 神经渲染工作状态。
                 </p>
                 <div className="pt-2">
                   <div className="h-2 rounded-full pipeline-flowing w-full" />
@@ -363,24 +335,15 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
           >
             <div className="space-y-4">
               <div className="flex flex-wrap items-center gap-3">
-                <Button
-                  variant="primary"
-                  onClick={() => onShowToast("success", "主按钮已触发")}
-                >
+                <Button variant="primary" onClick={() => onShowToast("success", "主按钮已触发")}>
                   主按钮 (Primary)
                 </Button>
-                <Button
-                  variant="secondary"
-                  onClick={() => onShowToast("info", "次级按钮点击")}
-                >
+                <Button variant="secondary" onClick={() => onShowToast("info", "次级按钮点击")}>
                   次级按钮 (Secondary)
                 </Button>
                 <Button variant="outline">边框按钮 (Outline)</Button>
                 <Button variant="purple">流程紫色 (Purple)</Button>
-                <Button
-                  variant="danger"
-                  onClick={() => onShowToast("error", "危险按钮已触发")}
-                >
+                <Button variant="danger" onClick={() => onShowToast("error", "危险按钮已触发")}>
                   警示危险 (Danger)
                 </Button>
                 <Button variant="ghost">幽灵按钮 (Ghost)</Button>
@@ -388,8 +351,8 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
                   variant="primary"
                   loading={demoBtnLoading}
                   onClick={() => {
-                    setDemoBtnLoading(true)
-                    setTimeout(() => setDemoBtnLoading(false), 2000)
+                    setDemoBtnLoading(true);
+                    setTimeout(() => setDemoBtnLoading(false), 2000);
                   }}
                 >
                   {demoBtnLoading ? "处理中..." : "点击触发 Loading"}
@@ -435,13 +398,9 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
                 label="带错误校验输入框 (Input with Error)"
                 value={demoInputErr}
                 onChange={(e) => {
-                  setDemoInputErr(e.target.value)
+                  setDemoInputErr(e.target.value);
                 }}
-                error={
-                  demoInputErr.length < 5
-                    ? "提示词字符数不能低于 5 个字符"
-                    : undefined
-                }
+                error={demoInputErr.length < 5 ? "提示词字符数不能低于 5 个字符" : undefined}
                 placeholder="输入少于5个字符测试错误态..."
               />
 
@@ -490,18 +449,10 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
                   弹窗与抽屉容器触发 (Containers)
                 </label>
                 <div className="flex items-center gap-3 pt-1">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => setIsModalOpen(true)}
-                  >
+                  <Button variant="secondary" size="sm" onClick={() => setIsModalOpen(true)}>
                     打开模态框 (Modal)
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setIsDrawerOpen(true)}
-                  >
+                  <Button variant="outline" size="sm" onClick={() => setIsDrawerOpen(true)}>
                     打开侧滑抽屉 (Drawer)
                   </Button>
                 </div>
@@ -544,9 +495,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
           >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
               <div className="p-3 rounded-xl bg-[#15294a] border border-[#1e2f47] space-y-2">
-                <span className="font-semibold text-[#00e0b8]">
-                  模式 1: 本地离线认证
-                </span>
+                <span className="font-semibold text-[#00e0b8]">模式 1: 本地离线认证</span>
                 <p className="text-[11px] text-[#8a97a8] leading-relaxed">
                   纯本地 Argon2id 加密比对，数据不出设备，单端口 3031
                   环回通信，默认赋予全流水线超级管理员权限。
@@ -557,9 +506,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
               </div>
 
               <div className="p-3 rounded-xl bg-[#15294a] border border-[#1e2f47] space-y-2">
-                <span className="font-semibold text-[#00b4d8]">
-                  模式 2: 团队云端认证
-                </span>
+                <span className="font-semibold text-[#00b4d8]">模式 2: 团队云端认证</span>
                 <p className="text-[11px] text-[#8a97a8] leading-relaxed">
                   支持企业 SAML 2.0 / OIDC
                   单点登录与移动端（飞书/企微）扫码准入，支持细粒度操作员与审片角色匹配。
@@ -570,9 +517,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
               </div>
 
               <div className="p-3 rounded-xl bg-[#15294a] border border-[#1e2f47] space-y-2">
-                <span className="font-semibold text-[#9d7cd8]">
-                  6 节点全闭环审核
-                </span>
+                <span className="font-semibold text-[#9d7cd8]">6 节点全闭环审核</span>
                 <div className="text-[10px] text-[#8a97a8] font-mono space-y-0.5">
                   <div>1. 前端格式实时拦截</div>
                   <div>2. Argon2id 凭证哈希比对</div>
@@ -598,8 +543,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
                   1. 五步闭环流水线组件 (Five-Stage Closed-Loop Pipeline)
                 </h3>
                 <p className="text-xs text-[#8b949e]">
-                  生成(DiffSynth) → 评分(SyncNet) → 精评(多模态) →
-                  分析(缺陷归因) → Seed 迭代
+                  生成(DiffSynth) → 评分(SyncNet) → 精评(多模态) → 分析(缺陷归因) → Seed 迭代
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -608,8 +552,8 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
                   variant="secondary"
                   onClick={() => {
                     // 循环推进规则由领域层提供（seed_iter 闭环回 generation）
-                    setDemoPipelineStage(getNextStage(demoPipelineStage))
-                    setDemoPipelineProgress(Math.floor(Math.random() * 80) + 20)
+                    setDemoPipelineStage(getNextStage(demoPipelineStage));
+                    setDemoPipelineProgress(Math.floor(Math.random() * 80) + 20);
                   }}
                 >
                   模拟推进下一个阶段
@@ -621,8 +565,8 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
               progress={demoPipelineProgress}
               isRunning={true}
               onStageClick={(st) => {
-                setDemoPipelineStage(st)
-                onShowToast("info", `已切换至流水线阶段: ${st}`)
+                setDemoPipelineStage(st);
+                onShowToast("info", `已切换至流水线阶段: ${st}`);
               }}
             />
           </div>
@@ -640,11 +584,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
               </div>
               <VideoPreviewPlayer
                 onSnapshot={() =>
-                  onShowToast(
-                    "success",
-                    "样张已捕获",
-                    "已保存至本地 runs/snapshots/ 目录",
-                  )
+                  onShowToast("success", "样张已捕获", "已保存至本地 runs/snapshots/ 目录")
                 }
               />
             </div>
@@ -654,9 +594,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
                 <h3 className="text-sm font-semibold text-[#e6edf3]">
                   3. 口型评分雷达图 (5-Dimension Radar Chart)
                 </h3>
-                <span className="text-[11px] text-[#8b949e]">
-                  五维度 · 历史均值叠层 · 告警建议
-                </span>
+                <span className="text-[11px] text-[#8b949e]">五维度 · 历史均值叠层 · 告警建议</span>
               </div>
               <RadarScoreChart />
             </div>
@@ -675,7 +613,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
             <TerminalLogPanel
               logs={logs}
               onTroubleshootFix={(action) => {
-                onShowToast("success", "已触发排障动作", `执行动作: ${action}`)
+                onShowToast("success", "已触发排障动作", `执行动作: ${action}`);
               }}
             />
           </div>
@@ -689,8 +627,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
                   5. YYC³ AI Family 智能协同生产系统 (Global Floating AI Center)
                 </h3>
                 <p className="text-xs text-[#8a97a8] mt-0.5">
-                  融合环形时钟架构与 8 位全职能 AI
-                  代理，常驻右下角浮窗，支持快捷键 Ctrl+/ 全域唤起
+                  融合环形时钟架构与 8 位全职能 AI 代理，常驻右下角浮窗，支持快捷键 Ctrl+/ 全域唤起
                 </p>
               </div>
               <Button
@@ -750,9 +687,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
                   className="p-2 rounded bg-[#15294a] border border-[#1e2f47] space-y-0.5"
                 >
                   <div className={`font-bold ${ag.color}`}>{ag.name}</div>
-                  <div className="text-[10px] text-[#8a97a8] font-sans truncate">
-                    {ag.role}
-                  </div>
+                  <div className="text-[10px] text-[#8a97a8] font-sans truncate">{ag.role}</div>
                 </div>
               ))}
             </div>
@@ -904,19 +839,15 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
         title="二次确认：终止当前批次推理"
         footer={
           <>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsModalOpen(false)}
-            >
+            <Button variant="ghost" size="sm" onClick={() => setIsModalOpen(false)}>
               取消
             </Button>
             <Button
               variant="danger"
               size="sm"
               onClick={() => {
-                setIsModalOpen(false)
-                onShowToast("error", "批次已强制终止", "显存资源已成功释放")
+                setIsModalOpen(false);
+                onShowToast("error", "批次已强制终止", "显存资源已成功释放");
               }}
             >
               确认终止并释放 VRAM
@@ -925,10 +856,8 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
         }
       >
         <p className="text-xs text-[#8b949e] leading-relaxed">
-          正在执行的批次为{" "}
-          <span className="font-mono text-[#00d4aa]">BATCH-20250412-089</span>
-          。强制终止会导致未完成的 SyncNet 唇形精评数据丢失，并立即清空 CUDA
-          缓存，确定要执行吗？
+          正在执行的批次为 <span className="font-mono text-[#00d4aa]">BATCH-20250412-089</span>
+          。强制终止会导致未完成的 SyncNet 唇形精评数据丢失，并立即清空 CUDA 缓存，确定要执行吗？
         </p>
       </Modal>
 
@@ -938,11 +867,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
         onClose={() => setIsDrawerOpen(false)}
         title="Seed 种子详细基因参数"
         footer={
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => setIsDrawerOpen(false)}
-          >
+          <Button variant="primary" size="sm" onClick={() => setIsDrawerOpen(false)}>
             应用到工作台
           </Button>
         }
@@ -950,17 +875,11 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
         <div className="space-y-4 text-xs">
           <div className="p-3 rounded-lg bg-[#122340] border border-[#30363d] space-y-1">
             <span className="text-[#8b949e]">种子代号</span>
-            <div className="font-mono text-base font-bold text-[#00d4aa]">
-              81923011
-            </div>
-            <div className="text-[11px] text-[#8b949e]">
-              钛极超稳态·CEO领袖种子 (S级)
-            </div>
+            <div className="font-mono text-base font-bold text-[#00d4aa]">81923011</div>
+            <div className="text-[11px] text-[#8b949e]">钛极超稳态·CEO领袖种子 (S级)</div>
           </div>
           <div className="space-y-2">
-            <span className="font-semibold text-[#e6edf3]">
-              关键扩散特征参数
-            </span>
+            <span className="font-semibold text-[#e6edf3]">关键扩散特征参数</span>
             <div className="space-y-1 font-mono text-[11px] text-[#8b949e]">
               <div className="flex justify-between p-1.5 rounded bg-[#071425]">
                 <span>Guidance Scale</span>
@@ -983,8 +902,8 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
         </div>
       </Drawer>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

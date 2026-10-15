@@ -16,13 +16,10 @@
  * dependencies: react, ../../types
  * exports: PLATFORM_BADGE_META, PlatformBadge
  */
-import { SocialPlatformKey } from "../../types"
+import { SocialPlatformKey } from "../../types";
 
 /** 平台展示元数据（展示名 + 配色），覆盖全部 SocialPlatformKey 联合成员 */
-export const PLATFORM_BADGE_META: Record<
-  SocialPlatformKey,
-  { label: string; color: string }
-> = {
+export const PLATFORM_BADGE_META: Record<SocialPlatformKey, { label: string; color: string }> = {
   douyin: {
     label: "抖音",
     color: "bg-[#ff0050]/15 text-[#ff0050] border-[#ff0050]/30",
@@ -51,20 +48,18 @@ export const PLATFORM_BADGE_META: Record<
     label: "云端存储",
     color: "bg-[#00b4d8]/15 text-[#00b4d8] border-[#00b4d8]/30",
   },
-}
+};
 
 export function PlatformBadge({ platform }: { platform: SocialPlatformKey }) {
   const item = PLATFORM_BADGE_META[platform] ?? {
     label: platform,
     color: "bg-[#15294a] text-[#8a97a8]",
-  }
+  };
   return (
-    <span
-      className={`text-[10px] px-1.5 py-0.2 rounded font-medium border ${item.color}`}
-    >
+    <span className={`text-[10px] px-1.5 py-0.2 rounded font-medium border ${item.color}`}>
       {item.label}
     </span>
-  )
+  );
 }
 
 /* --------------------------------------------------------------

@@ -28,24 +28,19 @@ import {
   QrCode,
   ShieldCheck,
   Sparkles,
-  User
-} from "lucide-react"
-import React, { useEffect, useState } from "react"
-import { Button, Modal } from "../components/common"
-import { AuthUser, UserRole } from "../types"
+  User,
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Button, Modal } from "../components/common";
+import { AuthUser, UserRole } from "../types";
 
 /** 原生 select 值为运行时 string，收窄至 UserRole 的类型守卫 */
-const isUserRole = (v: string): v is UserRole =>
-  v === "admin" || v === "operator" || v === "guest"
+const isUserRole = (v: string): v is UserRole => v === "admin" || v === "operator" || v === "guest";
 
 export interface LoginViewProps {
-  onLoginSuccess: (user: AuthUser) => void
-  onPreviewBypass?: () => void
-  onShowToast: (
-    type: "success" | "error" | "warning" | "info",
-    msg: string,
-    sub?: string,
-  ) => void
+  onLoginSuccess: (user: AuthUser) => void;
+  onPreviewBypass?: () => void;
+  onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
 export const LoginView: React.FC<LoginViewProps> = ({
@@ -54,180 +49,170 @@ export const LoginView: React.FC<LoginViewProps> = ({
   onShowToast,
 }) => {
   // Auth Mode: Local offline vs. Team Cloud
-  const [authMode, setAuthMode] = useState<"local" | "team">("local")
+  const [authMode, setAuthMode] = useState<"local" | "team">("local");
 
   // Form Fields
-  const [username, setUsername] = useState("admin")
-  const [password, setPassword] = useState("••••••••")
-  const [showPassword, setShowPassword] = useState(false)
-  const [rememberCredentials, setRememberCredentials] = useState(true)
-  const [selectedRole, setSelectedRole] = useState<UserRole>("admin")
+  const [username, setUsername] = useState("admin");
+  const [password, setPassword] = useState("••••••••");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberCredentials, setRememberCredentials] = useState(true);
+  const [selectedRole, setSelectedRole] = useState<UserRole>("admin");
 
   // Validation & Error state
   const [fieldErrors, setFieldErrors] = useState<{
-    username?: string
-    password?: string
-  }>({})
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [failedAttempts, setFailedAttempts] = useState(0)
-  const [isLocked, setIsLocked] = useState(false)
-  const [lockCountdown, setLockCountdown] = useState(0)
+    username?: string;
+    password?: string;
+  }>({});
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const [isLocked, setIsLocked] = useState(false);
+  const [lockCountdown, setLockCountdown] = useState(0);
 
   // Closed-loop verification pipeline animation state
-  const [isVerifying, setIsVerifying] = useState(false)
-  const [verificationStep, setVerificationStep] = useState<number>(0)
-  const [verificationLog, setVerificationLog] = useState<string>("")
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verificationStep, setVerificationStep] = useState<number>(0);
+  const [verificationLog, setVerificationLog] = useState<string>("");
 
   // Modals state
-  const [isOfflineExplainOpen, setIsOfflineExplainOpen] = useState(false)
-  const [isQrLoginOpen, setIsQrLoginOpen] = useState(false)
-  const [isNightMode, setIsNightMode] = useState(false)
+  const [isOfflineExplainOpen, setIsOfflineExplainOpen] = useState(false);
+  const [isQrLoginOpen, setIsQrLoginOpen] = useState(false);
+  const [isNightMode, setIsNightMode] = useState(false);
 
   // Handle Lockout countdown
   useEffect(() => {
-    let timer: number | null = null
+    let timer: number | null = null;
     if (isLocked && lockCountdown > 0) {
       timer = window.setInterval(() => {
         setLockCountdown((prev) => {
           if (prev <= 1) {
-            setIsLocked(false)
-            setFailedAttempts(0)
-            return 0
+            setIsLocked(false);
+            setFailedAttempts(0);
+            return 0;
           }
-          return prev - 1
-        })
-      }, 1000)
+          return prev - 1;
+        });
+      }, 1000);
     }
     return () => {
-      if (timer) clearInterval(timer)
-    }
-  }, [isLocked, lockCountdown])
+      if (timer) clearInterval(timer);
+    };
+  }, [isLocked, lockCountdown]);
 
   // Validation
   const validateForm = () => {
-    const errors: { username?: string; password?: string } = {}
+    const errors: { username?: string; password?: string } = {};
     if (!username.trim()) {
-      errors.username = "请输入管理员账号或员工工号"
+      errors.username = "请输入管理员账号或员工工号";
     }
     if (!password || password.length < 6) {
-      errors.password = "密码长度不能少于 6 位"
+      errors.password = "密码长度不能少于 6 位";
     }
-    setFieldErrors(errors)
-    return Object.keys(errors).length === 0
-  }
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   // Node 1 to Node 6 Closed-Loop Login Execution
   const handleLoginSubmit = (e?: React.FormEvent) => {
-    e?.preventDefault()
+    e?.preventDefault();
     if (isLocked) {
-      onShowToast("error", `账号已临时锁定，请等待 ${lockCountdown} 秒后重试`)
-      return
+      onShowToast("error", `账号已临时锁定，请等待 ${lockCountdown} 秒后重试`);
+      return;
     }
 
     // Node 1: Frontend format validation
     if (!validateForm()) {
-      setErrorMessage("请完整填写账号与密码")
-      return
+      setErrorMessage("请完整填写账号与密码");
+      return;
     }
 
-    setErrorMessage(null)
-    setIsVerifying(true)
-    setVerificationStep(1)
-    setVerificationLog("正在校验本地凭证格式与安全哈希...")
+    setErrorMessage(null);
+    setIsVerifying(true);
+    setVerificationStep(1);
+    setVerificationLog("正在校验本地凭证格式与安全哈希...");
 
     // Node 2: Credential verification (simulate local SHA-256 compare)
     setTimeout(() => {
-      setVerificationStep(2)
+      setVerificationStep(2);
       setVerificationLog(
         authMode === "local"
           ? "正在匹配本地安全加密凭证库 (Argon2id)..."
           : "正在请求企业身份服务端鉴权...",
-      )
+      );
 
       setTimeout(() => {
         // Node 3: Role & Permission mapping
-        setVerificationStep(3)
+        setVerificationStep(3);
         setVerificationLog(
-          `匹配角色权限矩阵: [${selectedRole === "admin"
-            ? "超级管理员 (Full Access)"
-            : "生产线操作员"
+          `匹配角色权限矩阵: [${
+            selectedRole === "admin" ? "超级管理员 (Full Access)" : "生产线操作员"
           }]`,
-        )
+        );
 
         setTimeout(() => {
           // Node 4: Safety environment inspection
-          setVerificationStep(4)
-          setVerificationLog(
-            "正在扫描本地运行环境：PyTorch 2.4、CUDA 12.4、RTX 4090 显存...",
-          )
+          setVerificationStep(4);
+          setVerificationLog("正在扫描本地运行环境：PyTorch 2.4、CUDA 12.4、RTX 4090 显存...");
 
           setTimeout(() => {
             // Node 5: Audit logging
-            setVerificationStep(5)
-            setVerificationLog(
-              "正在记录本地安全审计 WAL 日志 (设备: LocalStation-01)...",
-            )
+            setVerificationStep(5);
+            setVerificationLog("正在记录本地安全审计 WAL 日志 (设备: LocalStation-01)...");
 
             setTimeout(() => {
               // Node 6: Session initialization & entrance
-              setVerificationStep(6)
-              setVerificationLog("会话初始化完成，正在进入总览驾驶舱...")
+              setVerificationStep(6);
+              setVerificationLog("会话初始化完成，正在进入总览驾驶舱...");
 
               setTimeout(() => {
-                setIsVerifying(false)
+                setIsVerifying(false);
                 const user: AuthUser = {
                   username: username.trim(),
-                  displayName:
-                    authMode === "local" ? "本地超级管理员" : "企业生产主管",
+                  displayName: authMode === "local" ? "本地超级管理员" : "企业生产主管",
                   role: selectedRole,
                   mode: authMode,
                   lastLogin: "2025-04-12 09:42:18",
                   avatar: "/yyc3-icons/logo.png",
                   token: `tok_${Date.now()}_secure_local`,
-                  permissions: [
-                    "all_pipeline",
-                    "models_write",
-                    "ops_control",
-                    "seed_mutate",
-                  ],
+                  permissions: ["all_pipeline", "models_write", "ops_control", "seed_mutate"],
                   ipAddress: "127.0.0.1 (本地安全环回)",
                   device: "Workstation RTX 4090 (24GB)",
-                }
-                onLoginSuccess(user)
+                };
+                onLoginSuccess(user);
                 onShowToast(
                   "success",
                   `欢迎回来，${user.displayName}`,
                   `上次登录时间: ${user.lastLogin} · 本地优先数据主权已就绪`,
-                )
-              }, 400)
-            }, 400)
-          }, 450)
-        }, 400)
-      }, 450)
-    }, 400)
-  }
+                );
+              }, 400);
+            }, 400);
+          }, 450);
+        }, 400);
+      }, 450);
+    }, 400);
+  };
 
   // Simulate failed login attempt for testing
   const handleSimulateFail = () => {
-    const nextAttempts = failedAttempts + 1
-    setFailedAttempts(nextAttempts)
+    const nextAttempts = failedAttempts + 1;
+    setFailedAttempts(nextAttempts);
     if (nextAttempts >= 3) {
-      setIsLocked(true)
-      setLockCountdown(30)
+      setIsLocked(true);
+      setLockCountdown(30);
       setErrorMessage(
         `密码连续输入错误已达 ${nextAttempts} 次，系统已启动安全防护，账号锁定 30 秒`,
-      )
-      onShowToast("error", "触发账号安全防爆破锁定", "已拦截异常密码尝试")
+      );
+      onShowToast("error", "触发账号安全防爆破锁定", "已拦截异常密码尝试");
     } else {
-      setErrorMessage(`密码错误，剩余 ${3 - nextAttempts} 次尝试机会`)
-      onShowToast("warning", "账号或密码校验失败")
+      setErrorMessage(`密码错误，剩余 ${3 - nextAttempts} 次尝试机会`);
+      onShowToast("warning", "账号或密码校验失败");
     }
-  }
+  };
 
   return (
     <div
-      className={`min-h-screen w-screen flex flex-col justify-between items-center p-4 sm:p-6 transition-colors duration-500 relative select-none overflow-y-auto ${isNightMode ? "bg-[#040c17]" : "bg-[#0a1628]"
-        }`}
+      className={`min-h-screen w-screen flex flex-col justify-between items-center p-4 sm:p-6 transition-colors duration-500 relative select-none overflow-y-auto ${
+        isNightMode ? "bg-[#040c17]" : "bg-[#0a1628]"
+      }`}
       style={{
         backgroundImage:
           "radial-gradient(circle at 50% 38%, rgba(0, 224, 184, 0.05) 0%, transparent 60%), linear-gradient(180deg, #0a1628 0%, #071222 100%)",
@@ -308,8 +293,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
         <div
           className="w-full rounded-2xl bg-[#0f1e35] border border-[#1e2f47] p-8 shadow-2xl relative transition-all duration-200"
           style={{
-            boxShadow:
-              "0 0 24px rgba(0, 224, 184, 0.08), 0 20px 48px rgba(0, 0, 0, 0.5)",
+            boxShadow: "0 0 24px rgba(0, 224, 184, 0.08), 0 20px 48px rgba(0, 0, 0, 0.5)",
           }}
         >
           {/* Top Error Alert Bar if present */}
@@ -332,13 +316,12 @@ export const LoginView: React.FC<LoginViewProps> = ({
           <div className="flex border-b border-[#1e2f47] pb-3 mb-6 select-none">
             <button
               onClick={() => {
-                setAuthMode("local")
-                setErrorMessage(null)
+                setAuthMode("local");
+                setErrorMessage(null);
               }}
-              className={`flex-1 text-center pb-2 text-xs font-semibold transition-all relative cursor-pointer ${authMode === "local"
-                ? "text-[#00e0b8]"
-                : "text-[#8a97a8] hover:text-[#e8f0f8]"
-                }`}
+              className={`flex-1 text-center pb-2 text-xs font-semibold transition-all relative cursor-pointer ${
+                authMode === "local" ? "text-[#00e0b8]" : "text-[#8a97a8] hover:text-[#e8f0f8]"
+              }`}
             >
               <span>本地离线账号</span>
               {authMode === "local" && (
@@ -348,13 +331,12 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
             <button
               onClick={() => {
-                setAuthMode("team")
-                setErrorMessage(null)
+                setAuthMode("team");
+                setErrorMessage(null);
               }}
-              className={`flex-1 text-center pb-2 text-xs font-semibold transition-all relative cursor-pointer ${authMode === "team"
-                ? "text-[#00e0b8]"
-                : "text-[#8a97a8] hover:text-[#e8f0f8]"
-                }`}
+              className={`flex-1 text-center pb-2 text-xs font-semibold transition-all relative cursor-pointer ${
+                authMode === "team" ? "text-[#00e0b8]" : "text-[#8a97a8] hover:text-[#e8f0f8]"
+              }`}
             >
               <span>团队云端账号</span>
               {authMode === "team" && (
@@ -369,14 +351,10 @@ export const LoginView: React.FC<LoginViewProps> = ({
             <div className="space-y-1.5">
               <div className="flex justify-between items-center text-xs">
                 <label className="text-[#8a97a8] font-medium">
-                  {authMode === "local"
-                    ? "本地管理员账号"
-                    : "企业员工账号 / 邮箱"}
+                  {authMode === "local" ? "本地管理员账号" : "企业员工账号 / 邮箱"}
                 </label>
                 {authMode === "local" && (
-                  <span className="text-[10px] text-[#00e0b8] font-mono">
-                    免联网本地校验
-                  </span>
+                  <span className="text-[10px] text-[#00e0b8] font-mono">免联网本地校验</span>
                 )}
               </div>
               <div className="relative flex items-center">
@@ -385,38 +363,28 @@ export const LoginView: React.FC<LoginViewProps> = ({
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder={
-                    authMode === "local"
-                      ? "输入本地管理员账号"
-                      : "name@company.com"
-                  }
+                  placeholder={authMode === "local" ? "输入本地管理员账号" : "name@company.com"}
                   disabled={isVerifying || isLocked}
-                  className={`w-full h-11 pl-9 pr-3 rounded-md bg-[#15294a] text-xs text-[#e8f0f8] placeholder-[#5c697a] border transition-all focus:outline-none ${fieldErrors.username
-                    ? "border-[#ff7a45] focus:ring-1 focus:ring-[#ff7a45]"
-                    : "border-[#1e2f47] focus:border-[#00e0b8] focus:ring-1 focus:ring-[#00e0b8]/40"
-                    }`}
+                  className={`w-full h-11 pl-9 pr-3 rounded-md bg-[#15294a] text-xs text-[#e8f0f8] placeholder-[#5c697a] border transition-all focus:outline-none ${
+                    fieldErrors.username
+                      ? "border-[#ff7a45] focus:ring-1 focus:ring-[#ff7a45]"
+                      : "border-[#1e2f47] focus:border-[#00e0b8] focus:ring-1 focus:ring-[#00e0b8]/40"
+                  }`}
                 />
               </div>
               {fieldErrors.username && (
-                <p className="text-[11px] text-[#ff7a45]">
-                  {fieldErrors.username}
-                </p>
+                <p className="text-[11px] text-[#ff7a45]">{fieldErrors.username}</p>
               )}
             </div>
 
             {/* Password Input */}
             <div className="space-y-1.5">
               <div className="flex justify-between items-center text-xs">
-                <label className="text-[#8a97a8] font-medium">
-                  认证凭证密码
-                </label>
+                <label className="text-[#8a97a8] font-medium">认证凭证密码</label>
                 <button
                   type="button"
                   onClick={() =>
-                    onShowToast(
-                      "info",
-                      "本地账号初始密码为 admin888，可在系统设置中修改",
-                    )
+                    onShowToast("info", "本地账号初始密码为 admin888，可在系统设置中修改")
                   }
                   className="text-[10px] text-[#8a97a8] hover:text-[#00e0b8]"
                 >
@@ -431,27 +399,22 @@ export const LoginView: React.FC<LoginViewProps> = ({
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="输入密码 (至少6位)"
                   disabled={isVerifying || isLocked}
-                  className={`w-full h-11 pl-9 pr-10 rounded-md bg-[#15294a] text-xs text-[#e8f0f8] placeholder-[#5c697a] border transition-all focus:outline-none ${fieldErrors.password
-                    ? "border-[#ff7a45] focus:ring-1 focus:ring-[#ff7a45]"
-                    : "border-[#1e2f47] focus:border-[#00e0b8] focus:ring-1 focus:ring-[#00e0b8]/40"
-                    }`}
+                  className={`w-full h-11 pl-9 pr-10 rounded-md bg-[#15294a] text-xs text-[#e8f0f8] placeholder-[#5c697a] border transition-all focus:outline-none ${
+                    fieldErrors.password
+                      ? "border-[#ff7a45] focus:ring-1 focus:ring-[#ff7a45]"
+                      : "border-[#1e2f47] focus:border-[#00e0b8] focus:ring-1 focus:ring-[#00e0b8]/40"
+                  }`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((p) => !p)}
                   className="absolute right-3 text-[#8a97a8] hover:text-[#e8f0f8] p-1 cursor-pointer"
                 >
-                  {showPassword ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
               {fieldErrors.password && (
-                <p className="text-[11px] text-[#ff7a45]">
-                  {fieldErrors.password}
-                </p>
+                <p className="text-[11px] text-[#ff7a45]">{fieldErrors.password}</p>
               )}
             </div>
 
@@ -472,8 +435,8 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 <select
                   value={selectedRole}
                   onChange={(e) => {
-                    const v = e.target.value
-                    if (isUserRole(v)) setSelectedRole(v)
+                    const v = e.target.value;
+                    if (isUserRole(v)) setSelectedRole(v);
                   }}
                   className="bg-[#15294a] text-[#00e0b8] border border-[#1e2f47] rounded px-2 py-1 text-xs focus:outline-none cursor-pointer"
                 >
@@ -507,9 +470,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
             {/* Team mode alternative logins (SSO / QR) */}
             {authMode === "team" && (
               <div className="pt-3 border-t border-[#1e2f47] space-y-2 text-xs">
-                <div className="text-center text-[#5c697a] text-[11px]">
-                  其他企业级认证方式
-                </div>
+                <div className="text-center text-[#5c697a] text-[11px]">其他企业级认证方式</div>
                 <div className="grid grid-cols-2 gap-2">
                   <Button
                     variant="secondary"
@@ -517,10 +478,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                     type="button"
                     icon={<Building2 className="w-3.5 h-3.5 text-[#00b4d8]" />}
                     onClick={() =>
-                      onShowToast(
-                        "info",
-                        "正在跳转至企业 SAML 2.0 / OIDC 单点登录...",
-                      )
+                      onShowToast("info", "正在跳转至企业 SAML 2.0 / OIDC 单点登录...")
                     }
                   >
                     企业 SSO 登录
@@ -579,9 +537,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 style={{ width: `${(verificationStep / 6) * 100}%` }}
               />
             </div>
-            <div className="text-[11px] font-mono text-[#8a97a8] truncate">
-              {verificationLog}
-            </div>
+            <div className="text-[11px] font-mono text-[#8a97a8] truncate">{verificationLog}</div>
           </div>
         )}
       </div>
@@ -613,10 +569,8 @@ export const LoginView: React.FC<LoginViewProps> = ({
           <div className="p-3 rounded-xl bg-[#15294a] border border-[#1e2f47] space-y-1.5">
             <h4 className="font-semibold text-[#00e0b8]">绝对数据隔离准则：</h4>
             <p className="text-[#e8f0f8]">
-              MiniMax-H3 DiffSynth
-              本地版所有模型推理权重、视频成片、口型音素频谱与 Seed
-              种子资产均完全持久化保存在本地 NVMe
-              磁盘，绝不向任何外部公网服务器上传视频或面容数据。
+              MiniMax-H3 DiffSynth 本地版所有模型推理权重、视频成片、口型音素频谱与 Seed
+              种子资产均完全持久化保存在本地 NVMe 磁盘，绝不向任何外部公网服务器上传视频或面容数据。
             </p>
           </div>
 
@@ -634,16 +588,14 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 <span className="text-[#00e0b8] font-mono">2.</span>
                 <span>
                   <strong>单端口网关：</strong>
-                  全系统所有前后端交互均通过单一本地端口 (:3031)
-                  聚合，无隐蔽出站连接。
+                  全系统所有前后端交互均通过单一本地端口 (:3031) 聚合，无隐蔽出站连接。
                 </span>
               </div>
               <div className="flex items-start gap-2">
                 <span className="text-[#00e0b8] font-mono">3.</span>
                 <span>
                   <strong>操作审计日志：</strong>
-                  所有批次执行与参数回写均保留本地 WAL
-                  事务日志，支持回溯合规审查。
+                  所有批次执行与参数回写均保留本地 WAL 事务日志，支持回溯合规审查。
                 </span>
               </div>
             </div>
@@ -661,17 +613,15 @@ export const LoginView: React.FC<LoginViewProps> = ({
           <div className="w-48 h-48 rounded-xl bg-white p-3 flex items-center justify-center border-2 border-[#00e0b8] shadow-lg">
             <QrCode className="w-full h-full text-[#0a1628]" />
           </div>
-          <p className="text-[#8a97a8]">
-            请使用 企业微信 或 飞书 扫描上方二维码以完成身份核验
-          </p>
+          <p className="text-[#8a97a8]">请使用 企业微信 或 飞书 扫描上方二维码以完成身份核验</p>
           <span className="text-[10px] text-[#5c697a] font-mono">
             二维码有效期 60 秒 · 已启用端到端加密
           </span>
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

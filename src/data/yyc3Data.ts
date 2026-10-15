@@ -16,7 +16,7 @@
  * dependencies: ../types
  * exports: YYC3_MEMBERS, PRESET_CHAT_PROMPTS
  */
-import { YYC3Member } from "../types"
+import { YYC3Member } from "../types";
 
 export const YYC3_MEMBERS: YYC3Member[] = [
   {
@@ -28,19 +28,13 @@ export const YYC3_MEMBERS: YYC3Member[] = [
     roleColor: "#FFD700",
     iconType: "speech",
     quote: "「言之有物，行之千里。声纹即人设，唇齿显乾坤。」",
-    roleDefinition:
-      "语言理解与意图识别中枢，负责多模态意图路由与语音音素高保真对齐",
+    roleDefinition: "语言理解与意图识别中枢，负责多模态意图路由与语音音素高保真对齐",
     responsibilities: [
       "自然语言提示词意图拆解与标准化",
       "语音克隆特征提取与 MFCC 音素对齐",
       "跨语种数字人口型先验特征校准",
     ],
-    capabilities: [
-      "语义拓扑解析",
-      "音素频谱对齐",
-      "情感基调预测",
-      "语音驱动增强",
-    ],
+    capabilities: ["语义拓扑解析", "音素频谱对齐", "情感基调预测", "语音驱动增强"],
     metrics: {
       todayTasks: 412,
       avgLatencyMs: 45,
@@ -59,19 +53,13 @@ export const YYC3_MEMBERS: YYC3Member[] = [
     roleColor: "#FF69B4",
     iconType: "brain",
     quote: "「数据成脉络，洞察鉴万机。在繁杂特征中提炼极致秩序。」",
-    roleDefinition:
-      "数据分析与指标挖掘核心，全链路多维特征评估与敏感度模型构建",
+    roleDefinition: "数据分析与指标挖掘核心，全链路多维特征评估与敏感度模型构建",
     responsibilities: [
       "流水线执行各阶段耗时与吞吐聚类",
       "多维度评分雷达图加权算法调优",
       "Seed 基因参数与生成质量的相关性建模",
     ],
-    capabilities: [
-      "高维聚类分析",
-      "雷达权重平衡",
-      "超参灵敏度建模",
-      "多指标归因",
-    ],
+    capabilities: ["高维聚类分析", "雷达权重平衡", "超参灵敏度建模", "多指标归因"],
     metrics: {
       todayTasks: 328,
       avgLatencyMs: 62,
@@ -96,12 +84,7 @@ export const YYC3_MEMBERS: YYC3Member[] = [
       "帧间扩散时序连贯度与抖动概率计算",
       "批量长任务完成时间智能预估",
     ],
-    capabilities: [
-      "时序趋势预测",
-      "显存防爆预警",
-      "帧抖动前置扫描",
-      "排期耗时预估",
-    ],
+    capabilities: ["时序趋势预测", "显存防爆预警", "帧抖动前置扫描", "排期耗时预估"],
     metrics: {
       todayTasks: 284,
       avgLatencyMs: 58,
@@ -126,12 +109,7 @@ export const YYC3_MEMBERS: YYC3Member[] = [
       "变异测试候选批次自动生成与排序",
       "优秀生产参数自动反哺回写种子库",
     ],
-    capabilities: [
-      "种子基因优选",
-      "变异参数衍生",
-      "资产价值评估",
-      "个性化基准推荐",
-    ],
+    capabilities: ["种子基因优选", "变异参数衍生", "资产价值评估", "个性化基准推荐"],
     metrics: {
       todayTasks: 198,
       avgLatencyMs: 82,
@@ -181,12 +159,7 @@ export const YYC3_MEMBERS: YYC3Member[] = [
       "CUDA 显存碎片整理与临时切片缓存回收",
       "全链路本地优先数据沙箱与隐私审计",
     ],
-    capabilities: [
-      "看门狗探活自愈",
-      "显存内存保护",
-      "本地离线审计",
-      "排障方案一键执行",
-    ],
+    capabilities: ["看门狗探活自愈", "显存内存保护", "本地离线审计", "排障方案一键执行"],
     metrics: {
       todayTasks: 512,
       avgLatencyMs: 32,
@@ -205,19 +178,13 @@ export const YYC3_MEMBERS: YYC3Member[] = [
     roleColor: "#C0C0C0",
     iconType: "balance",
     quote: "「格物以致知，绳墨定规矩。毫厘之差，云泥之别。」",
-    roleDefinition:
-      "质量标准最高裁判官，SyncNet 唇形对齐与超清画质黄金准则仲裁",
+    roleDefinition: "质量标准最高裁判官，SyncNet 唇形对齐与超清画质黄金准则仲裁",
     responsibilities: [
       "口型吻合度时延误差（<0.05s）合规裁决",
       "4K 面部特征毛发边缘与时序撕裂质检",
       "不达标批次的缺陷归因与精准定位",
     ],
-    capabilities: [
-      "超清画质评测",
-      "唇形音视频仲裁",
-      "异常帧缺陷定位",
-      "行业标准基线对齐",
-    ],
+    capabilities: ["超清画质评测", "唇形音视频仲裁", "异常帧缺陷定位", "行业标准基线对齐"],
     metrics: {
       todayTasks: 360,
       avgLatencyMs: 88,
@@ -242,12 +209,7 @@ export const YYC3_MEMBERS: YYC3Member[] = [
       "多镜头分镜戏剧张力与姿态控制设计",
       "商业场景人物光影与服饰风格迁移",
     ],
-    capabilities: [
-      "提示词工程重构",
-      "分镜艺术指导",
-      "生动微表情设计",
-      "剧本到分镜转换",
-    ],
+    capabilities: ["提示词工程重构", "分镜艺术指导", "生动微表情设计", "剧本到分镜转换"],
     metrics: {
       todayTasks: 240,
       avgLatencyMs: 95,
@@ -257,7 +219,7 @@ export const YYC3_MEMBERS: YYC3Member[] = [
     isOnline: true,
     isSpeaking: true,
   },
-]
+];
 
 export const PRESET_CHAT_PROMPTS: Record<string, string[]> = {
   yuanqi: [
@@ -285,7 +247,7 @@ export const PRESET_CHAT_PROMPTS: Record<string, string[]> = {
     "为美妆电商达人设计一套具有高频互动的微表情参数",
     "将剧本文本快速转换为 4 个机位的分镜提示词",
   ],
-}
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

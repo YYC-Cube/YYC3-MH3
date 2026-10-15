@@ -16,7 +16,7 @@
  * dependencies: ../types
  * exports: INITIAL_DEMO_SESSION
  */
-import { AuthUser } from "../types"
+import { AuthUser } from "../types";
 
 export const INITIAL_DEMO_SESSION: AuthUser = {
   username: "admin",
@@ -29,7 +29,7 @@ export const INITIAL_DEMO_SESSION: AuthUser = {
   permissions: ["all_pipeline", "models_write", "ops_control", "seed_mutate"],
   ipAddress: "127.0.0.1 (本地安全环回)",
   device: "Workstation RTX 4090 (24GB)",
-}
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

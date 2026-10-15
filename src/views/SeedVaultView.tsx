@@ -16,30 +16,17 @@
  * dependencies: react, ../types, lucide-react, ../components/common
  * exports: SeedVaultViewProps, SeedVaultView
  */
-import {
-  History,
-  LayoutGrid,
-  List,
-  Scale,
-  Search,
-  Sparkles,
-  Tag,
-  TrendingUp,
-} from "lucide-react"
-import React, { useState } from "react"
-import { Badge, Button, Drawer, Input, Modal } from "../components/common"
-import { generateSeedNumber } from "../domains/seed"
-import { NavigateExtra, NavTabId, SeedItem } from "../types"
+import { History, LayoutGrid, List, Scale, Search, Sparkles, Tag, TrendingUp } from "lucide-react";
+import React, { useState } from "react";
+import { Badge, Button, Drawer, Input, Modal } from "../components/common";
+import { generateSeedNumber } from "../domains/seed";
+import { NavigateExtra, NavTabId, SeedItem } from "../types";
 
 export interface SeedVaultViewProps {
-  seeds: SeedItem[]
-  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void
-  onApplySeedToWorkbench: (seed: SeedItem) => void
-  onShowToast: (
-    type: "success" | "error" | "warning" | "info",
-    msg: string,
-    sub?: string,
-  ) => void
+  seeds: SeedItem[];
+  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void;
+  onApplySeedToWorkbench: (seed: SeedItem) => void;
+  onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
 export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
@@ -48,20 +35,20 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
   onApplySeedToWorkbench,
   onShowToast,
 }) => {
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedTier, setSelectedTier] = useState<string>("all")
-  const [selectedTag, setSelectedTag] = useState<string>("all")
-  const [selectedSeed, setSelectedSeed] = useState<SeedItem | null>(null)
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTier, setSelectedTier] = useState<string>("all");
+  const [selectedTag, setSelectedTag] = useState<string>("all");
+  const [selectedSeed, setSelectedSeed] = useState<SeedItem | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   // Multi-Seed Compare selection
-  const [compareSeedIds, setCompareSeedIds] = useState<string[]>([])
-  const [isCompareModalOpen, setIsCompareModalOpen] = useState(false)
+  const [compareSeedIds, setCompareSeedIds] = useState<string[]>([]);
+  const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
 
   // Breeding modal
-  const [isBreedingModalOpen, setIsBreedingModalOpen] = useState(false)
-  const [breedingSeed, setBreedingSeed] = useState<SeedItem | null>(null)
+  const [isBreedingModalOpen, setIsBreedingModalOpen] = useState(false);
+  const [breedingSeed, setBreedingSeed] = useState<SeedItem | null>(null);
 
   const allTags = [
     "高稳定性",
@@ -72,55 +59,47 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
     "自然微表情",
     "高饱和面容",
     "古风发簪物理",
-  ]
+  ];
 
   const filteredSeeds = seeds.filter((s) => {
-    if (selectedTier !== "all" && s.tier !== selectedTier) return false
-    if (selectedTag !== "all" && !s.tags.includes(selectedTag)) return false
+    if (selectedTier !== "all" && s.tier !== selectedTier) return false;
+    if (selectedTag !== "all" && !s.tags.includes(selectedTag)) return false;
     if (searchQuery) {
-      const q = searchQuery.toLowerCase()
+      const q = searchQuery.toLowerCase();
       return (
         String(s.seedNumber).includes(q) ||
         s.name.toLowerCase().includes(q) ||
         s.tags.some((t) => t.toLowerCase().includes(q))
-      )
+      );
     }
-    return true
-  })
+    return true;
+  });
 
   const toggleCompareSeed = (id: string) => {
     setCompareSeedIds((prev) =>
-      prev.includes(id)
-        ? prev.filter((i) => i !== id)
-        : prev.length < 3
-          ? [...prev, id]
-          : prev,
-    )
-  }
+      prev.includes(id) ? prev.filter((i) => i !== id) : prev.length < 3 ? [...prev, id] : prev,
+    );
+  };
 
   const handleOpenDetail = (seed: SeedItem) => {
-    setSelectedSeed(seed)
-    setIsDrawerOpen(true)
-  }
+    setSelectedSeed(seed);
+    setIsDrawerOpen(true);
+  };
 
   const handleApply = (seed: SeedItem) => {
-    onApplySeedToWorkbench(seed)
-    onShowToast(
-      "success",
-      `已应用种子 #${seed.seedNumber}`,
-      "参数已无缝载入流水线工作台",
-    )
-    onNavigate("workbench")
-  }
+    onApplySeedToWorkbench(seed);
+    onShowToast("success", `已应用种子 #${seed.seedNumber}`, "参数已无缝载入流水线工作台");
+    onNavigate("workbench");
+  };
 
   const handleLaunchBreeding = () => {
     onShowToast(
       "success",
       `已基于 Seed #${breedingSeed?.seedNumber} 启动定向培育`,
       "已生成 6 组探索衍生变异批次",
-    )
-    setIsBreedingModalOpen(false)
-  }
+    );
+    setIsBreedingModalOpen(false);
+  };
 
   return (
     <div className="flex-1 flex overflow-hidden bg-[#0a1628]">
@@ -128,43 +107,39 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
       <div className="w-56 border-r border-[#1e2f47] bg-[#0c1a30] flex flex-col flex-shrink-0 p-3 space-y-3 select-none">
         <div className="flex items-center gap-2 pb-2 border-b border-[#1e2f47]">
           <Tag className="w-4 h-4 text-[#00e0b8]" />
-          <span className="text-xs font-semibold text-[#e8f0f8]">
-            标签体系分组
-          </span>
+          <span className="text-xs font-semibold text-[#e8f0f8]">标签体系分组</span>
         </div>
 
         <div className="space-y-1 text-xs">
           <button
             onClick={() => setSelectedTag("all")}
-            className={`w-full text-left px-2.5 py-1.5 rounded-lg transition-colors flex items-center justify-between cursor-pointer ${selectedTag === "all"
-              ? "bg-[#00e0b8]/15 text-[#00e0b8] font-semibold"
-              : "text-[#8a97a8] hover:text-[#e8f0f8] hover:bg-[#15294a]"
-              }`}
+            className={`w-full text-left px-2.5 py-1.5 rounded-lg transition-colors flex items-center justify-between cursor-pointer ${
+              selectedTag === "all"
+                ? "bg-[#00e0b8]/15 text-[#00e0b8] font-semibold"
+                : "text-[#8a97a8] hover:text-[#e8f0f8] hover:bg-[#15294a]"
+            }`}
           >
             <span>全部标签</span>
-            <span className="font-mono text-[10px] text-[#5c697a]">
-              {seeds.length}
-            </span>
+            <span className="font-mono text-[10px] text-[#5c697a]">{seeds.length}</span>
           </button>
 
           {allTags.map((tag) => {
-            const count = seeds.filter((s) => s.tags.includes(tag)).length
-            const isSelected = selectedTag === tag
+            const count = seeds.filter((s) => s.tags.includes(tag)).length;
+            const isSelected = selectedTag === tag;
             return (
               <button
                 key={tag}
                 onClick={() => setSelectedTag(tag)}
-                className={`w-full text-left px-2.5 py-1.5 rounded-lg transition-colors flex items-center justify-between cursor-pointer ${isSelected
-                  ? "bg-[#00e0b8]/15 text-[#00e0b8] font-semibold"
-                  : "text-[#8a97a8] hover:text-[#e8f0f8] hover:bg-[#15294a]"
-                  }`}
+                className={`w-full text-left px-2.5 py-1.5 rounded-lg transition-colors flex items-center justify-between cursor-pointer ${
+                  isSelected
+                    ? "bg-[#00e0b8]/15 text-[#00e0b8] font-semibold"
+                    : "text-[#8a97a8] hover:text-[#e8f0f8] hover:bg-[#15294a]"
+                }`}
               >
                 <span className="truncate">{tag}</span>
-                <span className="font-mono text-[10px] text-[#5c697a]">
-                  {count}
-                </span>
+                <span className="font-mono text-[10px] text-[#5c697a]">{count}</span>
               </button>
-            )
+            );
           })}
         </div>
       </div>
@@ -175,16 +150,13 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold text-[#e8f0f8]">
-                Seed 种子库全生命周期资产
-              </h1>
+              <h1 className="text-xl font-bold text-[#e8f0f8]">Seed 种子库全生命周期资产</h1>
               <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#9d7cd8]/15 text-[#9d7cd8] border border-[#9d7cd8]/35 font-mono">
                 沉淀优质基因 · 闭环进化
               </span>
             </div>
             <p className="text-xs text-[#8a97a8] mt-1">
-              高评分批次自动回写，支持种子培育优化、参数遗传、多 Seed 批量对比与
-              A/B 测试
+              高评分批次自动回写，支持种子培育优化、参数遗传、多 Seed 批量对比与 A/B 测试
             </p>
           </div>
 
@@ -205,12 +177,8 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
               size="sm"
               icon={<Sparkles className="w-3.5 h-3.5 text-[#00e0b8]" />}
               onClick={() => {
-                const newSeedNum = generateSeedNumber()
-                onShowToast(
-                  "success",
-                  "已生成探索型培育种子",
-                  `Seed #${newSeedNum} 已登记入库`,
-                )
+                const newSeedNum = generateSeedNumber();
+                onShowToast("success", "已生成探索型培育种子", `Seed #${newSeedNum} 已登记入库`);
               }}
             >
               + 培育新种子
@@ -244,10 +212,11 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
               <button
                 key={t.id}
                 onClick={() => setSelectedTier(t.id)}
-                className={`px-2.5 py-1 text-xs rounded-md transition-colors cursor-pointer ${selectedTier === t.id
-                  ? "bg-[#00e0b8] text-[#0a1628] font-bold shadow-xs"
-                  : "text-[#8a97a8] hover:text-[#e8f0f8]"
-                  }`}
+                className={`px-2.5 py-1 text-xs rounded-md transition-colors cursor-pointer ${
+                  selectedTier === t.id
+                    ? "bg-[#00e0b8] text-[#0a1628] font-bold shadow-xs"
+                    : "text-[#8a97a8] hover:text-[#e8f0f8]"
+                }`}
               >
                 {t.label}
               </button>
@@ -258,19 +227,17 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
           <div className="flex items-center gap-1 bg-[#15294a] p-0.5 rounded-lg border border-[#1e2f47]">
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-1 rounded cursor-pointer ${viewMode === "grid"
-                ? "bg-[#0a1628] text-[#00e0b8]"
-                : "text-[#8a97a8]"
-                }`}
+              className={`p-1 rounded cursor-pointer ${
+                viewMode === "grid" ? "bg-[#0a1628] text-[#00e0b8]" : "text-[#8a97a8]"
+              }`}
             >
               <LayoutGrid className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`p-1 rounded cursor-pointer ${viewMode === "list"
-                ? "bg-[#0a1628] text-[#00e0b8]"
-                : "text-[#8a97a8]"
-                }`}
+              className={`p-1 rounded cursor-pointer ${
+                viewMode === "list" ? "bg-[#0a1628] text-[#00e0b8]" : "text-[#8a97a8]"
+              }`}
             >
               <List className="w-4 h-4" />
             </button>
@@ -281,14 +248,15 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
         {viewMode === "grid" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredSeeds.map((seed) => {
-              const isComparing = compareSeedIds.includes(seed.id)
+              const isComparing = compareSeedIds.includes(seed.id);
               return (
                 <div
                   key={seed.id}
-                  className={`p-4 rounded-xl border transition-all flex flex-col justify-between group space-y-3 ${isComparing
-                    ? "bg-[#15294a] border-[#00e0b8] shadow-[0_0_16px_rgba(0,224,184,0.2)]"
-                    : "bg-[#0c1a30] border-[#1e2f47] hover:border-[#00e0b8]/40"
-                    }`}
+                  className={`p-4 rounded-xl border transition-all flex flex-col justify-between group space-y-3 ${
+                    isComparing
+                      ? "bg-[#15294a] border-[#00e0b8] shadow-[0_0_16px_rgba(0,224,184,0.2)]"
+                      : "bg-[#0c1a30] border-[#1e2f47] hover:border-[#00e0b8]/40"
+                  }`}
                 >
                   <div>
                     <div className="flex items-center justify-between mb-2">
@@ -305,11 +273,7 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
                         </span>
                         <Badge
                           variant={
-                            seed.tier === "S"
-                              ? "brand"
-                              : seed.tier === "A"
-                                ? "info"
-                                : "purple"
+                            seed.tier === "S" ? "brand" : seed.tier === "A" ? "info" : "purple"
                           }
                           size="xs"
                         >
@@ -322,9 +286,7 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
                       </div>
                     </div>
 
-                    <h3 className="text-sm font-semibold text-[#e8f0f8] mb-1">
-                      {seed.name}
-                    </h3>
+                    <h3 className="text-sm font-semibold text-[#e8f0f8] mb-1">{seed.name}</h3>
                     <p className="text-xs text-[#8a97a8] leading-relaxed line-clamp-2">
                       {seed.notes}
                     </p>
@@ -344,38 +306,28 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
 
                   {/* Bottom stats and action */}
                   <div className="pt-3 border-t border-[#1e2f47]/60 flex items-center justify-between text-xs">
-                    <span className="text-[#5c697a]">
-                      衍生: {seed.generationCount} 批次
-                    </span>
+                    <span className="text-[#5c697a]">衍生: {seed.generationCount} 批次</span>
                     <div className="flex items-center gap-2">
                       <Button
                         variant="ghost"
                         size="xs"
                         onClick={() => {
-                          setBreedingSeed(seed)
-                          setIsBreedingModalOpen(true)
+                          setBreedingSeed(seed);
+                          setIsBreedingModalOpen(true);
                         }}
                       >
                         培育优化
                       </Button>
-                      <Button
-                        variant="secondary"
-                        size="xs"
-                        onClick={() => handleOpenDetail(seed)}
-                      >
+                      <Button variant="secondary" size="xs" onClick={() => handleOpenDetail(seed)}>
                         基因谱系
                       </Button>
-                      <Button
-                        variant="primary"
-                        size="xs"
-                        onClick={() => handleApply(seed)}
-                      >
+                      <Button variant="primary" size="xs" onClick={() => handleApply(seed)}>
                         载入工作台
                       </Button>
                     </div>
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         ) : (
@@ -395,10 +347,7 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
               </thead>
               <tbody className="divide-y divide-[#1e2f47]/50">
                 {filteredSeeds.map((seed) => (
-                  <tr
-                    key={seed.id}
-                    className="hover:bg-[#15294a]/40 transition-colors"
-                  >
+                  <tr key={seed.id} className="hover:bg-[#15294a]/40 transition-colors">
                     <td className="py-3 px-4">
                       <input
                         type="checkbox"
@@ -408,18 +357,11 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
                       />
                     </td>
                     <td className="py-3 px-4">
-                      <span className="font-mono text-[#00e0b8] font-bold">
-                        #{seed.seedNumber}
-                      </span>
-                      <span className="text-[#e8f0f8] font-medium ml-2">
-                        {seed.name}
-                      </span>
+                      <span className="font-mono text-[#00e0b8] font-bold">#{seed.seedNumber}</span>
+                      <span className="text-[#e8f0f8] font-medium ml-2">{seed.name}</span>
                     </td>
                     <td className="py-3 px-4">
-                      <Badge
-                        variant={seed.tier === "S" ? "brand" : "info"}
-                        size="xs"
-                      >
+                      <Badge variant={seed.tier === "S" ? "brand" : "info"} size="xs">
                         {seed.tier} 级
                       </Badge>
                     </td>
@@ -429,23 +371,13 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
                     <td className="py-3 px-4 font-mono text-[#8a97a8]">
                       {seed.generationCount} 批
                     </td>
-                    <td className="py-3 px-4 text-[#8a97a8]">
-                      {seed.lastUsed}
-                    </td>
+                    <td className="py-3 px-4 text-[#8a97a8]">{seed.lastUsed}</td>
                     <td className="py-3 px-4 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="xs"
-                          onClick={() => handleOpenDetail(seed)}
-                        >
+                        <Button variant="ghost" size="xs" onClick={() => handleOpenDetail(seed)}>
                           基因谱系
                         </Button>
-                        <Button
-                          variant="primary"
-                          size="xs"
-                          onClick={() => handleApply(seed)}
-                        >
+                        <Button variant="primary" size="xs" onClick={() => handleApply(seed)}>
                           载入工作台
                         </Button>
                       </div>
@@ -471,21 +403,17 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
               维度 / 参数项
             </div>
             {compareSeedIds.map((id) => {
-              const s = seeds.find((x) => x.id === id)
-              if (!s) return null
+              const s = seeds.find((x) => x.id === id);
+              if (!s) return null;
               return (
                 <div
                   key={id}
                   className="p-2.5 rounded-lg bg-[#15294a] text-center border border-[#1e2f47]"
                 >
-                  <div className="text-[#00e0b8] font-bold">
-                    #{s.seedNumber}
-                  </div>
-                  <div className="text-[11px] text-[#e8f0f8] truncate">
-                    {s.name}
-                  </div>
+                  <div className="text-[#00e0b8] font-bold">#{s.seedNumber}</div>
+                  <div className="text-[11px] text-[#e8f0f8] truncate">{s.name}</div>
                 </div>
-              )
+              );
             })}
           </div>
 
@@ -523,16 +451,13 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
               >
                 <span className="text-[#8a97a8] font-medium">{row.label}</span>
                 {compareSeedIds.map((id) => {
-                  const s = seeds.find((x) => x.id === id)
-                  if (!s) return <div key={id}>--</div>
+                  const s = seeds.find((x) => x.id === id);
+                  if (!s) return <div key={id}>--</div>;
                   return (
-                    <div
-                      key={id}
-                      className="text-center font-bold text-[#e8f0f8]"
-                    >
+                    <div key={id} className="text-center font-bold text-[#e8f0f8]">
                       {row.getter(s)}
                     </div>
-                  )
+                  );
                 })}
               </div>
             ))}
@@ -548,18 +473,10 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
           title={`Seed #${breedingSeed.seedNumber} 定向培育与变异矩阵`}
           footer={
             <>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsBreedingModalOpen(false)}
-              >
+              <Button variant="ghost" size="sm" onClick={() => setIsBreedingModalOpen(false)}>
                 取消
               </Button>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={handleLaunchBreeding}
-              >
+              <Button variant="primary" size="sm" onClick={handleLaunchBreeding}>
                 生成 6 组衍生变异批次
               </Button>
             </>
@@ -572,11 +489,7 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
             </p>
             <div className="grid grid-cols-2 gap-4">
               <Input label="变异批次数量" value="6 组" readOnly />
-              <Input
-                label="扰动范围 (Seed Noise)"
-                value="± 1, ± 5, ± 10"
-                readOnly
-              />
+              <Input label="扰动范围 (Seed Noise)" value="± 1, ± 5, ± 10" readOnly />
               <Input label="CFG 强度步进" value="0.2 递增" readOnly />
               <Input label="降噪梯度" value="0.60 ~ 0.72" readOnly />
             </div>
@@ -596,8 +509,8 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
               size="sm"
               className="w-full"
               onClick={() => {
-                setIsDrawerOpen(false)
-                handleApply(selectedSeed)
+                setIsDrawerOpen(false);
+                handleApply(selectedSeed);
               }}
             >
               一键应用此 Seed 到流水线工作台
@@ -607,49 +520,35 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
           <div className="space-y-4 text-xs">
             <div className="p-3.5 rounded-xl bg-[#15294a] border border-[#1e2f47] space-y-2">
               <div className="flex justify-between items-center">
-                <span className="text-base font-bold text-[#e8f0f8]">
-                  {selectedSeed.name}
-                </span>
+                <span className="text-base font-bold text-[#e8f0f8]">{selectedSeed.name}</span>
                 <Badge variant={selectedSeed.tier === "S" ? "brand" : "info"}>
                   {selectedSeed.tier} 级基线
                 </Badge>
               </div>
-              <p className="text-[#8a97a8] leading-relaxed">
-                {selectedSeed.notes}
-              </p>
+              <p className="text-[#8a97a8] leading-relaxed">{selectedSeed.notes}</p>
             </div>
 
             <div className="space-y-2">
-              <span className="font-semibold text-[#e8f0f8]">
-                沉淀特征超参数 (Hyperparameters)
-              </span>
+              <span className="font-semibold text-[#e8f0f8]">沉淀特征超参数 (Hyperparameters)</span>
               <div className="space-y-1.5 font-mono text-[11px]">
                 <div className="flex justify-between p-2 rounded bg-[#0a1628] border border-[#1e2f47]">
-                  <span className="text-[#8a97a8]">
-                    无分类器引导缩放 (Guidance Scale)
-                  </span>
+                  <span className="text-[#8a97a8]">无分类器引导缩放 (Guidance Scale)</span>
                   <span className="text-[#00e0b8] font-semibold">
                     {selectedSeed.params.guidanceScale}
                   </span>
                 </div>
                 <div className="flex justify-between p-2 rounded bg-[#0a1628] border border-[#1e2f47]">
                   <span className="text-[#8a97a8]">扩散采样步数 (Steps)</span>
-                  <span className="text-[#00e0b8] font-semibold">
-                    {selectedSeed.params.steps}
-                  </span>
+                  <span className="text-[#00e0b8] font-semibold">{selectedSeed.params.steps}</span>
                 </div>
                 <div className="flex justify-between p-2 rounded bg-[#0a1628] border border-[#1e2f47]">
-                  <span className="text-[#8a97a8]">
-                    降噪强度 (Denoise Strength)
-                  </span>
+                  <span className="text-[#8a97a8]">降噪强度 (Denoise Strength)</span>
                   <span className="text-[#00e0b8] font-semibold">
                     {selectedSeed.params.denoiseStrength}
                   </span>
                 </div>
                 <div className="flex justify-between p-2 rounded bg-[#0a1628] border border-[#1e2f47]">
-                  <span className="text-[#8a97a8]">
-                    口型 CFG 引导 (CFG LipSync)
-                  </span>
+                  <span className="text-[#8a97a8]">口型 CFG 引导 (CFG LipSync)</span>
                   <span className="text-[#00e0b8] font-semibold">
                     {selectedSeed.params.cfgLipSync}
                   </span>
@@ -660,9 +559,7 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
             {/* Version History & Rollback (Requirement 2.1) */}
             <div className="space-y-2 pt-2 border-t border-[#1e2f47]">
               <div className="flex items-center justify-between">
-                <span className="font-semibold text-[#e8f0f8]">
-                  版本迭代历史与回溯
-                </span>
+                <span className="font-semibold text-[#e8f0f8]">版本迭代历史与回溯</span>
                 <History className="w-3.5 h-3.5 text-[#00e0b8]" />
               </div>
               <div className="space-y-2">
@@ -705,8 +602,8 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
         </Drawer>
       )}
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

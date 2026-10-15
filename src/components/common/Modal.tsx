@@ -16,16 +16,16 @@
  * dependencies: react, lucide-react
  * exports: ModalProps, Modal
  */
-import React, { useEffect } from "react"
-import { X } from "lucide-react"
+import React, { useEffect } from "react";
+import { X } from "lucide-react";
 
 export interface ModalProps {
-  isOpen: boolean
-  onClose: () => void
-  title?: React.ReactNode
-  children: React.ReactNode
-  footer?: React.ReactNode
-  maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "4xl"
+  isOpen: boolean;
+  onClose: () => void;
+  title?: React.ReactNode;
+  children: React.ReactNode;
+  footer?: React.ReactNode;
+  maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "4xl";
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -39,14 +39,14 @@ export const Modal: React.FC<ModalProps> = ({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
-        onClose()
+        onClose();
       }
-    }
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [isOpen, onClose])
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const maxWidthClasses = {
     sm: "max-w-sm",
@@ -55,7 +55,7 @@ export const Modal: React.FC<ModalProps> = ({
     xl: "max-w-xl",
     "2xl": "max-w-2xl",
     "4xl": "max-w-4xl",
-  }[maxWidth]
+  }[maxWidth];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#071425]/80 backdrop-blur-sm animate-in fade-in duration-200">
@@ -80,8 +80,8 @@ export const Modal: React.FC<ModalProps> = ({
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

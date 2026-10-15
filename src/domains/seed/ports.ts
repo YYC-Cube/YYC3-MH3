@@ -16,7 +16,7 @@
  * dependencies: ../../types
  * exports: SeedRepository
  */
-import { SeedItem } from "../../types"
+import { SeedItem } from "../../types";
 
 /**
  * 种子仓储端口（读 + 采纳回写）。
@@ -29,9 +29,9 @@ import { SeedItem } from "../../types"
  * 优质种子回写（POST /seeds），实现方需持久化至自身快照并原样返回。
  */
 export interface SeedRepository {
-  listAll(): Promise<SeedItem[]>
-  getById(id: string): Promise<SeedItem | null>
-  create(seed: SeedItem): Promise<SeedItem>
+  listAll(): Promise<SeedItem[]>;
+  getById(id: string): Promise<SeedItem | null>;
+  create(seed: SeedItem): Promise<SeedItem>;
 }
 
 /* --------------------------------------------------------------

@@ -16,21 +16,21 @@
  * dependencies: ../domains/batch/ports, ../domains/seed/ports, ../domains/ops/ports, ../adapters/memory/*, ../adapters/local/*
  * exports: AppPorts, createPorts
  */
-import { createLocalBatchRepository } from "../adapters/local/batchRepository"
-import { createLocalSeedRepository } from "../adapters/local/seedRepository"
-import { createLocalTelemetry } from "../adapters/local/telemetryRepository"
-import { createMemoryBatchRepository } from "../adapters/memory/batchRepository"
-import { createMemorySeedRepository } from "../adapters/memory/seedRepository"
-import { createMemoryTelemetry } from "../adapters/memory/telemetryRepository"
-import { BatchRepository } from "../domains/batch/ports"
-import { TelemetryPort } from "../domains/ops/ports"
-import { SeedRepository } from "../domains/seed/ports"
+import { createLocalBatchRepository } from "../adapters/local/batchRepository";
+import { createLocalSeedRepository } from "../adapters/local/seedRepository";
+import { createLocalTelemetry } from "../adapters/local/telemetryRepository";
+import { createMemoryBatchRepository } from "../adapters/memory/batchRepository";
+import { createMemorySeedRepository } from "../adapters/memory/seedRepository";
+import { createMemoryTelemetry } from "../adapters/memory/telemetryRepository";
+import { BatchRepository } from "../domains/batch/ports";
+import { TelemetryPort } from "../domains/ops/ports";
+import { SeedRepository } from "../domains/seed/ports";
 
 /** 应用装配的全部出站端口 */
 export interface AppPorts {
-  batches: BatchRepository
-  seeds: SeedRepository
-  telemetry: TelemetryPort
+  batches: BatchRepository;
+  seeds: SeedRepository;
+  telemetry: TelemetryPort;
 }
 
 /**
@@ -47,18 +47,18 @@ export interface AppPorts {
  */
 export function createPorts(): AppPorts {
   if (import.meta.env.DEV && !import.meta.env.VITEST) {
-    const telemetry = createLocalTelemetry()
+    const telemetry = createLocalTelemetry();
     return {
       batches: createLocalBatchRepository({ telemetry }),
       seeds: createLocalSeedRepository({ telemetry }),
       telemetry,
-    }
+    };
   }
   return {
     batches: createMemoryBatchRepository(),
     seeds: createMemorySeedRepository(),
     telemetry: createMemoryTelemetry(),
-  }
+  };
 }
 
 /* --------------------------------------------------------------

@@ -16,18 +16,18 @@
  * dependencies: vite, @vitejs/plugin-react, @tailwindcss/vite, node:path, ./server/registryApi
  * exports: stories
  */
-import tailwindcss from "@tailwindcss/vite"
-import react from "@vitejs/plugin-react"
-import path from "node:path"
-import { defineConfig, type HtmlTagDescriptor, type Plugin } from "vite"
+import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
+import path from "node:path";
+import { defineConfig, type HtmlTagDescriptor, type Plugin } from "vite";
 
-import siteConfiguration from "./.figma/make/site.json"
-import { createRegistryApi } from "./server/registryApi"
+import siteConfiguration from "./.figma/make/site.json";
+import { createRegistryApi } from "./server/registryApi";
 
 // Vite config — https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   // .figma/make/deploy-preview passes `--mode development` for cached-preview builds.
-  const emitSourcemaps = mode === "development"
+  const emitSourcemaps = mode === "development";
 
   return {
     // 基座解析优先级：Figma Make 宿主 > BASE_PATH（CI 注入，Pages 子路径/自定义域双兼容）> 根路径
@@ -38,9 +38,7 @@ export default defineConfig(({ mode }) => {
         : "/",
     // 构建期注入实际端口，前端只读 VITE_APP_PORT，避免硬编码端点（契约见 docs/06-Registry-API-契约.md §5）
     define: {
-      "import.meta.env.VITE_APP_PORT": JSON.stringify(
-        process.env.PORT || "3031",
-      ),
+      "import.meta.env.VITE_APP_PORT": JSON.stringify(process.env.PORT || "3031"),
     },
     build: {
       sourcemap: emitSourcemaps ? "inline" : false,
@@ -72,141 +70,126 @@ export default defineConfig(({ mode }) => {
       host: process.env.FIGMA_DEV_SERVER_HOST || "0.0.0.0",
       port: parseInt(process.env.PORT || "3031"),
     },
-  }
-})
+  };
+});
 
 type FigmaSiteConfiguration = {
-  title?: string
-  description?: string
-  language?: string
+  title?: string;
+  description?: string;
+  language?: string;
   robots?: {
-    index?: boolean
-  }
+    index?: boolean;
+  };
   icons?: {
-    icon?: string
-  }
+    icon?: string;
+  };
   openGraph?: {
-    image?: string
-  }
+    image?: string;
+  };
   analytics?: {
-    googleAnalyticsId?: string
-  }
+    googleAnalyticsId?: string;
+  };
   customScripts?: {
-    headStart?: string
-    headEnd?: string
-    bodyStart?: string
-    bodyEnd?: string
-  }
+    headStart?: string;
+    headEnd?: string;
+    bodyStart?: string;
+    bodyEnd?: string;
+  };
   accessibility?: {
-    addBypassLinks?: boolean
-  }
-}
+    addBypassLinks?: boolean;
+  };
+};
 
 /** Applies /.figma/make/site.json to the generated document shell. */
 function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
   function sanitizeHtmlValue(value: string | undefined): string {
-    return value?.replace(/[^a-zA-Z0-9_-]/g, "") || ""
+    return value?.replace(/[^a-zA-Z0-9_-]/g, "") || "";
   }
   function escapeHtmlText(value: string): string {
-    return value
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
+    return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
-  function replaceHtmlCommentSlot(
-    html: string,
-    slotName: string,
-    content: string,
-  ): string {
-    return html.replace(`<!-- ${slotName} -->`, content)
+  function replaceHtmlCommentSlot(html: string, slotName: string, content: string): string {
+    return html.replace(`<!-- ${slotName} -->`, content);
   }
 
-  const title = config.title ?? "Figma Make App"
-  const description = config.description ?? ""
+  const title = config.title ?? "Figma Make App";
+  const description = config.description ?? "";
   // Imported HTML keeps its own favicon; new Makes default to the Make product icon.
-  const favicon = config.icons?.icon ?? "/favicon.svg"
-  const socialImage = config.openGraph?.image ?? ""
-  const language = sanitizeHtmlValue(config.language) || "en"
-  const googleAnalyticsId = sanitizeHtmlValue(
-    config.analytics?.googleAnalyticsId,
-  )
-  const headStart = config.customScripts?.headStart ?? ""
-  const headEnd = config.customScripts?.headEnd ?? ""
-  const bodyStart = config.customScripts?.bodyStart ?? ""
-  const bodyEnd = config.customScripts?.bodyEnd ?? ""
-  const robotsTxt =
-    config.robots?.index === false ? "User-agent: *\nDisallow: /\n" : ""
+  const favicon = config.icons?.icon ?? "/favicon.svg";
+  const socialImage = config.openGraph?.image ?? "";
+  const language = sanitizeHtmlValue(config.language) || "en";
+  const googleAnalyticsId = sanitizeHtmlValue(config.analytics?.googleAnalyticsId);
+  const headStart = config.customScripts?.headStart ?? "";
+  const headEnd = config.customScripts?.headEnd ?? "";
+  const bodyStart = config.customScripts?.bodyStart ?? "";
+  const bodyEnd = config.customScripts?.bodyEnd ?? "";
+  const robotsTxt = config.robots?.index === false ? "User-agent: *\nDisallow: /\n" : "";
 
   return {
     name: "figma-site-configuration",
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
-        if (!robotsTxt || req.url?.split("?")[0] !== "/robots.txt")
-          return next()
+        if (!robotsTxt || req.url?.split("?")[0] !== "/robots.txt") return next();
 
-        res.setHeader("Content-Type", "text/plain; charset=utf-8")
-        res.end(robotsTxt)
-      })
+        res.setHeader("Content-Type", "text/plain; charset=utf-8");
+        res.end(robotsTxt);
+      });
     },
     generateBundle() {
-      if (!robotsTxt) return
+      if (!robotsTxt) return;
 
       this.emitFile({
         type: "asset",
         fileName: "robots.txt",
         source: robotsTxt,
-      })
+      });
     },
     transformIndexHtml: {
       order: "pre",
       handler(html) {
-        let result = html
-        result = replaceHtmlCommentSlot(result, "figma:lang", language)
-        result = replaceHtmlCommentSlot(
-          result,
-          "figma:title",
-          escapeHtmlText(title),
-        )
-        result = replaceHtmlCommentSlot(result, "figma:head-start", headStart)
-        result = replaceHtmlCommentSlot(result, "figma:head-end", headEnd)
-        result = replaceHtmlCommentSlot(result, "figma:body-start", bodyStart)
-        result = replaceHtmlCommentSlot(result, "figma:body-end", bodyEnd)
+        let result = html;
+        result = replaceHtmlCommentSlot(result, "figma:lang", language);
+        result = replaceHtmlCommentSlot(result, "figma:title", escapeHtmlText(title));
+        result = replaceHtmlCommentSlot(result, "figma:head-start", headStart);
+        result = replaceHtmlCommentSlot(result, "figma:head-end", headEnd);
+        result = replaceHtmlCommentSlot(result, "figma:body-start", bodyStart);
+        result = replaceHtmlCommentSlot(result, "figma:body-end", bodyEnd);
 
-        const tags: HtmlTagDescriptor[] = []
+        const tags: HtmlTagDescriptor[] = [];
         if (description) {
           tags.push({
             tag: "meta",
             attrs: { name: "description", content: description },
             injectTo: "head",
-          })
+          });
         }
         if (config.robots?.index === false) {
           tags.push({
             tag: "meta",
             attrs: { name: "robots", content: "noindex, nofollow" },
             injectTo: "head",
-          })
+          });
         }
         if (favicon) {
           tags.push({
             tag: "link",
             attrs: { rel: "icon", href: favicon },
             injectTo: "head",
-          })
+          });
         }
         if (title) {
           tags.push({
             tag: "meta",
             attrs: { property: "og:title", content: title },
             injectTo: "head",
-          })
+          });
         }
         if (description) {
           tags.push({
             tag: "meta",
             attrs: { property: "og:description", content: description },
             injectTo: "head",
-          })
+          });
         }
         if (socialImage) {
           tags.push(
@@ -225,7 +208,7 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
               attrs: { name: "twitter:image", content: socialImage },
               injectTo: "head",
             },
-          )
+          );
         }
 
         if (googleAnalyticsId) {
@@ -248,7 +231,7 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
 `,
               injectTo: "head",
             },
-          )
+          );
         }
 
         if (config.accessibility?.addBypassLinks) {
@@ -281,16 +264,16 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
               children: "Skip to content",
               injectTo: "body-prepend",
             },
-          )
+          );
         }
 
         return {
           html: result,
           tags,
-        }
+        };
       },
     },
-  }
+  };
 }
 
 /**
@@ -311,31 +294,29 @@ function figmaErrorOverlayReplay(): Plugin {
     name: "figma-error-overlay-replay",
     apply: "serve",
     configureServer(server) {
-      let lastError: object | null = null
+      let lastError: object | null = null;
 
-      const origSend = server.ws.send.bind(server.ws) as (
-        ...args: any[]
-      ) => void
-      server.ws.send = (((...args: any[]) => {
-        const payload = args[0]
+      const origSend = server.ws.send.bind(server.ws) as (...args: any[]) => void;
+      server.ws.send = ((...args: any[]) => {
+        const payload = args[0];
         if (payload && typeof payload === "object" && !Array.isArray(payload)) {
-          const type = (payload as { type?: string }).type
+          const type = (payload as { type?: string }).type;
           if (type === "error") {
-            lastError = (payload as object)
+            lastError = payload as object;
           } else if (type === "update" || type === "full-reload") {
-            lastError = null
+            lastError = null;
           }
         }
-        return origSend(...args)
-      }) as typeof server.ws.send)
+        return origSend(...args);
+      }) as typeof server.ws.send;
 
       server.ws.on("connection", (socket) => {
         if (lastError !== null) {
-          socket.send(JSON.stringify(lastError))
+          socket.send(JSON.stringify(lastError));
         }
-      })
+      });
     },
-  }
+  };
 }
 
 /**
@@ -351,64 +332,58 @@ function figmaErrorOverlayReplay(): Plugin {
  * the old tree mounted until the page is reloaded.
  */
 function figmaReactRefreshBoundaryFallback(): Plugin {
-  type ModuleNode = import("vite").ModuleNode
-  const hadRefreshBoundary = new Map<string, boolean>()
-  const lostRefreshBoundaries = new Set<string>()
-  let sendFullReload: (() => void) | null = null
+  type ModuleNode = import("vite").ModuleNode;
+  const hadRefreshBoundary = new Map<string, boolean>();
+  const lostRefreshBoundaries = new Set<string>();
+  let sendFullReload: (() => void) | null = null;
 
   return {
     name: "figma-react-refresh-boundary-fallback",
     apply: "serve",
     enforce: "post",
     configureServer(server) {
-      sendFullReload = () => server.ws.send({ type: "full-reload", path: "*" })
+      sendFullReload = () => server.ws.send({ type: "full-reload", path: "*" });
     },
     handleHotUpdate({ modules, server, timestamp }) {
-      if (lostRefreshBoundaries.size === 0) return
+      if (lostRefreshBoundaries.size === 0) return;
 
-      const visited = new Set<ModuleNode>()
-      const pending = [...modules]
+      const visited = new Set<ModuleNode>();
+      const pending = [...modules];
       while (pending.length > 0) {
-        const current = pending.pop()
-        if (!current || visited.has(current)) continue
-        visited.add(current)
+        const current = pending.pop();
+        if (!current || visited.has(current)) continue;
+        visited.add(current);
 
-        const moduleId = current.id?.split("?")[0]
+        const moduleId = current.id?.split("?")[0];
         if (moduleId && lostRefreshBoundaries.has(moduleId)) {
-          const invalidated = new Set<ModuleNode>()
+          const invalidated = new Set<ModuleNode>();
           for (const updatedModule of modules) {
-            server.moduleGraph.invalidateModule(
-              updatedModule,
-              invalidated,
-              timestamp,
-              true,
-            )
+            server.moduleGraph.invalidateModule(updatedModule, invalidated, timestamp, true);
           }
-          sendFullReload?.()
-          return []
+          sendFullReload?.();
+          return [];
         }
 
-        pending.push(...current.importers)
+        pending.push(...current.importers);
       }
     },
     transform(code, id) {
-      if (!/\.[jt]sx?(?:\?|$)/.test(id) || id.includes("/node_modules/"))
-        return null
+      if (!/\.[jt]sx?(?:\?|$)/.test(id) || id.includes("/node_modules/")) return null;
 
-      const moduleId = id.split("?")[0] ?? id
-      const hasRefreshBoundary = code.includes("registerExportsForReactRefresh")
-      const previousHadRefreshBoundary = hadRefreshBoundary.get(moduleId)
-      hadRefreshBoundary.set(moduleId, hasRefreshBoundary)
+      const moduleId = id.split("?")[0] ?? id;
+      const hasRefreshBoundary = code.includes("registerExportsForReactRefresh");
+      const previousHadRefreshBoundary = hadRefreshBoundary.get(moduleId);
+      hadRefreshBoundary.set(moduleId, hasRefreshBoundary);
 
-      if (hasRefreshBoundary) lostRefreshBoundaries.delete(moduleId)
+      if (hasRefreshBoundary) lostRefreshBoundaries.delete(moduleId);
       if (previousHadRefreshBoundary && !hasRefreshBoundary) {
-        lostRefreshBoundaries.add(moduleId)
-        queueMicrotask(() => sendFullReload?.())
+        lostRefreshBoundaries.add(moduleId);
+        queueMicrotask(() => sendFullReload?.());
       }
 
-      return null
+      return null;
     },
-  }
+  };
 }
 
 /**
@@ -422,16 +397,14 @@ function figmaReactRefreshBoundaryFallback(): Plugin {
  * builds (`vite build`) skip it entirely so the route doesn't leak
  * into shipped bundles.
  */
-function figmaMakeKitPlugin(options: {
-  storiesGlob: string | string[]
-}): Plugin {
+function figmaMakeKitPlugin(options: { storiesGlob: string | string[] }): Plugin {
   const storiesGlob = Array.isArray(options.storiesGlob)
     ? options.storiesGlob
-    : [options.storiesGlob]
-  const ROUTE = "/.figma/make/kit.html"
-  const VIRTUAL_ID = "virtual:figma-stories"
-  const RESOLVED_ID = "\0" + VIRTUAL_ID
-  const STORIES_MODULE = `export const stories = import.meta.glob(${JSON.stringify(storiesGlob)})`
+    : [options.storiesGlob];
+  const ROUTE = "/.figma/make/kit.html";
+  const VIRTUAL_ID = "virtual:figma-stories";
+  const RESOLVED_ID = "\0" + VIRTUAL_ID;
+  const STORIES_MODULE = `export const stories = import.meta.glob(${JSON.stringify(storiesGlob)})`;
   const HTML_BOOTSTRAP = `<!doctype html>
 <html lang="en">
 <head>
@@ -446,33 +419,33 @@ function figmaMakeKitPlugin(options: {
   window.dispatchEvent(new CustomEvent('figma.ready'))
 </script>
 </body>
-</html>`
+</html>`;
 
   return {
     name: "figma-make-kit",
     apply: "serve",
     resolveId(id) {
-      if (id === VIRTUAL_ID) return RESOLVED_ID
-      return null
+      if (id === VIRTUAL_ID) return RESOLVED_ID;
+      return null;
     },
     load(id) {
-      if (id !== RESOLVED_ID) return null
-      return STORIES_MODULE
+      if (id !== RESOLVED_ID) return null;
+      return STORIES_MODULE;
     },
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        const url = req.url || ""
-        if (url.split("?")[0] !== ROUTE) return next()
+        const url = req.url || "";
+        if (url.split("?")[0] !== ROUTE) return next();
 
         try {
-          res.setHeader("Content-Type", "text/html")
-          res.end(await server.transformIndexHtml(url, HTML_BOOTSTRAP))
+          res.setHeader("Content-Type", "text/html");
+          res.end(await server.transformIndexHtml(url, HTML_BOOTSTRAP));
         } catch (err) {
-          next(err as Error)
+          next(err as Error);
         }
-      })
+      });
     },
-  }
+  };
 }
 
 /**
@@ -484,34 +457,34 @@ function figmaMakeKitPlugin(options: {
  * 校验等价收紧，非回环一律 403）。
  */
 function registryApiPlugin(): Plugin {
-  const api = createRegistryApi()
+  const api = createRegistryApi();
   return {
     name: "yyc3-registry-api",
     apply: "serve",
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
-        const url = req.url || ""
-        let pathname: string
-        let query: URLSearchParams
+        const url = req.url || "";
+        let pathname: string;
+        let query: URLSearchParams;
         try {
-          const parsed = new URL(url, `http://${req.headers.host || "localhost"}`)
-          pathname = parsed.pathname
-          query = parsed.searchParams
+          const parsed = new URL(url, `http://${req.headers.host || "localhost"}`);
+          pathname = parsed.pathname;
+          query = parsed.searchParams;
         } catch {
-          return next()
+          return next();
         }
-        if (!pathname.startsWith("/api/")) return next()
+        if (!pathname.startsWith("/api/")) return next();
 
-        const chunks: Buffer[] = []
-        req.on("data", (chunk: Buffer) => chunks.push(chunk))
+        const chunks: Buffer[] = [];
+        req.on("data", (chunk: Buffer) => chunks.push(chunk));
         req.on("end", () => {
-          let body: unknown
-          const raw = Buffer.concat(chunks).toString("utf8")
+          let body: unknown;
+          const raw = Buffer.concat(chunks).toString("utf8");
           if (raw) {
             try {
-              body = JSON.parse(raw)
+              body = JSON.parse(raw);
             } catch {
-              body = undefined
+              body = undefined;
             }
           }
           const result = api.handleRequest({
@@ -520,14 +493,14 @@ function registryApiPlugin(): Plugin {
             query,
             body,
             host: req.headers.host || "",
-          })
-          res.statusCode = result.status
-          res.setHeader("Content-Type", "application/json; charset=utf-8")
-          res.end(JSON.stringify(result.json))
-        })
-      })
+          });
+          res.statusCode = result.status;
+          res.setHeader("Content-Type", "application/json; charset=utf-8");
+          res.end(JSON.stringify(result.json));
+        });
+      });
     },
-  }
+  };
 }
 
 /* --------------------------------------------------------------

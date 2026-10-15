@@ -16,21 +16,17 @@
  * dependencies: ../../types, ../../domains/seed/ports, ../../domains/ops/ports, ../memory/seedRepository, ./http
  * exports: LocalSeedOptions, createLocalSeedRepository
  */
-import type { SeedRepository } from "../../domains/seed/ports"
-import type { TelemetryPort } from "../../domains/ops/ports"
-import type { SeedItem } from "../../types"
-import { createMemorySeedRepository } from "../memory/seedRepository"
-import {
-  createResilientGateway,
-  makeTraceEntry,
-  type LocalAdapterOptions,
-} from "./http"
+import type { SeedRepository } from "../../domains/seed/ports";
+import type { TelemetryPort } from "../../domains/ops/ports";
+import type { SeedItem } from "../../types";
+import { createMemorySeedRepository } from "../memory/seedRepository";
+import { createResilientGateway, makeTraceEntry, type LocalAdapterOptions } from "./http";
 
 export interface LocalSeedOptions extends LocalAdapterOptions {
   /** 降级回退通道（缺省自建 memory） */
-  memory?: SeedRepository
+  memory?: SeedRepository;
   /** 降级/恢复留痕通道（组合根注入共享遥测实例） */
-  telemetry?: Pick<TelemetryPort, "appendLog">
+  telemetry?: Pick<TelemetryPort, "appendLog">;
 }
 
 /**
@@ -43,19 +39,19 @@ export interface LocalSeedOptions extends LocalAdapterOptions {
  *   降级/恢复经 telemetry.appendLog 留痕
  */
 export function createLocalSeedRepository(options: LocalSeedOptions = {}): SeedRepository {
-  const memory = options.memory ?? createMemorySeedRepository()
+  const memory = options.memory ?? createMemorySeedRepository();
   const gateway = createResilientGateway(options, (t) => {
-    void options.telemetry?.appendLog(makeTraceEntry("种子仓储", t.degraded, t.detail))
-  })
+    void options.telemetry?.appendLog(makeTraceEntry("种子仓储", t.degraded, t.detail));
+  });
 
   return {
     listAll: () => gateway<SeedItem[]>("/seeds").catch(() => memory.listAll()),
     getById: async (id: string) => {
       try {
-        const list = await gateway<SeedItem[]>("/seeds")
-        return list.find((seed) => seed.id === id) ?? null
+        const list = await gateway<SeedItem[]>("/seeds");
+        return list.find((seed) => seed.id === id) ?? null;
       } catch {
-        return memory.getById(id)
+        return memory.getById(id);
       }
     },
     create: (seed: SeedItem) =>
@@ -64,7 +60,7 @@ export function createLocalSeedRepository(options: LocalSeedOptions = {}): SeedR
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(seed),
       }).catch(() => memory.create(seed)),
-  }
+  };
 }
 
 /* --------------------------------------------------------------

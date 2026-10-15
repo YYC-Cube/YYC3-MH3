@@ -16,24 +16,24 @@
  * dependencies: react, lucide-react
  * exports: RadarDimension, RadarScoreChartProps, DEFAULT_DIMENSIONS, RadarScoreChart
  */
-import { Info } from "lucide-react"
-import React, { useState } from "react"
-import { averageDimensionScore } from "../../domains/quality"
+import { Info } from "lucide-react";
+import React, { useState } from "react";
+import { averageDimensionScore } from "../../domains/quality";
 
 export interface RadarDimension {
-  key: string
-  label: string
-  score: number // 0 - 100
-  benchmark: number // Historical mean
-  threshold: number // Quality pass threshold, default 85
-  advice: string
+  key: string;
+  label: string;
+  score: number; // 0 - 100
+  benchmark: number; // Historical mean
+  threshold: number; // Quality pass threshold, default 85
+  advice: string;
 }
 
 export interface RadarScoreChartProps {
-  dimensions?: RadarDimension[]
-  showBenchmark?: boolean
-  onDimensionSelect?: (dimension: RadarDimension) => void
-  className?: string
+  dimensions?: RadarDimension[];
+  showBenchmark?: boolean;
+  onDimensionSelect?: (dimension: RadarDimension) => void;
+  className?: string;
 }
 
 export const DEFAULT_DIMENSIONS: RadarDimension[] = [
@@ -77,7 +77,7 @@ export const DEFAULT_DIMENSIONS: RadarDimension[] = [
     threshold: 85,
     advice: "4K超分辨率重构面容毛孔与毛发边缘清晰度符合超清标准。",
   },
-]
+];
 
 export const RadarScoreChart: React.FC<RadarScoreChartProps> = ({
   dimensions = DEFAULT_DIMENSIONS,
@@ -85,52 +85,50 @@ export const RadarScoreChart: React.FC<RadarScoreChartProps> = ({
   onDimensionSelect,
   className = "",
 }) => {
-  const [activeDim, setActiveDim] = useState<RadarDimension | null>(
-    dimensions[0] ?? null,
-  )
-  const [hoveredDim, setHoveredDim] = useState<RadarDimension | null>(null)
+  const [activeDim, setActiveDim] = useState<RadarDimension | null>(dimensions[0] ?? null);
+  const [hoveredDim, setHoveredDim] = useState<RadarDimension | null>(null);
 
   // SVG Geometry
-  const size = 260
-  const center = size / 2
-  const radius = size * 0.38
-  const total = dimensions.length
-  const angleStep = (Math.PI * 2) / total
+  const size = 260;
+  const center = size / 2;
+  const radius = size * 0.38;
+  const total = dimensions.length;
+  const angleStep = (Math.PI * 2) / total;
 
   // Calculate polygon points
   const getCoordinates = (value: number, index: number) => {
-    const angle = index * angleStep - Math.PI / 2
-    const r = (value / 100) * radius
-    const x = center + r * Math.cos(angle)
-    const y = center + r * Math.sin(angle)
-    return { x, y }
-  }
+    const angle = index * angleStep - Math.PI / 2;
+    const r = (value / 100) * radius;
+    const x = center + r * Math.cos(angle);
+    const y = center + r * Math.sin(angle);
+    return { x, y };
+  };
 
   const currentPoints = dimensions
     .map((dim, i) => {
-      const { x, y } = getCoordinates(dim.score, i)
-      return `${x},${y}`
+      const { x, y } = getCoordinates(dim.score, i);
+      return `${x},${y}`;
     })
-    .join(" ")
+    .join(" ");
 
   const benchmarkPoints = dimensions
     .map((dim, i) => {
-      const { x, y } = getCoordinates(dim.benchmark, i)
-      return `${x},${y}`
+      const { x, y } = getCoordinates(dim.benchmark, i);
+      return `${x},${y}`;
     })
-    .join(" ")
+    .join(" ");
 
   const thresholdPoints = dimensions
     .map((dim, i) => {
-      const { x, y } = getCoordinates(dim.threshold, i)
-      return `${x},${y}`
+      const { x, y } = getCoordinates(dim.threshold, i);
+      return `${x},${y}`;
     })
-    .join(" ")
+    .join(" ");
 
-  const avgScore = averageDimensionScore(dimensions).toFixed(1)
+  const avgScore = averageDimensionScore(dimensions).toFixed(1);
 
   // dimensions 具备 DEFAULT_DIMENSIONS 默认值恒非空，尾兜底安全
-  const selectedDim = hoveredDim || activeDim || dimensions[0]!
+  const selectedDim = hoveredDim || activeDim || dimensions[0]!;
 
   return (
     <div
@@ -138,9 +136,7 @@ export const RadarScoreChart: React.FC<RadarScoreChartProps> = ({
     >
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-[#e6edf3]">
-            多维质量雷达评估
-          </span>
+          <span className="text-xs font-semibold text-[#e6edf3]">多维质量雷达评估</span>
           <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#122340] text-[#00d4aa] border border-[#30363d]">
             综合加权: {avgScore} 分
           </span>
@@ -162,20 +158,16 @@ export const RadarScoreChart: React.FC<RadarScoreChartProps> = ({
       <div className="flex flex-col md:flex-row items-center gap-4">
         {/* SVG Radar */}
         <div className="relative flex-shrink-0">
-          <svg
-            width={size}
-            height={size}
-            className="overflow-visible select-none"
-          >
+          <svg width={size} height={size} className="overflow-visible select-none">
             {/* Background circular web */}
             {[0.25, 0.5, 0.75, 1.0].map((level, idx) => (
               <polygon
                 key={idx}
                 points={dimensions
                   .map((_, i) => {
-                    const angle = i * angleStep - Math.PI / 2
-                    const r = level * radius
-                    return `${center + r * Math.cos(angle)},${center + r * Math.sin(angle)}`
+                    const angle = i * angleStep - Math.PI / 2;
+                    const r = level * radius;
+                    return `${center + r * Math.cos(angle)},${center + r * Math.sin(angle)}`;
                   })
                   .join(" ")}
                 fill="none"
@@ -187,9 +179,9 @@ export const RadarScoreChart: React.FC<RadarScoreChartProps> = ({
 
             {/* Axis radial lines */}
             {dimensions.map((_, i) => {
-              const angle = i * angleStep - Math.PI / 2
-              const x2 = center + radius * Math.cos(angle)
-              const y2 = center + radius * Math.sin(angle)
+              const angle = i * angleStep - Math.PI / 2;
+              const x2 = center + radius * Math.cos(angle);
+              const y2 = center + radius * Math.sin(angle);
               return (
                 <line
                   key={i}
@@ -200,7 +192,7 @@ export const RadarScoreChart: React.FC<RadarScoreChartProps> = ({
                   stroke="#1c2d48"
                   strokeWidth="1"
                 />
-              )
+              );
             })}
 
             {/* Pass Threshold Baseline (85) */}
@@ -235,15 +227,15 @@ export const RadarScoreChart: React.FC<RadarScoreChartProps> = ({
 
             {/* Dimension Dots and Labels */}
             {dimensions.map((dim, i) => {
-              const { x, y } = getCoordinates(dim.score, i)
-              const isBelow = dim.score < dim.threshold
-              const isHighlighted = selectedDim.key === dim.key
+              const { x, y } = getCoordinates(dim.score, i);
+              const isBelow = dim.score < dim.threshold;
+              const isHighlighted = selectedDim.key === dim.key;
 
               // Outer label position
-              const labelAngle = i * angleStep - Math.PI / 2
-              const labelR = radius + 22
-              const lx = center + labelR * Math.cos(labelAngle)
-              const ly = center + labelR * Math.sin(labelAngle)
+              const labelAngle = i * angleStep - Math.PI / 2;
+              const labelR = radius + 22;
+              const lx = center + labelR * Math.cos(labelAngle);
+              const ly = center + labelR * Math.sin(labelAngle);
 
               return (
                 <g key={dim.key} className="cursor-pointer">
@@ -258,8 +250,8 @@ export const RadarScoreChart: React.FC<RadarScoreChartProps> = ({
                     onMouseEnter={() => setHoveredDim(dim)}
                     onMouseLeave={() => setHoveredDim(null)}
                     onClick={() => {
-                      setActiveDim(dim)
-                      onDimensionSelect?.(dim)
+                      setActiveDim(dim);
+                      onDimensionSelect?.(dim);
                     }}
                     className="transition-all duration-150"
                   />
@@ -276,14 +268,14 @@ export const RadarScoreChart: React.FC<RadarScoreChartProps> = ({
                     onMouseEnter={() => setHoveredDim(dim)}
                     onMouseLeave={() => setHoveredDim(null)}
                     onClick={() => {
-                      setActiveDim(dim)
-                      onDimensionSelect?.(dim)
+                      setActiveDim(dim);
+                      onDimensionSelect?.(dim);
                     }}
                   >
                     {dim.label}
                   </text>
                 </g>
-              )
+              );
             })}
           </svg>
         </div>
@@ -292,23 +284,19 @@ export const RadarScoreChart: React.FC<RadarScoreChartProps> = ({
         <div className="flex-1 w-full bg-[#122340]/70 border border-[#30363d] rounded-lg p-3 text-xs">
           <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#30363d]">
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-[#e6edf3]">
-                {selectedDim.label}
-              </span>
+              <span className="font-semibold text-[#e6edf3]">{selectedDim.label}</span>
               <span
-                className={`font-mono text-xs px-2 py-0.5 rounded font-bold ${selectedDim.score >= selectedDim.threshold
-                  ? "bg-[#00d4aa]/20 text-[#00d4aa]"
-                  : "bg-[#EE4C2C]/20 text-[#EE4C2C]"
-                  }`}
+                className={`font-mono text-xs px-2 py-0.5 rounded font-bold ${
+                  selectedDim.score >= selectedDim.threshold
+                    ? "bg-[#00d4aa]/20 text-[#00d4aa]"
+                    : "bg-[#EE4C2C]/20 text-[#EE4C2C]"
+                }`}
               >
                 {selectedDim.score} 分
               </span>
             </div>
             <div className="text-[11px] text-[#8b949e]">
-              历史均值:{" "}
-              <span className="font-mono text-[#00b4d8]">
-                {selectedDim.benchmark}
-              </span>
+              历史均值: <span className="font-mono text-[#00b4d8]">{selectedDim.benchmark}</span>
             </div>
           </div>
 
@@ -317,8 +305,7 @@ export const RadarScoreChart: React.FC<RadarScoreChartProps> = ({
               <Info className="w-3.5 h-3.5 text-[#00b4d8] flex-shrink-0 mt-0.5" />
               <span>
                 基线阈值: {selectedDim.threshold} 分 (
-                {selectedDim.score >= selectedDim.threshold ? "达标" : "未达标"}
-                )
+                {selectedDim.score >= selectedDim.threshold ? "达标" : "未达标"})
               </span>
             </div>
             <div className="p-2 rounded bg-[#071425]/60 border border-[#30363d]/60 text-[11px] text-[#e6edf3] leading-relaxed">
@@ -329,8 +316,8 @@ export const RadarScoreChart: React.FC<RadarScoreChartProps> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

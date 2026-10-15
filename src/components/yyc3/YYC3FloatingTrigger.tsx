@@ -16,12 +16,12 @@
  * dependencies: react, lucide-react
  * exports: YYC3FloatingTriggerProps, YYC3FloatingTrigger
  */
-import { Sparkles } from "lucide-react"
-import React from "react"
+import { Sparkles } from "lucide-react";
+import React from "react";
 
 export interface YYC3FloatingTriggerProps {
-  onClick: () => void
-  hasUnread?: boolean
+  onClick: () => void;
+  hasUnread?: boolean;
 }
 
 export const YYC3FloatingTrigger: React.FC<YYC3FloatingTriggerProps> = ({
@@ -74,8 +74,8 @@ export const YYC3FloatingTrigger: React.FC<YYC3FloatingTriggerProps> = ({
         )}
       </button>
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

@@ -48,7 +48,7 @@ export const PROMPT_TEMPLATES = [
     text: `Ethereal ancient Chinese heroine in flowing silk hanfu robe, delicate jade hairpins with realistic physics, cherry blossom misty temple background. Melancholic yet resolute gaze, subtle head tilt, delicate lips enunciating classical poem cadence, photorealistic cinematic film grain.`,
     variables: [],
   },
-]
+];
 
 export const DOC_GUIDES = [
   {
@@ -123,7 +123,7 @@ export const DOC_GUIDES = [
     title: "12. 夜间批量无人值守策略与 NAS 自动归档",
     readTime: "6 min",
   },
-]
+];
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

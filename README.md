@@ -190,9 +190,9 @@ pnpm preview
 | `pnpm preview` | 本地预览生产构建产物 |
 | `pnpm test` | 运行 Vitest 全量测试（110 用例 · 七类门禁） |
 | `pnpm test:watch` | 监听模式运行测试 |
+| `pnpm format` | oxfmt 代码格式化（代码域限定，见 `.oxfmtrc.json`） |
+| `pnpm format:check` | oxfmt 格式检查（CI 门禁，不改写文件） |
 | `pnpm typecheck` | TypeScript 严格类型检查（质量门禁） |
-| `pnpm format` | oxfmt 代码格式化（⚠️ v0.2.0 存在删除类型分号的缺陷，暂勿全量执行） |
-| `npx tsc --noEmit` | TypeScript 严格类型检查（质量门禁） |
 
 ---
 

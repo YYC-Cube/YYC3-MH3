@@ -18,8 +18,8 @@
  *   - 静态资源（yyc3-icons / 字体 / js / css / png 等）cache-first，失败回退缓存
  */
 
-const CACHE = "yyc3-static-v1"
-const PRECACHE = ["manifest.webmanifest", "yyc3-icons/favicon.png"]
+const CACHE = "yyc3-static-v1";
+const PRECACHE = ["manifest.webmanifest", "yyc3-icons/favicon.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -27,57 +27,54 @@ self.addEventListener("install", (event) => {
       .open(CACHE)
       // 相对 registration.scope 拼装：自定义域根路径与 Pages 子路径（/YYC3-MH3/）部署形态均可命中
       .then((cache) => {
-        const scope = new URL(self.registration.scope)
-        return cache.addAll(PRECACHE.map((p) => new URL(p, scope).href))
+        const scope = new URL(self.registration.scope);
+        return cache.addAll(PRECACHE.map((p) => new URL(p, scope).href));
       })
       .then(() => self.skipWaiting()),
-  )
-})
+  );
+});
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((keys) =>
-        Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))),
-      )
+      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
       .then(() => self.clients.claim()),
-  )
-})
+  );
+});
 
 self.addEventListener("fetch", (event) => {
-  const req = event.request
-  if (req.method !== "GET") return
-  const url = new URL(req.url)
-  if (url.origin !== self.location.origin) return
+  const req = event.request;
+  if (req.method !== "GET") return;
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;
 
   // Registry BFF 实时数据面：禁缓存（06 契约 §4 降级/恢复留痕依赖实时响应）
-  if (url.pathname.startsWith("/api/")) return
+  if (url.pathname.startsWith("/api/")) return;
   // Vite dev/HMR 通道不拦截（SW 仅生产注册，此行为双保险）
-  if (url.pathname.startsWith("/@") || url.pathname.startsWith("/node_modules"))
-    return
+  if (url.pathname.startsWith("/@") || url.pathname.startsWith("/node_modules")) return;
   // 导航文档直连：确保新构建的 hash 引用即时生效
-  if (req.mode === "navigate") return
+  if (req.mode === "navigate") return;
 
   const isStatic =
     url.pathname.startsWith("/yyc3-icons/") ||
-    /\.(png|svg|webp|ico|woff2?|css|js|json|webmanifest)$/.test(url.pathname)
-  if (!isStatic) return
+    /\.(png|svg|webp|ico|woff2?|css|js|json|webmanifest)$/.test(url.pathname);
+  if (!isStatic) return;
 
   event.respondWith(
     caches.open(CACHE).then(async (cache) => {
-      const hit = await cache.match(req)
-      if (hit) return hit
+      const hit = await cache.match(req);
+      if (hit) return hit;
       try {
-        const res = await fetch(req)
-        if (res && res.ok) cache.put(req, res.clone())
-        return res
+        const res = await fetch(req);
+        if (res && res.ok) cache.put(req, res.clone());
+        return res;
       } catch {
-        return hit || Response.error()
+        return hit || Response.error();
       }
     }),
-  )
-})
+  );
+});
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

@@ -16,50 +16,33 @@
  * dependencies: react, lucide-react, ../components/common, ../types
  * exports: SettingsCategory, SETTINGS_TABS, SettingsViewProps, SettingsView
  */
-import {
-  CheckCircle2,
-  RotateCcw
-} from "lucide-react"
-import React, { useState } from "react"
-import {
-  Badge,
-  Button,
-  Card,
-  Input,
-  Slider,
-  Switch,
-} from "../components/common"
+import { CheckCircle2, RotateCcw } from "lucide-react";
+import React, { useState } from "react";
+import { Badge, Button, Card, Input, Slider, Switch } from "../components/common";
 
 /** 设置中心分类页签 ID */
-export type SettingsCategory = "perf" | "paths" | "hotkeys" | "appearance"
+export type SettingsCategory = "perf" | "paths" | "hotkeys" | "appearance";
 
 const SETTINGS_TABS: { id: SettingsCategory; label: string }[] = [
   { id: "hotkeys", label: "全局快捷键速查表 (Hotkeys)" },
   { id: "perf", label: "算力与 VRAM 显存配置" },
   { id: "paths", label: "本地存储与模型路径" },
   { id: "appearance", label: "深色科技外观质感" },
-]
+];
 
 export interface SettingsViewProps {
-  onShowToast: (
-    type: "success" | "error" | "warning" | "info",
-    msg: string,
-    sub?: string,
-  ) => void
+  onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({ onShowToast }) => {
-  const [activeCategory, setActiveCategory] =
-    useState<SettingsCategory>("hotkeys")
+  const [activeCategory, setActiveCategory] = useState<SettingsCategory>("hotkeys");
 
   // Form states
-  const [vramLimit, setVramLimit] = useState(21.5)
-  const [concurrentBatches, setConcurrentBatches] = useState(1)
-  const [autoPurgeCache, setAutoPurgeCache] = useState(true)
-  const [weightsPath, setWeightsPath] = useState(
-    "/data/models/diffsynth-minimax-h3",
-  )
-  const [outputPath, setOutputPath] = useState("/data/outputs/renders")
+  const [vramLimit, setVramLimit] = useState(21.5);
+  const [concurrentBatches, setConcurrentBatches] = useState(1);
+  const [autoPurgeCache, setAutoPurgeCache] = useState(true);
+  const [weightsPath, setWeightsPath] = useState("/data/models/diffsynth-minimax-h3");
+  const [outputPath, setOutputPath] = useState("/data/outputs/renders");
 
   return (
     <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#071425]">
@@ -91,9 +74,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onShowToast }) => {
           <Button
             variant="primary"
             size="sm"
-            onClick={() =>
-              onShowToast("success", "全局配置已持久化至本地 IndexedDB")
-            }
+            onClick={() => onShowToast("success", "全局配置已持久化至本地 IndexedDB")}
           >
             保存配置
           </Button>
@@ -106,10 +87,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onShowToast }) => {
           <button
             key={tab.id}
             onClick={() => setActiveCategory(tab.id)}
-            className={`pb-2.5 font-medium transition-colors cursor-pointer relative ${activeCategory === tab.id
+            className={`pb-2.5 font-medium transition-colors cursor-pointer relative ${
+              activeCategory === tab.id
                 ? "text-[#00d4aa] font-semibold"
                 : "text-[#8b949e] hover:text-[#e6edf3]"
-              }`}
+            }`}
           >
             {tab.label}
             {activeCategory === tab.id && (
@@ -121,10 +103,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onShowToast }) => {
 
       {/* TAB 1: Hotkeys */}
       {activeCategory === "hotkeys" && (
-        <Card
-          title="系统全域快捷键速查表"
-          subtitle="大幅提高长时间生产作业操作效率"
-        >
+        <Card title="系统全域快捷键速查表" subtitle="大幅提高长时间生产作业操作效率">
           <div className="divide-y divide-[#30363d]/50 text-xs">
             {[
               {
@@ -242,24 +221,16 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onShowToast }) => {
           <div className="space-y-3 text-xs max-w-xl">
             <div className="p-3 rounded-lg bg-[#122340] border border-[#30363d] flex items-center justify-between">
               <div>
-                <span className="font-semibold text-[#e6edf3]">
-                  主品牌主题色
-                </span>
-                <p className="text-[11px] text-[#8b949e]">
-                  默认工业级青绿色 (#00d4aa)
-                </p>
+                <span className="font-semibold text-[#e6edf3]">主品牌主题色</span>
+                <p className="text-[11px] text-[#8b949e]">默认工业级青绿色 (#00d4aa)</p>
               </div>
               <div className="w-6 h-6 rounded-full bg-[#00d4aa] border-2 border-white shadow-sm" />
             </div>
 
             <div className="p-3 rounded-lg bg-[#122340] border border-[#30363d] flex items-center justify-between">
               <div>
-                <span className="font-semibold text-[#e6edf3]">
-                  微玻璃拟态与阴影强度
-                </span>
-                <p className="text-[11px] text-[#8b949e]">
-                  微玻璃拟态 (Blur: 12px, 弱边缘细边框)
-                </p>
+                <span className="font-semibold text-[#e6edf3]">微玻璃拟态与阴影强度</span>
+                <p className="text-[11px] text-[#8b949e]">微玻璃拟态 (Blur: 12px, 弱边缘细边框)</p>
               </div>
               <Badge variant="brand" size="xs">
                 已开启
@@ -269,8 +240,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onShowToast }) => {
         </Card>
       )}
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

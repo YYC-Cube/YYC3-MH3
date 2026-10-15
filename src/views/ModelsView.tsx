@@ -16,54 +16,43 @@
  * dependencies: react, lucide-react, ../components/common, ../types
  * exports: ModelsViewProps, ModelsView
  */
-import {
-  Play,
-  RefreshCw
-} from "lucide-react"
-import React, { useState } from "react"
-import { Badge, Button, Card } from "../components/common"
-import { NavigateExtra, NavTabId } from "../types"
+import { Play, RefreshCw } from "lucide-react";
+import React, { useState } from "react";
+import { Badge, Button, Card } from "../components/common";
+import { NavigateExtra, NavTabId } from "../types";
 
 /** 模型仓库分区页签 ID */
-export type ModelTab = "models" | "env" | "disk" | "benchmarks"
+export type ModelTab = "models" | "env" | "disk" | "benchmarks";
 
 const MODEL_TABS: { id: ModelTab; label: string }[] = [
   { id: "models", label: "模型权重清单 (4项)" },
   { id: "env", label: "计算依赖环境检测" },
   { id: "disk", label: "本地 NVMe 磁盘分配" },
   { id: "benchmarks", label: "性能基准多维对比" },
-]
+];
 
 export interface ModelsViewProps {
-  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void
-  onShowToast: (
-    type: "success" | "error" | "warning" | "info",
-    msg: string,
-    sub?: string,
-  ) => void
+  onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void;
+  onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
 export const ModelsView: React.FC<ModelsViewProps> = ({ onShowToast }) => {
-  const [activeTab, setActiveTab] = useState<ModelTab>("models")
-  const [warmupProgress, setWarmupProgress] = useState<number | null>(null)
+  const [activeTab, setActiveTab] = useState<ModelTab>("models");
+  const [warmupProgress, setWarmupProgress] = useState<number | null>(null);
 
   const handleWarmup = (modelName: string) => {
-    setWarmupProgress(10)
+    setWarmupProgress(10);
     const interval = setInterval(() => {
       setWarmupProgress((prev) => {
         if (!prev || prev >= 100) {
-          clearInterval(interval)
-          onShowToast(
-            "success",
-            `${modelName} 预热完成`,
-            "CUDA TensorRT 缓存与显存常驻就绪",
-          )
-          return null
+          clearInterval(interval);
+          onShowToast("success", `${modelName} 预热完成`, "CUDA TensorRT 缓存与显存常驻就绪");
+          return null;
         }
-        return prev + 25
-      })
-    }, 400)
-  }
+        return prev + 25;
+      });
+    }, 400);
+  };
 
   return (
     <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#0a1628]">
@@ -79,8 +68,7 @@ export const ModelsView: React.FC<ModelsViewProps> = ({ onShowToast }) => {
             </Badge>
           </div>
           <p className="text-xs text-[#8a97a8] mt-1">
-            DiffSynth-MiniMax-H3
-            系列模型权重常驻、显存分级加载与本地依赖环境检测
+            DiffSynth-MiniMax-H3 系列模型权重常驻、显存分级加载与本地依赖环境检测
           </p>
         </div>
 
@@ -89,9 +77,7 @@ export const ModelsView: React.FC<ModelsViewProps> = ({ onShowToast }) => {
             variant="secondary"
             size="sm"
             icon={<RefreshCw className="w-3.5 h-3.5" />}
-            onClick={() =>
-              onShowToast("info", "模型权重完整性校验完成 (SHA256 匹配)")
-            }
+            onClick={() => onShowToast("info", "模型权重完整性校验完成 (SHA256 匹配)")}
           >
             校验权重哈希
           </Button>
@@ -105,9 +91,7 @@ export const ModelsView: React.FC<ModelsViewProps> = ({ onShowToast }) => {
             <span className="font-semibold text-[#00e0b8]">
               正在执行 CUDA 权重预热与显存常驻加载...
             </span>
-            <span className="font-mono text-[#00e0b8] font-bold">
-              {warmupProgress}%
-            </span>
+            <span className="font-mono text-[#00e0b8] font-bold">{warmupProgress}%</span>
           </div>
           <div className="w-full bg-[#15294a] h-2 rounded-full overflow-hidden">
             <div
@@ -124,10 +108,11 @@ export const ModelsView: React.FC<ModelsViewProps> = ({ onShowToast }) => {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`pb-2.5 font-medium transition-colors cursor-pointer relative ${activeTab === tab.id
-              ? "text-[#00e0b8] font-semibold"
-              : "text-[#8a97a8] hover:text-[#e8f0f8]"
-              }`}
+            className={`pb-2.5 font-medium transition-colors cursor-pointer relative ${
+              activeTab === tab.id
+                ? "text-[#00e0b8] font-semibold"
+                : "text-[#8a97a8] hover:text-[#e8f0f8]"
+            }`}
           >
             {tab.label}
             {activeTab === tab.id && (
@@ -180,26 +165,19 @@ export const ModelsView: React.FC<ModelsViewProps> = ({ onShowToast }) => {
             >
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="font-semibold text-xs text-[#e8f0f8]">
-                    {m.name}
-                  </span>
+                  <span className="font-semibold text-xs text-[#e8f0f8]">{m.name}</span>
                   <div className="flex items-center gap-2">
                     {m.isDefault && (
                       <Badge variant="brand" size="xs">
                         默认主干
                       </Badge>
                     )}
-                    <Badge
-                      variant={m.status === "loaded" ? "brand" : "neutral"}
-                      size="xs"
-                    >
+                    <Badge variant={m.status === "loaded" ? "brand" : "neutral"} size="xs">
                       {m.status === "loaded" ? "已常驻显存" : "就绪待命"}
                     </Badge>
                   </div>
                 </div>
-                <p className="text-xs text-[#8a97a8] leading-relaxed">
-                  {m.desc}
-                </p>
+                <p className="text-xs text-[#8a97a8] leading-relaxed">{m.desc}</p>
               </div>
 
               <div className="pt-2 border-t border-[#1e2f47]/60 flex items-center justify-between text-xs">
@@ -269,12 +247,8 @@ export const ModelsView: React.FC<ModelsViewProps> = ({ onShowToast }) => {
             ].map((env, idx) => (
               <div key={idx} className="py-3 flex items-center justify-between">
                 <div>
-                  <span className="font-semibold text-[#e8f0f8]">
-                    {env.item}
-                  </span>
-                  <span className="font-mono text-[11px] text-[#00e0b8] ml-2">
-                    v{env.ver}
-                  </span>
+                  <span className="font-semibold text-[#e8f0f8]">{env.item}</span>
+                  <span className="font-mono text-[11px] text-[#00e0b8] ml-2">v{env.ver}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-[#8a97a8]">{env.note}</span>
@@ -321,30 +295,22 @@ export const ModelsView: React.FC<ModelsViewProps> = ({ onShowToast }) => {
                 <div className="grid grid-cols-3 gap-2 text-center pt-2">
                   <div className="p-2 rounded bg-[#15294a]">
                     <div className="text-[10px] text-[#8a97a8]">模型权重</div>
-                    <div className="font-mono text-sm font-bold text-[#00e0b8]">
-                      340 GB
-                    </div>
+                    <div className="font-mono text-sm font-bold text-[#00e0b8]">340 GB</div>
                   </div>
                   <div className="p-2 rounded bg-[#15294a]">
                     <div className="text-[10px] text-[#8a97a8]">输出视频</div>
-                    <div className="font-mono text-sm font-bold text-[#00b4d8]">
-                      180 GB
-                    </div>
+                    <div className="font-mono text-sm font-bold text-[#00b4d8]">180 GB</div>
                   </div>
                   <div className="p-2 rounded bg-[#15294a]">
                     <div className="text-[10px] text-[#8a97a8]">临时缓存</div>
-                    <div className="font-mono text-sm font-bold text-[#ff7a45]">
-                      122 GB
-                    </div>
+                    <div className="font-mono text-sm font-bold text-[#ff7a45]">122 GB</div>
                   </div>
                 </div>
               </div>
 
               {/* Large File Cleaner List */}
               <div className="space-y-2">
-                <span className="font-semibold text-[#e8f0f8]">
-                  大文件占用排行：
-                </span>
+                <span className="font-semibold text-[#e8f0f8]">大文件占用排行：</span>
                 <div className="space-y-1.5 font-mono text-[11px]">
                   <div className="flex justify-between p-2 rounded bg-[#15294a]">
                     <span className="text-[#8a97a8] truncate max-w-xs">
@@ -370,9 +336,7 @@ export const ModelsView: React.FC<ModelsViewProps> = ({ onShowToast }) => {
                   <Button
                     variant="danger"
                     size="sm"
-                    onClick={() =>
-                      onShowToast("success", "已清理 98.4GB 临时评估切片缓存")
-                    }
+                    onClick={() => onShowToast("success", "已清理 98.4GB 临时评估切片缓存")}
                   >
                     一键清理评估切片缓存 (释放 98GB)
                   </Button>
@@ -433,22 +397,13 @@ export const ModelsView: React.FC<ModelsViewProps> = ({ onShowToast }) => {
                     scene: "极速预览、创意探索",
                   },
                 ].map((row, i) => (
-                  <tr
-                    key={i}
-                    className="hover:bg-[#15294a]/40 transition-colors"
-                  >
-                    <td className="py-2.5 px-3 font-semibold text-[#e8f0f8]">
-                      {row.name}
-                    </td>
+                  <tr key={i} className="hover:bg-[#15294a]/40 transition-colors">
+                    <td className="py-2.5 px-3 font-semibold text-[#e8f0f8]">{row.name}</td>
                     <td className="py-2.5 px-3 text-[#00b4d8]">{row.res}</td>
                     <td className="py-2.5 px-3 text-[#00e0b8]">{row.speed}</td>
                     <td className="py-2.5 px-3 text-[#e8f0f8]">{row.total}</td>
-                    <td className="py-2.5 px-3 text-[#00e0b8] font-bold">
-                      {row.vram}
-                    </td>
-                    <td className="py-2.5 px-3 text-[#8a97a8] font-sans">
-                      {row.scene}
-                    </td>
+                    <td className="py-2.5 px-3 text-[#00e0b8] font-bold">{row.vram}</td>
+                    <td className="py-2.5 px-3 text-[#8a97a8] font-sans">{row.scene}</td>
                   </tr>
                 ))}
               </tbody>
@@ -457,8 +412,8 @@ export const ModelsView: React.FC<ModelsViewProps> = ({ onShowToast }) => {
         </Card>
       )}
     </div>
-  )
-}
+  );
+};
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元
