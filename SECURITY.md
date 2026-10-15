@@ -1,12 +1,12 @@
 ---
 file: SECURITY.md
 description: 安全政策 (Security Policy)
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v1.0.1
 created: 2026-10-11
 updated: 2026-10-11
 status: active
-tags: [YYC3],[安全]
+tags: [YYC3, 安全]
 category: policy
 language: zh-CN
 ---

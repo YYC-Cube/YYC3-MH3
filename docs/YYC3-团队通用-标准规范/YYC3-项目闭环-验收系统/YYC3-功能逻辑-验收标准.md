@@ -1,12 +1,12 @@
 ---
 file: YYC3-功能逻辑-验收标准.md
 description: YYC³ 项目闭环验收系统 — 功能完整性与业务逻辑核验标准（第二类验收阶段）
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v2.0.2
 created: 2026-05-25
 updated: 2026-10-11
 status: stable
-tags: [验收],[功能逻辑],[业务逻辑],[完整性检测],[性能优化],[闭环]
+tags: [验收, 功能逻辑, 业务逻辑, 完整性检测, 性能优化, 闭环]
 category: acceptance
 language: zh-CN
 audience: developers,qa-engineers,product-managers

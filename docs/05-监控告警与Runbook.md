@@ -1,12 +1,12 @@
 ---
 file: docs/05-监控告警与Runbook.md
 description: MiniMax-H3 本地生产线监控告警字段字典与应急响应手册（逆向沉淀版）
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v1.2.0
 created: 2026-10-11
 updated: 2026-10-12
 status: active
-tags: [YYC3],[契约],[监控],[Runbook]
+tags: [YYC3, 契约, 监控, Runbook]
 category: policy
 language: zh-CN
 ---
@@ -96,7 +96,7 @@ language: zh-CN
 | 字段 | 类型 | 语义 |
 | ---- | ---- | ---- |
 | `name` / `serviceId` | string | 展示名 / 稳定标识（`srv-*`） |
-| `port?` | number | 本地监听端口（❗现行 `SERVICES_LIST` 含「本地遥测聚合服务 :8443」等条目为**演示快照，非真实探测结果**，真实服务注册待 Registry API 落地，见 [06](06-Registry-API-契约.md)） |
+| `port?` | number | 本地监听端口（❗现行 `SERVICES_LIST` 含「本地遥测聚合服务 :3031」等条目为**演示快照，非真实探测结果**，真实服务注册待 Registry API 落地，见 [06](06-Registry-API-契约.md)） |
 | `status` | `"online" \| "warning" \| "offline"` | 三态健康 |
 | `uptime` / `pids` / `memory` | string / number / string | 运行时长 / 进程数 / 内存占用 |
 | `stabilityHistory?` | number[] | 近 7 天稳定率（%） |

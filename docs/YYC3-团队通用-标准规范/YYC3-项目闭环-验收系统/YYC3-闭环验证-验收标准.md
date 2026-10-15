@@ -1,12 +1,12 @@
 ---
 file: YYC3-闭环验证-验收标准.md
 description: YYC³ 项目闭环验收系统 — 全链路闭环验证与追溯标准（第六类验收阶段）
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v2.0.1
 created: 2026-05-25
 updated: 2026-10-11
 status: stable
-tags: [验收],[闭环验证],[全链路],[追溯机制],[质量闭环],[持续改进]
+tags: [验收, 闭环验证, 全链路, 追溯机制, 质量闭环, 持续改进]
 category: acceptance
 language: zh-CN
 audience: developers,qa-engineers,project-managers,devops

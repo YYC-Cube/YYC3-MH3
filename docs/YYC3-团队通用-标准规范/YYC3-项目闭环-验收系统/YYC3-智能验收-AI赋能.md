@@ -1,12 +1,12 @@
 ---
 file: YYC3-智能验收-AI赋能.md
 description: YYC³ 验收系统 — 第十一阶段：智能化验收与AI赋能标准
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v2.0.2
 created: 2026-05-25
 updated: 2026-10-11
 status: stable
-tags: [验收],[智能验收],[AI赋能],[LLM],[代码审查],[智能测试]
+tags: [验收, 智能验收, AI赋能, LLM, 代码审查, 智能测试]
 category: acceptance
 language: zh-CN
 audience: developers,ai-engineers,qa-engineers,architects

@@ -3,12 +3,12 @@ file: YYC3-多维分析-安全加固.md
 description: YYC³ 项目闭环验收系统 — 多维分析与安全加固验收标准（第八类验收阶段）
 
 | **验收阶段** | 第八阶段：多维分析与安全加固 |
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v2.0.1
 created: 2026-05-25
 updated: 2026-10-11
 status: stable
-tags: [验收],[安全加固],[OWASP],[漏洞扫描],[权限控制],[数据保护],[合规性]
+tags: [验收, 安全加固, OWASP, 漏洞扫描, 权限控制, 数据保护, 合规性]
 category: acceptance
 language: zh-CN
 audience: developers,security-engineers,devops,architects,compliance-officers

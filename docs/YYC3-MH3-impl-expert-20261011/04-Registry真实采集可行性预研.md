@@ -1,12 +1,12 @@
 ---
 file: 04-Registry真实采集可行性预研.md
 description: YYC3-MH3 Registry 真实采集可行性预研 - 智能应用落地专家 - 2026-10-12
-author: AI Tutor <Intelligent Implementation Expert>
+author: "AI Tutor <Intelligent Implementation Expert>"
 version: v1.0.0
 created: 2026-10-12
 updated: 2026-10-12
 status: active
-tags: [research],[registry],[collector],[feasibility]
+tags: [research, registry, collector, feasibility]
 category: report
 language: zh-CN
 ---

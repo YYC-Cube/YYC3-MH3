@@ -1,12 +1,12 @@
 ---
 file: YYC3-AI-Family-九层云枢系统.md
 description: YYC³ AI Family 九层云枢系统
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v1.0.2
 created: 2026-03-21
 updated: 2026-10-11
 status: stable
-tags: [机制],[架构],[五高],[五标],[五化],[五维]
+tags: [机制, 架构, 五高, 五标, 五化, 五维]
 category: policy
 language: zh-CN
 audience: developers,managers,stakeholders

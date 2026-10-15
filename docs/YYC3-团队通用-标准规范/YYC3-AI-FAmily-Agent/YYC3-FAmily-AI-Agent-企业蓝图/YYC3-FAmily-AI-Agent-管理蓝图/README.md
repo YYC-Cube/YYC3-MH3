@@ -1,12 +1,12 @@
 ---
 file: docs/YYC3-团队通用-标准规范/YYC3-AI-FAmily-Agent/YYC3-FAmily-AI-Agent-企业蓝图/YYC3-FAmily-AI-Agent-管理蓝图/README.md
 description: FAmily-AI-Agent-管理蓝图架构
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v1.0.1
 created: 2026-10-11
 updated: 2026-10-11
 status: active
-tags: [YYC3],[文档],[总览]
+tags: [YYC3, 文档, 总览]
 category: policy
 language: zh-CN
 ---

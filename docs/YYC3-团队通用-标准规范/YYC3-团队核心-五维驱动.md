@@ -1,12 +1,12 @@
 ---
 file: YYC3-团队核心-五维驱动.md
 description: YYC³ 团队核心机制 — 五高五标五化五维架构体系官方标准
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v2.0.2
 created: 2026-03-21
 updated: 2026-10-11
 status: stable
-tags: [机制],[架构],[五高],[五标],[五化],[五维]
+tags: [机制, 架构, 五高, 五标, 五化, 五维]
 category: policy
 language: zh-CN
 audience: developers,managers,stakeholders

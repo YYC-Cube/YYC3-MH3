@@ -1,12 +1,12 @@
 ---
 file: YYC3-深度审核-性能优化.md
 description: YYC³ 验收系统 — 第十阶段：深度审核与性能优化验收标准
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v2.0.2
 created: 2026-03-21
 updated: 2026-10-11
 status: stable
-tags: [验收],[深度审核],[性能优化],[性能基准]
+tags: [验收, 深度审核, 性能优化, 性能基准]
 category: acceptance
 language: zh-CN
 audience: developers,architects,stakeholders

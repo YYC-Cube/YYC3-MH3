@@ -1,12 +1,12 @@
 ---
 file: docs/YYC3-团队通用-标准规范/YYC3-功能拆解-开发指南/YYC3-功能拆解-多元化独立开发.md
 description: YYC3 项目功能拆解与多元化独立开发
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v1.0.1
 created: 2026-10-11
 updated: 2026-10-11
 status: active
-tags: [YYC3],[规范],[标准]
+tags: [YYC3, 规范, 标准]
 category: policy
 language: zh-CN
 ---

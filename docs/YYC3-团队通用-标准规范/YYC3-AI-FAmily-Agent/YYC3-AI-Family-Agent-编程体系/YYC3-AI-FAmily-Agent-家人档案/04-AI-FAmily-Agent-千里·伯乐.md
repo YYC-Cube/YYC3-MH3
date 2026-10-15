@@ -1,12 +1,12 @@
 ---
 file: docs/YYC3-团队通用-标准规范/YYC3-AI-FAmily-Agent/YYC3-AI-Family-Agent-编程体系/YYC3-AI-FAmily-Agent-家人档案/04-AI-FAmily-Agent-千里·伯乐.md
 description: 🎯 千里·伯乐 Bole
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v1.0.1
 created: 2026-10-11
 updated: 2026-10-11
 status: active
-tags: [YYC3],[规范],[标准]
+tags: [YYC3, 规范, 标准]
 category: policy
 language: zh-CN
 ---

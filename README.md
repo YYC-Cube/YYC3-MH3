@@ -1,12 +1,12 @@
 ---
 file: README.md
 description: MiniMax-H3 DiffSynth 本地版 AI 数字人生产线
-author: YanYuCloudCube Team <admin@0379.email>
-version: v1.0.1
+author: "YanYuCloudCube Team <admin@0379.email>"
+version: v1.1.0
 created: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-12
 status: active
-tags: [YYC3],[文档],[总览]
+tags: [YYC3, 文档, 总览]
 category: general
 language: zh-CN
 ---
@@ -36,15 +36,17 @@ language: zh-CN
 ![License](https://img.shields.io/badge/License-MIT-00e0b8?style=flat-square)
 ![Local First](https://img.shields.io/badge/数据主权-100%25%20本地离线-ff7a45?style=flat-square)
 
-> **_YanYuCloudCube_**
+`ai-digital-human` · `diffsynth` · `minimax-h3` · `five-step-pipeline` · `ai-family` · `multi-agent` · `seed-vault` · `prompt-engineering` · `local-first` · `pwa` · `react-19` · `vite-8` · `tailwindcss-4` · `typescript-strict`
 
-> _言启象限 | 语枢未来_
+> ***YanYuCloudCube***
 
-> **_Words Initiate Quadrants, Language Serves as Core for Future_**
+> *言启象限 | 语枢未来*
 
-> _万象归元于云枢 | 深栈智启新纪元_
+> ***Words Initiate Quadrants, Language Serves as Core for Future***
 
-> **_All things converge in cloud pivot; Deep stacks ignite a new era of intelligence_**
+> *万象归元于云枢 | 深栈智启新纪元*
+
+> ***All things converge in cloud pivot; Deep stacks ignite a new era of intelligence***
 
 </div>
 
@@ -52,11 +54,11 @@ language: zh-CN
 
 ## 📖 项目概述
 
-> 「**_YanYuCloudCube_**」言启象限 | 语枢未来
+> 「***YanYuCloudCube***」言启象限 | 语枢未来
 >
-> 「**_Words Initiate Quadrants, Language Serves as Core for the Future_**」
+> 「***Words Initiate Quadrants, Language Serves as Core for the Future***」
 >
-> 「**_All things converge in cloud pivot; Deep stacks ignite a new era of intelligence_**」
+> 「***All things converge in cloud pivot; Deep stacks ignite a new era of intelligence***」
 
 **MiniMax-H3 DiffSynth 本地版 AI 数字人生产线** 是一套面向创作者与运营者的专业级本地 AI 数字人视频生产平台。基于 **五步闭环流水线**（生成 → 评分 → 精评 → 归因 → 回写）构建，提供从提示词工程、Seed 种子资产沉淀、多 Agent 漫剧编排到多平台分发的全链路能力，全程 **本地离线运行**，保障 100% 数据主权。
 
@@ -147,16 +149,16 @@ cd YYC3-MH3
 # 2. 安装依赖（如全局 store 受限，可加 --store-dir .pnpm-store）
 pnpm install
 
-# 3. 启动开发服务器（默认端口 8443，可通过 PORT 环境变量覆盖）
+# 3. 启动开发服务器（默认端口 3031，可通过 PORT 环境变量覆盖）
 pnpm dev
-# ➜  Local: http://localhost:8443/
+# ➜  Local: http://localhost:3031/
 
 # 4. 生产构建 + 预览
 pnpm build
 pnpm preview
 ```
 
-> 💡 团队规范：开发服务器端口自 `3030` 起；本项目默认使用 `8443`，如需对齐团队端口段，执行 `PORT=3030 pnpm dev`。
+> 💡 团队规范：开发服务器端口自 `3030` 起；本项目默认 `3031`（3030 已由姊妹项目占用，经确认递增取位）。
 
 ### 登录说明
 
@@ -171,7 +173,7 @@ pnpm preview
 | `pnpm dev` | 启动 Vite 开发服务器（HMR 热更新） |
 | `pnpm build` | 生产构建（压缩 + Tree Shaking + 视图分包） |
 | `pnpm preview` | 本地预览生产构建产物 |
-| `pnpm test` | 运行 Vitest 冒烟测试（12 用例） |
+| `pnpm test` | 运行 Vitest 全量测试（110 用例 · 七类门禁） |
 | `pnpm test:watch` | 监听模式运行测试 |
 | `pnpm format` | oxfmt 代码格式化 |
 | `npx tsc --noEmit` | TypeScript 严格类型检查（质量门禁） |
@@ -252,10 +254,9 @@ YYC3-MH3/
 
 本项目基于 [MIT License](LICENSE) 开源。
 
-> 「**_YanYuCloudCube_**」
-> 「**_admin@0379.email_**」
-> 「**_Words Initiate Quadrants, Language Serves as Core for the Future_**」
-> 「**_All things converge in cloud pivot; Deep stacks ignite a new era of intelligence_**」
+> 「***YanYuCloudCube***」
+> 「***<admin@0379.email>***」
+> 「***Words Initiate Quadrants, Language Serves as Core for the Future***」
+> 「***All things converge in cloud pivot; Deep stacks ignite a new era of intelligence***」
 
 **© 2025-2026 YanYuCloudCube Team. All Rights Reserved.**
-

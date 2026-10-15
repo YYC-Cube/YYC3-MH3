@@ -1,12 +1,12 @@
 ---
 file: YYC3-组件测试-验收标准.md
 description: YYC³ 项目闭环验收系统 — React组件测试与交互验证标准（第四类验收阶段）
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v2.0.2
 created: 2026-05-25
 updated: 2026-10-11
 status: stable
-tags: [验收],[组件测试],[React],[RTL],[交互测试],[无障碍],[闭环]
+tags: [验收, 组件测试, React, RTL, 交互测试, 无障碍, 闭环]
 category: acceptance
 language: zh-CN
 audience: developers,frontend-engineers,qa-engineers

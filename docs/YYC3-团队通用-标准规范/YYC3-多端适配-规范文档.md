@@ -1,12 +1,12 @@
 ---
 file: YYC3-多端适配-规范文档.md
 description: YYC3-多端适配-规范文档 — 涵盖文档规范、代码标准、项目规范、多端适配、质量保障的全量规范体系
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v2.0.2
 created: 2026-05-01
 updated: 2026-10-11
 status: stable
-tags: [规范],[标准],[文档格式],[代码标准],[命名规范],[多端适配],[质量保障]
+tags: [规范, 标准, 文档格式, 代码标准, 命名规范, 多端适配, 质量保障]
 category: policy
 language: zh-CN
 audience: developers,managers,stakeholders

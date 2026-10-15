@@ -1,12 +1,12 @@
 ---
 file: docs/YYC3-团队通用-标准规范/YYC3-AI-FAmily-Agent/YYC3-FAmily-AI-Agent-企业蓝图/YYC3-FAmily-AI-Agent-情感公约/02-YYC3-AI-Family-与智协同情感公约.md
 description: 🤝 YanYuCloudCube  AI Family  极致信任公约
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v1.0.1
 created: 2026-10-11
 updated: 2026-10-11
 status: active
-tags: [YYC3],[行为准则]
+tags: [YYC3, 行为准则]
 category: policy
 language: zh-CN
 ---

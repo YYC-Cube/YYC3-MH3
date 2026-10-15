@@ -1,12 +1,12 @@
 ---
 file: docs/YYC3-团队通用-标准规范/YYC3-AI-FAmily-Agent/YYC3-AI-Family-Agent-编程体系/YYC3-AI-Family-Agent-人机协同/AI-FAmily-Agent-智能协同架构/04-YYC3-AI-FAmily-九层架构设计.md
 description: YYC3-Integrated-Architecture-Design 9 层架构职责边界与协作关系
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v1.0.1
 created: 2026-10-11
 updated: 2026-10-11
 status: active
-tags: [YYC3],[规范],[标准]
+tags: [YYC3, 规范, 标准]
 category: policy
 language: zh-CN
 ---

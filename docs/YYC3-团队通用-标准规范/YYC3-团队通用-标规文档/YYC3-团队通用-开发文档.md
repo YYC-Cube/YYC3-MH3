@@ -1,12 +1,12 @@
 ---
 file: YYC3-团队通用-开发文档.md
 description: YYC³ AI协同开发通用工作规范 — 五维驱动五高五标五化核心思维落地实施指南
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v2.0.2
 created: 2026-05-03
 updated: 2026-10-11
 status: stable
-tags: [ai-collaboration],[development-standard],[workflow],[documentation]
+tags: [ai-collaboration, development-standard, workflow, documentation]
 category: policy
 language: zh-CN
 audience: developers,ai-tutors,stakeholders
@@ -141,12 +141,12 @@ docs/
 ---
 file: 00-项目现状审核报告.md
 description: {项目名} 现状审核 - {导师} - {日期}
-author: AI Tutor <{模型标识}>
+author: "AI Tutor <{模型标识}>"
 version: v2.0.0
 created: {YYYY-MM-DD}
 updated: 2026-05-30
 status: active
-tags: [audit],[analysis],[baseline]
+tags: [audit, analysis, baseline]
 category: report
 ---
 
@@ -249,12 +249,12 @@ category: report
 ---
 file: 01-任务规划与节点目标.md
 description: {项目名} 开发规划 - {导师} - {日期}
-author: AI Tutor <{模型标识}>
+author: "AI Tutor <{模型标识}>"
 version: v2.0.0
 created: {YYYY-MM-DD}
 updated: 2026-05-30
 status: active
-tags: [planning],[milestones],[roadmap]
+tags: [planning, milestones, roadmap]
 category: plan
 ---
 
@@ -435,12 +435,12 @@ category: plan
 ---
 file: 03-总结文档与状态同步.md
 description: {项目名} 会话总结 - {导师} - {日期}
-author: AI Tutor <{模型标识}>
+author: "AI Tutor <{模型标识}>"
 version: v2.0.0
 created: {YYYY-MM-DD}
 updated: 2026-05-30
 status: stable
-tags: [summary],[handoff],[sync]
+tags: [summary, handoff, sync]
 category: report
 ---
 

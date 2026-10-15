@@ -1,12 +1,12 @@
 ---
 file: CODE_OF_CONDUCT.md
 description: 行为准则 (Code of Conduct)
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v1.0.1
 created: 2026-10-11
 updated: 2026-10-11
 status: active
-tags: [YYC3],[行为准则]
+tags: [YYC3, 行为准则]
 category: policy
 language: zh-CN
 ---

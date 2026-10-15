@@ -1,12 +1,12 @@
 ---
 file: CONTRIBUTING.md
 description: 贡献指南 (Contributing Guide)
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v1.0.1
 created: 2026-10-11
 updated: 2026-10-11
 status: active
-tags: [YYC3],[贡献指南]
+tags: [YYC3, 贡献指南]
 category: guide
 language: zh-CN
 ---

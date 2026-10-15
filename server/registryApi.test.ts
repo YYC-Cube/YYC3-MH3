@@ -30,7 +30,7 @@ import type { SeedItem } from "../src/types"
 import type { RegistryRequest } from "./registryApi"
 import { createRegistryApi } from "./registryApi"
 
-const LOOPBACK_HOST = "127.0.0.1:8443"
+const LOOPBACK_HOST = "127.0.0.1:3031"
 
 function makeRequest(overrides: Partial<RegistryRequest> = {}): RegistryRequest {
   return {
@@ -303,7 +303,7 @@ describe("server/registryApi · 错误约定与回环防护（06 §1.1/§2）", 
 
   it("非回环 Host → 403 拒绝（API 面回环 only）", () => {
     const res = createRegistryApi().handleRequest(
-      makeRequest({ path: "/api/services", host: "evil.example:8443" }),
+      makeRequest({ path: "/api/services", host: "evil.example:3031" }),
     )
     expect(res.status).toBe(403)
     expect((res.json as { error: { code: string } }).error.code).toBe("FORBIDDEN")
@@ -311,7 +311,7 @@ describe("server/registryApi · 错误约定与回环防护（06 §1.1/§2）", 
 
   it("localhost 与 [::1] 回环放行", () => {
     const api = createRegistryApi()
-    expect(api.handleRequest(makeRequest({ host: "localhost:8443" })).status).toBe(200)
-    expect(api.handleRequest(makeRequest({ host: "[::1]:8443" })).status).toBe(200)
+    expect(api.handleRequest(makeRequest({ host: "localhost:3031" })).status).toBe(200)
+    expect(api.handleRequest(makeRequest({ host: "[::1]:3031" })).status).toBe(200)
   })
 })

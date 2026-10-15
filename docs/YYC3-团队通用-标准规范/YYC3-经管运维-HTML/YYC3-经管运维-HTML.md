@@ -1,12 +1,12 @@
 ---
 file: docs/YYC3-团队通用-标准规范/YYC3-经管运维-HTML/YYC3-经管运维-HTML.md
 description: YYC3-经管运维-HTML
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v1.0.1
 created: 2026-10-11
 updated: 2026-10-11
 status: active
-tags: [YYC3],[规范],[标准]
+tags: [YYC3, 规范, 标准]
 category: policy
 language: zh-CN
 ---

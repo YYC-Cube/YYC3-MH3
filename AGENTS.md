@@ -1,12 +1,12 @@
 ---
 file: AGENTS.md
 description: figma-make-app
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v1.0.1
 created: 2026-10-11
 updated: 2026-10-11
 status: active
-tags: [YYC3],[文档]
+tags: [YYC3, 文档]
 category: general
 language: zh-CN
 ---

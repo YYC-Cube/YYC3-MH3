@@ -1,12 +1,12 @@
 ---
 file: docs/06-Registry-API-契约.md
 description: 本地 Registry API 契约（active · 已实现）— 本地 BFF 最小面
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v1.1.0
 created: 2026-10-11
 updated: 2026-10-12
 status: active
-tags: [YYC3],[契约],[Registry],[API]
+tags: [YYC3, 契约, Registry, API]
 category: policy
 language: zh-CN
 ---

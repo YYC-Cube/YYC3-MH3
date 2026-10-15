@@ -1,12 +1,12 @@
 ---
 file: YYC3-团队规范-开发标准.md
 description: YYC³ 团队统一开发标准 — 文档规范、代码标准、项目规范、质量保障全量体系
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v2.0.2
 created: 2026-03-21
 updated: 2026-10-11
 status: stable
-tags: [规范],[标准],[文档格式],[代码标准],[命名规范],[质量保障]
+tags: [规范, 标准, 文档格式, 代码标准, 命名规范, 质量保障]
 category: policy
 language: zh-CN
 audience: developers,managers,stakeholders
@@ -77,7 +77,7 @@ complexity: intermediate
 ---
 file: {FILE_NAME}
 description: {FILE_DESCRIPTION}
-author: {AUTHOR_NAME} <{AUTHOR_EMAIL}>
+author: "{AUTHOR_NAME} <{AUTHOR_EMAIL}>"
 version: v2.0.0
 created: {CREATE_DATE}
 updated: 2026-05-30

@@ -1,12 +1,12 @@
 ---
 file: YYC3-文档体系-闭环审核.md
 description: YYC³ 项目闭环验收系统 — 文档体系闭环审核与质量保障（第十二类验收阶段）
-author: YanYuCloudCube Team <admin@0379.email>
+author: "YanYuCloudCube Team <admin@0379.email>"
 version: v2.0.1
 created: 2026-05-25
 updated: 2026-10-11
 status: stable
-tags: [验收],[文档体系],[闭环审核],[文档质量],[知识管理],[可维护性]
+tags: [验收, 文档体系, 闭环审核, 文档质量, 知识管理, 可维护性]
 category: acceptance
 language: zh-CN
 audience: developers,technical-writers,project-managers,qa-engineers
