@@ -127,7 +127,7 @@ export function AnalyticsModule({ onShowToast }: AnalyticsModuleProps) {
                 <span className="font-mono text-[10px] text-[#e8f0f8] font-semibold">
                   {item.round}
                 </span>
-                <span className="font-mono text-[9px] text-[#5c697a]">{item.num}</span>
+                <span className="font-mono text-[9px] text-[#8b949e]">{item.num}</span>
               </div>
             ))}
           </div>

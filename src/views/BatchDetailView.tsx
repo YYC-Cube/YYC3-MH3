@@ -402,7 +402,7 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
                   <span className="font-medium text-[#e8f0f8]">{row.label}</span>
                   <div className="flex items-center gap-4 font-mono">
                     <span className="text-[#00e0b8] font-bold">{row.curr}</span>
-                    <span className="text-[#5c697a]">vs {row.base}</span>
+                    <span className="text-[#8b949e]">vs {row.base}</span>
                     <span className="text-[#00e0b8] font-bold">{row.diff}</span>
                   </div>
                 </div>

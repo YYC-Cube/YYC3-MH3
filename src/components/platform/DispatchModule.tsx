@@ -296,7 +296,7 @@ export function DispatchModule({ pushTasks, onNewPushClick, onShowToast }: Dispa
                 <span className="text-[#00e0b8] font-bold">精度 {lang.acc}</span>
               </div>
               <div className="flex justify-between items-center pt-1 border-t border-[#1e2f47]/50 text-[10px]">
-                <span className="text-[#5c697a]">{lang.status}</span>
+                <span className="text-[#8b949e]">{lang.status}</span>
                 <button
                   onClick={() => onShowToast("success", `已切换 ${lang.name} 作为当前对齐基准`)}
                   className="text-[#00e0b8] hover:underline cursor-pointer"

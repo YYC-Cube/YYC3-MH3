@@ -218,7 +218,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
                         {c.role}
                       </div>
                     </div>
-                    <div className="mt-3 pt-2 border-t border-[#30363d]/60 flex items-center justify-between text-[10px] text-[#5a6268]">
+                    <div className="mt-3 pt-2 border-t border-[#30363d]/60 flex items-center justify-between text-[10px] text-[#8b949e]">
                       <span>点击复制 HEX</span>
                       <span className="font-mono text-[#8b949e]">{c.sample}</span>
                     </div>

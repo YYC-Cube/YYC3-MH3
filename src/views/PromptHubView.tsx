@@ -259,7 +259,7 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({ onShowToast }) => 
               ))}
             </div>
           ) : (
-            <p className="text-xs text-[#5c697a]">当前模板无额外变量</p>
+            <p className="text-xs text-[#8b949e]">当前模板无额外变量</p>
           )}
         </div>
 
@@ -316,7 +316,7 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({ onShowToast }) => 
               </Button>
             </div>
           ) : (
-            <div className="aspect-video rounded-xl bg-[#15294a]/40 border border-dashed border-[#1e2f47] flex flex-col items-center justify-center p-6 text-center text-xs text-[#5c697a]">
+            <div className="aspect-video rounded-xl bg-[#15294a]/40 border border-dashed border-[#1e2f47] flex flex-col items-center justify-center p-6 text-center text-xs text-[#8b949e]">
               <span>点击「单步推理测试」</span>
               <span className="text-[11px] mt-1">即刻调用本地模型验证替换后效果</span>
             </div>

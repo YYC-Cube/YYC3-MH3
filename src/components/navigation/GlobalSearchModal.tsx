@@ -175,7 +175,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
             placeholder="搜索功能页面、批次编号、Seed 种子、文档、模型..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full bg-transparent text-sm text-[#e8f0f8] placeholder-[#5c697a] focus:outline-none"
+            className="w-full bg-transparent text-sm text-[#e8f0f8] placeholder-[#8b949e] focus:outline-none"
           />
           <button
             onClick={onClose}
@@ -207,7 +207,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           {/* Quick Pages */}
           {(searchCategory === "all" || searchCategory === "pages") && pageMatches.length > 0 && (
             <div>
-              <div className="text-[10px] uppercase font-semibold text-[#5c697a] tracking-wider px-2 mb-1">
+              <div className="text-[10px] uppercase font-semibold text-[#8b949e] tracking-wider px-2 mb-1">
                 功能页面 ({pageMatches.length})
               </div>
               <div className="space-y-1">
@@ -224,7 +224,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                       <LayoutDashboard className="w-4 h-4 text-[#8a97a8] group-hover:text-[#00e0b8]" />
                       <span className="font-medium">{p.title}</span>
                     </div>
-                    <span className="text-[10px] text-[#5c697a] group-hover:text-[#8a97a8] font-mono">
+                    <span className="text-[10px] text-[#8b949e] group-hover:text-[#8a97a8] font-mono">
                       {p.category}
                     </span>
                   </div>
@@ -237,7 +237,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           {(searchCategory === "all" || searchCategory === "batches") &&
             batchMatches.length > 0 && (
               <div>
-                <div className="text-[10px] uppercase font-semibold text-[#5c697a] tracking-wider px-2 mb-1">
+                <div className="text-[10px] uppercase font-semibold text-[#8b949e] tracking-wider px-2 mb-1">
                   批次任务 ({batchMatches.length})
                 </div>
                 <div className="space-y-1">
@@ -267,7 +267,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           {/* Seeds */}
           {(searchCategory === "all" || searchCategory === "seeds") && seedMatches.length > 0 && (
             <div>
-              <div className="text-[10px] uppercase font-semibold text-[#5c697a] tracking-wider px-2 mb-1">
+              <div className="text-[10px] uppercase font-semibold text-[#8b949e] tracking-wider px-2 mb-1">
                 Seed 种子 ({seedMatches.length})
               </div>
               <div className="space-y-1">
@@ -297,7 +297,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           {/* Models */}
           {(searchCategory === "all" || searchCategory === "models") && modelMatches.length > 0 && (
             <div>
-              <div className="text-[10px] uppercase font-semibold text-[#5c697a] tracking-wider px-2 mb-1">
+              <div className="text-[10px] uppercase font-semibold text-[#8b949e] tracking-wider px-2 mb-1">
                 模型权重 ({modelMatches.length})
               </div>
               <div className="space-y-1">
@@ -326,7 +326,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
           {/* Docs */}
           {(searchCategory === "all" || searchCategory === "docs") && docMatches.length > 0 && (
             <div>
-              <div className="text-[10px] uppercase font-semibold text-[#5c697a] tracking-wider px-2 mb-1">
+              <div className="text-[10px] uppercase font-semibold text-[#8b949e] tracking-wider px-2 mb-1">
                 文档与指南 ({docMatches.length})
               </div>
               <div className="space-y-1">
@@ -343,7 +343,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                       <BookOpen className="w-4 h-4 text-[#8a97a8]" />
                       <span className="truncate">{d.title}</span>
                     </div>
-                    <span className="text-[10px] text-[#5c697a] font-mono">{d.readTime}</span>
+                    <span className="text-[10px] text-[#8b949e] font-mono">{d.readTime}</span>
                   </div>
                 ))}
               </div>
@@ -352,7 +352,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
         </div>
 
         {/* Footer info */}
-        <div className="px-4 py-2 border-t border-[#1e2f47] bg-[#0c1a30] flex items-center justify-between text-[11px] text-[#5c697a]">
+        <div className="px-4 py-2 border-t border-[#1e2f47] bg-[#0c1a30] flex items-center justify-between text-[11px] text-[#8b949e]">
           <div className="flex items-center gap-2">
             <span>支持全局模糊匹配</span>
             <span>·</span>

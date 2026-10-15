@@ -21,7 +21,7 @@
 export function ViewFallback() {
   return (
     <div className="flex-1 flex items-center justify-center bg-[#0a1628]">
-      <div className="flex items-center gap-2.5 font-mono text-xs text-[#5c697a]">
+      <div className="flex items-center gap-2.5 font-mono text-xs text-[#8b949e]">
         <span className="w-1.5 h-1.5 rounded-full bg-[#00e0b8] animate-pulse" />
         <span>视图模块载入中…</span>
       </div>

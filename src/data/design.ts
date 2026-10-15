@@ -80,9 +80,9 @@ export const DESIGN_SYSTEM_COLORS = [
   },
   {
     name: "三级文字 (Text Tertiary)",
-    hex: "#5c697a",
+    hex: "#8b949e",
     role: "占位符 Placeholder、已失效记录、微注脚",
-    sample: "text-[#5c697a]",
+    sample: "text-[#8b949e]",
   },
   {
     name: "边框分割线 (Border)",

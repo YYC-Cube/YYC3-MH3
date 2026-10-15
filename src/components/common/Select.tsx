@@ -50,7 +50,7 @@ export const Select: React.FC<SelectProps> = ({
           <label htmlFor={selectId} className="block text-xs font-medium text-[#8b949e]">
             {label}
           </label>
-          {hint && <span className="text-[11px] text-[#5a6268]">{hint}</span>}
+          {hint && <span className="text-[11px] text-[#8b949e]">{hint}</span>}
         </div>
       )}
       <div className="relative">

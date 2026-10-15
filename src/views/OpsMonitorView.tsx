@@ -166,7 +166,7 @@ export const OpsMonitorView: React.FC<OpsMonitorViewProps> = ({
                     }`}
                     style={{ height: `${(m.gpuVram / 24) * 100}%` }}
                   />
-                  <span className="text-[9px] font-mono text-[#5c697a]">{m.time}</span>
+                  <span className="text-[9px] font-mono text-[#8b949e]">{m.time}</span>
                 </div>
               );
             })}
@@ -186,7 +186,7 @@ export const OpsMonitorView: React.FC<OpsMonitorViewProps> = ({
                   className="w-full bg-[#00b4d8] rounded-t transition-all"
                   style={{ height: `${m.gpuUtil}%` }}
                 />
-                <span className="text-[9px] font-mono text-[#5c697a]">{m.time}</span>
+                <span className="text-[9px] font-mono text-[#8b949e]">{m.time}</span>
               </div>
             ))}
           </div>
@@ -205,7 +205,7 @@ export const OpsMonitorView: React.FC<OpsMonitorViewProps> = ({
                   className="w-full bg-[#9d7cd8] rounded-t transition-all"
                   style={{ height: `${(m.memUtil / 64) * 100}%` }}
                 />
-                <span className="text-[9px] font-mono text-[#5c697a]">{m.time}</span>
+                <span className="text-[9px] font-mono text-[#8b949e]">{m.time}</span>
               </div>
             ))}
           </div>
@@ -224,7 +224,7 @@ export const OpsMonitorView: React.FC<OpsMonitorViewProps> = ({
                   className="w-full bg-[#1e2f47] rounded-t transition-all group-hover:bg-[#00e0b8]"
                   style={{ height: `${(m.diskIops / 600) * 100}%` }}
                 />
-                <span className="text-[9px] font-mono text-[#5c697a]">{m.time}</span>
+                <span className="text-[9px] font-mono text-[#8b949e]">{m.time}</span>
               </div>
             ))}
           </div>
@@ -444,7 +444,7 @@ export const OpsMonitorView: React.FC<OpsMonitorViewProps> = ({
         <div className="p-3 rounded-xl bg-[#071222] border border-[#1e2f47] font-mono text-xs max-h-48 overflow-y-auto space-y-1.5 leading-relaxed">
           {logs.map((log) => (
             <div key={log.id} className="flex items-center gap-2 text-[11px]">
-              <span className="text-[#5c697a]">{log.timestamp}</span>
+              <span className="text-[#8b949e]">{log.timestamp}</span>
               <span
                 className={`px-1 rounded text-[10px] uppercase font-bold ${
                   log.level === "error"

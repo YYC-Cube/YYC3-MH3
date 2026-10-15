@@ -406,7 +406,7 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({ onShowToas
                       </div>
                     </div>
                   </div>
-                  <span className="font-mono text-[10px] text-[#5c697a]">{ag.clockPosition}</span>
+                  <span className="font-mono text-[10px] text-[#8b949e]">{ag.clockPosition}</span>
                 </div>
               ))}
             </div>
@@ -544,7 +544,7 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({ onShowToas
                         ? "bg-[#00e0b8]"
                         : node.status === "active"
                           ? "bg-[#00e0b8] animate-ping"
-                          : "bg-[#5c697a]"
+                          : "bg-[#8b949e]"
                     }`}
                   />
                 </div>
@@ -552,7 +552,7 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({ onShowToas
                 <div className="text-xs font-bold text-[#e8f0f8]">{node.label}</div>
                 <div className="text-[10px] text-[#8a97a8] truncate">{node.role}</div>
 
-                <div className="pt-1 flex items-center justify-between text-[10px] text-[#5c697a] border-t border-[#1e2f47]/50 font-mono">
+                <div className="pt-1 flex items-center justify-between text-[10px] text-[#8b949e] border-t border-[#1e2f47]/50 font-mono">
                   <span>In: {node.inputs.length}</span>
                   <span>Out: {node.outputs.length}</span>
                 </div>

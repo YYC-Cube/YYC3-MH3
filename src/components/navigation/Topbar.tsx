@@ -267,7 +267,7 @@ export const Topbar: React.FC<TopbarProps> = ({
       {/* Left Breadcrumb with secondary jump dropdown */}
       <div className="flex items-center gap-2 text-xs relative" ref={breadcrumbRef}>
         <span className="text-[#8a97a8] font-medium">{meta.parent}</span>
-        <ChevronRight className="w-3.5 h-3.5 text-[#5c697a]" />
+        <ChevronRight className="w-3.5 h-3.5 text-[#8b949e]" />
 
         {/* Current Path with Dropdown */}
         <button
@@ -281,7 +281,7 @@ export const Topbar: React.FC<TopbarProps> = ({
         {/* Secondary jump menu dropdown */}
         {isBreadcrumbOpen && (
           <div className="absolute top-8 left-16 w-56 rounded-xl bg-[#0c1a30] border border-[#1e2f47] shadow-2xl p-1.5 space-y-1 z-40 animate-in fade-in zoom-in-95 backdrop-blur-md">
-            <div className="text-[10px] uppercase font-semibold text-[#5c697a] px-2 py-1">
+            <div className="text-[10px] uppercase font-semibold text-[#8b949e] px-2 py-1">
               同层级功能快捷直达
             </div>
             {meta.siblings.map((sib) => (
@@ -313,7 +313,7 @@ export const Topbar: React.FC<TopbarProps> = ({
         >
           <div className="flex items-center gap-2">
             <Search className="w-3.5 h-3.5 text-[#8a97a8] group-hover:text-[#00e0b8] transition-colors" />
-            <span className="text-[#5c697a] group-hover:text-[#8a97a8]">
+            <span className="text-[#8b949e] group-hover:text-[#8a97a8]">
               全局搜索批次ID / 种子名称 / 文档 / 模型...
             </span>
           </div>
@@ -334,7 +334,7 @@ export const Topbar: React.FC<TopbarProps> = ({
           <HardDrive className="w-3.5 h-3.5 text-[#00e0b8]" />
           <span className="text-[#8a97a8]">VRAM</span>
           <span className="text-[#00e0b8] font-bold">19.4G</span>
-          <span className="text-[#5c697a]">/ 24G</span>
+          <span className="text-[#8b949e]">/ 24G</span>
         </div>
 
         {/* AI Assistant Quick Pill */}
@@ -413,7 +413,7 @@ export const Topbar: React.FC<TopbarProps> = ({
               {/* Notification list */}
               <div className="max-h-72 overflow-y-auto divide-y divide-[#1e2f47]/50 text-xs">
                 {filteredNotifs.length === 0 ? (
-                  <div className="p-6 text-center text-[#5c697a] text-xs">暂无此类通知记录</div>
+                  <div className="p-6 text-center text-[#8b949e] text-xs">暂无此类通知记录</div>
                 ) : (
                   filteredNotifs.map((n) => (
                     <div
@@ -444,7 +444,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                           >
                             {n.title}
                           </span>
-                          <span className="font-mono text-[10px] text-[#5c697a] ml-2 flex-shrink-0">
+                          <span className="font-mono text-[10px] text-[#8b949e] ml-2 flex-shrink-0">
                             {n.timestamp}
                           </span>
                         </div>
@@ -485,7 +485,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                   @{currentUser?.username || "admin"} ·{" "}
                   {currentUser?.role === "admin" ? "超级管理员 (Full Access)" : "操作员"}
                 </div>
-                <div className="text-[10px] text-[#5c697a] font-mono mt-1">
+                <div className="text-[10px] text-[#8b949e] font-mono mt-1">
                   设备: {currentUser?.device || "Workstation RTX 4090"}
                 </div>
               </div>

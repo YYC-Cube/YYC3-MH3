@@ -41,7 +41,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <label htmlFor={inputId} className="block text-xs font-medium text-[#8b949e]">
               {label}
             </label>
-            {hint && <span className="text-[11px] text-[#5a6268]">{hint}</span>}
+            {hint && <span className="text-[11px] text-[#8b949e]">{hint}</span>}
           </div>
         )}
         <div className="relative flex items-center">
@@ -53,7 +53,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             id={inputId}
-            className={`w-full h-9 px-3 text-sm rounded-[6px] bg-[#122340]/90 text-[#e6edf3] placeholder-[#5a6268] border transition-all duration-150 ease-out focus:outline-none ${
+            className={`w-full h-9 px-3 text-sm rounded-[6px] bg-[#122340]/90 text-[#e6edf3] placeholder-[#8b949e] border transition-all duration-150 ease-out focus:outline-none ${
               error
                 ? "border-[#EE4C2C] focus:border-[#EE4C2C] focus:ring-1 focus:ring-[#EE4C2C]/50"
                 : "border-[#30363d] hover:border-[#3d444d] focus:border-[#00d4aa] focus:ring-1 focus:ring-[#00d4aa]/40"

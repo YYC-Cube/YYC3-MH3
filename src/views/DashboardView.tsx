@@ -358,7 +358,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 key={i}
                 className={`p-3.5 rounded-xl bg-[#15294a]/60 border-l-2 ${node.color} border border-[#1e2f47] space-y-2 relative overflow-hidden`}
               >
-                <div className="flex items-center justify-between text-[10px] text-[#5c697a]">
+                <div className="flex items-center justify-between text-[10px] text-[#8b949e]">
                   <span>STAGE {node.step}</span>
                   <span className="text-[#00e0b8] font-mono font-bold">{node.pass}</span>
                 </div>
@@ -435,7 +435,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
           </div>
 
-          <div className="mt-3 pt-2 border-t border-[#1e2f47]/60 flex items-center justify-between text-[11px] text-[#5c697a]">
+          <div className="mt-3 pt-2 border-t border-[#1e2f47]/60 flex items-center justify-between text-[11px] text-[#8b949e]">
             <span>看门狗探活周期: 1000ms</span>
             <button
               onClick={() => onNavigate("ops")}
@@ -460,7 +460,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 placeholder="筛选批次ID/名称..."
                 value={filterQuery}
                 onChange={(e) => setFilterQuery(e.target.value)}
-                className="w-36 sm:w-44 h-7 pl-8 pr-2 rounded bg-[#15294a] text-xs text-[#e8f0f8] placeholder-[#5c697a] border border-[#1e2f47] focus:outline-none focus:border-[#00e0b8]"
+                className="w-36 sm:w-44 h-7 pl-8 pr-2 rounded bg-[#15294a] text-xs text-[#e8f0f8] placeholder-[#8b949e] border border-[#1e2f47] focus:outline-none focus:border-[#00e0b8]"
               />
             </div>
 
@@ -544,7 +544,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         {b.score} 分
                       </span>
                     ) : (
-                      <span className="text-[#5c697a]">--</span>
+                      <span className="text-[#8b949e]">--</span>
                     )}
                   </td>
                   <td className="py-3 px-3 text-right" onClick={(e) => e.stopPropagation()}>

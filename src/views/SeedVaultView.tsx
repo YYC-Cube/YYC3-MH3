@@ -120,7 +120,7 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
             }`}
           >
             <span>全部标签</span>
-            <span className="font-mono text-[10px] text-[#5c697a]">{seeds.length}</span>
+            <span className="font-mono text-[10px] text-[#8b949e]">{seeds.length}</span>
           </button>
 
           {allTags.map((tag) => {
@@ -137,7 +137,7 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
                 }`}
               >
                 <span className="truncate">{tag}</span>
-                <span className="font-mono text-[10px] text-[#5c697a]">{count}</span>
+                <span className="font-mono text-[10px] text-[#8b949e]">{count}</span>
               </button>
             );
           })}
@@ -196,7 +196,7 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
                 placeholder="搜索种子号、名称或标签..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-8 pl-8 pr-3 rounded bg-[#15294a] text-[#e8f0f8] placeholder-[#5c697a] border border-[#1e2f47] focus:outline-none focus:border-[#00e0b8]"
+                className="w-full h-8 pl-8 pr-3 rounded bg-[#15294a] text-[#e8f0f8] placeholder-[#8b949e] border border-[#1e2f47] focus:outline-none focus:border-[#00e0b8]"
               />
             </div>
           </div>
@@ -306,7 +306,7 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
 
                   {/* Bottom stats and action */}
                   <div className="pt-3 border-t border-[#1e2f47]/60 flex items-center justify-between text-xs">
-                    <span className="text-[#5c697a]">衍生: {seed.generationCount} 批次</span>
+                    <span className="text-[#8b949e]">衍生: {seed.generationCount} 批次</span>
                     <div className="flex items-center gap-2">
                       <Button
                         variant="ghost"
@@ -589,7 +589,7 @@ export const SeedVaultView: React.FC<SeedVaultViewProps> = ({
                   >
                     <div className="flex justify-between items-center font-mono">
                       <span className="font-bold text-[#00e0b8]">{vh.ver}</span>
-                      <span className="text-[#5c697a] text-[10px]">
+                      <span className="text-[#8b949e] text-[10px]">
                         {vh.date} · 均分 {vh.score}
                       </span>
                     </div>

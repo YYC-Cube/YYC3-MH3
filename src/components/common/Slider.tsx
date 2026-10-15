@@ -46,7 +46,7 @@ export const Slider: React.FC<SliderProps> = ({
       <div className="flex items-center justify-between text-xs">
         <div className="flex items-center gap-1.5">
           {label && <span className="font-medium text-[#8b949e]">{label}</span>}
-          {hint && <span className="text-[11px] text-[#5a6268]">({hint})</span>}
+          {hint && <span className="text-[11px] text-[#8b949e]">({hint})</span>}
         </div>
         <div className="font-mono text-xs px-2 py-0.5 rounded bg-[#122340] border border-[#30363d] text-[#00d4aa] font-semibold">
           {value}
@@ -67,7 +67,7 @@ export const Slider: React.FC<SliderProps> = ({
           }}
         />
       </div>
-      <div className="flex justify-between text-[10px] text-[#5a6268] font-mono">
+      <div className="flex justify-between text-[10px] text-[#8b949e] font-mono">
         <span>
           {min}
           {unit}

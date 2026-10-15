@@ -68,7 +68,7 @@ export const DocsCenterView: React.FC<DocsCenterViewProps> = ({ onNavigate, onSh
               placeholder="搜索文档指南..."
               value={searchDocQuery}
               onChange={(e) => setSearchDocQuery(e.target.value)}
-              className="w-full h-7 pl-8 pr-2 rounded bg-[#122340] text-xs text-[#e6edf3] placeholder-[#5a6268] border border-[#30363d] focus:outline-none focus:border-[#00d4aa]"
+              className="w-full h-7 pl-8 pr-2 rounded bg-[#122340] text-xs text-[#e6edf3] placeholder-[#8b949e] border border-[#30363d] focus:outline-none focus:border-[#00d4aa]"
             />
           </div>
         </div>

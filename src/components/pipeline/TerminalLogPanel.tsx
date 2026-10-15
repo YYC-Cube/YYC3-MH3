@@ -128,7 +128,7 @@ export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
               placeholder="过滤终端日志..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-32 sm:w-40 h-6 pl-6 pr-2 rounded bg-[#122340] text-[11px] text-[#e6edf3] placeholder-[#5a6268] border border-[#30363d] focus:outline-none focus:border-[#00d4aa]"
+              className="w-32 sm:w-40 h-6 pl-6 pr-2 rounded bg-[#122340] text-[11px] text-[#e6edf3] placeholder-[#8b949e] border border-[#30363d] focus:outline-none focus:border-[#00d4aa]"
             />
           </div>
 
@@ -162,7 +162,7 @@ export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
         className="p-3 h-52 overflow-y-auto space-y-1.5 bg-[#071425] selection:bg-[#00d4aa]/30"
       >
         {filteredLogs.length === 0 ? (
-          <div className="h-full flex items-center justify-center text-[#5a6268] text-xs">
+          <div className="h-full flex items-center justify-center text-[#8b949e] text-xs">
             暂无匹配日志记录
           </div>
         ) : (
@@ -172,7 +172,7 @@ export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
               className="leading-relaxed hover:bg-[#0c1a30]/50 p-1 rounded transition-colors group"
             >
               <div className="flex items-start gap-2">
-                <span className="text-[#5a6268] text-[11px] select-none flex-shrink-0">
+                <span className="text-[#8b949e] text-[11px] select-none flex-shrink-0">
                   {log.timestamp}
                 </span>
                 <span
@@ -221,7 +221,7 @@ export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
           <span>·</span>
           <span>CUDA:0 (RTX 4090 24GB)</span>
         </div>
-        <div className="text-[10px] text-[#5a6268]">UTF-8 · SSE 保持长连接</div>
+        <div className="text-[10px] text-[#8b949e]">UTF-8 · SSE 保持长连接</div>
       </div>
     </div>
   );

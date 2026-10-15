@@ -405,7 +405,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                         {currentTimeStr}
                       </div>
                       <div className="text-[9px] font-mono flex items-center justify-center gap-1 leading-none mt-0.5">
-                        <span className="text-[#5c697a]">{dateStr}</span>
+                        <span className="text-[#8b949e]">{dateStr}</span>
                         <span
                           className="font-semibold"
                           style={{
@@ -541,7 +541,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                           >
                             {m.name}
                           </div>
-                          <div className="text-[9px] font-mono text-[#5c697a]">
+                          <div className="text-[9px] font-mono text-[#8b949e]">
                             {m.clockPosition}
                           </div>
                         </div>
@@ -557,7 +557,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
               <p className="tracking-widest font-medium text-[#e8f0f8]/90">
                 亦师亦友亦伯乐 · 一言一语一协同
               </p>
-              <p className="text-[10px] text-[#5c697a] tracking-wider mt-0.5 font-mono">
+              <p className="text-[10px] text-[#8b949e] tracking-wider mt-0.5 font-mono">
                 Words Initiate Quadrants, Language Serves as Core for the Future
               </p>
             </div>
@@ -584,7 +584,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                       <span className="w-1.5 h-1.5 rounded-full bg-[#00e0b8]" />
                       在线
                     </span>
-                    <span className="text-[#5c697a]">|</span>
+                    <span className="text-[#8b949e]">|</span>
                     <span className="font-mono text-[11px] text-[#8a97a8]">
                       {selectedMember.clockPosition}
                     </span>
@@ -742,7 +742,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                             }}
                           />
                           <span>{m.agentName}</span>
-                          <span className="text-[10px] text-[#5c697a] font-mono">
+                          <span className="text-[10px] text-[#8b949e] font-mono">
                             {m.timestamp}
                           </span>
                         </div>
@@ -802,7 +802,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
                     onKeyDown={(e) => {
                       if (e.key === "Enter") handleSendMessage();
                     }}
-                    className="flex-1 h-8 px-3 rounded-lg bg-[#0a1628] text-xs text-[#e8f0f8] placeholder-[#5c697a] border border-[#1e2f47] focus:outline-none focus:border-[#00e0b8]"
+                    className="flex-1 h-8 px-3 rounded-lg bg-[#0a1628] text-xs text-[#e8f0f8] placeholder-[#8b949e] border border-[#1e2f47] focus:outline-none focus:border-[#00e0b8]"
                   />
                   <Button
                     variant="primary"

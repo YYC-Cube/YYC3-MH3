@@ -365,7 +365,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder={authMode === "local" ? "输入本地管理员账号" : "name@company.com"}
                   disabled={isVerifying || isLocked}
-                  className={`w-full h-11 pl-9 pr-3 rounded-md bg-[#15294a] text-xs text-[#e8f0f8] placeholder-[#5c697a] border transition-all focus:outline-none ${
+                  className={`w-full h-11 pl-9 pr-3 rounded-md bg-[#15294a] text-xs text-[#e8f0f8] placeholder-[#8b949e] border transition-all focus:outline-none ${
                     fieldErrors.username
                       ? "border-[#ff7a45] focus:ring-1 focus:ring-[#ff7a45]"
                       : "border-[#1e2f47] focus:border-[#00e0b8] focus:ring-1 focus:ring-[#00e0b8]/40"
@@ -399,7 +399,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="输入密码 (至少6位)"
                   disabled={isVerifying || isLocked}
-                  className={`w-full h-11 pl-9 pr-10 rounded-md bg-[#15294a] text-xs text-[#e8f0f8] placeholder-[#5c697a] border transition-all focus:outline-none ${
+                  className={`w-full h-11 pl-9 pr-10 rounded-md bg-[#15294a] text-xs text-[#e8f0f8] placeholder-[#8b949e] border transition-all focus:outline-none ${
                     fieldErrors.password
                       ? "border-[#ff7a45] focus:ring-1 focus:ring-[#ff7a45]"
                       : "border-[#1e2f47] focus:border-[#00e0b8] focus:ring-1 focus:ring-[#00e0b8]/40"
@@ -431,7 +431,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
               </label>
 
               <div className="flex items-center gap-1.5">
-                <span className="text-[#5c697a]">角色:</span>
+                <span className="text-[#8b949e]">角色:</span>
                 <select
                   value={selectedRole}
                   onChange={(e) => {
@@ -470,7 +470,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
             {/* Team mode alternative logins (SSO / QR) */}
             {authMode === "team" && (
               <div className="pt-3 border-t border-[#1e2f47] space-y-2 text-xs">
-                <div className="text-center text-[#5c697a] text-[11px]">其他企业级认证方式</div>
+                <div className="text-center text-[#8b949e] text-[11px]">其他企业级认证方式</div>
                 <div className="grid grid-cols-2 gap-2">
                   <Button
                     variant="secondary"
@@ -511,7 +511,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
             <button
               type="button"
               onClick={handleSimulateFail}
-              className="text-[#5c697a] hover:text-[#ff7a45] transition-colors cursor-pointer text-[10px]"
+              className="text-[#8b949e] hover:text-[#ff7a45] transition-colors cursor-pointer text-[10px]"
               title="用于测试安全防爆破锁定分支"
             >
               [测试密码错误锁定]
@@ -543,7 +543,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
       </div>
 
       {/* Footer Credentials Area */}
-      <footer className="w-full max-w-6xl pb-3 pt-2 border-t border-[#1e2f47]/50 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-[#5c697a] z-10">
+      <footer className="w-full max-w-6xl pb-3 pt-2 border-t border-[#1e2f47]/50 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-[#8b949e] z-10">
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1.5 text-[#00e0b8] font-medium">
             <ShieldCheck className="w-3.5 h-3.5" />
@@ -614,7 +614,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
             <QrCode className="w-full h-full text-[#0a1628]" />
           </div>
           <p className="text-[#8a97a8]">请使用 企业微信 或 飞书 扫描上方二维码以完成身份核验</p>
-          <span className="text-[10px] text-[#5c697a] font-mono">
+          <span className="text-[10px] text-[#8b949e] font-mono">
             二维码有效期 60 秒 · 已启用端到端加密
           </span>
         </div>

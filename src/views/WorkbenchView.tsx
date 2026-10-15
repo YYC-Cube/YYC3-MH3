@@ -328,7 +328,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
               className="px-2.5 py-1 rounded-full bg-[#15294a] hover:bg-[#182f54] text-[#8a97a8] hover:text-[#00e0b8] border border-[#1e2f47] hover:border-[#00e0b8]/40 text-[11px] font-medium whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5"
             >
               <span>{tmpl.name}</span>
-              <span className="text-[10px] text-[#5c697a] font-mono">{tmpl.mode}</span>
+              <span className="text-[10px] text-[#8b949e] font-mono">{tmpl.mode}</span>
             </button>
           ))}
         </div>
@@ -370,7 +370,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
               <input
                 type="text"
                 placeholder="筛选批次ID或名称..."
-                className="w-full h-7 pl-8 pr-2 rounded-md bg-[#15294a] text-xs text-[#e8f0f8] placeholder-[#5c697a] border border-[#1e2f47] focus:outline-none focus:border-[#00e0b8]"
+                className="w-full h-7 pl-8 pr-2 rounded-md bg-[#15294a] text-xs text-[#e8f0f8] placeholder-[#8b949e] border border-[#1e2f47] focus:outline-none focus:border-[#00e0b8]"
               />
             </div>
           </div>
@@ -538,13 +538,13 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs font-medium text-[#8a97a8]">
                 <span>提示词 (Prompt)</span>
-                <span className="text-[11px] font-mono text-[#5c697a]">{prompt.length} 字符</span>
+                <span className="text-[11px] font-mono text-[#8b949e]">{prompt.length} 字符</span>
               </div>
               <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 rows={2}
-                className="w-full p-2.5 rounded-lg bg-[#15294a] border border-[#1e2f47] text-xs text-[#e8f0f8] placeholder-[#5c697a] focus:outline-none focus:border-[#00e0b8] transition-colors leading-relaxed"
+                className="w-full p-2.5 rounded-lg bg-[#15294a] border border-[#1e2f47] text-xs text-[#e8f0f8] placeholder-[#8b949e] focus:outline-none focus:border-[#00e0b8] transition-colors leading-relaxed"
                 placeholder="输入数字人面部特征、服饰、眼神光、肢体姿态与机位视角..."
               />
             </div>
@@ -802,7 +802,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
               >
                 {isAdopted ? "已成功采纳并沉淀回写" : "采纳为优质 Seed 并回写种子库"}
               </Button>
-              <p className="text-[10px] text-[#5c697a] text-center mt-1.5">
+              <p className="text-[10px] text-[#8b949e] text-center mt-1.5">
                 完成五步闭环：自动更新种子基因参数，反哺后续批次迭代
               </p>
             </div>

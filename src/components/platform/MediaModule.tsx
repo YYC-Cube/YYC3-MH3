@@ -80,7 +80,7 @@ export function MediaModule({
             <div className="flex items-center gap-3">
               <span className="text-[#8a97a8]">当前时间游标:</span>
               <span className="text-[#00e0b8] font-bold text-sm">00:04.20 / 00:10.00</span>
-              <span className="text-[#5c697a]">|</span>
+              <span className="text-[#8b949e]">|</span>
               <span className="text-[#e8f0f8]">126 F / 300 F</span>
             </div>
             <div className="flex items-center gap-2">
