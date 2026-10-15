@@ -292,6 +292,20 @@ app/
 > - 守卫适配：boundary-guard 增设「app 路由层 → 根入口」迁移期白名单；pwa 守卫断言迁移至 layout.tsx/robots.txt/sw-register
 > - 验证链：format ✅ / typecheck ✅ / **111 用例**（+1 SW 注册守卫）/ 双基座静态导出 ✅（out/ 含 CNAME·robots·sw·manifest）
 > - 附带修正：05 清单前次提交为空文件，本轮全文入库
+> - **事后修订**：CI 供应链门禁（pnpm minimumReleaseAge）拦截 16.4.1（发布未满 24h 冷却窗）→ 锁定 **16.4.0**（P0 Track B 决策不变）
+
+> **✅ P2/P3 执行实况（2026-10-15 已收口）**
+>
+> - P2 Provider 层：四域状态 Context 化 + `getPorts()` 组合根单例 + fail-fast 守卫（112 用例）
+> - P3 路由层：14 路由段全量静态生成；Sidebar/Topbar/⌘K 路由事实源化；AppShell 承接 App.tsx 外壳职责，**根入口退役**；boundary-guard 演进（app→views、config→types）并移除 P1 白名单恢复全量严格扫描
+> - 偏差记录：batch-detail 取 `/batches` 列表路由 + Context 选中态（视图契约与 Track B 静态导出双重约束，见 src/app/batches/page.tsx 头注）
+
+> **✅ P4 执行实况（2026-10-15 已收口）**
+>
+> - **Route Handler 薄壳**：[server/routeHandler.ts](../../server/routeHandler.ts) 以 Web 标准 `Request → Response` 形态落地（原 Vite 插件中间件逻辑全量等价迁移）；**Track B 静态导出与 `app/api/*/route.ts` 互斥**（本清单 §3.2 预判），故薄壳独立于 app/ 目录，Track A 切轨时三行接入（装配约定已注于文件头）
+> - **测试收尾**：+6 HTTP 语义用例（method/path/query/body 提取、JSON 封包、Host 透传回环 403、PATCH 写路径回读、非法 body 400）→ **118 用例全绿**（超出本清单验收下限 105）
+> - 06 契约文档补记 Next 形态（端口来源 / env 注入 / 挂载方式 / 回环校验不变项）
+> - dev 过渡态确认：Track B 下无 /api 桥接 → memory 降级留痕（P1 已验证），真实供数随 Track A 或独立进程演进（04 预研衔接）
 
 > Phase 2 RSC 深化（cacheComponents/流式注入）不计入本清单，建议迁移稳定后独立立项。
 

@@ -33,7 +33,16 @@ language: zh-CN
 | 目标形态 | 本地进程 BFF（API 面回环 only，**永不暴露公网**），前端经端口-适配器接入 |
 | 端口来源 | `PORT` 环境变量（与 Vite dev server 同源配置，见 `.env.example`） |
 
-**契约纪律**：实现时以本文档为准；任何字段/端点变更必须**先改本文档（版本 +1）再改实现**。前端禁止出现硬编码端点（URL 一律经 `import.meta.env` 注入）。
+**契约纪律**：实现时以本文档为准；任何字段/端点变更必须**先改本文档（版本 +1）再改实现**。前端禁止出现硬编码端点（URL 一律经 `NEXT_PUBLIC_*` 环境变量注入）。
+
+> **Next.js 16 迁移补记（P4，2026-10-15）**
+>
+> | 项 | Vite 形态（原） | Next 16 形态（现） |
+> | -- | -- | -- |
+> | BFF 薄壳 | `vite.config.ts` 内 `yyc3-registry-api` 插件（middleware 桥接，apply:"serve"） | [server/routeHandler.ts](../server/routeHandler.ts) Web 标准 `Request → Response` 薄壳（框架无关，118 例中 6 例 HTTP 语义常驻） |
+> | 挂载方式 | dev server 中间件（`configureServer`） | **Track A（Node 运行时轨）启用时**：`app/api/[...registry]/route.ts` 三行转发 `handleWebRequest`；**Track B（静态导出，当前轨）与 API Route 互斥**（05 清单 §3.2），dev 无桥接 → local 适配器 404 → `not_found` → memory 降级（降级状态机既有机能，无白屏） |
+> | 端口来源 | `PORT`（Vite define 注入 `VITE_APP_PORT`） | `PORT`（`next dev -p`）；前端 `NEXT_PUBLIC_APP_PORT` / `NEXT_PUBLIC_REGISTRY_BASE_URL` 环境变量注入 |
+> | 回环校验 | 同 | 不变（`registryApi.handleRequest` 内部 Host 校验，薄壳透传 Host 头） |
 
 ## 1. 设计原则
 
