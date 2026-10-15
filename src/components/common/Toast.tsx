@@ -68,8 +68,9 @@ export const ToastContainer: React.FC<ToastProps> = ({ toasts, onDismiss }) => {
             <button
               onClick={() => onDismiss(toast.id)}
               className="text-[#8b949e] hover:text-[#e6edf3] transition-colors p-0.5"
+              aria-label="关闭通知"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="w-3.5 h-3.5" aria-hidden="true" />
             </button>
           </div>
         );

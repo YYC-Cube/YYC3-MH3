@@ -153,9 +153,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
   const onSelectTab = (tab: NavTabId) => router.push(hrefForTab(tab));
   return (
     <aside
-      className={`h-screen bg-[#0c1a30] border-r border-[#30363d] flex flex-col transition-all duration-200 select-none z-30 relative ${
-        collapsed ? "w-16" : "w-60"
-      }`}
+      className={`h-screen bg-[#0c1a30] border-r border-[#30363d] flex flex-col transition-all duration-200 select-none z-30 relative ${collapsed ? "w-16" : "w-60"
+        }`}
     >
       {/* Brand Header */}
       <div className="h-14 px-3.5 border-b border-[#1e2f47] flex items-center justify-between">
@@ -198,7 +197,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
         {/* System Category */}
         <div className="space-y-1">
           {!collapsed && (
-            <div className="px-2 text-[10px] uppercase font-semibold text-[#5a6268] tracking-wider mb-1">
+            <div className="px-2 text-[10px] uppercase font-semibold text-[#8b949e] tracking-wider mb-1">
               设计体系
             </div>
           )}
@@ -208,11 +207,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
               <button
                 key={item.id}
                 onClick={() => onSelectTab(item.id)}
-                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${
-                  isActive
-                    ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
-                    : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
-                }`}
+                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${isActive
+                  ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
+                  : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
+                  }`}
                 title={collapsed ? item.label : undefined}
               >
                 {isActive && (
@@ -224,11 +222,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                 {!collapsed && <span className="truncate">{item.label}</span>}
                 {!collapsed && item.badge && (
                   <span
-                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${
-                      isActive
-                        ? "bg-[#00d4aa] text-[#071425] font-bold"
-                        : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
-                    }`}
+                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${isActive
+                      ? "bg-[#00d4aa] text-[#071425] font-bold"
+                      : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
+                      }`}
                   >
                     {item.badge}
                   </span>
@@ -241,7 +238,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
         {/* Core Category */}
         <div className="space-y-1">
           {!collapsed && (
-            <div className="px-2 text-[10px] uppercase font-semibold text-[#5a6268] tracking-wider mb-1">
+            <div className="px-2 text-[10px] uppercase font-semibold text-[#8b949e] tracking-wider mb-1">
               核心生产流水线
             </div>
           )}
@@ -251,11 +248,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
               <button
                 key={item.id}
                 onClick={() => onSelectTab(item.id)}
-                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${
-                  isActive
-                    ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
-                    : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
-                }`}
+                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${isActive
+                  ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
+                  : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
+                  }`}
                 title={collapsed ? item.label : undefined}
               >
                 {isActive && (
@@ -267,11 +263,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                 {!collapsed && <span className="truncate">{item.label}</span>}
                 {!collapsed && item.badge && (
                   <span
-                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${
-                      isActive
-                        ? "bg-[#00d4aa] text-[#071425] font-bold"
-                        : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
-                    }`}
+                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${isActive
+                      ? "bg-[#00d4aa] text-[#071425] font-bold"
+                      : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
+                      }`}
                   >
                     {item.badge}
                   </span>
@@ -284,7 +279,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
         {/* Advanced Category */}
         <div className="space-y-1">
           {!collapsed && (
-            <div className="px-2 text-[10px] uppercase font-semibold text-[#5a6268] tracking-wider mb-1">
+            <div className="px-2 text-[10px] uppercase font-semibold text-[#8b949e] tracking-wider mb-1">
               模型与工作流
             </div>
           )}
@@ -294,11 +289,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
               <button
                 key={item.id}
                 onClick={() => onSelectTab(item.id)}
-                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${
-                  isActive
-                    ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
-                    : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
-                }`}
+                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${isActive
+                  ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
+                  : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
+                  }`}
                 title={collapsed ? item.label : undefined}
               >
                 {isActive && (
@@ -310,11 +304,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                 {!collapsed && <span className="truncate">{item.label}</span>}
                 {!collapsed && item.badge && (
                   <span
-                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${
-                      isActive
-                        ? "bg-[#00d4aa] text-[#071425] font-bold"
-                        : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
-                    }`}
+                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${isActive
+                      ? "bg-[#00d4aa] text-[#071425] font-bold"
+                      : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
+                      }`}
                   >
                     {item.badge}
                   </span>
@@ -327,7 +320,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
         {/* Ops & Settings Category */}
         <div className="space-y-1">
           {!collapsed && (
-            <div className="px-2 text-[10px] uppercase font-semibold text-[#5a6268] tracking-wider mb-1">
+            <div className="px-2 text-[10px] uppercase font-semibold text-[#8b949e] tracking-wider mb-1">
               系统与运维
             </div>
           )}
@@ -337,11 +330,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
               <button
                 key={item.id}
                 onClick={() => onSelectTab(item.id)}
-                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${
-                  isActive
-                    ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
-                    : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
-                }`}
+                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-all duration-150 cursor-pointer group relative ${isActive
+                  ? "bg-[#00d4aa]/15 text-[#00d4aa] border border-[#00d4aa]/40 shadow-[0_0_12px_rgba(0,212,170,0.15)] font-semibold"
+                  : "text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#122340]"
+                  }`}
                 title={collapsed ? item.label : undefined}
               >
                 {isActive && (
@@ -353,11 +345,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                 {!collapsed && <span className="truncate">{item.label}</span>}
                 {!collapsed && item.badge && (
                   <span
-                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${
-                      isActive
-                        ? "bg-[#00d4aa] text-[#071425] font-bold"
-                        : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
-                    }`}
+                    className={`ml-auto text-[9px] px-1.5 py-0.2 rounded font-mono ${isActive
+                      ? "bg-[#00d4aa] text-[#071425] font-bold"
+                      : "bg-[#122340] text-[#8b949e] border border-[#30363d]"
+                      }`}
                   >
                     {item.badge}
                   </span>
@@ -381,7 +372,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggleCollapse })
                 100% 离线可用
               </span>
             </div>
-            <div className="flex items-center justify-between text-[10px] text-[#5a6268] font-mono">
+            <div className="flex items-center justify-between text-[10px] text-[#8b949e] font-mono">
               <span>本地预览 :{APP_PORT}</span>
               <span>VRAM 19.4/24G</span>
             </div>
