@@ -26,23 +26,36 @@ import { AppShell } from "./app-shell";
 import { AppProviders } from "./contexts";
 import { SwRegister } from "./sw-register";
 
+/** 部署基路径（构建期 env 注入，与 next.config.ts basePath 同源；根基座为空串） */
+const BASE = process.env.BASE_PATH?.replace(/\/+$/, "") || "";
+/** PWA 静态资产 URL：Next 对 metadata 字符串 URL 不自动加 basePath，需显式前缀 */
+const asset = (p: string) => `${BASE}${p}`;
+
 /** 品牌元数据（index.html + .figma/make/site.json 转录，P0 资产保全） */
 export const metadata: Metadata = {
   title: "MiniMax-H3 DiffSynth 本地版 AI 数字人生产线 v2.1 PRO",
   description:
     "Professional local AI digital human video production platform offering a five-step closed-loop pipeline for creators and operators with high performance and data sovereignty.",
-  manifest: "/manifest.webmanifest",
+  manifest: asset("/manifest.webmanifest"),
   icons: {
     icon: [
-      { url: "/yyc3-icons/Web%20App/favicon-16.png", sizes: "16x16", type: "image/png" },
-      { url: "/yyc3-icons/Web%20App/favicon-32.png", sizes: "32x32", type: "image/png" },
-      { url: "/yyc3-icons/Web%20App/android-chrome-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/yyc3-icons/Web%20App/android-chrome-512.png", sizes: "512x512", type: "image/png" },
-      { url: "/yyc3-icons/favicon.png" },
+      { url: asset("/yyc3-icons/Web%20App/favicon-16.png"), sizes: "16x16", type: "image/png" },
+      { url: asset("/yyc3-icons/Web%20App/favicon-32.png"), sizes: "32x32", type: "image/png" },
+      {
+        url: asset("/yyc3-icons/Web%20App/android-chrome-192.png"),
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        url: asset("/yyc3-icons/Web%20App/android-chrome-512.png"),
+        sizes: "512x512",
+        type: "image/png",
+      },
+      { url: asset("/yyc3-icons/favicon.png") },
     ],
     apple: [
       {
-        url: "/yyc3-icons/Web%20App/apple-touch-icon.png",
+        url: asset("/yyc3-icons/Web%20App/apple-touch-icon.png"),
         sizes: "180x180",
         type: "image/png",
       },

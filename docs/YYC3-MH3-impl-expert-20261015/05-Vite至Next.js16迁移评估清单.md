@@ -307,6 +307,14 @@ app/
 > - 06 契约文档补记 Next 形态（端口来源 / env 注入 / 挂载方式 / 回环校验不变项）
 > - dev 过渡态确认：Track B 下无 /api 桥接 → memory 降级留痕（P1 已验证），真实供数随 Track A 或独立进程演进（04 预研衔接）
 
+> **✅ P5 执行实况（2026-10-15 已收口 · 迁移闭环）**
+>
+> - **CI 收口复核**：ci.yml 四门禁（format/typecheck/test/build）+ 双基座 `next build` 冒烟就绪；deploy.yml 静态导出链（BASE_PATH/NEXT_PUBLIC_BASE_PATH 双注入 → out/ 产物）
+> - **全局文档同步**：README（Next 16 徽章 / 技术栈 / 脚本表 preview→start / 项目结构路由层重绘 / 部署链措辞）；AGENTS.md 工作区规则整体换血（Vite/Figma Make 叙述 → Next 16 App Router，含历史注记指向 figma-make 归档分支）
+> - **验收门禁核验（§八 逐项）**：①四门禁本地全绿 ②13 用户路由 + _not-found 共 14 段线上全 200 ③BFF 薄壳 6 例语义常驻（Track B 无线上 API 面，注记）④PWA 资产线上 200 ×3（manifest/sw/robots）⑤双基座构建前缀断言 ⑥06 契约 + README 事实同步完成
+> - **核验中发现的缺陷与修复**：Next 对 metadata 字符串 URL（manifest/icons）**不自动加 basePath**——子路径基座下 PWA 资产 404。修复：layout `asset()` 构造器以构建期 `BASE_PATH` 显式前缀化，双基座产物断言通过；pwa 守卫断言同步演进
+> - Lighthouse Performance/PWA 运行时审计需浏览器环境，列为后续工具化待办（静态可安装条件已全量验证）
+
 > Phase 2 RSC 深化（cacheComponents/流式注入）不计入本清单，建议迁移稳定后独立立项。
 
 ---

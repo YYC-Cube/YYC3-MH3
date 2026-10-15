@@ -18,47 +18,52 @@ language: zh-CN
 > ***All things converge in cloud pivot; Deep stacks ignite a new era of intelligence***
 
 ---
-# figma-make-app
+# yyc3-mh3 (Next.js 16 · App Router)
 
-React + Vite + Tailwind CSS project running inside Figma Make.
+React 19 + Next.js 16 + Tailwind CSS v4 project (App Router, static export Track B).
+
+> 历史注记：本仓库原为 Vite + Figma Make 宿主形态，2026-10-15 完成向 Next.js 16 的架构迁移（P0–P5，见 docs/YYC3-MH3-impl-expert-20261015/05-*.md）。Figma Make 原型回路归档于 `figma-make` 分支 / `figma-make-final` tag。
 
 ## Development Server
 
-A Vite development server is **already running** on `$PORT` (default 8443). You don't need to start it manually.
-
-- Preview URL: The user can access the running app through the preview panel
-- Hot reload: Changes to source files are reflected immediately
+Run `pnpm dev` (Next.js dev server on port 3031, Turbopack). Hot reload is built in.
 
 ## Project Structure
 
-This is the canonical project structure. Start with task-relevant files below. Only follow imports or inspect other files when required, when a documented path is missing, or when the repository contradicts this guide.
+This is the canonical project structure. Start with task-relevant files below. Only follow imports or inspect other files when required, when a documented path is missing, or the repository contradicts this guide.
 
-- `src/main.tsx` - React entrypoint; imports `src/index.css` and mounts `src/App.tsx` into the `#root` element
-- `src/App.tsx` - Primary application component and the usual starting point for UI work
+- `src/app/layout.tsx` - Root layout: brand metadata + `AppProviders` + `AppShell` mount point
+- `src/app/app-shell.tsx` - Application shell: login guard, navigation trio, global modals, keyboard shortcuts
+- `src/app/page.tsx` - Root route (`/` → design-system view); 12 more route segments live in sibling directories
+- `src/app/contexts.tsx` - Five domain Contexts (Toast / Auth / ProductionData / OpsTelemetry / UIShell)
+- `src/app/navigation.ts` - `useAppNavigate` side-effect navigation hook (batchId state + router.push)
+- `src/config.ts` - Runtime constants + `NavTabId ↔ href` route mapping (leaf layer)
 - `src/index.css` - Global CSS entrypoint and Tailwind CSS v4 import
-- `index.html` - Vite HTML shell containing the `#root` element and loading `src/main.tsx`
-- `package.json` - Project dependencies and the Vite build, development, preview, and formatting scripts
-- `vite.config.ts` - Vite configuration with React, Tailwind CSS v4, and Figma Make plugins plus the `@` alias for `src`
+- `server/registryApi.ts` + `server/routeHandler.ts` - Registry BFF pure-function core + Web-standard Request/Response thin shell (Track A pluggable)
+- `next.config.ts` - Next configuration (basePath multi-base, `output: "export"`)
+- `postcss.config.mjs` - Tailwind v4 PostCSS channel
+- `package.json` - Project dependencies and the build/dev/start/test/format scripts
 - `.mise.toml` - Toolchain versions for Node.js and pnpm
 
 ## Dependencies
 
-- Runtime: React 19 and React DOM 19
-- Styling: Tailwind CSS v4 with the `@tailwindcss/vite` plugin
-- Build tooling: Vite 8, TypeScript 5.7, and `@vitejs/plugin-react`
-- Formatting: oxfmt
+- Runtime: React 19.2 and React DOM 19.2, Next.js 16 (App Router, static export)
+- Styling: Tailwind CSS v4 with the `@tailwindcss/postcss` plugin
+- Tooling: TypeScript 5.x (Next-normalized tsconfig), Vitest 5, `@vitejs/plugin-react` (test transform only)
+- Formatting: oxfmt (code-domain scoped via `.oxfmtrc.json`)
 
 ## Styling
 
-This project uses **Tailwind CSS v4** through the `@tailwindcss/vite` plugin configured in `vite.config.ts`. `src/index.css` imports Tailwind with `@import 'tailwindcss';`. Use Tailwind utility classes directly in JSX and put global CSS or Tailwind v4 theme customization in `src/index.css`. This scaffold does not need a Tailwind config file or PostCSS config.
+This project uses **Tailwind CSS v4** through the `@tailwindcss/postcss` plugin configured in `postcss.config.mjs`. `src/index.css` imports Tailwind with `@import 'tailwindcss';`. Use Tailwind utility classes directly in JSX and put global CSS or Tailwind v4 theme customization in `src/index.css`. This scaffold does not need a Tailwind config file.
 
-`src/main.tsx` imports `src/index.css`, so global font wiring belongs in `src/index.css`. Keep CSS `@import` statements first, then add any `@font-face` rules and font-family defaults there.
+`src/app/layout.tsx` imports `@/index.css`, so global font wiring belongs in `src/index.css`. Keep CSS `@import` statements first, then add any `@font-face` rules and font-family defaults there.
 
 ## Code quality
 
 - Use double quotes for strings containing apostrophes (`"We're here to help"`), or escape them in single-quoted strings. An unescaped apostrophe in a single-quoted string breaks the build.
 - Ensure JSX tags are closed and braces are balanced.
-- Export components as default exports.
+- Export route pages as default exports; view components keep named exports.
+- Client components must start with `"use client"`; route-layer pages are the default mounting point for views.
 
 ---
 

@@ -72,7 +72,8 @@ describe("多端 logo 全链路引用", () => {
     expect(layout).toContain("/yyc3-icons/Web%20App/favicon-16.png");
     expect(layout).toContain("/yyc3-icons/Web%20App/favicon-32.png");
     expect(layout).toContain("/yyc3-icons/Web%20App/apple-touch-icon.png");
-    expect(layout).toContain('manifest: "/manifest.webmanifest"');
+    // P5：manifest/icons 经 asset() 构造（Next 不为 metadata 字符串 URL 自动加 basePath）
+    expect(layout).toContain('asset("/manifest.webmanifest")');
     expect(layout).toMatch(/robots.*index.*false/s);
     expect(layout).toMatch(/themeColor.*#0a1628/);
   });

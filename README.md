@@ -28,7 +28,7 @@ language: zh-CN
 
 ![Version](https://img.shields.io/badge/version-v2.1.0--PRO-00e0b8?style=flat-square)
 ![React](https://img.shields.io/badge/React-19-149eca?style=flat-square&logo=react&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-8-646cff?style=flat-square&logo=vite&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=flat-square&logo=nextdotjs&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-v4-38bdf8?style=flat-square&logo=tailwindcss&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6?style=flat-square&logo=typescript&logoColor=white)
 ![pnpm](https://img.shields.io/badge/pnpm-10%2B-f69220?style=flat-square&logo=pnpm&logoColor=white)
@@ -40,7 +40,7 @@ language: zh-CN
 [![GitHub Repo](https://img.shields.io/badge/GitHub-YYC--Cube%2FYYC3--MH3-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/YYC-Cube/YYC3-MH3)
 [![Live Site](https://img.shields.io/badge/Live-mh3.yyc3.top-00e0b8?style=flat-square)](https://mh3.yyc3.top)
 
-`yanyucloudcube` · `yyc3` · `yyc3-mh3` · `minimax-h3` · `diffsynth` · `ai-digital-human` · `digital-human-production` · `five-step-pipeline` · `ai-family` · `multi-agent` · `seed-vault` · `prompt-engineering` · `local-first` · `data-sovereignty` · `pwa` · `react-19` · `vite-8` · `tailwindcss-4` · `typescript-strict` · `github-pages`
+`yanyucloudcube` · `yyc3` · `yyc3-mh3` · `minimax-h3` · `diffsynth` · `ai-digital-human` · `digital-human-production` · `five-step-pipeline` · `ai-family` · `multi-agent` · `seed-vault` · `prompt-engineering` · `local-first` · `data-sovereignty` · `pwa` · `react-19` · `next-16` · `tailwindcss-4` · `typescript-strict` · `github-pages`
 
 > ***YanYuCloudCube***
 
@@ -121,18 +121,18 @@ language: zh-CN
 
 ## 🛠️ 技术栈
 
-| 层级 | 技术 | 版本 | 用途 |
-| --- | --- | --- | --- |
-| 框架 | React | 19 | UI 渲染（StrictMode） |
-| 构建 | Vite | 8 | Dev Server / 生产构建（Rolldown） |
-| 样式 | Tailwind CSS | 4 | 原子化样式（`@tailwindcss/vite` 插件） |
-| 语言 | TypeScript | 5.x（strict） | 类型安全 |
-| 图标 | lucide-react | 1.x | 图标库 |
-| 测试 | Vitest + Testing Library | 5.x / 16.x | jsdom 冒烟测试 |
-| 字体 | @fontsource（Inter / JetBrains Mono / Noto Sans SC） | 5.x | 自托管字体（离线可用） |
-| 包管理 | pnpm | 10+ | 依赖管理 |
-| 格式化 | oxfmt | 0.2 | 代码格式化 |
-| 运行时 | Node.js | 22（`.mise.toml`） | 工具链 |
+| 层级　 | 技术　　　　　　　　　　　　　　　　　　　　　　　　 | 版本　　　　　　　 | 用途　　　　　　　　　　　　　　　　　　　　　|
+| --------| ------------------------------------------------------| --------------------| -----------------------------------------------|
+| 框架　 | React　　　　　　　　　　　　　　　　　　　　　　　　| 19.2　　　　　　　 | UI 渲染（StrictMode · automatic runtime）　　 |
+| 框架　 | Next.js（App Router）　　　　　　　　　　　　　　　　| 16　　　　　　　　 | 路由 / 静态导出（Track B `output: "export"`） |
+| 样式　 | Tailwind CSS　　　　　　　　　　　　　　　　　　　　 | 4　　　　　　　　　| 原子化样式（`@tailwindcss/postcss` 通道）　　 |
+| 语言　 | TypeScript　　　　　　　　　　　　　　　　　　　　　 | 5.x（strict）　　　| 类型安全　　　　　　　　　　　　　　　　　　　|
+| 图标　 | lucide-react　　　　　　　　　　　　　　　　　　　　 | 1.x　　　　　　　　| 图标库　　　　　　　　　　　　　　　　　　　　|
+| 测试　 | Vitest + Testing Library　　　　　　　　　　　　　　 | 5.x / 16.x　　　　 | jsdom 冒烟测试　　　　　　　　　　　　　　　　|
+| 字体　 | @fontsource（Inter / JetBrains Mono / Noto Sans SC） | 5.x　　　　　　　　| 自托管字体（离线可用）　　　　　　　　　　　　|
+| 包管理 | pnpm　　　　　　　　　　　　　　　　　　　　　　　　 | 10+　　　　　　　　| 依赖管理　　　　　　　　　　　　　　　　　　　|
+| 格式化 | oxfmt　　　　　　　　　　　　　　　　　　　　　　　　| 0.73　　　　　　　 | 代码格式化（代码域限定）　　　　　　　　　　　|
+| 运行时 | Node.js　　　　　　　　　　　　　　　　　　　　　　　| 22（`.mise.toml`） | 工具链　　　　　　　　　　　　　　　　　　　　|
 
 ---
 
@@ -153,13 +153,13 @@ cd YYC3-MH3
 # 2. 安装依赖（如全局 store 受限，可加 --store-dir .pnpm-store）
 pnpm install
 
-# 3. 启动开发服务器（默认端口 3031，可通过 PORT 环境变量覆盖）
+# 3. 启动开发服务器（默认端口 3031，scripts 内置 -p 3031）
 pnpm dev
 # ➜  Local: http://localhost:3031/
 
-# 4. 生产构建 + 预览
+# 4. 生产构建（静态导出 out/）+ 预览
 pnpm build
-pnpm preview
+pnpm start
 ```
 
 > 💡 团队规范：开发服务器端口自 `3030` 起；本项目默认 `3031`（3030 已由姊妹项目占用，经确认递增取位）。
@@ -174,10 +174,10 @@ pnpm preview
 | --- | --- | --- |
 | **在线站点** | <https://mh3.yyc3.top> | GitHub Pages · 自定义域（CNAME 已入库，域名校验 verified） |
 | **代码仓库** | <https://github.com/YYC-Cube/YYC3-MH3> | Issue / PR / Releases |
-| **CI 质检** | [workflows/ci.yml](.github/workflows/ci.yml) | 推送/PR main → 类型检查 + 110 用例测试 + 双基座构建冒烟 |
-| **CD 部署** | [workflows/deploy.yml](.github/workflows/deploy.yml) | 推送 main → 自动构建并部署 Pages（`build_type=workflow`） |
+| **CI 质检** | [workflows/ci.yml](.github/workflows/ci.yml) | 推送/PR main → 格式 + 类型 + 118 用例测试 + 双基座构建冒烟 |
+| **CD 部署** | [workflows/deploy.yml](.github/workflows/deploy.yml) | 推送 main → Next 静态导出并部署 Pages（`build_type=workflow`） |
 
-> 部署链：`configure-pages`（动态注入 `BASE_PATH`，自定义域/子路径双兼容）→ `vite build` → `upload-pages-artifact` → `deploy-pages`。产物含 `CNAME`（mh3.yyc3.top），Pages 构建源已设为 **GitHub Actions**。
+> 部署链：`configure-pages`（动态注入 `BASE_PATH`/`NEXT_PUBLIC_BASE_PATH`，自定义域/子路径双兼容）→ `next build`（`output: "export"` → `out/`）→ `upload-pages-artifact` → `deploy-pages`。产物含 `CNAME`（mh3.yyc3.top）/ `robots.txt` / `sw.js` / `manifest.webmanifest`，Pages 构建源为 **GitHub Actions**。
 
 ---
 
@@ -185,10 +185,10 @@ pnpm preview
 
 | 命令 | 说明 |
 | --- | --- |
-| `pnpm dev` | 启动 Vite 开发服务器（HMR 热更新） |
-| `pnpm build` | 生产构建（压缩 + Tree Shaking + 视图分包） |
-| `pnpm preview` | 本地预览生产构建产物 |
-| `pnpm test` | 运行 Vitest 全量测试（110 用例 · 七类门禁） |
+| `pnpm dev` | 启动 Next.js 开发服务器（Turbopack · 端口 3031） |
+| `pnpm build` | 生产构建（14 路由段静态导出 → `out/`） |
+| `pnpm start` | 生产服务启动（Node 运行时轨 · 端口 3031） |
+| `pnpm test` | 运行 Vitest 全量测试（118 用例 · 八类门禁） |
 | `pnpm test:watch` | 监听模式运行测试 |
 | `pnpm format` | oxfmt 代码格式化（代码域限定，见 `.oxfmtrc.json`） |
 | `pnpm format:check` | oxfmt 格式检查（CI 门禁，不改写文件） |
@@ -213,26 +213,39 @@ YYC3-MH3/
 ├── public/
 │   ├── yyc3-family.png          # README 顶图 / 品牌横幅
 │   ├── manifest.webmanifest     # PWA 清单（全端图标注册）
+│   ├── robots.txt               # 爬虫策略（全站 Disallow · 本地优先隐私）
+│   ├── sw.js                    # Service Worker（scope 相对化 · 离线缓存）
+│   ├── CNAME                    # 自定义域（mh3.yyc3.top）
 │   └── yyc3-icons/              # 全平台图标（PWA/Web/macOS/iOS/Android/watchOS）
 ├── src/
-│   ├── main.tsx                 # React 入口
-│   ├── App.tsx                  # 根组件 · 视图路由（lazy 分包） · 全局状态
+│   ├── app/                     # App Router 路由层
+│   │   ├── layout.tsx           # 根布局（品牌 metadata + Provider 树 + AppShell）
+│   │   ├── app-shell.tsx        # 应用外壳（登录守卫 + 导航三件套 + 全局弹窗群）
+│   │   ├── page.tsx             # / → design-system
+│   │   ├── dashboard/ … settings/  # 其余 12 路由段（视图零改动装配）
+│   │   ├── contexts.tsx         # 五域 Context（Toast/Auth/生产数据/遥测/UIShell）
+│   │   ├── navigation.ts        # useAppNavigate（副作用导航 hook）
+│   │   └── sw-register.tsx      # PWA SW 注册（basePath 感知）
 │   ├── index.css                # Tailwind v4 主题（DS Tokens）+ 自托管字体
 │   ├── test/                    # Vitest 全局 setup
-│   ├── __tests__/               # 冒烟测试（App 挂载 / 领域数据不变量）
+│   ├── __tests__/               # 八类测试门禁（118 用例）
 │   ├── types/                   # 全量 TypeScript 类型定义
 │   ├── data/                    # 模拟数据（批次/种子/Agent/AI Family 档案）
+│   ├── domains/                 # 领域层（五域纯函数 + 出站端口）
+│   ├── adapters/                # 适配层（local Registry BFF / memory 快照）
 │   ├── components/
 │   │   ├── common/              # 12 个基础组件（Button/Card/Modal/Toast…）
-│   │   ├── navigation/          # Sidebar / Topbar / GlobalSearchModal
+│   │   ├── navigation/          # Sidebar / Topbar / GlobalSearchModal（路由事实源）
 │   │   ├── pipeline/            # PipelineBar / RadarScore / TerminalLog / VideoPreview
 │   │   └── yyc3/                # YYC3FamilyModal / FloatingTrigger
-│   └── views/                   # 13 大功能视图（React.lazy 独立分包）
+│   └── views/                   # 13 大功能视图（路由级分割挂载）
+├── server/                      # Registry BFF（registryApi 纯函数 + routeHandler 薄壳）
 ├── docs/                        # 团队标准规范 + 会话工作文档
 │   └── assets/                  # 文档资源（横幅 SVG 源文件）
-├── vite.config.ts               # Vite 配置（@ 别名 → src/）
+├── next.config.ts               # Next 配置（basePath 多基座 + 静态导出）
+├── postcss.config.mjs           # Tailwind v4 PostCSS 通道
 ├── vitest.config.ts             # Vitest 配置（jsdom 冒烟测试）
-├── tsconfig.json                # TypeScript strict 配置
+├── tsconfig.json                # TypeScript strict 配置（Next 规范化接管）
 ├── .mise.toml                   # 工具链版本（Node 22 / pnpm）
 └── package.json
 ```
