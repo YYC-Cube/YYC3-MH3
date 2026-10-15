@@ -634,7 +634,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 <span className="text-[#00e0b8] font-mono">2.</span>
                 <span>
                   <strong>单端口网关：</strong>
-                  全系统所有前后端交互均通过单一本地端口 (:8443)
+                  全系统所有前后端交互均通过单一本地端口 (:3031)
                   聚合，无隐蔽出站连接。
                 </span>
               </div>

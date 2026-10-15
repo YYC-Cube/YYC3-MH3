@@ -35,10 +35,40 @@ import {
   X,
   Zap
 } from "lucide-react"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { PRESET_CHAT_PROMPTS, YYC3_MEMBERS } from "../../data/yyc3Data"
 import { YYC3Member } from "../../types"
 import { Button } from "../common"
+
+/** 星期标签（getDay: 0=日 … 6=六）；周末（日/六）以粉色高亮 */
+const DAY_LABELS = ["日", "一", "二", "三", "四", "五", "六"] as const
+
+/**
+ * 表盘自适应：测量容器可用宽高，对 520 基准表盘做等比缩放。
+ * 表盘内部（成员环/SVG/中心圆）统一以 520 坐标系定位，整层 scale 保证
+ * 移动端窄屏与全屏宽幅下均完整呈现且不破坏节点几何。
+ */
+function useDialScale(
+  ref: React.RefObject<HTMLDivElement | null>,
+  enabled: boolean,
+) {
+  const [scale, setScale] = useState(1)
+  useEffect(() => {
+    const el = ref.current
+    if (!el || !enabled) return
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const { width, height } = entry.contentRect
+        if (width > 0 && height > 0) {
+          setScale(Math.min(1, width / 520, height / 520))
+        }
+      }
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [ref, enabled])
+  return scale
+}
 
 /** AI Family 可执行动作负载（参数注入 / 种子载入），供 ChatMessage.actionable 与 onApplyAction 共用 */
 export type FamilyActionPayload =
@@ -81,7 +111,8 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
   ) // Default to Yuanqi / Tianxu
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [isChatOpen, setIsChatOpen] = useState(false)
-  const [currentTimeStr, setCurrentTimeStr] = useState("08:26:45")
+  // 真实时钟：单源 Date state，1s 走时（数字时间 / 三针角度 / 日期星期均由此派生）
+  const [now, setNow] = useState<Date>(() => new Date())
   const [chatInput, setChatInput] = useState("")
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -99,16 +130,10 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
     },
   ])
 
-  // Real-time clock tick
+  // Real-time clock tick — 1 秒 setInterval 真实走时（原参考实现已删，见 git 基线 8424ee1）
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      const now = new Date()
-      const h = String(now.getHours()).padStart(2, "0")
-      const m = String(now.getMinutes()).padStart(2, "0")
-      const s = String(now.getSeconds()).padStart(2, "0")
-      setCurrentTimeStr(`${h}:${m}:${s}`)
-    }, 1000)
-    return () => clearInterval(timer)
+    const timer = window.setInterval(() => setNow(new Date()), 1000)
+    return () => window.clearInterval(timer)
   }, [])
 
   // Keyboard shortcut Esc
@@ -122,7 +147,42 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [isOpen, onClose])
 
+  // 表盘自适应缩放（浮窗打开时启用测量）
+  const dialAreaRef = useRef<HTMLDivElement>(null)
+  const dialScale = useDialScale(dialAreaRef, isOpen)
+
   if (!isOpen) return null
+
+  // ===== 真实时钟派生（角度公式同原参考实现，-90° 使零位指向 12 点）=====
+  const hours = now.getHours() % 12
+  const minutes = now.getMinutes()
+  const seconds = now.getSeconds()
+  const hourAngle = hours * 30 + minutes * 0.5 - 90
+  const minuteAngle = minutes * 6 + seconds * 0.1 - 90
+  const secondAngle = seconds * 6 - 90
+  const pad2 = (n: number) => String(n).padStart(2, "0")
+  const currentTimeStr = `${pad2(now.getHours())}:${pad2(minutes)}:${pad2(seconds)}`
+  const dateStr = `${String(now.getFullYear()).slice(2)}/${pad2(now.getMonth() + 1)}/${pad2(now.getDate())}`
+  const dayIdx = now.getDay()
+  const dayLabel = DAY_LABELS[dayIdx] ?? "日"
+  const isWeekend = dayIdx === 0 || dayIdx === 6
+
+  // 表盘几何：viewBox 520 坐标系，经 preserveAspectRatio 随容器等比自适应。
+  // 中心 (260,260) 与成员环一致。三针真实钟表比例（秒>分>时），长度基于表盘
+  // 半径 210 分级递减，且全部收在成员环内沿（r=180）之内：
+  //   时针 110（青绿主色 · 最短最粗）｜分针 145（信息蓝 · 中长）｜秒针 172（粉 · 最细最长）
+  const CLOCK_CX = 260
+  const CLOCK_CY = 260
+  const HAND_HOUR = 110
+  const HAND_MINUTE = 145
+  const HAND_SECOND = 172
+  const handTip = (angleDeg: number, len: number) => ({
+    x: CLOCK_CX + Math.cos((angleDeg * Math.PI) / 180) * len,
+    y: CLOCK_CY + Math.sin((angleDeg * Math.PI) / 180) * len,
+  })
+  const hourTip = handTip(hourAngle, HAND_HOUR)
+  const minuteTip = handTip(minuteAngle, HAND_MINUTE)
+  const secondTip = handTip(secondAngle, HAND_SECOND)
 
   const renderMemberIcon = (type: YYC3Member["iconType"], color: string) => {
     const iconProps = { className: "w-5 h-5", style: { color } }
@@ -203,7 +263,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-[#071222]/85 backdrop-blur-md animate-in fade-in duration-200">
       <div
-        className={`bg-[#0a1628] border border-[#1e2f47] rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 relative ${isFullscreen ? "w-[98vw] h-[95vh]" : "w-full max-w-5xl h-[660px]"
+        className={`bg-[#0a1628] border border-[#1e2f47] rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 relative ${isFullscreen ? "w-[98vw] h-[95vh]" : "w-full max-w-5xl h-[94dvh] md:h-[660px] md:max-h-[94dvh]"
           }`}
         style={{
           boxShadow:
@@ -214,8 +274,12 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
         {/* Top Header Bar matching attachment */}
         <div className="h-14 px-6 border-b border-[#1e2f47] bg-[#0c1a30]/90 flex items-center justify-between select-none z-10 flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00e0b8] to-[#00b4d8] flex items-center justify-center text-[#0a1628] font-bold text-xs shadow-[0_0_12px_rgba(0,224,184,0.4)]">
-              YYC³
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0c2440] to-[#0a1b2f] border border-[#00e0b8]/40 flex items-center justify-center p-1 shadow-[0_0_12px_rgba(0,224,184,0.4)]">
+              <img
+                src="/yyc3-icons/yyc3-logo.png"
+                alt="YYC³ AI Family"
+                className="w-full h-full object-contain"
+              />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -279,152 +343,223 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
           </div>
         </div>
 
-        {/* Main Body: Clock Dial Radial Area + Right Member Drawer */}
-        <div className="flex-1 flex overflow-hidden relative">
+        {/* Main Body: Clock Dial Radial Area + Right Member Drawer（移动端纵向堆叠） */}
+        <div className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
           {/* Radial Clock-Dial Layout Surface */}
-          <div className="flex-1 flex flex-col items-center justify-center p-4 relative select-none bg-gradient-to-b from-[#0a1628] to-[#071222] overflow-hidden">
-            {/* Background circular web and clock ticks */}
-            <div className="relative w-[480px] h-[480px] sm:w-[520px] sm:h-[520px] flex items-center justify-center">
-              {/* Outer thin ring */}
-              <div className="absolute inset-0 rounded-full border border-[#1e2f47]/60 pointer-events-none" />
+          <div className="flex-1 flex flex-col items-center justify-center p-2 sm:p-4 relative select-none bg-gradient-to-b from-[#0a1628] to-[#071222] overflow-hidden min-h-0">
+            {/* 表盘自适应测量层：520 基准表盘整体等比缩放（移动端/全屏通吃） */}
+            <div
+              ref={dialAreaRef}
+              className="flex-1 w-full min-h-0 flex items-center justify-center"
+            >
+              <div
+                className="relative w-[520px] h-[520px] flex-shrink-0"
+                style={{
+                  transform: `scale(${dialScale})`,
+                  transformOrigin: "center center",
+                }}
+              >
+                {/* Background circular web and clock ticks */}
+                <div className="relative w-full h-full flex items-center justify-center">
+                  {/* Outer thin ring */}
+                  <div className="absolute inset-0 rounded-full border border-[#1e2f47]/60 pointer-events-none" />
 
-              {/* Middle dashed ring */}
-              <div className="absolute inset-10 rounded-full border border-dashed border-[#1e2f47]/80 pointer-events-none" />
+                  {/* Middle dashed ring */}
+                  <div className="absolute inset-10 rounded-full border border-dashed border-[#1e2f47]/80 pointer-events-none" />
 
-              {/* Inner glowing ring */}
-              <div className="absolute inset-24 rounded-full border border-[#00e0b8]/20 shadow-[0_0_24px_rgba(0,224,184,0.06)] pointer-events-none" />
+                  {/* Inner glowing ring */}
+                  <div className="absolute inset-24 rounded-full border border-[#00e0b8]/20 shadow-[0_0_24px_rgba(0,224,184,0.06)] pointer-events-none" />
 
-              {/* 12 Clock Hour Ticks */}
-              {Array.from({ length: 12 }).map((_, i) => {
-                const angle = i * 30
-                return (
-                  <div
-                    key={i}
-                    className="absolute w-0.5 h-3 bg-[#00e0b8]/40 origin-bottom pointer-events-none"
-                    style={{
-                      top: "16px",
-                      left: "calc(50% - 1px)",
-                      transformOrigin: "50% 244px",
-                      transform: `rotate(${angle}deg)`,
-                    }}
-                  />
-                )
-              })}
+                  {/* 12 Clock Hour Ticks */}
+                  {Array.from({ length: 12 }).map((_, i) => {
+                    const angle = i * 30
+                    return (
+                      <div
+                        key={i}
+                        className="absolute w-0.5 h-3 bg-[#00e0b8]/40 origin-bottom pointer-events-none"
+                        style={{
+                          top: "16px",
+                          left: "calc(50% - 1px)",
+                          transformOrigin: "50% 244px",
+                          transform: `rotate(${angle}deg)`,
+                        }}
+                      />
+                    )
+                  })}
 
-              {/* Center Core: YYC3 with Digital Clock and Hands */}
-              <div className="relative w-36 h-36 rounded-full bg-[#0a1628] border-2 border-[#00e0b8] shadow-[0_0_30px_rgba(0,224,184,0.35)] flex flex-col items-center justify-center z-10">
-                {/* Slow spinning ring */}
-                <div className="absolute -inset-2 rounded-full border border-dashed border-[#00e0b8]/50 spin-slow pointer-events-none" />
+                  {/* Center Core: YYC³ 品牌圆盘（144→96 同比缩小，三针环绕外露）+ 数字时钟下移（图一布局） */}
+                  <div className="relative z-10 flex flex-col items-center">
+                    <div className="relative w-24 h-24 rounded-full bg-[#0a1628] border-2 border-[#00e0b8] shadow-[0_0_24px_rgba(0,224,184,0.35)] flex flex-col items-center justify-center">
+                      {/* Slow spinning ring */}
+                      <div className="absolute -inset-1.5 rounded-full border border-dashed border-[#00e0b8]/50 spin-slow pointer-events-none" />
 
-                <span className="font-bold text-base text-[#00e0b8] tracking-widest drop-shadow-[0_0_8px_rgba(0,224,184,0.8)]">
-                  YYC³
-                </span>
-                <span className="text-[10px] text-[#8a97a8] tracking-tight uppercase mb-1">
-                  AI Family
-                </span>
-
-                {/* Digital Clock from attachment */}
-                <div className="font-mono text-xs font-bold text-[#00e0b8] tracking-wider mt-0.5">
-                  {currentTimeStr}
-                </div>
-                <div className="text-[9px] text-[#5c697a] font-mono">
-                  26/10/11 日
-                </div>
-              </div>
-
-              {/* SVG Radial Holographic Beams */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-                {YYC3_MEMBERS.map((m) => {
-                  const isSelected = selectedMember.id === m.id
-                  const rad = ((m.angle - 90) * Math.PI) / 180
-                  const r = 210
-                  const cx = 260
-                  const cy = 260
-                  const x = cx + r * Math.cos(rad)
-                  const y = cy + r * Math.sin(rad)
-
-                  return (
-                    <line
-                      key={m.id}
-                      x1={cx}
-                      y1={cy}
-                      x2={x}
-                      y2={y}
-                      stroke={isSelected ? "#ffffff" : m.roleColor}
-                      strokeWidth={isSelected ? 2 : 1}
-                      strokeDasharray={isSelected ? "5 5" : "3 3"}
-                      opacity={isSelected ? 0.9 : 0.35}
-                      className={isSelected ? "data-stream-line" : ""}
-                    />
-                  )
-                })}
-              </svg>
-
-              {/* 8 Member Nodes positioned along circumference */}
-              {YYC3_MEMBERS.map((m) => {
-                const isSelected = selectedMember.id === m.id
-                const rad = ((m.angle - 90) * Math.PI) / 180
-                const r = 210
-                const cx = 260
-                const cy = 260
-                const left = cx + r * Math.cos(rad) - 30
-                const top = cy + r * Math.sin(rad) - 30
-
-                return (
-                  <div
-                    key={m.id}
-                    onClick={() => {
-                      setSelectedMember(m)
-                      setIsChatOpen(false)
-                    }}
-                    style={{ left: `${left}px`, top: `${top}px` }}
-                    className="absolute w-[60px] h-[60px] flex flex-col items-center justify-center cursor-pointer group z-20"
-                  >
-                    {/* Circle Node Icon */}
-                    <div
-                      className={`relative w-12 h-12 rounded-full bg-[#0d1e36] flex items-center justify-center border-2 transition-all duration-200 group-hover:scale-110 ${isSelected
-                        ? "border-white shadow-[0_0_24px_rgba(255,255,255,0.7)] scale-110"
-                        : "border-[#1e2f47] hover:border-white/50"
-                        }`}
-                      style={{
-                        borderColor: isSelected ? "#ffffff" : m.roleColor,
-                        boxShadow: isSelected
-                          ? `0 0 20px ${m.roleColor}80`
-                          : `0 0 8px ${m.roleColor}30`,
-                      }}
-                    >
-                      {renderMemberIcon(
-                        m.iconType,
-                        isSelected ? "#ffffff" : m.roleColor,
-                      )}
-
-                      {/* Speaking indicator dot from screenshot */}
-                      {m.isSpeaking && (
-                        <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00e0b8] opacity-75" />
-                          <span className="relative inline-flex rounded-full h-3 w-3 bg-[#00e0b8] border-2 border-[#0a1628]" />
-                        </span>
-                      )}
+                      <img
+                        src="/yyc3-icons/yyc3-logo.png"
+                        alt="YYC³ AI Family"
+                        className="h-9 w-9 object-contain drop-shadow-[0_0_6px_rgba(0,224,184,0.6)]"
+                      />
+                      <span className="text-[8px] text-[#8a97a8] tracking-tight uppercase mt-1">
+                        AI Family
+                      </span>
                     </div>
 
-                    {/* Member Name and Clock text */}
-                    <div className="mt-1 text-center whitespace-nowrap">
-                      <div
-                        className={`text-[11px] font-semibold transition-colors ${isSelected
-                          ? "text-white"
-                          : "text-[#8a97a8] group-hover:text-[#e8f0f8]"
-                          }`}
-                        style={{ color: isSelected ? m.roleColor : undefined }}
-                      >
-                        {m.name}
+                    {/* Digital Clock + 日期星期（中心圆正下方，不遮挡三针） */}
+                    <div
+                      className="absolute left-1/2 -translate-x-1/2 text-center whitespace-nowrap"
+                      style={{ top: 104 }}
+                    >
+                      <div className="font-mono text-xs font-bold text-[#00e0b8] tracking-wider">
+                        {currentTimeStr}
                       </div>
-                      <div className="text-[9px] font-mono text-[#5c697a]">
-                        {m.clockPosition}
+                      <div className="text-[9px] font-mono flex items-center justify-center gap-1 leading-none mt-0.5">
+                        <span className="text-[#5c697a]">{dateStr}</span>
+                        <span
+                          className="font-semibold"
+                          style={{
+                            color: isWeekend ? "#FF006E" : "#8a97a8",
+                            textShadow: isWeekend
+                              ? "0 0 6px rgba(255,0,110,0.5)"
+                              : "none",
+                          }}
+                        >
+                          周{dayLabel}
+                        </span>
                       </div>
                     </div>
                   </div>
-                )
-              })}
+
+                  {/* SVG Radial Holographic Beams + 真实时钟三针（viewBox 520 等比自适应） */}
+                  <svg
+                    viewBox="0 0 520 520"
+                    preserveAspectRatio="xMidYMid meet"
+                    className="absolute inset-0 w-full h-full pointer-events-none z-0"
+                  >
+                    {YYC3_MEMBERS.map((m) => {
+                      const isSelected = selectedMember.id === m.id
+                      const rad = ((m.angle - 90) * Math.PI) / 180
+                      const r = 210
+                      const x = CLOCK_CX + r * Math.cos(rad)
+                      const y = CLOCK_CY + r * Math.sin(rad)
+
+                      return (
+                        <line
+                          key={m.id}
+                          x1={CLOCK_CX}
+                          y1={CLOCK_CY}
+                          x2={x}
+                          y2={y}
+                          stroke={isSelected ? "#ffffff" : m.roleColor}
+                          strokeWidth={isSelected ? 2 : 1}
+                          strokeDasharray={isSelected ? "5 5" : "3 3"}
+                          opacity={isSelected ? 0.9 : 0.35}
+                          className={isSelected ? "data-stream-line" : ""}
+                        />
+                      )
+                    })}
+
+                    {/* 真实时钟三针：根部隐于中心圆盘之下，长短/颜色按真实钟表分级 */}
+                    {/* 时针 — 青绿主色 · 最短最粗 */}
+                    <line
+                      x1={CLOCK_CX}
+                      y1={CLOCK_CY}
+                      x2={hourTip.x}
+                      y2={hourTip.y}
+                      stroke="#00e0b8"
+                      strokeWidth={5}
+                      strokeLinecap="round"
+                      opacity={0.9}
+                    />
+                    {/* 分针 — 信息蓝 · 中长中细 */}
+                    <line
+                      x1={CLOCK_CX}
+                      y1={CLOCK_CY}
+                      x2={minuteTip.x}
+                      y2={minuteTip.y}
+                      stroke="#00b4d8"
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                      opacity={0.85}
+                    />
+                    {/* 秒针 — 粉色辉光 · 最细最长（与周末高亮呼应） */}
+                    <line
+                      x1={CLOCK_CX}
+                      y1={CLOCK_CY}
+                      x2={secondTip.x}
+                      y2={secondTip.y}
+                      stroke="#FF006E"
+                      strokeWidth={1.5}
+                      strokeLinecap="round"
+                      style={{ filter: "drop-shadow(0 0 4px rgba(255,0,110,0.8))" }}
+                    />
+                  </svg>
+
+                  {/* 8 Member Nodes positioned along circumference */}
+                  {YYC3_MEMBERS.map((m) => {
+                    const isSelected = selectedMember.id === m.id
+                    const rad = ((m.angle - 90) * Math.PI) / 180
+                    const r = 210
+                    const cx = 260
+                    const cy = 260
+                    const left = cx + r * Math.cos(rad) - 30
+                    const top = cy + r * Math.sin(rad) - 30
+
+                    return (
+                      <div
+                        key={m.id}
+                        onClick={() => {
+                          setSelectedMember(m)
+                          setIsChatOpen(false)
+                        }}
+                        style={{ left: `${left}px`, top: `${top}px` }}
+                        className="absolute w-[60px] h-[60px] flex flex-col items-center justify-center cursor-pointer group z-20"
+                      >
+                        {/* Circle Node Icon */}
+                        <div
+                          className={`relative w-12 h-12 rounded-full bg-[#0d1e36] flex items-center justify-center border-2 transition-all duration-200 group-hover:scale-110 ${isSelected
+                            ? "border-white shadow-[0_0_24px_rgba(255,255,255,0.7)] scale-110"
+                            : "border-[#1e2f47] hover:border-white/50"
+                            }`}
+                          style={{
+                            borderColor: isSelected ? "#ffffff" : m.roleColor,
+                            boxShadow: isSelected
+                              ? `0 0 20px ${m.roleColor}80`
+                              : `0 0 8px ${m.roleColor}30`,
+                          }}
+                        >
+                          {renderMemberIcon(
+                            m.iconType,
+                            isSelected ? "#ffffff" : m.roleColor,
+                          )}
+
+                          {/* Speaking indicator dot from screenshot */}
+                          {m.isSpeaking && (
+                            <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00e0b8] opacity-75" />
+                              <span className="relative inline-flex rounded-full h-3 w-3 bg-[#00e0b8] border-2 border-[#0a1628]" />
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Member Name and Clock text */}
+                        <div className="mt-1 text-center whitespace-nowrap">
+                          <div
+                            className={`text-[11px] font-semibold transition-colors ${isSelected
+                              ? "text-white"
+                              : "text-[#8a97a8] group-hover:text-[#e8f0f8]"
+                              }`}
+                            style={{ color: isSelected ? m.roleColor : undefined }}
+                          >
+                            {m.name}
+                          </div>
+                          <div className="text-[9px] font-mono text-[#5c697a]">
+                            {m.clockPosition}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
             </div>
 
             {/* Bottom Motto matching screenshot */}
@@ -438,8 +573,8 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
             </div>
           </div>
 
-          {/* Right Member Detail Flyout / Drawer matching attachment 2 */}
-          <div className="w-96 border-l border-[#1e2f47] bg-[#0c1a30] flex flex-col flex-shrink-0 overflow-y-auto">
+          {/* Right Member Detail Flyout / Drawer（移动端折叠为底部面板） */}
+          <div className="w-full md:w-96 border-t md:border-t-0 md:border-l border-[#1e2f47] bg-[#0c1a30] flex flex-col flex-shrink-0 overflow-y-auto max-h-[46%] md:max-h-none">
             {/* Drawer Header matching screenshot 2 */}
             <div className="p-5 border-b border-[#1e2f47] bg-[#0f1f38]/60 flex items-start justify-between">
               <div className="flex items-center gap-3">

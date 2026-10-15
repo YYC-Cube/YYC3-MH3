@@ -548,7 +548,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
                   模式 1: 本地离线认证
                 </span>
                 <p className="text-[11px] text-[#8a97a8] leading-relaxed">
-                  纯本地 Argon2id 加密比对，数据不出设备，单端口 8443
+                  纯本地 Argon2id 加密比对，数据不出设备，单端口 3031
                   环回通信，默认赋予全流水线超级管理员权限。
                 </p>
                 <Badge variant="brand" size="xs">

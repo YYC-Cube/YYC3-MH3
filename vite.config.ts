@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
     // 构建期注入实际端口，前端只读 VITE_APP_PORT，避免硬编码端点（契约见 docs/06-Registry-API-契约.md §5）
     define: {
       "import.meta.env.VITE_APP_PORT": JSON.stringify(
-        process.env.PORT || "8443",
+        process.env.PORT || "3031",
       ),
     },
     build: {
@@ -59,7 +59,7 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       host: process.env.FIGMA_DEV_SERVER_HOST || "0.0.0.0",
-      port: parseInt(process.env.PORT || "8443"),
+      port: parseInt(process.env.PORT || "3031"),
       strictPort: true,
       watch: {
         ignored: ["**/.figma/**"],
@@ -67,7 +67,7 @@ export default defineConfig(({ mode }) => {
     },
     preview: {
       host: process.env.FIGMA_DEV_SERVER_HOST || "0.0.0.0",
-      port: parseInt(process.env.PORT || "8443"),
+      port: parseInt(process.env.PORT || "3031"),
     },
   }
 })

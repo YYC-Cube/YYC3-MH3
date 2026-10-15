@@ -2,7 +2,7 @@
   "title": "MiniMax-H3 DiffSynth 本地版 AI 数字人生产线 v2.1 PRO",
   "description": "Professional local AI digital human video production platform offering a five-step closed-loop pipeline for creators and operators with high performance and data sovereignty.",
   "icons": {
-    "icon": ""
+    "icon": "/yyc3-icons/favicon.png"
   },
   "robots": {
     "index": false

@@ -264,7 +264,7 @@ export const ModelsView: React.FC<ModelsViewProps> = ({ onShowToast }) => {
                 item: "本地遥测聚合服务",
                 ver: "6.0 (Bun/Node 22)",
                 status: "pass",
-                note: "单端口 8443 监听中",
+                note: "单端口 3031 监听中",
               },
             ].map((env, idx) => (
               <div key={idx} className="py-3 flex items-center justify-between">

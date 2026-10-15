@@ -41,7 +41,7 @@ export const NightlyConsoleView: React.FC<NightlyConsoleViewProps> = ({
   const [autoShutdown, setAutoShutdown] = useState(false)
   const [retryFp8, setRetryFp8] = useState(true)
   const [webhookUrl, setWebhookUrl] = useState(
-    "http://127.0.0.1:8443/hooks/nightly-report",
+    "http://127.0.0.1:3031/hooks/nightly-report",
   )
 
   const nightlyBatches = [

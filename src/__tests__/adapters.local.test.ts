@@ -30,7 +30,7 @@ import { INITIAL_SEEDS } from "../data/seed"
 import type { BatchItem, LogEntry, SeedItem, ServiceStatus } from "../types"
 
 /** 供数固定基址（显式注入，隔离 env 缺省） */
-const BASE = "http://127.0.0.1:8443/api"
+const BASE = "http://127.0.0.1:3031/api"
 
 function okResponse(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
@@ -133,7 +133,7 @@ describe("local telemetry · 正常供数（fetch 命中）", () => {
     const fetchImpl = vi.fn<FetchMock>(async () => okResponse(REMOTE_SERVICES))
     const telemetry = createLocalTelemetry({ timeoutMs: 200, fetchImpl })
     await telemetry.listServices()
-    expect(fetchImpl.mock.calls[0]![0]).toBe(`http://127.0.0.1:8443/api/services`)
+    expect(fetchImpl.mock.calls[0]![0]).toBe(`http://127.0.0.1:3031/api/services`)
   })
 })
 

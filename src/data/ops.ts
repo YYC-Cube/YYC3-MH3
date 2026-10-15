@@ -139,7 +139,7 @@ export const SERVICES_LIST: ServiceStatus[] = [
   {
     name: "本地遥测聚合服务",
     serviceId: "srv-hono-gate",
-    port: 8443,
+    port: 3031,
     status: "online",
     uptime: "14天 06:22",
     pids: 1,

@@ -27,6 +27,17 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   </React.StrictMode>,
 )
 
+// PWA Service Worker：仅生产注册（dev 避开 HMR 通道）；静态资源离线化，/api 面由 SW 内守卫禁缓存
+if ("serviceWorker" in navigator && import.meta.env.PROD) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register(`${import.meta.env.BASE_URL}sw.js`)
+      .catch(() => {
+        /* SW 注册失败不阻塞应用 */
+      })
+  })
+}
+
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元
  * Words Initiate Quadrants, Language Serves as Core for Future

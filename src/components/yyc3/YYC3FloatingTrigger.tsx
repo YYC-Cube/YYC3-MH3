@@ -16,8 +16,8 @@
  * dependencies: react, lucide-react
  * exports: YYC3FloatingTriggerProps, YYC3FloatingTrigger
  */
+import { Sparkles } from "lucide-react"
 import React from "react"
-import { Shield, Sparkles } from "lucide-react"
 
 export interface YYC3FloatingTriggerProps {
   onClick: () => void
@@ -50,9 +50,13 @@ export const YYC3FloatingTrigger: React.FC<YYC3FloatingTriggerProps> = ({
         {/* Breathing halo ring */}
         <div className="absolute -inset-1 rounded-2xl border border-[#00e0b8]/40 animate-ping opacity-25 pointer-events-none" />
 
-        {/* Center Shield & Sparkle Icon */}
+        {/* YYC³ Brand Logo（多端统一标识 /yyc3-icons） */}
         <div className="relative flex items-center justify-center">
-          <Shield className="w-6 h-6 text-[#00e0b8] fill-[#00e0b8]/15" />
+          <img
+            src="/yyc3-icons/yyc3-logo.png"
+            alt="YYC³ AI Family"
+            className="w-7 h-7 object-contain drop-shadow-[0_0_6px_rgba(0,224,184,0.5)]"
+          />
           <Sparkles className="w-3.5 h-3.5 text-[#e8f0f8] absolute -top-1 -right-1 animate-pulse" />
         </div>
 
