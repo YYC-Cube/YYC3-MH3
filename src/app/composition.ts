@@ -40,13 +40,14 @@ export interface AppPorts {
  *   （回环 only），失败自动回退 memory 快照（per-call 降级，无白屏）；
  *   降级/恢复事件经共享 telemetry.appendLog 留痕（Runbook §3.3），
  *   日志面板实时可见
+ *   ※ BFF Route Handler 于 P4 落地前，dev 请求 404 → 优雅降级 memory（05 清单 P1 过渡态）
  * - 静态构建 / preview / 测试环境：memory 快照直连（避免必然失败的请求
  *   噪音；零公网出站红线不破坏）
  *
- * URL 经 env 注入（VITE_REGISTRY_BASE_URL → APP_PORT 兜底），零硬编码端点。
+ * URL 经 env 注入（NEXT_PUBLIC_REGISTRY_BASE_URL → APP_PORT 兜底），零硬编码端点。
  */
 export function createPorts(): AppPorts {
-  if (import.meta.env.DEV && !import.meta.env.VITEST) {
+  if (process.env.NODE_ENV === "development" && !process.env.VITEST) {
     const telemetry = createLocalTelemetry();
     return {
       batches: createLocalBatchRepository({ telemetry }),

@@ -11,14 +11,14 @@
  * copyright: YanYuCloudCube Team
  * license: MIT
  *
- * brief: 应用运行时配置 · 构建期注入常量唯一来源
+ * brief: 应用运行时配置 · 环境变量常量唯一来源
  *
  * dependencies: —
  * exports: APP_PORT
  */
 
-/** 本地服务端口：构建期由 vite.config.ts define 从 PORT 注入（契约 docs/06-Registry-API-契约.md §5），业务代码禁止硬编码端口 */
-export const APP_PORT: string = import.meta.env.VITE_APP_PORT || "3031";
+/** 本地服务端口：NEXT_PUBLIC_ 环境变量注入（契约 docs/06-Registry-API-契约.md §5），业务代码禁止硬编码端口 */
+export const APP_PORT: string = process.env.NEXT_PUBLIC_APP_PORT || "3031";
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

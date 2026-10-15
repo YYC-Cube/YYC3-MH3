@@ -44,7 +44,7 @@ export class RegistryError extends Error {
 
 /** local 适配器公共选项（fetchImpl/timeoutMs 供测试注入） */
 export interface LocalAdapterOptions {
-  /** 缺省时依序解析 VITE_REGISTRY_BASE_URL → http://127.0.0.1:${APP_PORT}/api */
+  /** 缺省时依序解析 NEXT_PUBLIC_REGISTRY_BASE_URL → http://127.0.0.1:${APP_PORT}/api */
   baseUrl?: string;
   /** 超时阈值（06 §4 默认 >3s 触发降级） */
   timeoutMs?: number;
@@ -55,7 +55,7 @@ export interface LocalAdapterOptions {
 /** URL 解析（06 §5：零硬编码端点，env 注入优先，APP_PORT 兜底） */
 export function resolveBaseUrl(explicit?: string): string {
   if (explicit) return explicit;
-  const injected = import.meta.env.VITE_REGISTRY_BASE_URL;
+  const injected = process.env.NEXT_PUBLIC_REGISTRY_BASE_URL;
   if (typeof injected === "string" && injected.length > 0) return injected;
   return `http://127.0.0.1:${APP_PORT}/api`;
 }

@@ -1,4 +1,15 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": [".figma/", "docs/", "*.md", "index.html", "package.json", "tsconfig.json"]
+  "ignorePatterns": [
+    ".figma/",
+    ".mimosa/",
+    ".v2c/",
+    ".video_agent/",
+    "docs/",
+    ".next/",
+    "out/",
+    "*.md",
+    "package.json",
+    "tsconfig.json"
+  ]
 }

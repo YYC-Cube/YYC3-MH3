@@ -26,7 +26,11 @@
  *         components → types + domains + data + config（UI 区块，禁触 adapters/app/views）
  *         views      → components 及以下            （页面编排壳，禁触 adapters/app）
  *         app        → 全下层层 + adapters          （hooks 装配 + 组合根，禁触 views）
- *         根（App.tsx/main.tsx）不设限（仅入口消费，不在扫描范围）
+ *         根（App.tsx）不设限（仅入口消费，不在扫描范围）
+ *
+ *       Next 16 迁移期豁免（05 清单 §4.3 绞杀者模式）：src/app/*（路由层）挂载
+ *       根入口 App.tsx 属合法入口消费 —— app 层 → 根入口白名单放行，
+ *       P3 视图路由化完成后本豁免随根入口退役而移除。
  *
  * dependencies: node:fs, node:path, vitest
  * exports: —
@@ -50,6 +54,9 @@ const LAYER_DIRS: Readonly<Record<string, string>> = {
   app: "app",
 };
 const CONFIG_LEAF = path.join(SRC_ROOT, "config.ts");
+
+/** Next 16 迁移期根入口白名单：app 路由层挂载合法（绞杀者模式，见文件头注） */
+const ROOT_ENTRIES: ReadonlySet<string> = new Set([path.join(SRC_ROOT, "App.tsx")]);
 
 /** 依赖方向矩阵：键 = 所在层，值 = 允许引用的内部层（跨层方向铁律，同层放行） */
 const ALLOWED: Readonly<Record<string, readonly string[]>> = {
@@ -157,13 +164,18 @@ describe("[boundary-guard] 六域分层 · 依赖方向零越界", () => {
       for (const spec of extractInternalSpecs(content)) {
         const resolved = path.resolve(path.dirname(file), spec);
         const target = layerOf(resolved);
-        if (target === null) {
+        // 迁移期豁免：app 路由层（入口消费点）→ 根入口白名单放行（对齐 resolveCandidates 扩展名语义）
+        const isRootEntryMount =
+          layer === "app" && resolveCandidates(resolved).some((c) => ROOT_ENTRIES.has(c));
+        if (target !== null) {
+          if (isEdgeViolation(layer, target)) {
+            violations.push(
+              `${path.relative(PROJECT_ROOT, file)}: ${spec} → ${layer} ⇒ ${target} 越界（矩阵见文件头）`,
+            );
+          }
+        } else if (!isRootEntryMount) {
           violations.push(
             `${path.relative(PROJECT_ROOT, file)}: ${spec} → 引用未纳入六域分层的内部文件`,
-          );
-        } else if (isEdgeViolation(layer, target)) {
-          violations.push(
-            `${path.relative(PROJECT_ROOT, file)}: ${spec} → ${layer} ⇒ ${target} 越界（矩阵见文件头）`,
           );
         }
       }

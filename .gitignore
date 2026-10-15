@@ -1,5 +1,7 @@
 node_modules/
 .pnpm-store/
+.next/
+out/
 dist/
 build/
 .cache/
@@ -24,3 +26,8 @@ logs/
 
 # OpenClaw 工具运行态（含设备私钥 / gateway token / 会话轨迹，禁止入库）
 **/openclaw/
+
+# 宿主/工具会话态（不入库）
+.mimosa/
+.v2c/
+.video_agent/

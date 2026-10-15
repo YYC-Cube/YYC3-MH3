@@ -67,13 +67,14 @@ describe("PWA · Service Worker 缓存守卫", () => {
 });
 
 describe("多端 logo 全链路引用", () => {
-  it("index.html head：favicon 16/32 + apple-touch + manifest + theme-color 齐备", () => {
-    const html = readFileSync(resolve(ROOT, "index.html"), "utf8");
-    expect(html).toContain("/yyc3-icons/Web%20App/favicon-16.png");
-    expect(html).toContain("/yyc3-icons/Web%20App/favicon-32.png");
-    expect(html).toContain("/yyc3-icons/Web%20App/apple-touch-icon.png");
-    expect(html).toMatch(/rel="manifest"/);
-    expect(html).toMatch(/name="theme-color"/);
+  it("app/layout.tsx metadata：favicon 16/32 + apple-touch + manifest + robots noindex 齐备", () => {
+    const layout = readFileSync(resolve(ROOT, "src/app/layout.tsx"), "utf8");
+    expect(layout).toContain("/yyc3-icons/Web%20App/favicon-16.png");
+    expect(layout).toContain("/yyc3-icons/Web%20App/favicon-32.png");
+    expect(layout).toContain("/yyc3-icons/Web%20App/apple-touch-icon.png");
+    expect(layout).toContain('manifest: "/manifest.webmanifest"');
+    expect(layout).toMatch(/robots.*index.*false/s);
+    expect(layout).toMatch(/themeColor.*#0a1628/);
   });
 
   it("AI 浮窗双组件（Modal + Trigger）均引用统一品牌 logo", () => {
@@ -86,12 +87,17 @@ describe("多端 logo 全链路引用", () => {
     expect(trigger).toContain("/yyc3-icons/yyc3-logo.png");
   });
 
-  it("site.json（Figma 宿主图标注入源）指向品牌 favicon", () => {
-    const site = JSON.parse(readFileSync(resolve(ROOT, ".figma/make/site.json"), "utf8")) as {
-      icons: { icon: string };
-    };
-    expect(site.icons.icon).toBe("/yyc3-icons/favicon.png");
-    expect(existsSync(resolve(ROOT, "public/yyc3-icons/favicon.png"))).toBe(true);
+  it("robots.txt（原 site.json robots 语义接管）：全站 Disallow", () => {
+    const robots = readFileSync(resolve(ROOT, "public/robots.txt"), "utf8");
+    expect(robots).toContain("User-agent: *");
+    expect(robots).toContain("Disallow: /");
+  });
+
+  it("SW 注册组件（main.tsx 职责迁出）：生产守卫 + basePath 感知", () => {
+    const swRegister = readFileSync(resolve(ROOT, "src/app/sw-register.tsx"), "utf8");
+    expect(swRegister).toContain('"use client"');
+    expect(swRegister).toContain('NODE_ENV !== "production"');
+    expect(swRegister).toContain("NEXT_PUBLIC_BASE_PATH");
   });
 
   it("品牌 logo 实体存在（favicon.png / yyc3-logo.png / logo.png）", () => {

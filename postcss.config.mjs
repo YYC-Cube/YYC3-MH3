@@ -1,27 +1,28 @@
 /**
- * file: src/vite-env.d.ts
- * description: YYC³ 应用核心
+ * file: postcss.config.mjs
+ * description: PostCSS 配置 · Tailwind CSS v4 Next.js 接入通道
  * author: YanYuCloudCube Team
  * version: v1.0.0
- * created: 2026-10-11
- * updated: 2026-10-11
+ * created: 2026-10-15
+ * updated: 2026-10-15
  * status: active
- * tags: [core],[entry],[yyc3]
+ * tags: [config],[postcss],[tailwindcss]
  *
  * copyright: YanYuCloudCube Team
  * license: MIT
  *
- * brief: YYC³ 应用核心
+ * brief: Tailwind v4 官方 Next 接法（替代原 @tailwindcss/vite 插件通道，05 清单 §4.2）
  *
- * dependencies: —
- * exports: —
+ * dependencies: @tailwindcss/postcss
+ * exports: default
  */
-/// <reference types="vite/client" />
+const config = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
 
-/** 构建期由 vite.config.ts define 注入（来源：PORT 环境变量），禁止在业务代码硬编码端口 */
-interface ImportMetaEnv {
-  readonly VITE_APP_PORT: string;
-}
+export default config;
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

@@ -1,0 +1,17 @@
+# file: public/robots.txt
+# description: 爬虫策略 · 全站 Disallow（site.json robots.index=false 语义接管）
+# author: YanYuCloudCube Team
+# version: v1.0.0
+# created: 2026-10-15
+# updated: 2026-10-15
+# status: active
+# tags: [seo],[robots],[privacy]
+#
+# copyright: YanYuCloudCube Team
+# license: MIT
+#
+# brief: 原 Figma site-configuration 插件构建期生成职责接管（05 清单 §1.1）：
+#       本地优先隐私基线——不索引不跟踪；layout.tsx metadata.robots 同源双保险
+
+User-agent: *
+Disallow: /

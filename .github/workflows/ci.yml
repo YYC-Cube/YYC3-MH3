@@ -67,7 +67,7 @@ jobs:
         run: pnpm build
 
       - name: Build smoke (Pages sub-path base)
-        run: pnpm exec vite build --outDir dist-smoke
+        run: pnpm build
         env:
           BASE_PATH: /YYC3-MH3
 
