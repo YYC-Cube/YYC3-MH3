@@ -1,0 +1,74 @@
+# file: .github/workflows/ci.yml
+# description: YYC³ 质量门禁 · 推送/PR main 触发 · 类型检查 + 全量测试 + 双基座构建冒烟
+# author: YanYuCloudCube Team
+# version: v1.0.0
+# created: 2026-10-15
+# updated: 2026-10-15
+# status: active
+# tags: [ci],[quality-gate],[github-actions]
+#
+# copyright: YanYuCloudCube Team
+# license: MIT
+#
+# brief:
+#   - 门禁：tsc 严格类型检查 + Vitest 全量测试（110 用例 · 七类门禁）
+#   - 构建冒烟：默认根基座 + BASE_PATH 子路径基座（Pages 部署形态回归）
+#   - 注：暂不引入 oxfmt --check 门禁 —— oxfmt@0.2.0 存在破坏性缺陷
+#     （格式化会删除 TS 类型字面量中的分号，产出非法语法），待上游修复后启用
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Quality Gates (typecheck / test / build)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 版本读取自 package.json 的 packageManager 字段（corepack 协议）
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck (tsc strict)
+        run: pnpm typecheck
+
+      - name: Test (vitest)
+        run: pnpm test
+
+      - name: Build smoke (root base)
+        run: pnpm build
+
+      - name: Build smoke (Pages sub-path base)
+        run: pnpm exec vite build --outDir dist-smoke
+        env:
+          BASE_PATH: /YYC3-MH3
+
+# --------------------------------------------------------------
+# YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元
+# Words Initiate Quadrants, Language Serves as Core for Future
+# © 2025-2026 YanYuCloudCube Team. All Rights Reserved.
+# --------------------------------------------------------------

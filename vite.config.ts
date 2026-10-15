@@ -2,16 +2,16 @@
  * file: vite.config.ts
  * description: Vite 构建配置 · React/Tailwind 插件与 @ 别名
  * author: YanYuCloudCube Team
- * version: v1.1.0
+ * version: v1.2.0
  * created: 2026-10-11
- * updated: 2026-10-12
+ * updated: 2026-10-15
  * status: active
- * tags: [config],[build],[vite],[registry]
+ * tags: [config],[build],[vite],[registry],[deploy]
  *
  * copyright: YanYuCloudCube Team
  * license: MIT
  *
- * brief: Vite 构建配置 · React/Tailwind 插件与 @ 别名 + Registry API 本地 BFF 桥接（dev only）
+ * brief: Vite 构建配置 · React/Tailwind 插件与 @ 别名 + Registry API 本地 BFF 桥接（dev only）+ BASE_PATH 多基座部署支持（GitHub Pages 子路径/自定义域双兼容）
  *
  * dependencies: vite, @vitejs/plugin-react, @tailwindcss/vite, node:path, ./server/registryApi
  * exports: stories
@@ -30,9 +30,12 @@ export default defineConfig(({ mode }) => {
   const emitSourcemaps = mode === "development"
 
   return {
+    // 基座解析优先级：Figma Make 宿主 > BASE_PATH（CI 注入，Pages 子路径/自定义域双兼容）> 根路径
     base: process.env.FIGMA_PUBLIC_URL
       ? `${process.env.FIGMA_PUBLIC_URL}/`
-      : "/",
+      : process.env.BASE_PATH
+        ? `${process.env.BASE_PATH.replace(/\/+$/, "")}/`
+        : "/",
     // 构建期注入实际端口，前端只读 VITE_APP_PORT，避免硬编码端点（契约见 docs/06-Registry-API-契约.md §5）
     define: {
       "import.meta.env.VITE_APP_PORT": JSON.stringify(

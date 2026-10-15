@@ -2,9 +2,9 @@
 file: README.md
 description: MiniMax-H3 DiffSynth 本地版 AI 数字人生产线
 author: "YanYuCloudCube Team <admin@0379.email>"
-version: v1.1.0
+version: v1.2.0
 created: 2026-10-11
-updated: 2026-10-12
+updated: 2026-10-15
 status: active
 tags: [YYC3, 文档, 总览]
 category: general
@@ -35,8 +35,12 @@ language: zh-CN
 ![Tests](https://img.shields.io/badge/tsc-strict%20passing-00e0b8?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-00e0b8?style=flat-square)
 ![Local First](https://img.shields.io/badge/数据主权-100%25%20本地离线-ff7a45?style=flat-square)
+[![CI](https://github.com/YYC-Cube/YYC3-MH3/actions/workflows/ci.yml/badge.svg)](https://github.com/YYC-Cube/YYC3-MH3/actions/workflows/ci.yml)
+[![Deploy Pages](https://github.com/YYC-Cube/YYC3-MH3/actions/workflows/deploy.yml/badge.svg)](https://github.com/YYC-Cube/YYC3-MH3/actions/workflows/deploy.yml)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-YYC--Cube%2FYYC3--MH3-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/YYC-Cube/YYC3-MH3)
+[![Live Site](https://img.shields.io/badge/Live-mh3.yyc3.top-00e0b8?style=flat-square)](https://mh3.yyc3.top)
 
-`ai-digital-human` · `diffsynth` · `minimax-h3` · `five-step-pipeline` · `ai-family` · `multi-agent` · `seed-vault` · `prompt-engineering` · `local-first` · `pwa` · `react-19` · `vite-8` · `tailwindcss-4` · `typescript-strict`
+`yanyucloudcube` · `yyc3` · `yyc3-mh3` · `minimax-h3` · `diffsynth` · `ai-digital-human` · `digital-human-production` · `five-step-pipeline` · `ai-family` · `multi-agent` · `seed-vault` · `prompt-engineering` · `local-first` · `data-sovereignty` · `pwa` · `react-19` · `vite-8` · `tailwindcss-4` · `typescript-strict` · `github-pages`
 
 > ***YanYuCloudCube***
 
@@ -143,7 +147,7 @@ language: zh-CN
 
 ```bash
 # 1. 克隆仓库
-git clone <repository-url>
+git clone https://github.com/YYC-Cube/YYC3-MH3.git
 cd YYC3-MH3
 
 # 2. 安装依赖（如全局 store 受限，可加 --store-dir .pnpm-store）
@@ -164,6 +168,17 @@ pnpm preview
 
 应用内置 **本地模拟认证**：任意账号 + 任意 ≥ 6 位密码即可登录，连续失败 5 次将触发 30 秒临时锁定（前端演示行为，不涉及真实鉴权）。默认演示身份为「本地超级管理员」。
 
+### 在线访问与自动部署 🚢
+
+| 通道 | 地址 | 说明 |
+| --- | --- | --- |
+| **在线站点** | <https://mh3.yyc3.top> | GitHub Pages · 自定义域（CNAME 已入库，域名校验 verified） |
+| **代码仓库** | <https://github.com/YYC-Cube/YYC3-MH3> | Issue / PR / Releases |
+| **CI 质检** | [workflows/ci.yml](.github/workflows/ci.yml) | 推送/PR main → 类型检查 + 110 用例测试 + 双基座构建冒烟 |
+| **CD 部署** | [workflows/deploy.yml](.github/workflows/deploy.yml) | 推送 main → 自动构建并部署 Pages（`build_type=workflow`） |
+
+> 部署链：`configure-pages`（动态注入 `BASE_PATH`，自定义域/子路径双兼容）→ `vite build` → `upload-pages-artifact` → `deploy-pages`。产物含 `CNAME`（mh3.yyc3.top），Pages 构建源已设为 **GitHub Actions**。
+
 ---
 
 ## 📜 可用脚本
@@ -175,7 +190,8 @@ pnpm preview
 | `pnpm preview` | 本地预览生产构建产物 |
 | `pnpm test` | 运行 Vitest 全量测试（110 用例 · 七类门禁） |
 | `pnpm test:watch` | 监听模式运行测试 |
-| `pnpm format` | oxfmt 代码格式化 |
+| `pnpm typecheck` | TypeScript 严格类型检查（质量门禁） |
+| `pnpm format` | oxfmt 代码格式化（⚠️ v0.2.0 存在删除类型分号的缺陷，暂勿全量执行） |
 | `npx tsc --noEmit` | TypeScript 严格类型检查（质量门禁） |
 
 ---

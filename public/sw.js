@@ -2,30 +2,34 @@
  * file: public/sw.js
  * description: YYC³ PWA Service Worker · 静态资源离线缓存（图标/字体/构建产物 cache-first）
  * author: YanYuCloudCube Team
- * version: v1.0.0
+ * version: v1.1.0
  * created: 2026-10-12
- * updated: 2026-10-12
+ * updated: 2026-10-15
  * status: active
- * tags: [pwa],[service-worker],[offline]
+ * tags: [pwa],[service-worker],[offline],[deploy]
  *
  * copyright: YanYuCloudCube Team
  * license: MIT
  *
  * brief:
- *   - 安装期仅预缓存 manifest 与品牌图标（体量可控、必命中）
+ *   - 安装期仅预缓存 manifest 与品牌图标（体量可控、必命中）—— 相对 SW scope 解析，根域/子路径基座双兼容
  *   - /api/*（Registry BFF 实时遥测）一律直连，禁止缓存 —— 降级语义依赖实时性（06 契约 §4）
  *   - 导航请求直连网络：保证 index.html 始终最新，hash 产物 URL 变更即取新缓存
  *   - 静态资源（yyc3-icons / 字体 / js / css / png 等）cache-first，失败回退缓存
  */
 
 const CACHE = "yyc3-static-v1"
-const PRECACHE = ["/manifest.webmanifest", "/yyc3-icons/favicon.png"]
+const PRECACHE = ["manifest.webmanifest", "yyc3-icons/favicon.png"]
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
       .open(CACHE)
-      .then((cache) => cache.addAll(PRECACHE))
+      // 相对 registration.scope 拼装：自定义域根路径与 Pages 子路径（/YYC3-MH3/）部署形态均可命中
+      .then((cache) => {
+        const scope = new URL(self.registration.scope)
+        return cache.addAll(PRECACHE.map((p) => new URL(p, scope).href))
+      })
       .then(() => self.skipWaiting()),
   )
 })

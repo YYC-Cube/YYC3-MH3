@@ -4,6 +4,7 @@
   "keywords": [
     "yanyucloudcube",
     "yyc3",
+    "yyc3-mh3",
     "minimax-h3",
     "diffsynth",
     "ai-digital-human",
@@ -19,17 +20,36 @@
     "react-19",
     "vite-8",
     "tailwindcss-4",
-    "typescript-strict"
+    "typescript-strict",
+    "github-pages"
   ],
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "packageManager": "pnpm@12.11.2",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YYC-Cube/YYC3-MH3.git"
+  },
+  "homepage": "https://mh3.yyc3.top",
+  "bugs": {
+    "url": "https://github.com/YYC-Cube/YYC3-MH3/issues"
+  },
+  "funding": {
+    "type": "custom",
+    "url": "https://github.com/YYC-Cube"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
     "format": "oxfmt"
   },
   "dependencies": {
