@@ -16,20 +16,18 @@
  *        ModelsGrid / EnvChecklist / DiskUsage / BenchmarksTable）。
  *
  * dependencies: react, ../../types, ./parts/ModelsHeader, ./parts/WarmupBanner, ./parts/ModelTabs, ./parts/ModelsGrid, ./parts/EnvChecklist, ./parts/DiskUsage, ./parts/BenchmarksTable
- * exports: ModelTab, ModelsViewProps, ModelsView
+ * exports: ModelsViewProps, ModelsView
  */
 import React, { useState } from "react";
 import type { NavTabId, NavigateExtra } from "../../types";
 import { BenchmarksTable } from "./parts/BenchmarksTable";
 import { DiskUsage } from "./parts/DiskUsage";
 import { EnvChecklist } from "./parts/EnvChecklist";
+import type { ModelTab } from "./parts/ModelTabs";
 import { ModelTabs } from "./parts/ModelTabs";
 import { ModelsGrid } from "./parts/ModelsGrid";
 import { ModelsHeader } from "./parts/ModelsHeader";
 import { WarmupBanner } from "./parts/WarmupBanner";
-
-/** 模型仓库分区页签 ID */
-export type ModelTab = "models" | "env" | "disk" | "benchmarks";
 
 export interface ModelsViewProps {
   onNavigate: (tab: NavTabId, extra?: NavigateExtra) => void;

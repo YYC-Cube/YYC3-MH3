@@ -18,15 +18,18 @@
  * dependencies: react, ../../types, ./useDesignSystemView, ./parts/*
  * exports: DesignTab, DesignSystemViewProps, DesignSystemView
  */
+import dynamic from "next/dynamic";
 import React from "react";
 import { LogEntry } from "../../types";
-import { AtomsTab } from "./parts/AtomsTab";
-import { BusinessTab } from "./parts/BusinessTab";
 import { DemoModals } from "./parts/DemoModals";
 import { DesignBanner } from "./parts/DesignBanner";
-import { PromptsTab } from "./parts/PromptsTab";
 import { TokensTab } from "./parts/TokensTab";
 import { useDesignSystemView } from "./useDesignSystemView";
+
+/* 第七批 ③：非默认页签动态分块（默认 tokens 常载；切换时才拉取，行为零漂移） */
+const AtomsTab = dynamic(() => import("./parts/AtomsTab").then((m) => ({ default: m.AtomsTab })), { ssr: false });
+const BusinessTab = dynamic(() => import("./parts/BusinessTab").then((m) => ({ default: m.BusinessTab })), { ssr: false });
+const PromptsTab = dynamic(() => import("./parts/PromptsTab").then((m) => ({ default: m.PromptsTab })), { ssr: false });
 
 /** 设计系统分区页签 ID（对外保持原视图同名具名导出） */
 export type { DesignTab } from "./useDesignSystemView";

@@ -22,11 +22,12 @@
  *         types      → —                                 （叶：类型契约 barrel）
  *         kernel     → types                             （叶：常量配置 + 路由映射）
  *         domains    → types + kernel                    （纯域函数 + 出站端口）
+ *         orchestrator → types + kernel + domains        （编排内核，PR-3；禁 data/adapters/UI）
  *         data       → types                             （静态演示快照）
  *         adapters   → types + kernel + domains + data   （memory/local 适配器）
  *         components → types + kernel + domains + data   （UI 区块，禁触 adapters/app/views）
  *         views      → components 及以下                 （页面编排壳，禁触 adapters/app）
- *         app        → 全内部层 + adapters + views       （路由层挂载视图 + hooks 装配 + 组合根）
+ *         app        → 全内部层 + adapters + views + orchestrator（路由层挂载视图 + hooks 装配 + 组合根 + Agent 运行时装配）
  *
  *       域隔离铁律（roadmap §1.3）：domains/<域> 只依赖 kernel(types) 与本域，
  *       禁止直接引用其他 domains/<域>（跨域协作走 types 契约或平台事件端口）。
@@ -47,6 +48,7 @@ const LAYER_DIRS: Readonly<Record<string, string>> = {
   types: "types",
   kernel: "kernel",
   domains: "domains",
+  orchestrator: "orchestrator",
   data: "data",
   adapters: "adapters",
   components: "components",
@@ -72,11 +74,15 @@ const ALLOWED: Readonly<Record<string, readonly string[]>> = {
   // kernel：路由映射常量 + 端口注入（NavTabId ↔ href），仅引用 types 契约（无环，安全）
   kernel: ["types"],
   domains: ["types", "kernel"],
+  // orchestrator：编排内核（PR-3）——可依 domains 纯规则与 kernel/types，
+  // 禁触 data（agentId 校验经 AgentPort 供数）/adapters/UI 层（零 react/next/IO 原语）
+  orchestrator: ["types", "kernel", "domains"],
   data: ["types"],
   adapters: ["types", "kernel", "domains", "data"],
   components: ["types", "kernel", "domains", "data"],
   views: ["types", "kernel", "domains", "data", "components"],
-  app: ["types", "kernel", "domains", "data", "components", "adapters", "views"],
+  // app：最上层装配（组合根 + agent-runtime）——orchestrator 五模块在 app 装配（PR-5）
+  app: ["types", "kernel", "domains", "data", "components", "adapters", "views", "orchestrator"],
 };
 
 /** 判定单条依赖边是否越界（纯函数，供检测器自证用例） */
@@ -166,6 +172,10 @@ describe("[boundary-guard] 六域分层 · 依赖方向零越界", () => {
     expect(isEdgeViolation("components", "views")).toBe(true);
     expect(isEdgeViolation("views", "app")).toBe(true);
     expect(isEdgeViolation("data", "domains")).toBe(true);
+    // 违规样例：orchestrator 禁触 data/adapters/UI（PR-3 矩阵新增层）
+    expect(isEdgeViolation("orchestrator", "data")).toBe(true);
+    expect(isEdgeViolation("orchestrator", "adapters")).toBe(true);
+    expect(isEdgeViolation("orchestrator", "app")).toBe(true);
     // 违规样例：kernel 叶层反向依赖
     expect(isEdgeViolation("kernel", "domains")).toBe(true);
     expect(isEdgeViolation("types", "kernel")).toBe(true);
@@ -174,6 +184,7 @@ describe("[boundary-guard] 六域分层 · 依赖方向零越界", () => {
     expect(isEdgeViolation("views", "components")).toBe(false);
     expect(isEdgeViolation("adapters", "domains")).toBe(false);
     expect(isEdgeViolation("domains", "kernel")).toBe(false);
+    expect(isEdgeViolation("orchestrator", "domains")).toBe(false);
     expect(isEdgeViolation("components", "components")).toBe(false);
   });
 

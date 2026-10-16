@@ -121,6 +121,9 @@ export function useWorkbenchView({
       setIsRunning(currentBatch.status === "running");
       setIsAdopted(false);
     }
+    // 刻意仅按批次 id 同步：批次对象含高频变化字段（progress 每 tick 刷新），
+    // 以对象引用为依赖会不断重置用户正在编辑的表单态（prompt/seed/fps 等）
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentBatch?.id]);
 
   // Simulated live execution loop
@@ -146,7 +149,7 @@ export function useWorkbenchView({
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [isRunning, progress]);
+  }, [isRunning, progress, onShowToast]);
 
   // Template quick switch
   const handleApplyTemplate = (tmpl: ParameterTemplate) => {

@@ -28,6 +28,7 @@ import { createInMemoryDbBackend } from "../adapters/indexeddb/db";
 import { createIndexeddbStorage } from "../adapters/indexeddb/kv";
 import { createIndexeddbSeedRepository } from "../adapters/indexeddb/seedRepository";
 import { createIndexeddbTelemetry } from "../adapters/indexeddb/telemetryRepository";
+import { createMemoryAgent } from "../adapters/memory/agent";
 import { INITIAL_BATCHES } from "../adapters/memory/fixtures/batch";
 import {
   INITIAL_LOGS,
@@ -37,6 +38,7 @@ import {
 } from "../adapters/memory/fixtures/ops";
 import { INITIAL_SEEDS } from "../adapters/memory/fixtures/seed";
 import { createInMemoryQueue } from "../adapters/memory/queue";
+import { createTelemetryObservability } from "../adapters/observabilityBridge";
 import { AppPorts, createPorts } from "../app/composition";
 import {
   exportAllData,
@@ -50,12 +52,18 @@ import { ExportEnvelope, LogEntry } from "../types";
 /** IDB 形态装配（内存后端替身，与 adapters.indexeddb 验收测试同型） */
 function createIdbStylePorts(): AppPorts {
   const db = createInMemoryDbBackend();
+  const telemetry = createIndexeddbTelemetry(db);
   return {
     batches: createIndexeddbBatchRepository(db),
     seeds: createIndexeddbSeedRepository(db),
-    telemetry: createIndexeddbTelemetry(db),
+    telemetry,
     storage: createIndexeddbStorage(db),
     queue: createInMemoryQueue(),
+    observability: createTelemetryObservability({
+      appendLog: telemetry.appendLog,
+      appendMetrics: telemetry.appendMetrics,
+    }),
+    ai: createMemoryAgent(),
   };
 }
 

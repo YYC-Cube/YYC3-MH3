@@ -1,0 +1,17 @@
+# YYC³ Prometheus 抓取配置（佐证链专用：5s 高频短周期，便于分钟级实证）
+# 目标为宿主机 registry-server（tsx 挂载 handleWebRequest @ 127.0.0.1:4174）。
+# routeHandler 内建回环校验检查 Host 头，而：
+#   1. Prometheus 禁止覆写 Host 头（v3.1 http_headers 显式拒绝）；
+#   2. 容器无论桥接还是 host 网络模式，127.0.0.1 都不是 Mac 回环。
+# 故 scrape 走 compose 内 scrape-proxy（nginx 改写 Host 为 127.0.0.1:4174 后
+# 经 host.docker.internal 转发宿主机），registry 回环门禁零改动。
+global:
+  scrape_interval: 5s
+  scrape_timeout: 3s
+
+scrape_configs:
+  - job_name: yyc3-registry
+    # BFF 真实暴露路径（默认 /metrics 会 404）
+    metrics_path: /api/metrics/prometheus
+    static_configs:
+      - targets: ["scrape-proxy:80"]

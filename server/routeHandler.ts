@@ -28,10 +28,15 @@
  * dependencies: ./registryApi
  * exports: handleWebRequest
  */
-import { createRegistryApi } from "./registryApi";
+import { OPS_METRICS } from "../src/adapters/memory/fixtures/ops";
+import { PROMETHEUS_CONTENT_TYPE, renderOpsPrometheus } from "./prometheus";
+import { createRegistryApi, isLoopbackHost } from "./registryApi";
 
 /** BFF 处理器模块级单例（与原 Vite 插件 configureServer 期单例语义一致） */
 const api = createRegistryApi();
+
+/** Prometheus scrape 端点路径（P2-2：pull 模式指标出口，回环轨专用） */
+const METRICS_SCRAPE_PATH = "/api/metrics/prometheus";
 
 /**
  * Web 标准请求适配薄壳：
@@ -39,6 +44,20 @@ const api = createRegistryApi();
  */
 export async function handleWebRequest(req: Request): Promise<Response> {
   const url = new URL(req.url);
+
+  /* P2-2 Prometheus scrape：文本暴露格式直出（回环校验与 registryApi 同口径，06 §1.1） */
+  if (url.pathname === METRICS_SCRAPE_PATH) {
+    if (!isLoopbackHost(req.headers.get("host") ?? "")) {
+      return new Response(JSON.stringify({ error: { code: "FORBIDDEN", message: "metrics scrape 仅接受本地回环访问（06 §1.1）" } }), {
+        status: 403,
+        headers: { "content-type": "application/json; charset=utf-8" },
+      });
+    }
+    return new Response(renderOpsPrometheus(OPS_METRICS), {
+      status: 200,
+      headers: { "content-type": PROMETHEUS_CONTENT_TYPE },
+    });
+  }
 
   let body: unknown;
   if (req.method !== "GET" && req.method !== "HEAD") {

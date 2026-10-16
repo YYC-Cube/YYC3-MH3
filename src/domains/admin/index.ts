@@ -2,22 +2,23 @@
  * file: src/domains/admin/index.ts
  * description: YYC³ 管理域 — RBAC 权限矩阵 / 成本核算 / 审计事件（纯函数，零副作用零 UI 依赖）
  * author: YanYuCloudCube Team
- * version: v1.0.0
+ * version: v1.1.0
  * created: 2026-10-16
  * updated: 2026-10-16
  * status: active
- * tags: [domain],[admin],[rbac],[cost],[audit],[pure]
+ * tags: [domain],[admin],[rbac],[pii],[cost],[audit],[pure]
  *
  * copyright: YanYuCloudCube Team
  * license: MIT
  *
  * brief: 管理域规则 —
  *   - RBAC：基于 UserRole 的权限矩阵 + canAccess 判定
+ *   - PII 脱敏：maskPii（邮箱/手机号/长数字串，日志与导出前统一调用）
  *   - 成本核算：算力/存储时长折算（estimateCost）
  *   - 审计：审计事件类型与构造（createAuditEvent）
  *
  * dependencies: ../../types
- * exports: PERMISSION_MATRIX, canAccess, CostEstimateInput, CostEstimate, estimateCost, AuditEvent, createAuditEvent
+ * exports: PERMISSION_MATRIX, canAccess, maskPii, CostEstimateInput, CostEstimate, estimateCost, AuditEvent, createAuditEvent
  */
 import type { UserRole } from "../../types";
 
@@ -40,6 +41,29 @@ export const PERMISSION_MATRIX: Readonly<Record<UserRole, readonly string[]>> = 
 /** 权限判定：角色是否持有指定权限码 */
 export function canAccess(role: UserRole, permission: string): boolean {
   return PERMISSION_MATRIX[role].includes(permission);
+}
+
+/**
+ * PII 脱敏（日志/导出前统一调用）：
+ * - 邮箱：保留首字符与 TLD → `j***@e***.com`
+ * - 中国大陆手机号：前 3 + **** + 后 4 → `138****1234`
+ * - 连续长数字串（≥8 位，证件/卡号）：仅保留末 2 位
+ * 无 PII 文本原样返回；处理顺序固定（邮箱 → 手机号 → 长数字串），
+ * 已脱敏片段含 `*` 不会被后续规则二次命中。
+ */
+export function maskPii(value: string): string {
+  let out = value;
+  out = out.replace(
+    /([A-Za-z0-9._%+-])[A-Za-z0-9._%+-]*@([A-Za-z0-9-])[A-Za-z0-9-]*\.([A-Za-z]{2,})/g,
+    "$1***@$2***.$3",
+  );
+  out = out.replace(/(^|\D)(1[3-9]\d)\d{4}(\d{4})(?=\D|$)/g, "$1$2****$3");
+  out = out.replace(
+    /(^|\D)(\d{6,})(\d{2})(?=\D|$)/g,
+    (_match, lead: string, digits: string, tail: string) =>
+      `${lead}${"*".repeat(digits.length)}${tail}`,
+  );
+  return out;
 }
 
 /** 成本核算入参（算力按秒、存储按 GB·小时折算） */

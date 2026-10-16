@@ -45,7 +45,7 @@
   },
   "scripts": {
     "dev": "next dev -p 3031",
-    "build": "next build",
+    "build": "next build && node scripts/harden-csp.mjs",
     "start": "next start -p 3031",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -53,6 +53,19 @@
     "e2e:setup": "python3 -m venv .venv && .venv/bin/pip install -q -r scripts/e2e/requirements.txt && .venv/bin/python -m playwright install chromium",
     "test:e2e": "pnpm build && ./.venv/bin/python scripts/e2e/smoke.py",
     "check:size": "node scripts/check-bundle-size.mjs",
+    "check:circular": "madge --circular --extensions ts,tsx --ts-config tsconfig.json src server",
+    "check:knip": "knip --include dependencies,devDependencies,files,unlisted,unresolved,binaries",
+    "check:lint": "eslint src server e2e",
+    "check:csp": "node scripts/harden-csp.mjs --check",
+    "check:build-time": "node scripts/check-build-time.mjs",
+    "test:perf": "pnpm build && playwright test --config playwright.offline.config.ts e2e/perf.spec.ts",
+    "test:offline": "pnpm build && playwright test --config playwright.offline.config.ts e2e/offline.spec.ts",
+    "test:soak": ".venv/bin/python scripts/soak/memory-soak.py",
+    "test:soak:short": ".venv/bin/python scripts/soak/memory-soak.py --duration-minutes 1 --interval-seconds 10",
+    "profile:target": "tsx scripts/profile-target.ts",
+    "profile:prof": "node scripts/profile-archive.mjs",
+    "check:lighthouse": "node scripts/check-lighthouse.mjs",
+    "check:obs": "tsx scripts/check-obs.ts",
     "typecheck": "tsc --noEmit",
     "format": "oxfmt",
     "format:check": "oxfmt --check ."
@@ -60,13 +73,13 @@
   "dependencies": {
     "@fontsource/inter": "^5.3.0",
     "@fontsource/jetbrains-mono": "^5.3.0",
-    "@fontsource/noto-sans-sc": "^5.3.1",
     "lucide-react": "^1.55.0",
     "next": "16.4.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^7.0.1",
@@ -76,10 +89,17 @@
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^6.0.0",
     "@vitest/coverage-v8": "5.0.3",
+    "eslint": "^10.12.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "jsdom": "^30.1.2",
+    "knip": "^6.41.0",
+    "lighthouse": "^13.5.0",
+    "madge": "^8.0.0",
     "oxfmt": "^0.73.0",
     "tailwindcss": "^4.0.0",
+    "tsx": "^4.23.15",
     "typescript": "^5.7.0",
+    "typescript-eslint": "^8.71.2",
     "vitest": "^5.0.3"
   }
 }

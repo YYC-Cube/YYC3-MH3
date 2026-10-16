@@ -24,7 +24,6 @@
  * dependencies: vitest, node:http, node:stream, ./taskQueueApi, ../src/adapters/local/queueSse
  * exports: —
  */
-/* eslint-disable */
 // @vitest-environment node
 import { createServer, IncomingMessage, Server, ServerResponse } from "node:http";
 import { Readable } from "node:stream";

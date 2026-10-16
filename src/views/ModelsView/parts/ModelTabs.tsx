@@ -13,11 +13,13 @@
  *
  * brief: 从 ModelsView 逐字提取的分区页签 JSX（零重设计）。
  *
- * dependencies: react, ../index
- * exports: ModelTabsProps, ModelTabs
+ * dependencies: react
+ * exports: ModelTab, ModelTabsProps, ModelTabs
  */
 import React from "react";
-import type { ModelTab } from "../index";
+
+/** 模型仓库分区页签 ID（单一事实来源：本部件定义，视图层向下引用） */
+export type ModelTab = "models" | "env" | "disk" | "benchmarks";
 
 /** 模型仓库分区页签元数据 */
 const MODEL_TABS: { id: ModelTab; label: string }[] = [

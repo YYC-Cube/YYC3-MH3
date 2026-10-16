@@ -55,7 +55,7 @@ function deepCopy<T>(value: T): T {
 }
 
 /** 回环 Host 校验（06 §1.1 本地回环 only）：放行 127.0.0.1 / localhost / ::1（含端口与 IPv6 括号形态） */
-function isLoopbackHost(host: string): boolean {
+export function isLoopbackHost(host: string): boolean {
   if (!host) return false;
   const hostname = host.startsWith("[")
     ? host.slice(1, host.indexOf("]"))
@@ -102,7 +102,7 @@ function isSeedBody(body: unknown): body is SeedItem {
 export function createRegistryApi(): RegistryApi {
   const startedAt = Date.now();
   // 夹具顶层冻结：可变态初始化时逐项浅拷贝出新数组（之后一切变更只作用于副本）
-  let alarms: AlarmItem[] = SYSTEM_ALARMS.map((a) => ({ ...a }));
+  const alarms: AlarmItem[] = SYSTEM_ALARMS.map((a) => ({ ...a }));
   let seeds: SeedItem[] = INITIAL_SEEDS.map((s) => ({ ...s }));
   const batches: BatchItem[] = INITIAL_BATCHES.map((b) => ({ ...b }));
 

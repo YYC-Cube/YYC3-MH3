@@ -16,21 +16,20 @@
  * dependencies: —
  * exports: —
  */
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* 自托管字体（@fontsource，离线可用，替代 Google Fonts CDN）
-   注：裁剪 Noto Sans SC 600 字重以压缩 CSS；Tailwind font-semibold 的中文
-   按 CSS 字体匹配规则回退至 700 面，Inter/JetBrains Mono 600 不受影响 */
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/inter/700.css";
-@import "@fontsource/jetbrains-mono/400.css";
-@import "@fontsource/jetbrains-mono/500.css";
-@import "@fontsource/jetbrains-mono/600.css";
-@import "@fontsource/noto-sans-sc/400.css";
-@import "@fontsource/noto-sans-sc/500.css";
-@import "@fontsource/noto-sans-sc/700.css";
+   第七批 ③ 裁剪记录：移除 Noto Sans SC —— 全量 CJK 子集 × 3 字重实测传输
+   ~1240KB（LCP 9.1s@模拟4G 的主因），zh-CN 场景系统 CJK 字体
+   （PingFang SC / Microsoft YaHei / Noto Sans CJK）已是现代无衬线且零网络
+   成本，故中文回落系统字体栈；拉丁字形保留 Inter/JetBrains Mono（~160KB） */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/600.css';
 
 @theme {
   --color-bg-primary: #0a1628;
@@ -53,8 +52,10 @@
   --color-border-subtle: #16253b;
   --color-border-bright: #294060;
 
-  --font-sans: "Inter", "Noto Sans SC", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans:
+    'Inter', system-ui, -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC',
+    sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
 @layer base {
@@ -150,7 +151,7 @@
 }
 
 .card-running-shimmer::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -1px;
   left: -1px;

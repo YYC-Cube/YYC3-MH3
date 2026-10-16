@@ -2,7 +2,7 @@
  * file: src/app/layout.tsx
  * description: App Router 根布局 · 品牌元数据 + 全局样式 + CSP 安全基线 + SW 注册挂载
  * author: YanYuCloudCube Team
- * version: v1.1.0
+ * version: v1.2.0
  * created: 2026-10-15
  * updated: 2026-10-16
  * status: active
@@ -19,7 +19,7 @@
  *     下发（React 19 原生 hoist 至 head）；dev/prod 双策略（dev 放行 eval + ws: 供
  *     Turbopack HMR），prod 收紧为 self + 内联引导脚本所需最小面
  *
- * dependencies: next (Metadata/Viewport 类型), ./app-shell, ./contexts, ./error-sink, ./sw-register, @/index.css
+ * dependencies: next (Metadata/Viewport 类型), ./app-shell, ./contexts, ./error-sink, ./perf-sink, ./sw-register, @/index.css
  * exports: default (RootLayout), metadata, viewport
  */
 import type { Metadata, Viewport } from "next";
@@ -28,6 +28,7 @@ import "@/index.css";
 import { AppShell } from "./app-shell";
 import { AppProviders } from "./contexts";
 import { ErrorSink } from "./error-sink";
+import { PerfSink } from "./perf-sink";
 import { SwRegister } from "./sw-register";
 
 /** 部署基路径（构建期 env 注入，与 next.config.ts basePath 同源；根基座为空串） */
@@ -116,9 +117,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="zh-CN" className="dark">
       {/* P5-3 CSP 安全基线：React 19 原生 hoist meta 至 head（静态导出无响应头通道） */}
       <meta httpEquiv="Content-Security-Policy" content={CSP_POLICY} />
-      <body className="bg-[#0a1628] text-[#e8f0f8] font-sans antialiased overflow-hidden selection:bg-[#00e0b8]/30 selection:text-[#00e0b8]">
+      <body
+        data-app-root
+        className="bg-[#0a1628] text-[#e8f0f8] font-sans antialiased overflow-hidden selection:bg-[#00e0b8]/30 selection:text-[#00e0b8]"
+      >
         <SwRegister />
         <ErrorSink />
+        <PerfSink />
         <AppProviders>
           <AppShell>{children}</AppShell>
         </AppProviders>

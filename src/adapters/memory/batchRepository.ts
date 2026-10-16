@@ -32,7 +32,7 @@ function deepCopy<T>(value: T): T {
  * 所有出借均为深拷贝，外部篡改不污染仓库状态。
  */
 export function createMemoryBatchRepository(): BatchRepository {
-  let snapshot: BatchItem[] = INITIAL_BATCHES.map((b) => ({ ...b }));
+  const snapshot: BatchItem[] = INITIAL_BATCHES.map((b) => ({ ...b }));
 
   return {
     async listAll() {

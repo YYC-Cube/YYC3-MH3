@@ -60,6 +60,8 @@ export interface LogEntry {
   stage: string;
   message: string;
   suggestion?: string;
+  /** P0-2 全链路追踪：traceId（单次操作跨端口串联锚点；缺省 = 未纳入追踪） */
+  traceId?: string;
   actionable?: {
     actionLabel: string;
     actionType: string;

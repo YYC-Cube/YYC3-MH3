@@ -3,6 +3,9 @@ node_modules/
 .venv/
 .next/
 out/
+reports/
+.clinic/
+.pnpm-store/
 dist/
 build/
 .cache/

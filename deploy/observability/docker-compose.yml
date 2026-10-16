@@ -1,0 +1,36 @@
+# YYC³ 本地可观测汇聚端（佐证链）— 仅回环暴露，零公网
+# 端口取 13100/19090：宿主机可能已有自建 Loki/Prometheus 长驻栈占用 3100/9090，
+# 验证栈端口必须唯一，绝不动用户现有服务。
+# scrape 链路：prometheus（桥接网）→ scrape-proxy（nginx 改写 Host 为
+# 127.0.0.1:4174，桥接网内部，零端口发布）→ host.docker.internal:4174
+# （宿主机 registry-server）——registry 回环门禁零改动。
+# 实测排除项：http_headers 覆写 Host 被 Prometheus 拒绝；host 网络模式的
+# 127.0.0.1 是 VM 回环，触达不了 Mac 服务（connection refused）。
+# 用法: docker compose -f deploy/observability/docker-compose.yml up -d --wait
+#       scripts/check-obs.ts（pnpm check:obs）自动编排 up/实证/down
+name: yyc3-observability
+
+services:
+  loki:
+    image: grafana/loki:3.4.2
+    ports:
+      - "127.0.0.1:13100:3100"
+    volumes:
+      - ./loki-config.yaml:/etc/loki/local-config.yaml:ro
+    command: -config.file=/etc/loki/local-config.yaml
+
+  scrape-proxy:
+    image: nginx:1.27-alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  prometheus:
+    image: prom/prometheus:v3.2.1
+    ports:
+      - "127.0.0.1:19090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - scrape-proxy

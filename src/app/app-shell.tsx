@@ -24,18 +24,16 @@
  */
 "use client";
 
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { lazy, Suspense } from "react";
 
-import { NewBatchModal } from "../components/batch/NewBatchModal";
 import { ErrorBoundary } from "../components/common/ErrorBoundary";
 import { ToastContainer } from "../components/common/Toast";
 import { ViewFallback } from "../components/common/ViewFallback";
-import { GlobalSearchModal } from "../components/navigation/GlobalSearchModal";
 import { Sidebar } from "../components/navigation/Sidebar";
 import { StatusBar } from "../components/navigation/StatusBar";
 import { Topbar } from "../components/navigation/Topbar";
-import { YYC3FamilyModal } from "../components/yyc3/YYC3FamilyModal";
 import { YYC3FloatingTrigger } from "../components/yyc3/YYC3FloatingTrigger";
 import { tabFromPathname } from "../kernel/config";
 import { NewBatchDraft } from "../types";
@@ -50,6 +48,22 @@ import { useAppNavigate } from "./navigation";
 import { useKeyboardShortcuts } from "./useKeyboardShortcuts";
 
 const LoginView = lazy(() => import("../views/LoginView").then((m) => ({ default: m.LoginView })));
+
+/* 第七批 ③：三个全局弹窗均为 isOpen 门控的低频交互面，改条件挂载 + 动态分块——
+   首载 JS 不含其代码（实测首屏 unused-js 下降），首次打开时才拉取对应 chunk；
+   弹窗仅入场动画（animate-in，无退场动画），条件卸载行为零漂移 */
+const GlobalSearchModal = dynamic(
+  () => import("../components/navigation/GlobalSearchModal").then((m) => ({ default: m.GlobalSearchModal })),
+  { ssr: false },
+);
+const YYC3FamilyModal = dynamic(
+  () => import("../components/yyc3/YYC3FamilyModal").then((m) => ({ default: m.YYC3FamilyModal })),
+  { ssr: false },
+);
+const NewBatchModal = dynamic(
+  () => import("../components/batch/NewBatchModal").then((m) => ({ default: m.NewBatchModal })),
+  { ssr: false },
+);
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   // 领域状态（P2 Provider 树共享）
@@ -133,30 +147,34 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         onShowToast={showToast}
       />
 
-      {/* Global Search Modal (Ctrl + K) */}
-      <GlobalSearchModal
-        isOpen={ui.isSearchOpen}
-        onClose={ui.closeSearch}
-        onNavigate={navigate}
-        batches={batches}
-        seeds={seeds}
-      />
+      {/* Global Search Modal (Ctrl + K) — 条件挂载：关闭时不加载分块 */}
+      {ui.isSearchOpen && (
+        <GlobalSearchModal
+          isOpen={ui.isSearchOpen}
+          onClose={ui.closeSearch}
+          onNavigate={navigate}
+          batches={batches}
+          seeds={seeds}
+        />
+      )}
 
-      {/* YYC³ AI Family Global Floating Modal (Ctrl + /) */}
-      <YYC3FamilyModal
-        isOpen={ui.isYYC3Open}
-        onClose={ui.closeYYC3}
-        onApplyAction={(type) => {
-          if (type === "apply_params") {
-            showToast("success", "已将 AI 推荐参数注入工作台");
-            navigate("workbench");
-          } else if (type === "inject_recommendation") {
-            showToast("success", "已采纳 AI 诊断方案");
-            navigate("workbench");
-          }
-        }}
-        onShowToast={showToast}
-      />
+      {/* YYC³ AI Family Global Floating Modal (Ctrl + /) — 条件挂载 */}
+      {ui.isYYC3Open && (
+        <YYC3FamilyModal
+          isOpen={ui.isYYC3Open}
+          onClose={ui.closeYYC3}
+          onApplyAction={(type) => {
+            if (type === "apply_params") {
+              showToast("success", "已将 AI 推荐参数注入工作台");
+              navigate("workbench");
+            } else if (type === "inject_recommendation") {
+              showToast("success", "已采纳 AI 诊断方案");
+              navigate("workbench");
+            }
+          }}
+          onShowToast={showToast}
+        />
+      )}
 
       {/* Bottom Right Floating Launcher Trigger */}
       <YYC3FloatingTrigger onClick={ui.openYYC3} />
@@ -164,12 +182,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* Global Toast Container */}
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
 
-      {/* New Batch Modal */}
-      <NewBatchModal
-        isOpen={ui.isNewBatchModalOpen}
-        onClose={ui.closeNewBatchModal}
-        onSubmit={handleCreateNewBatch}
-      />
+      {/* New Batch Modal — 条件挂载 */}
+      {ui.isNewBatchModalOpen && (
+        <NewBatchModal
+          isOpen={ui.isNewBatchModalOpen}
+          onClose={ui.closeNewBatchModal}
+          onSubmit={handleCreateNewBatch}
+        />
+      )}
     </div>,
   );
 }

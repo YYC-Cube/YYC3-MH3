@@ -18,7 +18,7 @@
  *   - 静态资源（yyc3-icons / 字体 / js / css / png 等）cache-first，失败回退缓存
  */
 
-const CACHE = "yyc3-static-v1";
+const CACHE = "yyc3-static-v2";
 const PRECACHE = ["manifest.webmanifest", "yyc3-icons/favicon.png"];
 
 self.addEventListener("install", (event) => {
@@ -53,8 +53,22 @@ self.addEventListener("fetch", (event) => {
   if (url.pathname.startsWith("/api/")) return;
   // Vite dev/HMR 通道不拦截（SW 仅生产注册，此行为双保险）
   if (url.pathname.startsWith("/@") || url.pathname.startsWith("/node_modules")) return;
-  // 导航文档直连：确保新构建的 hash 引用即时生效
-  if (req.mode === "navigate") return;
+  // 导航请求：network-first，失败回退缓存的应用外壳（离线可浏览核心，P1-5）
+  if (req.mode === "navigate") {
+    event.respondWith(
+      fetch(req).catch(async () => {
+        const cache = await caches.open(CACHE);
+        // 安装期不预缓存整站 HTML（体量），运行期访问过的路由自然入缓存；
+        // 根 shell（index.html）为最后兜底
+        return (
+          (await cache.match(req)) ||
+          (await cache.match(new URL("index.html", self.registration.scope).href)) ||
+          Response.error()
+        );
+      }),
+    );
+    return;
+  }
 
   const isStatic =
     url.pathname.startsWith("/yyc3-icons/") ||
