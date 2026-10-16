@@ -45,7 +45,7 @@
   },
   "scripts": {
     "dev": "next dev -p 3031",
-    "build": "next build && node scripts/harden-csp.mjs",
+    "build": "next build && node scripts/delay-hydration.mjs && node scripts/harden-csp.mjs",
     "start": "next start -p 3031",
     "test": "vitest run",
     "test:watch": "vitest",

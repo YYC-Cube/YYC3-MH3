@@ -3,7 +3,7 @@
  * file: scripts/check-lighthouse.mjs
  * description: YYC³ lighthouse CI 门禁 — 生产产物四类审计 + Best Practices 验证 meta CSP
  * author: YanYuCloudCube Team
- * version: v1.1.0
+ * version: v1.2.0
  * created: 2026-10-16
  * updated: 2026-10-16
  * status: active
@@ -25,8 +25,10 @@
  *   4) lighthouse CLI --port=9333 附着该实例跑四类目
  *      （performance/accessibility/best-practices/seo），
  *      JSON 报告归档 reports/lighthouse/<ts>.report.json
- *   5) 门禁（第七批 ③ 实测基线：perf 0.61→0.73，LCP 9.1s→6.4s，字体 -1240KB）：
- *      performance ≥ 0.7（优化后基线地板，防回归）
+ *   5) 门禁（第八批 ② 实测基线：perf 0.73→0.89，LCP 6.4s→3.1s，延迟水合加载器
+ *      scripts/delay-hydration.mjs 剔除首绘窗口内 558KB JS；报告
+ *      reports/lighthouse/2026-10-16T14-00-52.report.json）：
+ *      performance ≥ 0.85（第八批达成 0.89 定标，防回归）
  *      accessibility ≥ 0.9（实测满分 1.0，锁定）
  *      best-practices ≥ 0.9（实测满分 1.0，含 csp-xss=1 —— meta CSP 第三方佐证）
  *      seo 不设门禁（内部工具，仅观测记录）
@@ -47,7 +49,7 @@ const LH_BIN = join(ROOT, "node_modules", ".bin", "lighthouse");
 const SERVER_PORT = 4175;
 const URL = `http://127.0.0.1:${SERVER_PORT}/`;
 const DEBUG_PORT = 9333;
-const GATE = { performance: 0.7, accessibility: 0.9, "best-practices": 0.9 };
+const GATE = { performance: 0.85, accessibility: 0.9, "best-practices": 0.9 };
 const STAMP = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
 const REPORT_DIR = join(ROOT, "reports", "lighthouse");
 

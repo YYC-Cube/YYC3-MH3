@@ -64,20 +64,29 @@ describe("工作台集成 · 登录守卫", () => {
     cleanup();
   });
 
-  it("打开登录视图 → LoginView 挂载（体验旁路入口可见）", async () => {
-    mountApp({ withLoginProbe: true });
-    // LoginView 为 React.lazy 懒加载：异步解析后断言（Suspense fallback → 视图）
-    expect(await screen.findByText("体验模式直接进入")).toBeTruthy();
-  });
+  it(
+    "打开登录视图 → LoginView 挂载（体验旁路入口可见）",
+    async () => {
+      mountApp({ withLoginProbe: true });
+      // LoginView 为 React.lazy 懒加载：异步解析后断言（Suspense fallback → 视图）
+      // 高负载下 chunk 解析可超 1s，显式放宽 waitFor 预算（默认 1000ms 曾被门禁捕获 flaky）
+      expect(await screen.findByText("体验模式直接进入", {}, { timeout: 10_000 })).toBeTruthy();
+    },
+    15_000,
+  );
 
-  it("体验旁路 → 回到已认证外壳，工作台挂载运行中批次（初始 68% → 暂停态按钮）", async () => {
-    mountApp({ withLoginProbe: true });
-    fireEvent.click(await screen.findByText("体验模式直接进入"));
-    const pauseBtn = await screen.findByRole("button", { name: /暂停生成 \(Pause\)/ });
-    expect(pauseBtn).toBeTruthy();
-    // 初始夹具批次名出现在批次队列（真实 memory 仓储数据）
-    expect(screen.getByText("金融早报数字人-主播04号-4K超分")).toBeTruthy();
-  });
+  it(
+    "体验旁路 → 回到已认证外壳，工作台挂载运行中批次（初始 68% → 暂停态按钮）",
+    async () => {
+      mountApp({ withLoginProbe: true });
+      fireEvent.click(await screen.findByText("体验模式直接进入", {}, { timeout: 10_000 }));
+      const pauseBtn = await screen.findByRole("button", { name: /暂停生成 \(Pause\)/ }, { timeout: 10_000 });
+      expect(pauseBtn).toBeTruthy();
+      // 初始夹具批次名出现在批次队列（真实 memory 仓储数据）
+      expect(screen.getByText("金融早报数字人-主播04号-4K超分")).toBeTruthy();
+    },
+    15_000,
+  );
 });
 
 describe("工作台集成 · 新建批次全链路（Topbar → 弹窗 → memory 仓储 → 队列）", () => {
@@ -85,25 +94,29 @@ describe("工作台集成 · 新建批次全链路（Topbar → 弹窗 → memor
     cleanup();
   });
 
-  it("创建批次后：成功 Toast + 队列出现新批次 + 路由 push 至 /workbench", async () => {
-    mountApp();
+  it(
+    "创建批次后：成功 Toast + 队列出现新批次 + 路由 push 至 /workbench",
+    async () => {
+      mountApp();
 
-    // 1. Topbar 快捷动作打开新建批次弹窗（动态分块异步加载，findBy 等待 chunk）
-    fireEvent.click(screen.getByText("新建批次"));
-    expect(await screen.findByText("创建新数字人生产批次")).toBeTruthy();
+      // 1. Topbar 快捷动作打开新建批次弹窗（动态分块异步加载，findBy 等待 chunk）
+      fireEvent.click(screen.getByText("新建批次"));
+      expect(await screen.findByText("创建新数字人生产批次", {}, { timeout: 10_000 })).toBeTruthy();
 
-    // 2. 填写批次任务名称（Input 组件 label htmlFor 关联）
-    fireEvent.change(screen.getByLabelText("批次任务名称"), {
-      target: { value: "回归测试批次-UI" },
-    });
+      // 2. 填写批次任务名称（Input 组件 label htmlFor 关联）
+      fireEvent.change(screen.getByLabelText("批次任务名称"), {
+        target: { value: "回归测试批次-UI" },
+      });
 
-    // 3. 提交 → 外壳编排：createBatch（真实仓储）→ 关弹窗 → 跳工作台 → 成功反馈
-    fireEvent.click(screen.getByRole("button", { name: "创建并立即启动五步流水线" }));
+      // 3. 提交 → 外壳编排：createBatch（真实仓储）→ 关弹窗 → 跳工作台 → 成功反馈
+      fireEvent.click(screen.getByRole("button", { name: "创建并立即启动五步流水线" }));
 
-    expect(screen.getByText(/新批次 BATCH-.*已创建并启动/)).toBeTruthy();
-    expect(screen.getByText("回归测试批次-UI")).toBeTruthy(); // 队列出现新条目
-    expect(pushSpy).toHaveBeenCalledWith(expect.stringContaining("workbench"));
-  });
+      expect(screen.getByText(/新批次 BATCH-.*已创建并启动/)).toBeTruthy();
+      expect(screen.getByText("回归测试批次-UI")).toBeTruthy(); // 队列出现新条目
+      expect(pushSpy).toHaveBeenCalledWith(expect.stringContaining("workbench"));
+    },
+    15_000,
+  );
 });
 
 describe("工作台集成 · 流水线执行控制（fake timers 推进 1s tick）", () => {
