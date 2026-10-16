@@ -36,6 +36,29 @@ export default defineConfig({
     setupFiles: ["./src/test/setup.ts"],
     css: false,
     include: ["src/**/*.{test,spec}.{ts,tsx}", "server/**/*.test.ts"],
+    // P5-1 覆盖率门禁：核心逻辑层（domains/adapters/kernel/app 逻辑面/server BFF）
+    // 参与统计；views/components 走门禁测试静态扫描，不纳入行覆盖口径；
+    // fixtures（纯数据夹具）与类型 barrel 不参与统计
+    coverage: {
+      provider: "v8",
+      include: [
+        "src/domains/**",
+        "src/adapters/**",
+        "src/kernel/**",
+        "src/app/usecases/**",
+        "src/app/composition.ts",
+        "src/app/useProductionData.ts",
+        "src/app/useOpsTelemetry.ts",
+        "server/**",
+      ],
+      exclude: ["src/adapters/memory/fixtures/**"],
+      thresholds: {
+        lines: 80,
+        functions: 80,
+        statements: 80,
+        branches: 75,
+      },
+    },
   },
 });
 

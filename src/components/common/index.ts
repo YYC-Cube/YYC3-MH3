@@ -27,6 +27,7 @@ export * from "./Tabs";
 export * from "./Modal";
 export * from "./Drawer";
 export * from "./Toast";
+export * from "./ErrorBoundary";
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

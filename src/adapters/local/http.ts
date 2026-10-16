@@ -13,10 +13,10 @@
  *
  * brief: local 适配器公共基座 — URL env 注入、3s 超时、404 业务空值、状态翻转留痕
  *
- * dependencies: ../../config, ../../types
+ * dependencies: ../../kernel/config, ../../types
  * exports: RegistryError, LocalAdapterOptions, resolveBaseUrl, createResilientGateway
  */
-import { APP_PORT } from "../../config";
+import { APP_PORT } from "../../kernel/config";
 import type { LogEntry } from "../../types";
 
 /** Registry 调用失败分类（06 契约 §2/§4） */

@@ -13,11 +13,11 @@
  *
  * brief: 种子 local 适配器 — GET /seeds + POST /seeds 供数/回写；getById 经列表消化（契约无 :id 端点）
  *
- * dependencies: ../../types, ../../domains/seed/ports, ../../domains/ops/ports, ../memory/seedRepository, ./http
+ * dependencies: ../../types, ../../domains/production/seed/ports, ../../domains/platform/telemetry/ports, ../memory/seedRepository, ./http
  * exports: LocalSeedOptions, createLocalSeedRepository
  */
-import type { SeedRepository } from "../../domains/seed/ports";
-import type { TelemetryPort } from "../../domains/ops/ports";
+import type { SeedRepository } from "../../domains/production/seed/ports";
+import type { TelemetryPort } from "../../domains/platform/telemetry/ports";
 import type { SeedItem } from "../../types";
 import { createMemorySeedRepository } from "../memory/seedRepository";
 import { createResilientGateway, makeTraceEntry, type LocalAdapterOptions } from "./http";

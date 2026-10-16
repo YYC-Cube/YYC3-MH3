@@ -13,16 +13,19 @@
  *
  * brief: 认证会话 Hook — 初始本地演示会话，login/bypass/logout 状态收敛
  *
- * dependencies: react, ../data/auth, ../types
+ * dependencies: react, ../adapters/memory/fixtures/auth, ../types
  * exports: useAuthSession
  */
 import { useState } from "react";
-import { INITIAL_DEMO_SESSION } from "../data/auth";
+import { INITIAL_DEMO_SESSION } from "../adapters/memory/fixtures/auth";
 import { AuthUser } from "../types";
 
 /** 认证会话状态机（演示语义：本地单用户，无网络认证依赖） */
 export function useAuthSession() {
-  const [currentUser, setCurrentUser] = useState<AuthUser | null>(INITIAL_DEMO_SESSION);
+  // 夹具顶层冻结：拷贝出可变副本引导（防就地污染）
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(() => ({
+    ...INITIAL_DEMO_SESSION,
+  }));
   const [isLoginViewOpen, setIsLoginViewOpen] = useState(false);
 
   /** 登录成功：写入会话并关闭登录视图 */

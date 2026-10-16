@@ -13,12 +13,12 @@
  *
  * brief: YYC³ 五步闭环流水线组件 — PipelineBar
  *
- * dependencies: react, ../../types, lucide-react
+ * dependencies: react, ../../types, lucide-react, ../../domains/production/pipeline
  * exports: PipelineBarProps, STAGES, PipelineBar
  */
 import { Activity, AlertCircle, BarChart2, CheckCircle2, Dna, Sparkles } from "lucide-react";
 import React from "react";
-import { getStageIndex } from "../../domains/pipeline";
+import { getStageIndex } from "../../domains/production/pipeline";
 import { PipelineStageKey } from "../../types";
 
 export interface PipelineBarProps {

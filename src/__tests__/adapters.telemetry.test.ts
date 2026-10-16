@@ -13,13 +13,18 @@
  *
  * brief: TelemetryPort 契约基线 — 05 Runbook 事件表消费语义逐项验证
  *
- * dependencies: vitest, ../app/composition, ../adapters/memory/telemetryRepository, ../data/ops, ../types
+ * dependencies: vitest, ../app/composition, ../adapters/memory/telemetryRepository, ../adapters/memory/fixtures/ops, ../types
  * exports: —
  */
 import { describe, expect, it } from "vitest";
 import { createMemoryTelemetry } from "../adapters/memory/telemetryRepository";
 import { createPorts } from "../app/composition";
-import { INITIAL_LOGS, OPS_METRICS, SERVICES_LIST, SYSTEM_ALARMS } from "../data/ops";
+import {
+  INITIAL_LOGS,
+  OPS_METRICS,
+  SERVICES_LIST,
+  SYSTEM_ALARMS,
+} from "../adapters/memory/fixtures/ops";
 import { LogEntry } from "../types";
 
 describe("TelemetryPort · memory 适配器", () => {

@@ -14,16 +14,16 @@
  *
  * brief: memory 快照适配器测试（断网默认数据通道的行为基线）
  *
- * dependencies: vitest, ../adapters/memory/*, ../app/composition, ../data/batch, ../data/seed, ../domains/seed
+ * dependencies: vitest, ../adapters/memory/*, ../app/composition, ../adapters/memory/fixtures/batch, ../adapters/memory/fixtures/seed, ../domains/production/seed
  * exports: —
  */
 import { describe, expect, it } from "vitest";
 import { createMemoryBatchRepository } from "../adapters/memory/batchRepository";
+import { INITIAL_BATCHES } from "../adapters/memory/fixtures/batch";
+import { INITIAL_SEEDS } from "../adapters/memory/fixtures/seed";
 import { createMemorySeedRepository } from "../adapters/memory/seedRepository";
 import { createPorts } from "../app/composition";
-import { INITIAL_BATCHES } from "../data/batch";
-import { INITIAL_SEEDS } from "../data/seed";
-import { createSeedFromAdoption } from "../domains/seed";
+import { createSeedFromAdoption } from "../domains/production/seed";
 
 /* ---------------- batch：快照读模型（契约 §2 #7） ---------------- */
 

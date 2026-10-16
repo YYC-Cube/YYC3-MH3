@@ -1,36 +1,35 @@
 /**
  * file: src/__tests__/boundary-guard.test.ts
- * description: 边界门禁 · 六域分层依赖静态检查（import 方向矩阵零越界）
+ * description: 边界门禁 · 六域分层依赖静态检查（import 方向矩阵零越界 + 同层跨域禁引）
  * author: YanYuCloudCube Team
- * version: v1.0.0
- * created: 2026-10-12
- * updated: 2026-10-12
+ * version: v1.1.0
+ * created: 2026-10-16
+ * updated: 2026-10-16
  * status: active
  * tags: [test],[guard],[boundary],[architecture],[yyc3]
  *
  * copyright: YanYuCloudCube Team
  * license: MIT
  *
- * brief: 架构分层门禁（PR-8 固化，offline-guard 同型持久闸门）：
- *       依赖方向必须自上而下单向 —— 叶层（types/config）零内部依赖，
- *       domains/data 仅依赖 types，adapters 可及 domains/data，
+ * brief: 架构分层门禁（offline-guard 同型持久闸门）：
+ *       依赖方向必须自上而下单向 —— 叶层（types/kernel）零内部依赖，
+ *       domains/data 仅依赖 types(+kernel)，adapters 可及 domains/data，
  *       components/views 不得触达 adapters/app，app 为组合根唯一 DI 点（06 §4）。
- *       越界 import（含动态 import 与 re-export）一律拦截。
+ *       越界 import（含动态 import 与 re-export）、以及 domains/A → domains/B
+ *       的同层跨域引用一律拦截。
  *
  *       分层矩阵（键 = 所在层，值 = 允许引用的内部层；同层互引天然放行）：
- *         types      → —                          （叶：类型契约）
- *         config     → types                      （叶：常量配置 + 路由映射，仅类型契约引用）
- *         domains    → types                      （纯域函数 + 出站端口）
- *         data       → types                      （静态演示快照）
- *         adapters   → types + domains + data + config（memory 适配器；config 为 local 适配器演进预留）
- *         components → types + domains + data + config（UI 区块，禁触 adapters/app/views）
- *         views      → components 及以下            （页面编排壳，禁触 adapters/app）
- *         app        → 全下层层 + adapters + views （路由层挂载视图 + hooks 装配 + 组合根）
+ *         types      → —                                 （叶：类型契约 barrel）
+ *         kernel     → types                             （叶：常量配置 + 路由映射）
+ *         domains    → types + kernel                    （纯域函数 + 出站端口）
+ *         data       → types                             （静态演示快照）
+ *         adapters   → types + kernel + domains + data   （memory/local 适配器）
+ *         components → types + kernel + domains + data   （UI 区块，禁触 adapters/app/views）
+ *         views      → components 及以下                 （页面编排壳，禁触 adapters/app）
+ *         app        → 全内部层 + adapters + views       （路由层挂载视图 + hooks 装配 + 组合根）
  *
- *       Next 16 P3 演进（05 清单 §4.3）：app 层由「hooks 装配 + 组合根」演进为
- *       「路由层 + hooks 装配 + 组合根」—— 路由 page.tsx 挂载 views 属 App Router
- *       架构必然，矩阵放行 app → views；根入口 App.tsx 已退役，P1 迁移期白名单
- *       （app → 根入口）随之移除，恢复全量严格扫描。
+ *       域隔离铁律（roadmap §1.3）：domains/<域> 只依赖 kernel(types) 与本域，
+ *       禁止直接引用其他 domains/<域>（跨域协作走 types 契约或平台事件端口）。
  *
  * dependencies: node:fs, node:path, vitest
  * exports: —
@@ -43,9 +42,10 @@ const SRC_ROOT = path.resolve(__dirname, ".."); // …/src
 const PROJECT_ROOT = path.dirname(SRC_ROOT);
 const SCAN_EXT = /\.(ts|tsx)$/;
 
-/** 分层根目录（目录层；config 为单文件叶） */
+/** 分层根目录（目录层；kernel/config 为 kernel 层内单文件叶） */
 const LAYER_DIRS: Readonly<Record<string, string>> = {
   types: "types",
+  kernel: "kernel",
   domains: "domains",
   data: "data",
   adapters: "adapters",
@@ -53,19 +53,30 @@ const LAYER_DIRS: Readonly<Record<string, string>> = {
   views: "views",
   app: "app",
 };
-const CONFIG_LEAF = path.join(SRC_ROOT, "config.ts");
+const CONFIG_LEAF = path.join(SRC_ROOT, "kernel", "config.ts");
+
+/** 六域根名（src/domains/<域>/** 归属判定；非六域命名的 domains 内文件归 "domains" 根） */
+const DOMAIN_ROOTS: readonly string[] = [
+  "production",
+  "platform",
+  "ai",
+  "admin",
+  "editing",
+  "distribution",
+];
+const DOMAINS_DIR = path.join(SRC_ROOT, "domains");
 
 /** 依赖方向矩阵：键 = 所在层，值 = 允许引用的内部层（跨层方向铁律，同层放行） */
 const ALLOWED: Readonly<Record<string, readonly string[]>> = {
   types: [],
-  // P3：路由映射常量入 config（NavTabId ↔ href），config → types 为纯类型契约引用（无环，安全）
-  config: ["types"],
-  domains: ["types"],
+  // kernel：路由映射常量 + 端口注入（NavTabId ↔ href），仅引用 types 契约（无环，安全）
+  kernel: ["types"],
+  domains: ["types", "kernel"],
   data: ["types"],
-  adapters: ["types", "domains", "data", "config"],
-  components: ["types", "domains", "data", "config"],
-  views: ["types", "domains", "data", "config", "components"],
-  app: ["types", "domains", "data", "config", "components", "adapters", "views"],
+  adapters: ["types", "kernel", "domains", "data"],
+  components: ["types", "kernel", "domains", "data"],
+  views: ["types", "kernel", "domains", "data", "components"],
+  app: ["types", "kernel", "domains", "data", "components", "adapters", "views"],
 };
 
 /** 判定单条依赖边是否越界（纯函数，供检测器自证用例） */
@@ -87,10 +98,26 @@ function resolveCandidates(absPath: string): string[] {
 /** 按路径解析所在层；未纳入分层的内部文件返回 null */
 function layerOf(absPath: string): string | null {
   for (const cand of resolveCandidates(absPath)) {
-    if (cand === CONFIG_LEAF) return "config";
+    if (cand === CONFIG_LEAF) return "kernel";
     for (const [layer, dir] of Object.entries(LAYER_DIRS)) {
       const root = path.join(SRC_ROOT, dir);
       if (cand === root || cand.startsWith(root + path.sep)) return layer;
+    }
+  }
+  return null;
+}
+
+/**
+ * 解析 domains 内文件的归属域：
+ * 命中六域根之一返回其名；domains 内非六域命名文件返回 "domains"；域外返回 null。
+ */
+function domainOf(absPath: string): string | null {
+  for (const cand of resolveCandidates(absPath)) {
+    if (cand === DOMAINS_DIR || cand.startsWith(DOMAINS_DIR + path.sep)) {
+      const rel = path.relative(DOMAINS_DIR, cand);
+      const seg = rel.split(path.sep)[0];
+      if (seg && DOMAIN_ROOTS.includes(seg)) return seg;
+      return "domains";
     }
   }
   return null;
@@ -113,7 +140,7 @@ const STATIC_RE = /^\s*(?:import|export)\b[^;]*?from\s*["'](\.[^"']+)["']/gm;
 const DYNAMIC_RE = /\bimport\s*\(\s*["'](\.[^"']+)["']\s*\)/g;
 
 function extractInternalSpecs(content: string): string[] {
-  // 捕获组索引经 noUncheckedIndexedAccess 推断可空，静态正则组恒存在（PR-2 既有约定：非空断言 + 中文注释）
+  // 捕获组索引经 noUncheckedIndexedAccess 推断可空，静态正则组恒存在（既有约定：非空断言 + 中文注释）
   const capture = (m: RegExpMatchArray): string => m[1] as string;
   return [
     ...[...content.matchAll(STATIC_RE)].map(capture),
@@ -126,10 +153,10 @@ describe("[boundary-guard] 六域分层 · 依赖方向零越界", () => {
   const layeredFiles = allFiles
     .map((f) => ({ file: f, layer: layerOf(f) }))
     .filter((x): x is { file: string; layer: string } => x.layer !== null);
+  const domainFiles = layeredFiles.filter((x) => x.layer === "domains");
 
   it("矩阵完备性：允许集与分层键一一对应（防新层遗漏失察）", () => {
-    const expected = [...Object.keys(LAYER_DIRS), "config"].sort();
-    expect(Object.keys(ALLOWED).sort()).toEqual(expected);
+    expect(Object.keys(ALLOWED).sort()).toEqual([...Object.keys(LAYER_DIRS)].sort());
   });
 
   it("检测器自证：样例边判定方向正确（防矩阵写反全禁或全放）", () => {
@@ -139,10 +166,14 @@ describe("[boundary-guard] 六域分层 · 依赖方向零越界", () => {
     expect(isEdgeViolation("components", "views")).toBe(true);
     expect(isEdgeViolation("views", "app")).toBe(true);
     expect(isEdgeViolation("data", "domains")).toBe(true);
+    // 违规样例：kernel 叶层反向依赖
+    expect(isEdgeViolation("kernel", "domains")).toBe(true);
+    expect(isEdgeViolation("types", "kernel")).toBe(true);
     // 合法样例：自上而下单向依赖与同层互引
     expect(isEdgeViolation("app", "adapters")).toBe(false);
     expect(isEdgeViolation("views", "components")).toBe(false);
     expect(isEdgeViolation("adapters", "domains")).toBe(false);
+    expect(isEdgeViolation("domains", "kernel")).toBe(false);
     expect(isEdgeViolation("components", "components")).toBe(false);
   });
 
@@ -153,6 +184,13 @@ describe("[boundary-guard] 六域分层 · 依赖方向零越界", () => {
       0,
     );
     expect(edgeCount).toBeGreaterThan(50);
+  });
+
+  it("六域齐备：production/platform/ai/admin/editing/distribution 均有归属文件", () => {
+    const detected = new Set(domainFiles.map((x) => domainOf(x.file)));
+    for (const root of DOMAIN_ROOTS) {
+      expect(detected.has(root), `缺失域根：${root}`).toBe(true);
+    }
   });
 
   it("跨层 import 全量零越界（矩阵外方向一律拦截）", () => {
@@ -180,10 +218,31 @@ describe("[boundary-guard] 六域分层 · 依赖方向零越界", () => {
       ["分层依赖越界（架构红线，见 docs/06 §4 组合根唯一 DI 点）：", ...violations].join("\n"),
     ).toEqual([]);
   });
+
+  it("同层跨域禁引：domains/A 不得 import domains/B（A≠B，roadmap §1.3）", () => {
+    const violations: string[] = [];
+    for (const { file } of domainFiles) {
+      const fromDomain = domainOf(file);
+      const content = fs.readFileSync(file, "utf8");
+      for (const spec of extractInternalSpecs(content)) {
+        const resolved = path.resolve(path.dirname(file), spec);
+        const toDomain = domainOf(resolved);
+        if (fromDomain && toDomain && fromDomain !== toDomain) {
+          violations.push(
+            `${path.relative(PROJECT_ROOT, file)}: ${spec} → ${fromDomain} ⇒ ${toDomain} 跨域违规（跨域协作走 types 契约或平台事件端口）`,
+          );
+        }
+      }
+    }
+    expect(
+      violations,
+      ["同层跨域引用违规（域隔离红线，见 roadmap §1.3）：", ...violations].join("\n"),
+    ).toEqual([]);
+  });
 });
 
 /* --------------------------------------------------------------
- * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元
+ * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 · 深栈智启新纪元
  * Words Initiate Quadrants, Language Serves as Core for Future
  * © 2025-2026 YanYuCloudCube Team. All Rights Reserved.
  * -------------------------------------------------------------- */

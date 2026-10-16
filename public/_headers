@@ -1,0 +1,14 @@
+# YYC³-MH3 · 部署层安全响应头（P5-3 补齐：meta 通道无法下发的指令在此承接）
+#
+# 生效范围：Cloudflare Pages / Netlify 原生支持本文件；Nginx 等自托管请将下列
+# 指令转录为 add_header 配置（见 docs/03-总结文档「部署注意事项」）。
+#
+# frame-ancestors 'none' + X-Frame-Options: DENY：
+#   应用为本地生产线控制台（robots noindex，数据 100% 本地），禁止任何跨源
+#   iframe 嵌入以防点击劫持。页面 meta CSP（layout.tsx）无法下发
+#   frame-ancestors（浏览器在 meta 中忽略该指令），故必须由响应头承接。
+/*
+  Content-Security-Policy: frame-ancestors 'none'
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer

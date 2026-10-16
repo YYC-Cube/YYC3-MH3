@@ -49,6 +49,10 @@
     "start": "next start -p 3031",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "e2e:setup": "python3 -m venv .venv && .venv/bin/pip install -q -r scripts/e2e/requirements.txt && .venv/bin/python -m playwright install chromium",
+    "test:e2e": "pnpm build && ./.venv/bin/python scripts/e2e/smoke.py",
+    "check:size": "node scripts/check-bundle-size.mjs",
     "typecheck": "tsc --noEmit",
     "format": "oxfmt",
     "format:check": "oxfmt --check ."
@@ -71,6 +75,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^6.0.0",
+    "@vitest/coverage-v8": "5.0.3",
     "jsdom": "^30.1.2",
     "oxfmt": "^0.73.0",
     "tailwindcss": "^4.0.0",

@@ -13,11 +13,11 @@
  *
  * brief: 批次 local 适配器 — GET /batches(+:id) 供数，404 业务空值，失败降级 memory（06 §2 #7）
  *
- * dependencies: ../../types, ../../domains/batch/ports, ../../domains/ops/ports, ../memory/batchRepository, ./http
+ * dependencies: ../../types, ../../domains/production/batch/ports, ../../domains/platform/telemetry/ports, ../memory/batchRepository, ./http
  * exports: LocalBatchOptions, createLocalBatchRepository
  */
-import type { BatchRepository } from "../../domains/batch/ports";
-import type { TelemetryPort } from "../../domains/ops/ports";
+import type { TelemetryPort } from "../../domains/platform/telemetry/ports";
+import type { BatchRepository } from "../../domains/production/batch/ports";
 import type { BatchItem } from "../../types";
 import { createMemoryBatchRepository } from "../memory/batchRepository";
 import {

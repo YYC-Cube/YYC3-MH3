@@ -13,14 +13,14 @@
  *
  * brief: YYC³ 冒烟测试用例
  *
- * dependencies: vitest, ../components/pipeline/PipelineBar, ../data/agent, ../data/batch, ../data/seed, ../data/yyc3Data
+ * dependencies: vitest, ../components/pipeline/PipelineBar, ../data/agent, ../adapters/memory/fixtures/batch, ../adapters/memory/fixtures/seed, ../data/yyc3Data
  * exports: —
  */
 import { describe, expect, it } from "vitest";
 import { STAGES } from "../components/pipeline/PipelineBar";
 import { AGENT_NODES } from "../data/agent";
-import { INITIAL_BATCHES } from "../data/batch";
-import { INITIAL_SEEDS } from "../data/seed";
+import { INITIAL_BATCHES } from "../adapters/memory/fixtures/batch";
+import { INITIAL_SEEDS } from "../adapters/memory/fixtures/seed";
 import { YYC3_MEMBERS } from "../data/yyc3Data";
 
 describe("领域数据不变量冒烟", () => {

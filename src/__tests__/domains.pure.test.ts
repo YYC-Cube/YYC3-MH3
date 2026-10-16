@@ -2,9 +2,9 @@
  * file: src/__tests__/domains.pure.test.ts
  * description: 领域层纯函数单元测试 — pipeline/batch/seed/quality 规则与边界
  * author: YanYuCloudCube Team
- * version: v1.0.0
+ * version: v1.1.0
  * created: 2026-10-12
- * updated: 2026-10-12
+ * updated: 2026-10-16
  * status: active
  * tags: [test],[domain],[pure]
  * category: test
@@ -14,20 +14,35 @@
  *
  * brief: 领域层纯函数单元测试（先于视图迁移建立规则基线）
  *
- * dependencies: vitest, ../domains/*
+ * dependencies: vitest, ../domains/production/*
  * exports: —
  */
 import { describe, expect, it } from "vitest";
-import { createBatchId, createBatchItem, findCurrentBatch } from "../domains/batch";
+import { createBatchId, createBatchItem, findCurrentBatch } from "../domains/production/batch";
 import {
+  DEFAULT_NEGATIVE_PROMPT,
+  GOLDEN_BASELINE_NOTICE,
+  GOLDEN_BASELINE_V2,
+  PIPELINE_COMPLETION_NOTICE,
   PIPELINE_STAGE_ORDER,
   advancePipeline,
+  executionRequestLogEntry,
   getNextStage,
   getStageIndex,
+  resetProgressIfComplete,
+  rollbackToGoldenBaseline,
+  runStartNotice,
   stageForProgress,
-} from "../domains/pipeline";
-import { averageDimensionScore } from "../domains/quality";
-import { createSeedFromAdoption, generateSeedNumber } from "../domains/seed";
+  templateLoadedNotice,
+} from "../domains/production/pipeline";
+import { DEFAULT_DEFECT_CHECKS, averageDimensionScore } from "../domains/production/quality";
+import {
+  ADOPTION_NOTICE,
+  adoptionSeedDraft,
+  createSeedFromAdoption,
+  generateSeedNumber,
+  randomSeedNotice,
+} from "../domains/production/seed";
 import { BatchItem } from "../types";
 
 /* ---------------- pipeline：五步闭环流水线 ---------------- */
@@ -101,6 +116,78 @@ describe("domains/pipeline", () => {
       stage: "seed_iter",
       completed: true,
     });
+  });
+});
+
+/* ---------------- pipeline：执行留痕 / 完机通知 / 重启归零（P1-3 上移） ---------------- */
+
+describe("domains/pipeline · 执行留痕与完机规则", () => {
+  it("executionRequestLogEntry 以生成引擎口径构造 info 留痕（文案逐字）", () => {
+    const entry = executionRequestLogEntry(
+      { steps: 30, guidanceScale: 7.5, seedNumber: 81923011 },
+      { id: "LOG-42", timestamp: "10:00:00" },
+    );
+    expect(entry).toEqual({
+      id: "LOG-42",
+      timestamp: "10:00:00",
+      level: "info",
+      stage: "生成引擎",
+      message: "[DiffSynth] 接收到执行请求，参数：Steps=30, CFG=7.5, Seed=81923011",
+    });
+  });
+
+  it("executionRequestLogEntry 为纯函数：时钟字段全由入参注入，两次调用同参同果", () => {
+    const a = executionRequestLogEntry(
+      { steps: 32, guidanceScale: 7.2, seedNumber: 1 },
+      { id: "X", timestamp: "T" },
+    );
+    const b = executionRequestLogEntry(
+      { steps: 32, guidanceScale: 7.2, seedNumber: 1 },
+      { id: "X", timestamp: "T" },
+    );
+    expect(a).toEqual(b);
+  });
+
+  it("PIPELINE_COMPLETION_NOTICE 完机文案双字段齐备", () => {
+    expect(PIPELINE_COMPLETION_NOTICE.title).toBe("五步闭环流水线生成完毕");
+    expect(PIPELINE_COMPLETION_NOTICE.detail).toBe("已自动聚合多维评分，等待人工质检验收");
+  });
+
+  it("resetProgressIfComplete 满进度归零、未满原地续跑", () => {
+    expect(resetProgressIfComplete(0)).toBe(0);
+    expect(resetProgressIfComplete(68)).toBe(68);
+    expect(resetProgressIfComplete(99)).toBe(99);
+    expect(resetProgressIfComplete(100)).toBe(0);
+    expect(resetProgressIfComplete(105)).toBe(0);
+  });
+
+  it("runStartNotice 启动批次文案逐字（标题 + Seed 约束副标）", () => {
+    const notice = runStartNotice(48920194);
+    expect(notice.title).toBe("启动生成批次");
+    expect(notice.detail).toBe("采用 Seed #48920194 进行五步闭环生产");
+  });
+
+  it("templateLoadedNotice 模板载入文案逐字", () => {
+    expect(templateLoadedNotice("电影感口型 v3")).toBe("已载入模板: 电影感口型 v3");
+  });
+
+  it("rollbackToGoldenBaseline 返回 v2.0 黄金基线参数且为可变浅拷贝", () => {
+    const baseline = rollbackToGoldenBaseline();
+    expect(baseline).toEqual({ steps: 32, guidanceScale: 7.2 });
+    expect(baseline).toEqual(GOLDEN_BASELINE_V2);
+    // 拷贝非冻结：调用方可直接落 setState，不受 as const 常量锁定影响
+    expect(Object.isFrozen(baseline)).toBe(false);
+    expect(Object.isFrozen(GOLDEN_BASELINE_V2)).toBe(false);
+  });
+
+  it("GOLDEN_BASELINE_NOTICE 回滚成功文案逐字", () => {
+    expect(GOLDEN_BASELINE_NOTICE.title).toBe("已回滚到 v2.0 黄金基线参数");
+  });
+
+  it("DEFAULT_NEGATIVE_PROMPT 负面提示词基线含六类缺陷排除项", () => {
+    expect(DEFAULT_NEGATIVE_PROMPT).toBe(
+      "blurry, deformed mouth, low resolution, bad teeth alignment, unnatural eye movement, flickering hair",
+    );
   });
 });
 
@@ -233,6 +320,51 @@ describe("domains/seed", () => {
     expect(seed.params.guidanceScale).toBe(7.5);
     expect(seed.params.steps).toBe(30);
   });
+
+  it("adoptionSeedDraft 以批次上下文构造回写草稿（名称截断 8 字符 + S 级 + 参数补全）", () => {
+    const draft = adoptionSeedDraft({
+      seedNumber: 48920194,
+      batchName: "金融早报数字人-主播04号-4K超分",
+      batchScore: 94.6,
+      mode: "Ref2VA",
+      params: { guidanceScale: 7.5, steps: 30, denoiseStrength: 0.65 },
+    });
+    expect(draft.seedNumber).toBe(48920194);
+    expect(draft.name).toBe("金融早报数字人--优质基因回写"); // 前 8 字符末位即连字符
+    expect(draft.tier).toBe("S");
+    expect(draft.avgScore).toBe(94.6);
+    expect(draft.tags).toEqual(["人工复核通过", "口型S级", "Ref2VA基线"]);
+    expect(draft.params).toEqual({
+      guidanceScale: 7.5,
+      steps: 30,
+      denoiseStrength: 0.65,
+      motionScale: 1.05,
+      cfgLipSync: 8.8,
+    });
+  });
+
+  it("adoptionSeedDraft 零分批次回退演示基线 95.2", () => {
+    const draft = adoptionSeedDraft({
+      seedNumber: 1,
+      batchName: "ab",
+      batchScore: 0,
+      mode: "FL2VA",
+      params: { guidanceScale: 7, steps: 28, denoiseStrength: 0.6 },
+    });
+    expect(draft.avgScore).toBe(95.2);
+    expect(draft.tags).toEqual(["人工复核通过", "口型S级", "FL2VA基线"]);
+  });
+
+  it("ADOPTION_NOTICE 回写成功通知文案齐备", () => {
+    expect(ADOPTION_NOTICE.title).toBe("优质 Seed 成功回写种子库！");
+    expect(ADOPTION_NOTICE.detail).toBe("已作为基线沉淀，可随时发起衍生变异。");
+  });
+
+  it("randomSeedNotice 探索 Seed 重摇文案逐字", () => {
+    const notice = randomSeedNotice(81923011);
+    expect(notice.title).toBe("已生成全新探索 Seed");
+    expect(notice.detail).toBe("Seed: #81923011");
+  });
 });
 
 /* ---------------- quality：质量评分 ---------------- */
@@ -261,5 +393,15 @@ describe("domains/quality", () => {
     };
     const radarLike: { score: number }[] = [radarDim];
     expect(averageDimensionScore(radarLike)).toBe(90);
+  });
+
+  it("DEFAULT_DEFECT_CHECKS 四项缺陷基线全通过且顶层冻结", () => {
+    expect(DEFAULT_DEFECT_CHECKS).toEqual({
+      lipSyncAccurate: true,
+      microExpressionNatural: true,
+      noTemporalFlicker: true,
+      edgeSharpened: true,
+    });
+    expect(Object.isFrozen(DEFAULT_DEFECT_CHECKS)).toBe(true);
   });
 });

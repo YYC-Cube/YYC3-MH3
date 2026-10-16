@@ -170,12 +170,12 @@ pnpm start
 
 ### 在线访问与自动部署 🚢
 
-| 通道 | 地址 | 说明 |
-| --- | --- | --- |
-| **在线站点** | <https://mh3.yyc3.top> | GitHub Pages · 自定义域（CNAME 已入库，域名校验 verified） |
-| **代码仓库** | <https://github.com/YYC-Cube/YYC3-MH3> | Issue / PR / Releases |
-| **CI 质检** | [workflows/ci.yml](.github/workflows/ci.yml) | 推送/PR main → 格式 + 类型 + 118 用例测试 + 双基座构建冒烟 |
-| **CD 部署** | [workflows/deploy.yml](.github/workflows/deploy.yml) | 推送 main → Next 静态导出并部署 Pages（`build_type=workflow`） |
+| 通道　　　　 | 地址　　　　　　　　　　　　　　　　　　　　　　　　 | 说明　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 |
+| --------------| ------------------------------------------------------| ----------------------------------------------------------------|
+| **在线站点** | <https://mh3.yyc3.top>　　　　　　　　　　　　　　　 | GitHub Pages · 自定义域（CNAME 已入库，域名校验 verified）　　 |
+| **代码仓库** | <https://github.com/YYC-Cube/YYC3-MH3>　　　　　　　 | Issue / PR / Releases　　　　　　　　　　　　　　　　　　　　　|
+| **CI 质检**　| [workflows/ci.yml](.github/workflows/ci.yml)　　　　 | 推送/PR main → 格式 + 类型 + 118 用例测试 + 双基座构建冒烟　　 |
+| **CD 部署**　| [workflows/deploy.yml](.github/workflows/deploy.yml) | 推送 main → Next 静态导出并部署 Pages（`build_type=workflow`） |
 
 > 部署链：`configure-pages`（动态注入 `BASE_PATH`/`NEXT_PUBLIC_BASE_PATH`，自定义域/子路径双兼容）→ `next build`（`output: "export"` → `out/`）→ `upload-pages-artifact` → `deploy-pages`。产物含 `CNAME`（mh3.yyc3.top）/ `robots.txt` / `sw.js` / `manifest.webmanifest`，Pages 构建源为 **GitHub Actions**。
 

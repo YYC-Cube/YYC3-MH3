@@ -28,6 +28,7 @@ import { usePathname } from "next/navigation";
 import { lazy, Suspense } from "react";
 
 import { NewBatchModal } from "../components/batch/NewBatchModal";
+import { ErrorBoundary } from "../components/common/ErrorBoundary";
 import { ToastContainer } from "../components/common/Toast";
 import { ViewFallback } from "../components/common/ViewFallback";
 import { GlobalSearchModal } from "../components/navigation/GlobalSearchModal";
@@ -36,7 +37,7 @@ import { StatusBar } from "../components/navigation/StatusBar";
 import { Topbar } from "../components/navigation/Topbar";
 import { YYC3FamilyModal } from "../components/yyc3/YYC3FamilyModal";
 import { YYC3FloatingTrigger } from "../components/yyc3/YYC3FloatingTrigger";
-import { tabFromPathname } from "../config";
+import { tabFromPathname } from "../kernel/config";
 import { NewBatchDraft } from "../types";
 import {
   useAuthContext,
@@ -44,6 +45,7 @@ import {
   useToastContext,
   useUIShellContext,
 } from "./contexts";
+import { reportClientError } from "./error-sink";
 import { useAppNavigate } from "./navigation";
 import { useKeyboardShortcuts } from "./useKeyboardShortcuts";
 
@@ -79,17 +81,24 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     showToast("success", `新批次 ${created.id} 已创建并启动`, "已直接载入流水线工作台中栏");
   };
 
+  /** 渲染错误兜底：子树渲染异常经应用层 sink 留痕（P0 可观测最小闭环） */
+  const withErrorBoundary = (node: React.ReactNode) => (
+    <ErrorBoundary onError={(error) => reportClientError(error.message, "React 渲染错误")}>
+      {node}
+    </ErrorBoundary>
+  );
+
   // If in Login view or not authenticated
   if (isLoginViewOpen || !currentUser) {
-    return (
+    return withErrorBoundary(
       <Suspense fallback={<ViewFallback />}>
         <LoginView onLoginSuccess={login} onPreviewBypass={bypassLogin} onShowToast={showToast} />
         <ToastContainer toasts={toasts} onDismiss={dismissToast} />
-      </Suspense>
+      </Suspense>,
     );
   }
 
-  return (
+  return withErrorBoundary(
     <div className="flex h-screen w-screen overflow-hidden bg-[#0a1628] text-[#e8f0f8] font-sans antialiased flex-col">
       <div className="flex-1 flex overflow-hidden">
         {/* Sidebar Navigation（激活态：usePathname 路由事实源） */}
@@ -161,7 +170,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         onClose={ui.closeNewBatchModal}
         onSubmit={handleCreateNewBatch}
       />
-    </div>
+    </div>,
   );
 }
 

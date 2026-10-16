@@ -2,39 +2,48 @@
  * file: src/views/SettingsView.tsx
  * description: YYC³ 功能视图 — SettingsView
  * author: YanYuCloudCube Team
- * version: v1.0.1
+ * version: v1.1.0
  * created: 2026-10-11
- * updated: 2026-10-11
+ * updated: 2026-10-16
  * status: active
  * tags: [component],[view],[yyc3]
  *
  * copyright: YanYuCloudCube Team
  * license: MIT
  *
- * brief: YYC³ 功能视图 — SettingsView
+ * brief: YYC³ 功能视图 — SettingsView（P4-3 增补「数据主权」页签：导出/导入
+ *        分区经 dataPortability props 注入，views 零 app/adapters 依赖）
  *
- * dependencies: react, lucide-react, ../components/common, ../types
+ * dependencies: react, lucide-react, ../components/common, ../types, ./SettingsView/parts/SettingsDataSection
  * exports: SettingsCategory, SETTINGS_TABS, SettingsViewProps, SettingsView
  */
 import { CheckCircle2, RotateCcw } from "lucide-react";
 import React, { useState } from "react";
 import { Badge, Button, Card, Input, Slider, Switch } from "../components/common";
+import { ImportResult } from "../types";
+import { SettingsDataSection } from "./SettingsView/parts/SettingsDataSection";
 
 /** 设置中心分类页签 ID */
-export type SettingsCategory = "perf" | "paths" | "hotkeys" | "appearance";
+export type SettingsCategory = "perf" | "paths" | "hotkeys" | "appearance" | "data";
 
 const SETTINGS_TABS: { id: SettingsCategory; label: string }[] = [
   { id: "hotkeys", label: "全局快捷键速查表 (Hotkeys)" },
   { id: "perf", label: "算力与 VRAM 显存配置" },
   { id: "paths", label: "本地存储与模型路径" },
   { id: "appearance", label: "深色科技外观质感" },
+  { id: "data", label: "数据主权（本地持久化）" },
 ];
 
 export interface SettingsViewProps {
   onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
+  /** P4-3 数据主权通道（app 层装配注入；缺省时隐藏该页签内容，诚实降级） */
+  dataPortability?: {
+    exportAll: () => Promise<string>;
+    importAll: (json: string) => Promise<ImportResult>;
+  };
 }
 
-export const SettingsView: React.FC<SettingsViewProps> = ({ onShowToast }) => {
+export const SettingsView: React.FC<SettingsViewProps> = ({ onShowToast, dataPortability }) => {
   const [activeCategory, setActiveCategory] = useState<SettingsCategory>("hotkeys");
 
   // Form states
@@ -74,7 +83,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onShowToast }) => {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => onShowToast("success", "全局配置已持久化至本地 IndexedDB")}
+            onClick={() => onShowToast("success", "全局配置已应用于本次会话（刷新即重置）")}
           >
             保存配置
           </Button>
@@ -238,6 +247,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onShowToast }) => {
             </div>
           </div>
         </Card>
+      )}
+
+      {/* TAB 5: Data Sovereignty（P4-3：通道经 props 注入，未装配时诚实留空） */}
+      {activeCategory === "data" && dataPortability && (
+        <SettingsDataSection dataPortability={dataPortability} onShowToast={onShowToast} />
       )}
     </div>
   );

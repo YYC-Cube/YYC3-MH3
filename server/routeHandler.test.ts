@@ -20,7 +20,7 @@
  * exports: —
  */
 import { describe, expect, it } from "vitest";
-import { SYSTEM_ALARMS } from "../src/data/ops";
+import { SYSTEM_ALARMS } from "../src/adapters/memory/fixtures/ops";
 import { handleWebRequest } from "./routeHandler";
 
 const LOOPBACK = "http://127.0.0.1:3031";

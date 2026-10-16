@@ -14,7 +14,7 @@
  *
  * brief: local 适配器契约测试 — 正常供数/网络错/非2xx/超时降级回退 memory + 降级/恢复留痕断言
  *
- * dependencies: vitest, ../adapters/local/*, ../adapters/memory/*, ../data/*, ../types
+ * dependencies: vitest, ../adapters/local/*, ../adapters/memory/*, ../adapters/memory/fixtures/*, ../types
  * exports: —
  */
 import { describe, expect, it, vi } from "vitest";
@@ -24,9 +24,9 @@ import { createLocalSeedRepository } from "../adapters/local/seedRepository";
 import { createLocalTelemetry } from "../adapters/local/telemetryRepository";
 import { createMemorySeedRepository } from "../adapters/memory/seedRepository";
 import { createMemoryTelemetry } from "../adapters/memory/telemetryRepository";
-import { INITIAL_BATCHES } from "../data/batch";
-import { SERVICES_LIST, SYSTEM_ALARMS } from "../data/ops";
-import { INITIAL_SEEDS } from "../data/seed";
+import { INITIAL_BATCHES } from "../adapters/memory/fixtures/batch";
+import { SERVICES_LIST, SYSTEM_ALARMS } from "../adapters/memory/fixtures/ops";
+import { INITIAL_SEEDS } from "../adapters/memory/fixtures/seed";
 import type { BatchItem, LogEntry, SeedItem, ServiceStatus } from "../types";
 
 /** 供数固定基址（显式注入，隔离 env 缺省） */

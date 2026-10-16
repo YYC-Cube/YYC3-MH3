@@ -13,12 +13,12 @@
  *
  * brief: 系统配置 — 端口地址经 config 单源注入（零硬编码）
  *
- * dependencies: react, lucide-react, ../common, ../../config, ../../types
+ * dependencies: react, lucide-react, ../common, ../../kernel/config, ../../types
  * exports: ConfigModuleProps, ConfigModule
  */
-import { Badge, Button, Card, Input } from "../common";
-import { APP_PORT } from "../../config";
+import { APP_PORT } from "../../kernel/config";
 import { ShowToast } from "../../types";
+import { Badge, Button, Card, Input } from "../common";
 
 export interface ConfigModuleProps {
   onShowToast: ShowToast;

@@ -1,10 +1,10 @@
 /**
  * file: src/app/useOpsTelemetry.ts
- * description: YYC³ 应用层 — 遥测数据 Hook（四事件表状态 + 组合根端口消费）
+ * description: YYC³ 应用层 — 遥测数据 Hook（四事件表状态 + 组合根端口消费 + 持久化留痕）
  * author: YanYuCloudCube Team
- * version: v1.1.0
+ * version: v1.2.0
  * created: 2026-10-12
- * updated: 2026-10-12
+ * updated: 2026-10-16
  * status: active
  * tags: [app],[hook],[telemetry]
  *
@@ -12,15 +12,32 @@
  * license: MIT
  *
  * brief: 遥测 Hook — 同步快照引导（零闪烁）+ 挂载后经 TelemetryPort 端口水合
- *        + resolveAlarm 处置写路径透传（06 契约 §2 #5）
+ *        （P4-2：IDB 模式下整体替换为落盘真值，处置/留痕跨刷新存活）
+ *        + resolveAlarm 处置写路径透传（06 契约 §2 #5）；端口失败不阻塞 UI，
+ *        console.warn + reportClientError 同级留痕
  *
- * dependencies: react, ../data/ops, ./composition, ../types
+ * dependencies: react, ../adapters/memory/fixtures/ops, ./composition, ./error-sink, ../types
  * exports: useOpsTelemetry
  */
 import { useEffect, useMemo, useState } from "react";
-import { INITIAL_LOGS, OPS_METRICS, SERVICES_LIST, SYSTEM_ALARMS } from "../data/ops";
+import {
+  INITIAL_LOGS,
+  OPS_METRICS,
+  SERVICES_LIST,
+  SYSTEM_ALARMS,
+} from "../adapters/memory/fixtures/ops";
 import { AlarmItem, LogEntry, OpsMetric, ServiceStatus } from "../types";
 import { getPorts } from "./composition";
+import { reportClientError } from "./error-sink";
+
+/** 端口读写失败留痕：不阻塞 UI —— console.warn + 客户端错误 sink 同级留痕 */
+function tracePortFailure(scope: string, err: unknown): void {
+  console.warn(`[useOpsTelemetry] 端口操作失败（${scope}），保留内存态继续运行`, err);
+  reportClientError(
+    `遥测端口操作失败（${scope}）：${err instanceof Error ? err.message : String(err)}`,
+    "本地持久化通道异常，演示数据仍可交互",
+  );
+}
 
 /**
  * 遥测域状态（服务 / 指标 / 告警 / 日志四事件表）：
@@ -35,10 +52,13 @@ export function useOpsTelemetry() {
   // P2：组合根单例 —— 降级状态机与留痕日志全局一份
   const telemetry = useMemo(() => getPorts().telemetry, []);
 
-  const [services, setServices] = useState<ServiceStatus[]>(SERVICES_LIST);
-  const [metrics, setMetrics] = useState<OpsMetric[]>(OPS_METRICS);
-  const [alarms, setAlarms] = useState<AlarmItem[]>(SYSTEM_ALARMS);
-  const [logs, setLogs] = useState<LogEntry[]>(INITIAL_LOGS);
+  // 夹具顶层冻结：拷贝出可变副本引导（防就地污染，StrictMode 双挂载安全）
+  const [services, setServices] = useState<ServiceStatus[]>(() =>
+    SERVICES_LIST.map((s) => ({ ...s })),
+  );
+  const [metrics, setMetrics] = useState<OpsMetric[]>(() => OPS_METRICS.map((m) => ({ ...m })));
+  const [alarms, setAlarms] = useState<AlarmItem[]>(() => SYSTEM_ALARMS.map((a) => ({ ...a })));
+  const [logs, setLogs] = useState<LogEntry[]>(() => INITIAL_LOGS.map((l) => ({ ...l })));
 
   useEffect(() => {
     let cancelled = false;
@@ -47,13 +67,15 @@ export function useOpsTelemetry() {
       telemetry.listMetrics(),
       telemetry.listAlarms(),
       telemetry.listLogs(),
-    ]).then(([s, m, a, l]) => {
-      if (cancelled) return;
-      setServices(s);
-      setMetrics(m);
-      setAlarms(a);
-      setLogs(l);
-    });
+    ])
+      .then(([s, m, a, l]) => {
+        if (cancelled) return;
+        setServices(s);
+        setMetrics(m);
+        setAlarms(a);
+        setLogs(l);
+      })
+      .catch((err: unknown) => tracePortFailure("数据水合", err));
     return () => {
       cancelled = true;
     };

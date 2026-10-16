@@ -79,7 +79,10 @@ describe("多端 logo 全链路引用", () => {
   });
 
   it("AI 浮窗双组件（Modal + Trigger）均引用统一品牌 logo", () => {
-    const modal = readFileSync(resolve(ROOT, "src/components/yyc3/YYC3FamilyModal.tsx"), "utf8");
+    const modal = readFileSync(
+      resolve(ROOT, "src/components/yyc3/YYC3FamilyModal/parts/FamilyModalHeader.tsx"),
+      "utf8",
+    );
     const trigger = readFileSync(
       resolve(ROOT, "src/components/yyc3/YYC3FloatingTrigger.tsx"),
       "utf8",

@@ -17,14 +17,14 @@
  *   - useAppNavigate：extra.batchId 副作用（setActiveBatchId 收敛生产域选中态）
  *     + router.push —— 原 App.tsx handleNavigate 全量等价
  *
- * dependencies: next/navigation, ../config, ./contexts
+ * dependencies: next/navigation, ../kernel/config, ./contexts
  * exports: useAppNavigate
  */
 "use client";
 
 import { useRouter } from "next/navigation";
 
-import { hrefForTab } from "../config";
+import { hrefForTab } from "../kernel/config";
 import { NavTabId, NavigateExtra } from "../types";
 import { useProductionDataContext } from "./contexts";
 

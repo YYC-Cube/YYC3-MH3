@@ -1,18 +1,21 @@
 # file: .github/workflows/ci.yml
-# description: YYC³ 质量门禁 · 推送/PR main 触发 · 类型检查 + 全量测试 + 双基座构建冒烟
+# description: YYC³ 质量门禁 · 推送/PR main 触发 · 类型检查 + 覆盖率测试 + 依赖审计 + 体积预算 + E2E 冒烟 + 双基座构建
 # author: YanYuCloudCube Team
-# version: v1.0.0
+# version: v1.1.0
 # created: 2026-10-15
-# updated: 2026-10-15
+# updated: 2026-10-16
 # status: active
-# tags: [ci],[quality-gate],[github-actions]
+# tags: [ci],[quality-gate],[github-actions],[e2e],[playwright]
 #
 # copyright: YanYuCloudCube Team
 # license: MIT
 #
 # brief:
-#   - 门禁：oxfmt 格式检查 + tsc 严格类型检查 + Vitest 全量测试（110 用例 · 七类门禁）
+#   - 门禁：oxfmt 格式检查 + tsc 严格类型检查 + Vitest 覆盖率测试（七类门禁 · 80/80/80/75 阈值）
+#   - 依赖审计：pnpm audit（生产依赖高危漏洞阻断）
 #   - 构建冒烟：默认根基座 + BASE_PATH 子路径基座（Pages 部署形态回归）
+#   - 体积预算：JS/CSS/HTML 产物基线 +25% 门禁（check:size）
+#   - E2E 冒烟：Playwright chromium · IDB 真实路径端到端 + prod CSP 收紧面（复用 root-base 构建产物）
 #   - 格式域限定（.oxfmtrc.json）：src/server/public/构建配置等代码文件；
 #     团队 Markdown 语料、Figma 平台托管文件（.figma/）、含注释槽位的 index.html
 #     与刻意字段序的 package.json/tsconfig.json 不入机器重排范围
@@ -60,11 +63,25 @@ jobs:
       - name: Typecheck (tsc strict)
         run: pnpm typecheck
 
-      - name: Test (vitest)
-        run: pnpm test
+      - name: Test with coverage (vitest · 80/80/80/75 阈值门禁)
+        run: pnpm test:coverage
+
+      - name: Dependency audit (pnpm audit · 生产依赖高危阻断)
+        run: pnpm audit --prod --audit-level high
 
       - name: Build smoke (root base)
         run: pnpm build
+
+      - name: Bundle size budget (check:size · 基线 +25% 门禁)
+        run: pnpm check:size
+
+      # E2E 复用上一步 root-base 构建产物（out/），须先于 BASE_PATH 基座构建
+      - name: E2E smoke (Playwright · IDB 真实路径 + prod CSP)
+        run: |
+          python3 -m venv .venv
+          .venv/bin/pip install -q -r scripts/e2e/requirements.txt
+          .venv/bin/python -m playwright install --with-deps chromium
+          .venv/bin/python scripts/e2e/smoke.py
 
       - name: Build smoke (Pages sub-path base)
         run: pnpm build

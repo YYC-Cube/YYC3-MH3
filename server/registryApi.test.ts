@@ -18,9 +18,14 @@
  * exports: —
  */
 import { describe, expect, it } from "vitest";
-import { INITIAL_BATCHES } from "../src/data/batch";
-import { INITIAL_LOGS, OPS_METRICS, SERVICES_LIST, SYSTEM_ALARMS } from "../src/data/ops";
-import { INITIAL_SEEDS } from "../src/data/seed";
+import { INITIAL_BATCHES } from "../src/adapters/memory/fixtures/batch";
+import {
+  INITIAL_LOGS,
+  OPS_METRICS,
+  SERVICES_LIST,
+  SYSTEM_ALARMS,
+} from "../src/adapters/memory/fixtures/ops";
+import { INITIAL_SEEDS } from "../src/adapters/memory/fixtures/seed";
 import type { SeedItem } from "../src/types";
 import type { RegistryRequest } from "./registryApi";
 import { createRegistryApi } from "./registryApi";

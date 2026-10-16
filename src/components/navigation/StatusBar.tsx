@@ -13,11 +13,11 @@
  *
  * brief: 工业风底部状态栏（需求 2.3）— 端口地址经 config 单源注入
  *
- * dependencies: react, lucide-react, ../../config, ../../types
+ * dependencies: react, lucide-react, ../../kernel/config, ../../types
  * exports: StatusBarProps, StatusBar
  */
 import { HardDrive, ShieldCheck } from "lucide-react";
-import { APP_PORT } from "../../config";
+import { APP_PORT } from "../../kernel/config";
 import { ShowToast } from "../../types";
 
 export interface StatusBarProps {

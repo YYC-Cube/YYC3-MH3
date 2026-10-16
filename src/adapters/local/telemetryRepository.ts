@@ -14,10 +14,10 @@
  * brief: 遥测 local 适配器 — 三读+处置写经 BFF（services/metrics/alarms/PATCH），
  *        日志走本地留痕通道（06 §4 v1.0.1）
  *
- * dependencies: ../../types, ../../domains/ops/ports, ../memory/telemetryRepository, ./http
+ * dependencies: ../../types, ../../domains/platform/telemetry/ports, ../memory/telemetryRepository, ./http
  * exports: LocalTelemetryOptions, createLocalTelemetry
  */
-import { TelemetryPort } from "../../domains/ops/ports";
+import { TelemetryPort } from "../../domains/platform/telemetry/ports";
 import { AlarmItem, LogEntry, OpsMetric, ServiceStatus } from "../../types";
 import { createMemoryTelemetry } from "../memory/telemetryRepository";
 import {

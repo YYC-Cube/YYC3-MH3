@@ -14,13 +14,18 @@
  *
  * brief: 本地 Registry API — 端点/字段/错误约定逐字对齐 docs/06-Registry-API-契约.md v1.0.0
  *
- * dependencies: ../src/types, ../src/data/ops, ../src/data/batch, ../src/data/seed
+ * dependencies: ../src/types, ../src/adapters/memory/fixtures/ops, ../src/adapters/memory/fixtures/batch, ../src/adapters/memory/fixtures/seed
  * exports: RegistryRequest, RegistryResponse, createRegistryApi
  */
+import { INITIAL_BATCHES } from "../src/adapters/memory/fixtures/batch";
+import {
+  INITIAL_LOGS,
+  OPS_METRICS,
+  SERVICES_LIST,
+  SYSTEM_ALARMS,
+} from "../src/adapters/memory/fixtures/ops";
+import { INITIAL_SEEDS } from "../src/adapters/memory/fixtures/seed";
 import type { AlarmItem, BatchItem, SeedItem } from "../src/types";
-import { INITIAL_BATCHES } from "../src/data/batch";
-import { INITIAL_SEEDS } from "../src/data/seed";
-import { INITIAL_LOGS, OPS_METRICS, SERVICES_LIST, SYSTEM_ALARMS } from "../src/data/ops";
 
 /** 框架无关的请求描述（Vite 插件薄壳负责从 node req 提取） */
 export interface RegistryRequest {
@@ -96,9 +101,10 @@ function isSeedBody(body: unknown): body is SeedItem {
  */
 export function createRegistryApi(): RegistryApi {
   const startedAt = Date.now();
-  let alarms: AlarmItem[] = deepCopy(SYSTEM_ALARMS);
-  let seeds: SeedItem[] = deepCopy(INITIAL_SEEDS);
-  const batches: BatchItem[] = deepCopy(INITIAL_BATCHES);
+  // 夹具顶层冻结：可变态初始化时逐项浅拷贝出新数组（之后一切变更只作用于副本）
+  let alarms: AlarmItem[] = SYSTEM_ALARMS.map((a) => ({ ...a }));
+  let seeds: SeedItem[] = INITIAL_SEEDS.map((s) => ({ ...s }));
+  const batches: BatchItem[] = INITIAL_BATCHES.map((b) => ({ ...b }));
 
   const handleRequest = (req: RegistryRequest): RegistryResponse => {
     if (!isLoopbackHost(req.host)) {

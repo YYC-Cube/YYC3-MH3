@@ -1,0 +1,5 @@
+## pnpm 12 工作区/设置文件（单包仓亦以此承载 pnpm 设置项）
+## P5-4 安全收口：source-map-js 事件循环 DoS（GHSA-68fv-2mgg-jv7q）
+## 传递依赖钉版至已修复线（构建期 only；next/postcss/vite/tailwind 链路）
+overrides:
+  "source-map-js@>=1.0.0 <1.2.2": ">=1.2.2"
