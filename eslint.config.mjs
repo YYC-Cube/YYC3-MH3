@@ -1,8 +1,8 @@
 /**
  * file: eslint.config.mjs
- * description: YYC³ ESLint 扁平配置 — P1-2 lint 门禁（typescript-eslint + react-hooks + 编排层禁令）
+ * description: YYC³ ESLint 扁平配置 — P1-2 lint 门禁（typescript-eslint + react-hooks + 编排层禁令 + 安全专项）
  * author: YanYuCloudCube Team
- * version: v1.1.0
+ * version: v1.2.0
  * created: 2026-10-16
  * updated: 2026-10-16
  * status: active
@@ -14,13 +14,18 @@
  * brief: P1-2 静态质量门禁 — 核心规则面：
  *   - typescript-eslint recommended（no-explicit-any / no-unused-vars 等真实缺陷捕获）
  *   - react-hooks rules-of-hooks + exhaustive-deps（Hooks 时序与依赖数组正确性）
+ *   - 安全专项（第十批 ④）：eslint-plugin-security（server/ 全量策展 +
+ *     src/e2e 环境相关子集）+ eslint-plugin-no-secrets（全 lint 面 entropy
+ *     密钥扫描）——范围化启用，浏览器/测试语境不开 fs/child-process 类必误报规则
  *   - 范围：src / server / e2e（scripts 构建工具为 node 脚本，另行豁免）
  *   - 门禁：`pnpm check:lint` → 0 error（CI 阻断级）
  *
- * dependencies: eslint, typescript-eslint, eslint-plugin-react-hooks
+ * dependencies: eslint, typescript-eslint, eslint-plugin-react-hooks, eslint-plugin-security, eslint-plugin-no-secrets
  */
 
+import noSecrets from "eslint-plugin-no-secrets";
 import reactHooks from "eslint-plugin-react-hooks";
+import security from "eslint-plugin-security";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
@@ -78,6 +83,45 @@ export default tseslint.config(
           message: "编排层禁造 WebSocket——通道实现方为 adapters（队列 SSE/事件桥）",
         },
       ],
+    },
+  },
+  {
+    // 安全专项（第十批 ④）——server/ 为 node:http BFF 面（唯一 node 运行时层），
+    // 启用 security 全量策展规则；src/e2e 为浏览器/测试语境，仅启用其中
+    // 与运行环境相关的高信号规则（eval/动态正则），fs/child-process 类规则
+    // 在浏览器代码与测试桩上必然误报，不启用（范围化启用，非全仓一刀切）。
+    files: ["server/**/*.ts"],
+    plugins: { security },
+    rules: {
+      "security/detect-child-process": "error",
+      "security/detect-eval-with-expression": "error",
+      "security/detect-non-literal-fs-filename": "error",
+      "security/detect-non-literal-require": "error",
+      "security/detect-non-literal-regexp": "error",
+      "security/detect-object-injection": "error",
+      "security/detect-buffer-noassert": "error",
+      "security/detect-new-buffer": "error",
+      "security/detect-disable-mustache-escape": "error",
+    },
+  },
+  {
+    files: ["src/**/*.{ts,tsx}", "e2e/**/*.ts"],
+    plugins: { security },
+    rules: {
+      "security/detect-eval-with-expression": "error",
+      "security/detect-non-literal-regexp": "error",
+    },
+  },
+  {
+    // 密钥泄漏扫描（第十批 ④）——全 lint 面启用；entropy 网关兜住硬编码
+    // token/密钥（环境变量注入是唯一合法来源，对齐 user-rules 安全审查要点）。
+    // tolerance 4.5（插件通行默认）：实测首跑 4.0 阈值误报 19 例（ Prometheus
+    // 指标名/类型属性名等标识符熵 4.03–4.25），4.5 档真实密钥（base64/hex
+    // 高熵串）仍稳定命中，标识符噪音归零。
+    files: ["src/**/*.{ts,tsx}", "server/**/*.ts", "e2e/**/*.ts"],
+    plugins: { "no-secrets": noSecrets },
+    rules: {
+      "no-secrets/no-secrets": ["error", { tolerance: 4.5 }],
     },
   },
 );

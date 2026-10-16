@@ -56,11 +56,13 @@ const server = createServer((req, res) => {
   void toWebRequest(req)
     .then((webReq) => handleWebRequest(webReq))
     .then(async (webRes) => {
-      const headers: Record<string, string> = {};
+      // 安全专项（第十批 ④）：响应头经 setHeader 官方 sink 逐条写入——
+      // 不经动态 Record 索引中转（security/detect-object-injection 通过，
+      // 且消除任意键名写入中间对象的模式面）
       webRes.headers.forEach((value, key) => {
-        headers[key] = value;
+        res.setHeader(key, value);
       });
-      res.writeHead(webRes.status, headers);
+      res.writeHead(webRes.status);
       res.end(Buffer.from(await webRes.arrayBuffer()));
     })
     .catch((error: unknown) => {
