@@ -36,3 +36,6 @@ logs/
 .mimosa/
 .v2c/
 .video_agent/
+
+# vitest/playwright 本地报告产物
+test-results/

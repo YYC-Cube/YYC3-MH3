@@ -66,6 +66,8 @@ language: zh-CN
 
 **MiniMax-H3 DiffSynth 本地版 AI 数字人生产线** 是一套面向创作者与运营者的专业级本地 AI 数字人视频生产平台。基于 **五步闭环流水线**（生成 → 评分 → 精评 → 归因 → 回写）构建，提供从提示词工程、Seed 种子资产沉淀、多 Agent 漫剧编排到多平台分发的全链路能力，全程 **本地离线运行**，保障 100% 数据主权。
 
+> **架构关系与定位**：本仓是 **生产端（前端工作台）** —— 公网橱窗 [mh3.yyc3.top](https://mh3.yyc3.top)（只读快照，零后端零密钥）+ 本地控制面（dev :3031，PWA）。真实引擎在姊妹仓 **后端** [YYC3-MiniMax-H3](https://github.com/YYC-Cube/YYC3-MiniMax-H3)（Python 五步闭环引擎 + console BFF :3030 + agent 网关 :8300 + `@yyc3/manifest-schema` 契约）。本仓定位 **非商用 · 本地自用**，与上游 MiniMax H3 Community License 匹配；公网页面只展示批次快照、不分发模型权重。双端衔接记录见 [docs/YYC3-MH3-chief-architect-20261015/](docs/YYC3-MH3-chief-architect-20261015/)。
+
 ### 五高架构 · 五标体系 · 五化转型
 
 | 五高 | 五标 | 五化 |
