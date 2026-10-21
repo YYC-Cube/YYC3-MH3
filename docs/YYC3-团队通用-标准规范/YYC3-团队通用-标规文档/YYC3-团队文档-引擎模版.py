@@ -151,6 +151,15 @@ class YYC3TemplateEngine:
         if self.registry_path.exists():
             self._load_registry()
 
+    def _resolve_within(self, candidate: Path, root: Optional[Path] = None) -> Path:
+        """路径穿越守卫：写入目标必须位于 root（默认 output_dir）之内。
+        文件名/目录名来自模板变量与配置等外部输入，解析 `..` 与符号链接后比较，越界直接拒绝。"""
+        base = (root or self.output_dir).resolve()
+        target = Path(candidate).resolve()
+        if target != base and base not in target.parents:
+            raise ValueError(f"拒绝写入根目录之外的路径: {candidate} (root={base})")
+        return target
+
     def generate_checksum(self, content: str) -> str:
         return hashlib.sha256(content.encode('utf-8')).hexdigest()[:16]
 
@@ -347,8 +356,8 @@ class YYC3TemplateEngine:
                 "updated": meta.updated,
             }
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        with open(self.registry_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        registry_file = self._resolve_within(self.registry_path)
+        registry_file.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
 
     def _load_registry(self) -> None:
         try:
@@ -396,9 +405,10 @@ class YYC3TemplateEngine:
         removed = sum(1 for l in lines if l.startswith('-') and not l.startswith('---'))
         return f"+{added}/-{removed} 行变更"
 
-    def save_document(self, content: str, output_path: str, metadata: DocumentMetadata = None) -> bool:
+    def save_document(self, content: str, output_path: str, metadata: DocumentMetadata = None,
+                      root: Optional[Path] = None) -> bool:
         try:
-            path = Path(output_path)
+            path = self._resolve_within(Path(output_path), root)
             path.parent.mkdir(parents=True, exist_ok=True)
 
             diff_summary = ""
@@ -410,8 +420,7 @@ class YYC3TemplateEngine:
                     return True
                 self._archive_version(path, metadata)
 
-            with open(path, 'w', encoding='utf-8') as f:
-                f.write(content)
+            path.write_text(content, encoding='utf-8')
 
             if metadata:
                 metadata.checksum = self.generate_checksum(content)

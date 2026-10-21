@@ -66,13 +66,13 @@ function runRequest<T>(
   ready: Promise<IDBDatabase>,
   store: StoreName,
   mode: IDBTransactionMode,
-  exec: (objectStore: IDBObjectStore) => IDBRequest<T>,
+  operation: (objectStore: IDBObjectStore) => IDBRequest<T>,
 ): Promise<T> {
   return ready.then(
     (db) =>
       new Promise<T>((resolve, reject) => {
         const tx = db.transaction(store, mode);
-        const request = exec(tx.objectStore(store));
+        const request = operation(tx.objectStore(store));
         request.onsuccess = () => resolve(request.result);
         request.onerror = () => reject(request.error ?? new Error(`IndexedDB ${store} 操作失败`));
       }),

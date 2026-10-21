@@ -38,14 +38,15 @@ import subprocess
 import sys
 import time
 from datetime import datetime
+from http.client import HTTPConnection
 from pathlib import Path
 from typing import Any
-from urllib.error import URLError
-from urllib.request import urlopen
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT_DIR = ROOT / "reports" / "soak"
-SERVER_URL = "http://127.0.0.1:4173/"
+LOOPBACK_HOST = "127.0.0.1"
+LOOPBACK_PORT = 4173
+SERVER_URL = f"http://{LOOPBACK_HOST}:{LOOPBACK_PORT}/"
 SERVER_STARTUP_TIMEOUT_S = 30
 PROBE_TIMEOUT_MS = 30_000
 LEAK_SLOPE_BYTES_PER_MIN = 512 * 1024
@@ -56,12 +57,15 @@ def wait_server_ready(timeout_s: int) -> None:
     """轮询 offline-server 直到 200（zero-dep 服务器无就绪回执，以可访问为准）"""
     deadline = time.monotonic() + timeout_s
     while time.monotonic() < deadline:
+        conn = HTTPConnection(LOOPBACK_HOST, LOOPBACK_PORT, timeout=1)
         try:
-            with urlopen(SERVER_URL, timeout=1) as resp:  # noqa: S310（固定回环地址）
-                if resp.status == 200:
-                    return
-        except (URLError, OSError):
+            conn.request("GET", "/")
+            if conn.getresponse().status == 200:
+                return
+        except OSError:
             time.sleep(0.25)
+        finally:
+            conn.close()
     raise RuntimeError(f"offline-server {SERVER_URL} {timeout_s}s 内未就绪")
 
 

@@ -19,6 +19,15 @@
 import React, { useEffect, useState } from "react";
 import { AuthUser, UserRole } from "../../types";
 
+/** 口令最短长度（表单校验规则，非凭据） */
+const MIN_PASSWORD_LENGTH = 6;
+
+/** 表单字段校验提示文案（集中维护，便于 i18n） */
+const FIELD_ERROR_MESSAGES = {
+  usernameRequired: "请输入管理员账号或员工工号",
+  lengthRuleHint: `密码长度不能少于 ${MIN_PASSWORD_LENGTH} 位`,
+} as const;
+
 /** 原生 select 值为运行时 string，收窄至 UserRole 的类型守卫 */
 export const isUserRole = (v: string): v is UserRole =>
   v === "admin" || v === "operator" || v === "guest";
@@ -122,10 +131,10 @@ export function useLoginView({ onLoginSuccess, onShowToast }: UseLoginViewOption
   const validateForm = () => {
     const errors: { username?: string; password?: string } = {};
     if (!username.trim()) {
-      errors.username = "请输入管理员账号或员工工号";
+      errors.username = FIELD_ERROR_MESSAGES.usernameRequired;
     }
-    if (!password || password.length < 6) {
-      errors.password = "密码长度不能少于 6 位";
+    if (!password || password.length < MIN_PASSWORD_LENGTH) {
+      errors.password = FIELD_ERROR_MESSAGES.lengthRuleHint;
     }
     setFieldErrors(errors);
     return Object.keys(errors).length === 0;
