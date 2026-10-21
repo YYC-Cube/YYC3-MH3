@@ -39,3 +39,4 @@ logs/
 
 # vitest/playwright 本地报告产物
 test-results/
+__pycache__/

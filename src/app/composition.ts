@@ -26,6 +26,7 @@ import { openDatabase } from "../adapters/indexeddb/db";
 import { createIndexeddbStorage } from "../adapters/indexeddb/kv";
 import { createIndexeddbSeedRepository } from "../adapters/indexeddb/seedRepository";
 import { createIndexeddbTelemetry } from "../adapters/indexeddb/telemetryRepository";
+import { createEnginePipelineQueue } from "../adapters/engine/pipelineQueue";
 import { createMemoryAgent } from "../adapters/memory/agent";
 import { createMemoryBatchRepository } from "../adapters/memory/batchRepository";
 import { createInMemoryQueue } from "../adapters/memory/queue";
@@ -95,6 +96,20 @@ function hasIndexedDb(): boolean {
  * - 显式 indexeddb 但运行时不可用：安全回退 memory 并 warn 留痕（不白屏）
  * - openDatabase 同步返回句柄（内部惰性等待 IDB open），组合根保持同步装配
  */
+/**
+ * 任务队列装配（F-1 双 BFF 融合首步）：
+ * - 设置 NEXT_PUBLIC_ENGINE_BASE_URL（回环，如 http://127.0.0.1:3030/api）且浏览器具备
+ *   EventSource → 直连后端 YYC3-MiniMax-H3 console BFF（POST /pipeline/run + SSE 事件流）
+ * - 未设置 / SSR / 测试 → 内存队列（既有行为零变更）
+ */
+function createQueuePort(): TaskQueuePort {
+  const baseUrl = process.env.NEXT_PUBLIC_ENGINE_BASE_URL;
+  if (baseUrl && typeof EventSource !== "undefined") {
+    return createEnginePipelineQueue({ baseUrl: baseUrl.replace(/\/+$/, "") });
+  }
+  return createInMemoryQueue();
+}
+
 export function createPorts(mode: PortsMode = "auto"): AppPorts {
   const wantIdb = mode === "indexeddb" || (mode === "auto" && hasIndexedDb());
   if (wantIdb && hasIndexedDb()) {
@@ -105,7 +120,7 @@ export function createPorts(mode: PortsMode = "auto"): AppPorts {
       seeds: createIndexeddbSeedRepository(db),
       telemetry,
       storage: createIndexeddbStorage(db),
-      queue: createInMemoryQueue(),
+      queue: createQueuePort(),
       observability: createTelemetryObservability({
         appendLog: telemetry.appendLog,
         appendMetrics: telemetry.appendMetrics,
@@ -122,7 +137,7 @@ export function createPorts(mode: PortsMode = "auto"): AppPorts {
     seeds: createMemorySeedRepository(),
     telemetry,
     storage: createMemoryStorage(),
-    queue: createInMemoryQueue(),
+    queue: createQueuePort(),
     observability: createTelemetryObservability({
       appendLog: telemetry.appendLog,
       appendMetrics: telemetry.appendMetrics,
