@@ -5,6 +5,8 @@ overrides:
   "source-map-js@>=1.0.0 <1.2.2": ">=1.2.2"
 
 ## P2-3：允许执行构建脚本的依赖（esbuild 平台二进制为 vitest 运行必需）
-onlyBuiltDependencies:
-  - esbuild
-  - es5-ext
+## pnpm 12 语法：onlyBuiltDependencies 列表已被忽略（CI 实证 ERR_PNPM_IGNORED_BUILDS），
+## 必须用 allowBuilds 映射显式放行；显式拒绝项写 false
+allowBuilds:
+  esbuild: true
+  es5-ext: true
