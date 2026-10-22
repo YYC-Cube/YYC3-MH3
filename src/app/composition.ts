@@ -37,6 +37,7 @@ import { createTelemetryObservability } from "../adapters/observabilityBridge";
 import { AgentPort } from "../domains/ai/ports";
 import { ObservabilityPort } from "../domains/platform/observability/ports";
 import { TaskQueuePort } from "../domains/platform/queue/ports";
+import { LogEntry } from "../types/platform";
 import { StoragePort } from "../domains/platform/storage/ports";
 import { TelemetryPort } from "../domains/platform/telemetry/ports";
 import { BatchRepository } from "../domains/production/batch/ports";
@@ -102,10 +103,35 @@ function hasIndexedDb(): boolean {
  *   EventSource → 直连后端 YYC3-MiniMax-H3 console BFF（POST /pipeline/run + SSE 事件流）
  * - 未设置 / SSR / 测试 → 内存队列（既有行为零变更）
  */
-function createQueuePort(): TaskQueuePort {
+function createQueuePort(appendLog: (entry: LogEntry) => Promise<unknown>): TaskQueuePort {
   const baseUrl = process.env.NEXT_PUBLIC_ENGINE_BASE_URL;
   if (baseUrl && typeof EventSource !== "undefined") {
-    return createEnginePipelineQueue({ baseUrl: baseUrl.replace(/\/+$/, "") });
+    return createEnginePipelineQueue({
+      baseUrl: baseUrl.replace(/\/+$/, ""),
+      onLog: (line) => {
+        const text = line.text.trim();
+        void appendLog({
+          id: crypto.randomUUID(),
+          timestamp: new Date(line.ts).toISOString(),
+          level: /error|fail|traceback|panic/i.test(text)
+            ? "error"
+            : /warn|retry|timeout/i.test(text)
+              ? "warn"
+              : "info",
+          stage: "engine",
+          message: text,
+        });
+      },
+      onFile: (change) => {
+        void appendLog({
+          id: crypto.randomUUID(),
+          timestamp: new Date(change.ts).toISOString(),
+          level: "success",
+          stage: "engine.file",
+          message: `文件契约变更：${change.path}（${change.kind}）`,
+        });
+      },
+    });
   }
   return createInMemoryQueue();
 }
@@ -120,7 +146,7 @@ export function createPorts(mode: PortsMode = "auto"): AppPorts {
       seeds: createIndexeddbSeedRepository(db),
       telemetry,
       storage: createIndexeddbStorage(db),
-      queue: createQueuePort(),
+      queue: createQueuePort((entry) => telemetry.appendLog(entry)),
       observability: createTelemetryObservability({
         appendLog: telemetry.appendLog,
         appendMetrics: telemetry.appendMetrics,
@@ -137,7 +163,7 @@ export function createPorts(mode: PortsMode = "auto"): AppPorts {
     seeds: createMemorySeedRepository(),
     telemetry,
     storage: createMemoryStorage(),
-    queue: createQueuePort(),
+    queue: createQueuePort((entry) => telemetry.appendLog(entry)),
     observability: createTelemetryObservability({
       appendLog: telemetry.appendLog,
       appendMetrics: telemetry.appendMetrics,
