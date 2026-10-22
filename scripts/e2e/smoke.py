@@ -89,9 +89,15 @@ def login(page) -> None:
 
 
 def open_data_tab(page) -> None:
-    """设置页默认 hotkeys 标签，需切至「数据主权（本地持久化）」分区。"""
-    page.click("button:has-text('数据主权（本地持久化）')", timeout=30000)
-    page.wait_for_selector("button:has-text('导出全部数据')", timeout=30000)
+    """P3 路由化后 settings 为独立路由（/settings）：直达并切至「数据主权（本地持久化）」分区。
+
+    延迟水合（DCL+250ms 注入真实脚本）在 IDB 已有批次数据时水合偏慢：
+    先等 window.next 水合证据，再等页签/分区按钮（各 60s，防 CI 慢机误报）。"""
+    page.goto(BASE + "/settings", wait_until="domcontentloaded", timeout=60000)
+    page.wait_for_function("() => Boolean(window.next)", timeout=60000)
+    page.wait_for_selector("button:has-text('数据主权（本地持久化）')", timeout=60000)
+    page.click("button:has-text('数据主权（本地持久化）')")
+    page.wait_for_selector("button:has-text('导出全部数据')", timeout=60000)
 
 
 class HtmlFallbackHandler(SimpleHTTPRequestHandler):
@@ -199,9 +205,14 @@ def stage_prod_csp(page) -> None:
     )
     check("T12 CSP meta 在位（prod 面）", csp != "MISSING")
     check("T13 prod CSP 无 unsafe-eval", "unsafe-eval" not in csp)
+    script_src = next(
+        (part for part in csp.split(";") if part.strip().startswith("script-src")), ""
+    )
     check(
-        "T14 CSP script-src 为 self+inline 最小面",
-        "script-src 'self' 'unsafe-inline'" in csp,
+        "T14 CSP script-src 为 self+哈希 最小面（段内无 unsafe-inline）",
+        "script-src 'self'" in script_src
+        and "sha256-" in script_src
+        and "unsafe-inline" not in script_src,
     )
     violations = [l for l in console_logs if "Content Security Policy" in l]
     check("T15 零 CSP 违规", len(violations) == 0, f"{len(violations)} 条")
