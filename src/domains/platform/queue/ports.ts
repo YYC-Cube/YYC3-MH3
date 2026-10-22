@@ -20,6 +20,9 @@
 /** 队列事件类型 */
 export type QueueEventType = "enqueued" | "dequeued" | "completed" | "failed";
 
+/** 引擎流水线任务类型（F-1：Workbench → 后端 POST /pipeline/run 的唯一受理类型） */
+export const PIPELINE_RUN_TASK_TYPE = "pipeline.run";
+
 /** 队列任务项（泛型载荷，默认 unknown 防类型后门） */
 export interface QueueTask<TPayload = unknown> {
   id: string;

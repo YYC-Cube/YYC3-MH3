@@ -18,13 +18,17 @@
  */
 "use client";
 
+import { useMemo } from "react";
 import { WorkbenchView } from "@/views/WorkbenchView";
+import { getPorts } from "../composition";
 import { useOpsTelemetryContext, useProductionDataContext, useToastContext } from "../contexts";
 
 export default function Page() {
   const { showToast } = useToastContext();
   const { batches, activeBatchId, setActiveBatchId, adoptSeed } = useProductionDataContext();
   const { logs } = useOpsTelemetryContext();
+  // F-1 末跳：queue 为组合根单例（env 设 NEXT_PUBLIC_ENGINE_BASE_URL 时即引擎适配器，否则内存队列）
+  const engineQueue = useMemo(() => getPorts().queue, []);
 
   return (
     <WorkbenchView
@@ -34,6 +38,7 @@ export default function Page() {
       onAdoptSeed={adoptSeed}
       onShowToast={showToast}
       initialLogs={logs}
+      engineQueue={engineQueue}
     />
   );
 }

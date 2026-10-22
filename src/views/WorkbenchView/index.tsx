@@ -29,6 +29,8 @@ import { WorkspaceCenterColumn } from "./parts/WorkspaceCenterColumn";
 import { WorkspaceRightColumn } from "./parts/WorkspaceRightColumn";
 import { useWorkbenchView } from "./useWorkbenchView";
 
+import { TaskQueuePort } from "../../domains/platform/queue/ports";
+
 export interface WorkbenchViewProps {
   batches: BatchItem[];
   activeBatchId?: string;
@@ -36,6 +38,8 @@ export interface WorkbenchViewProps {
   onAdoptSeed: (seed: Partial<SeedItem>) => void;
   onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
   initialLogs: LogEntry[];
+  /** 引擎任务队列（app 层 getPorts() 下传；未设引擎 env 时为内存队列，hook 内部据此分流） */
+  engineQueue?: TaskQueuePort;
 }
 
 export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
@@ -45,8 +49,16 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
   onAdoptSeed,
   onShowToast,
   initialLogs,
+  engineQueue,
 }) => {
-  const vm = useWorkbenchView({ batches, activeBatchId, onAdoptSeed, onShowToast, initialLogs });
+  const vm = useWorkbenchView({
+    batches,
+    activeBatchId,
+    onAdoptSeed,
+    onShowToast,
+    initialLogs,
+    engineQueue,
+  });
   const { currentBatch } = vm;
 
   // 数据守卫：无匹配批次时渲染空态（mock 数据恒非空，此分支仅作类型兜底）

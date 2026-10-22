@@ -20,17 +20,20 @@
  * dependencies: react, ../../../domains/production/pipeline, ../../../types
  * exports: UsePipelineExecutionOptions, PipelineExecutionState, usePipelineExecution
  */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   PIPELINE_COMPLETION_NOTICE,
   advancePipeline,
   resetProgressIfComplete,
 } from "../../../domains/production/pipeline";
+import { PIPELINE_RUN_TASK_TYPE, TaskQueuePort } from "../../../domains/platform/queue/ports";
 import { BatchItem, PipelineStageKey } from "../../../types";
 
 export interface UsePipelineExecutionOptions {
   currentBatch?: BatchItem;
   onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
+  /** 引擎任务队列（app 层经 getPorts() 下传；env 未设 NEXT_PUBLIC_ENGINE_BASE_URL 时为内存队列 → 走模拟循环） */
+  engineQueue?: TaskQueuePort;
 }
 
 /** 执行态对外契约（父 hook 透传给容器，字段语义与抽取前一致） */
@@ -50,12 +53,17 @@ export interface PipelineExecutionState {
 export function usePipelineExecution({
   currentBatch,
   onShowToast,
+  engineQueue,
 }: UsePipelineExecutionOptions): PipelineExecutionState {
   const [isRunning, setIsRunning] = useState(currentBatch?.status === "running");
   const [currentStage, setCurrentStage] = useState<PipelineStageKey>(
     currentBatch?.currentStage ?? "generation",
   );
   const [progress, setProgress] = useState(currentBatch?.progress ?? 0);
+  /** 引擎在途标记：仅受理本 hook 发起任务期间的队列事件（单飞语义，与后端 pipelineManager 对齐） */
+  const engineActiveRef = useRef(false);
+  /** 引擎模式开关：env 未设 NEXT_PUBLIC_ENGINE_BASE_URL 时恒走模拟循环（组合根装配的是内存队列） */
+  const engineMode = Boolean(engineQueue && process.env.NEXT_PUBLIC_ENGINE_BASE_URL);
 
   // Sync state when active batch changes（刻意仅按批次 id 同步，防高频字段重置表单态）
   useEffect(() => {
@@ -67,10 +75,10 @@ export function usePipelineExecution({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentBatch?.id]);
 
-  // Simulated live execution loop（演示语义：1s/tick +5%；引擎直连后由队列事件驱动替换）
+  // Simulated live execution loop（演示语义：1s/tick +5%；引擎模式下禁用，改由队列事件驱动）
   useEffect(() => {
     let timer: number | null = null;
-    if (isRunning && progress < 100) {
+    if (!engineMode && isRunning && progress < 100) {
       timer = window.setInterval(() => {
         setProgress((prev) => {
           const { progress, stage, completed } = advancePipeline(prev);
@@ -90,9 +98,60 @@ export function usePipelineExecution({
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [isRunning, progress, onShowToast]);
+  }, [engineMode, isRunning, progress, onShowToast]);
+
+  // Engine execution branch（F-1 末跳：env 设 NEXT_PUBLIC_ENGINE_BASE_URL 时，队列事件驱动三态）
+  // 进度为粗粒度锚点（入队 5 / 引擎受理 20 / 完成 100）：后端 RunStatus 无步级指标，
+  // 细粒度进度待 manifest gen_seconds 心跳回传后升级；日志/文件契约变更走遥测日志台（stage=engine）。
+  useEffect(() => {
+    if (!engineMode || !engineQueue) return;
+    return engineQueue.onEvent((event) => {
+      if (!engineActiveRef.current) return;
+      if (event.type === "enqueued") {
+        setProgress(5);
+        setCurrentStage("generation");
+      } else if (event.type === "dequeued") {
+        setProgress(20);
+      } else if (event.type === "completed") {
+        engineActiveRef.current = false;
+        setProgress(100);
+        setIsRunning(false);
+        onShowToast("success", "引擎流水线完成", `任务 ${event.task.id} 已收工，产物见批次详情`);
+      } else if (event.type === "failed") {
+        engineActiveRef.current = false;
+        setIsRunning(false);
+        onShowToast(
+          "error",
+          "引擎流水线失败",
+          `任务 ${event.task.id} 终态 failed，原因见日志面板（stage=engine）`,
+        );
+      }
+    });
+  }, [engineMode, engineQueue, onShowToast]);
 
   const start = () => {
+    if (engineMode && engineQueue) {
+      // dryRun 默认 true：生产落地首阶段只放行试跑；真实批量仍由夜间窗口/后端控制台发起
+      const batchNo = currentBatch?.id.match(/\d{2,}/)?.[0] ?? null;
+      const task = {
+        id: `run-${Date.now()}`,
+        type: PIPELINE_RUN_TASK_TYPE,
+        payload: { batch: batchNo, dryRun: true },
+      };
+      engineActiveRef.current = true;
+      setProgress(resetProgressIfComplete(progress));
+      setIsRunning(true);
+      engineQueue.enqueue(task).catch((err: unknown) => {
+        engineActiveRef.current = false;
+        setIsRunning(false);
+        onShowToast(
+          "error",
+          "引擎启动失败",
+          err instanceof Error ? err.message : "后端 BFF 不可达或拒绝启动（回环 :3030）",
+        );
+      });
+      return;
+    }
     setProgress(resetProgressIfComplete(progress));
     setIsRunning(true);
   };

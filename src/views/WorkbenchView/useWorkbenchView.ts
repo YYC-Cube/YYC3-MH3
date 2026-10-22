@@ -47,6 +47,7 @@ import {
   SeedItem,
 } from "../../types";
 import { INITIAL_KEYFRAMES } from "./parts/KeyframeStream";
+import { TaskQueuePort } from "../../domains/platform/queue/ports";
 import { usePipelineExecution } from "./parts/usePipelineExecution";
 
 export interface UseWorkbenchViewOptions {
@@ -55,6 +56,8 @@ export interface UseWorkbenchViewOptions {
   onAdoptSeed: (seed: Partial<SeedItem>) => void;
   onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
   initialLogs: LogEntry[];
+  /** 引擎任务队列（app 层下传，见 WorkbenchViewProps） */
+  engineQueue?: TaskQueuePort;
 }
 
 /** 人工质检缺陷标记表（键为缺陷项，值为是否通过） */
@@ -71,6 +74,7 @@ export function useWorkbenchView({
   onAdoptSeed,
   onShowToast,
   initialLogs,
+  engineQueue,
 }: UseWorkbenchViewOptions) {
   const currentBatch = findCurrentBatch(batches, activeBatchId);
 
@@ -87,7 +91,7 @@ export function useWorkbenchView({
   const [fp8Optimization, setFp8Optimization] = useState(true);
 
   // Execution & Live Stream State（执行态三字段由 usePipelineExecution 承接）
-  const exec = usePipelineExecution({ currentBatch, onShowToast });
+  const exec = usePipelineExecution({ currentBatch, onShowToast, engineQueue });
   const [logs, setLogs] = useState<LogEntry[]>(initialLogs);
   const [keyframes] = useState<KeyframePreview[]>(INITIAL_KEYFRAMES);
 
