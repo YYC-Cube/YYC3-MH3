@@ -2,9 +2,9 @@
  * file: src/views/WorkbenchView/useWorkbenchView.ts
  * description: YYC³ 功能视图 — WorkbenchView 状态收敛 hook（参数配置 / 流水线仿真 / 质检回写）
  * author: YanYuCloudCube Team
- * version: v1.1.0
+ * version: v1.2.0
  * created: 2026-10-16
- * updated: 2026-10-16
+ * updated: 2026-10-23
  * status: active
  * tags: [hook],[view],[workbench],[yyc3]
  *
@@ -15,8 +15,10 @@
  *        人工复核与优质 Seed 回写、参数版本对比与批量导入弹窗开关；
  *        纯状态装配，不渲染 UI，交互语义与解构前逐字一致；
  *        数值/文案规则全部经生产域纯函数（pipeline/seed/quality）出借。
+ *        v1.2.0：执行态三字段与模拟循环抽取至 parts/usePipelineExecution（P3 体积守卫，
+ *        父件自 292 行回落）；对外契约不变。
  *
- * dependencies: react, ../../domains/production/batch, ../../domains/production/pipeline, ../../domains/production/quality, ../../domains/production/seed, ../../types, ./parts/KeyframeStream
+ * dependencies: react, ../../domains/production/batch, ../../domains/production/pipeline, ../../domains/production/quality, ../../domains/production/seed, ../../types, ./parts/KeyframeStream, ./parts/usePipelineExecution
  * exports: UseWorkbenchViewOptions, DefectChecks, WorkbenchViewModel, useWorkbenchView
  */
 import { useEffect, useState } from "react";
@@ -24,10 +26,7 @@ import { findCurrentBatch } from "../../domains/production/batch";
 import {
   DEFAULT_NEGATIVE_PROMPT,
   GOLDEN_BASELINE_NOTICE,
-  PIPELINE_COMPLETION_NOTICE,
-  advancePipeline,
   executionRequestLogEntry,
-  resetProgressIfComplete,
   rollbackToGoldenBaseline,
   runStartNotice,
   templateLoadedNotice,
@@ -45,10 +44,10 @@ import {
   KeyframePreview,
   LogEntry,
   ParameterTemplate,
-  PipelineStageKey,
   SeedItem,
 } from "../../types";
 import { INITIAL_KEYFRAMES } from "./parts/KeyframeStream";
+import { usePipelineExecution } from "./parts/usePipelineExecution";
 
 export interface UseWorkbenchViewOptions {
   batches: BatchItem[];
@@ -87,12 +86,8 @@ export function useWorkbenchView({
   const [resolution, setResolution] = useState(currentBatch?.resolution ?? "1080p");
   const [fp8Optimization, setFp8Optimization] = useState(true);
 
-  // Execution & Live Stream State
-  const [isRunning, setIsRunning] = useState(currentBatch?.status === "running");
-  const [currentStage, setCurrentStage] = useState<PipelineStageKey>(
-    currentBatch?.currentStage ?? "generation",
-  );
-  const [progress, setProgress] = useState(currentBatch?.progress ?? 0);
+  // Execution & Live Stream State（执行态三字段由 usePipelineExecution 承接）
+  const exec = usePipelineExecution({ currentBatch, onShowToast });
   const [logs, setLogs] = useState<LogEntry[]>(initialLogs);
   const [keyframes] = useState<KeyframePreview[]>(INITIAL_KEYFRAMES);
 
@@ -116,40 +111,12 @@ export function useWorkbenchView({
       setSeedNumber(currentBatch.seed);
       setFps(currentBatch.fps);
       setResolution(currentBatch.resolution);
-      setCurrentStage(currentBatch.currentStage);
-      setProgress(currentBatch.progress);
-      setIsRunning(currentBatch.status === "running");
       setIsAdopted(false);
     }
     // 刻意仅按批次 id 同步：批次对象含高频变化字段（progress 每 tick 刷新），
     // 以对象引用为依赖会不断重置用户正在编辑的表单态（prompt/seed/fps 等）
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentBatch?.id]);
-
-  // Simulated live execution loop
-  useEffect(() => {
-    let timer: number | null = null;
-    if (isRunning && progress < 100) {
-      timer = window.setInterval(() => {
-        setProgress((prev) => {
-          const { progress, stage, completed } = advancePipeline(prev);
-          setCurrentStage(stage);
-          if (completed) {
-            setIsRunning(false);
-            onShowToast(
-              "success",
-              PIPELINE_COMPLETION_NOTICE.title,
-              PIPELINE_COMPLETION_NOTICE.detail,
-            );
-          }
-          return progress;
-        });
-      }, 1000);
-    }
-    return () => {
-      if (timer) clearInterval(timer);
-    };
-  }, [isRunning, progress, onShowToast]);
 
   // Template quick switch
   const handleApplyTemplate = (tmpl: ParameterTemplate) => {
@@ -164,12 +131,11 @@ export function useWorkbenchView({
   };
 
   const handleToggleRun = () => {
-    if (isRunning) {
-      setIsRunning(false);
+    if (exec.isRunning) {
+      exec.setIsRunning(false);
       onShowToast("info", "流水线已暂停");
     } else {
-      setProgress(resetProgressIfComplete(progress)); // 满进度重启归零，未满原地续跑
-      setIsRunning(true);
+      exec.start();
       const startNotice = runStartNotice(seedNumber);
       onShowToast("success", startNotice.title, startNotice.detail);
       setLogs((prev) => [
@@ -183,8 +149,7 @@ export function useWorkbenchView({
   };
 
   const handleTerminate = () => {
-    setIsRunning(false);
-    setProgress(0);
+    exec.terminate();
     onShowToast("warning", "批次已重置终止");
   };
 
@@ -257,10 +222,10 @@ export function useWorkbenchView({
     setResolution,
     fp8Optimization,
     setFp8Optimization,
-    isRunning,
-    currentStage,
-    setCurrentStage,
-    progress,
+    isRunning: exec.isRunning,
+    currentStage: exec.currentStage,
+    setCurrentStage: exec.setCurrentStage,
+    progress: exec.progress,
     logs,
     handleClearLogs,
     keyframes,
