@@ -36,12 +36,7 @@ export interface DashboardViewProps {
   onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
-export const DashboardView: React.FC<DashboardViewProps> = ({
-  batches,
-  onNavigate,
-  onNewBatchClick,
-  onShowToast,
-}) => {
+export const DashboardView: React.FC<DashboardViewProps> = ({ batches, onNavigate, onNewBatchClick, onShowToast }) => {
   const {
     isBigScreenMode,
     toggleBigScreenMode,

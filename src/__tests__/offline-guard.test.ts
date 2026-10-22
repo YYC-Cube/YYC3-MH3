@@ -58,9 +58,7 @@ describe("[offline-guard] 本地优先 · 零公网 URL", () => {
     }
     expect(
       violations,
-      ["公网 URL 违规（本地优先红线，见 .env.example 与 docs/06 契约）：", ...violations].join(
-        "\n",
-      ),
+      ["公网 URL 违规（本地优先红线，见 .env.example 与 docs/06 契约）：", ...violations].join("\n"),
     ).toEqual([]);
   });
 });

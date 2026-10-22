@@ -28,13 +28,7 @@ export interface ImportModalProps {
   onConfirm: () => void;
 }
 
-export const ImportModal: React.FC<ImportModalProps> = ({
-  isOpen,
-  onClose,
-  value,
-  onChange,
-  onConfirm,
-}) => {
+export const ImportModal: React.FC<ImportModalProps> = ({ isOpen, onClose, value, onChange, onConfirm }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -52,9 +46,7 @@ export const ImportModal: React.FC<ImportModalProps> = ({
       }
     >
       <div className="space-y-3 text-xs">
-        <p className="text-[#8a97a8]">
-          支持粘贴包含多条批次参数的 JSON 数组，自动批量加入调度队列：
-        </p>
+        <p className="text-[#8a97a8]">支持粘贴包含多条批次参数的 JSON 数组，自动批量加入调度队列：</p>
         <textarea
           value={value}
           onChange={(e) => onChange(e.target.value)}

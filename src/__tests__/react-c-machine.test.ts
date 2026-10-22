@@ -38,7 +38,12 @@ const NOW = 1_770_000_000_000;
 /** STEP_OK 事件（output 载荷不入机，仅透传形状合规的最小产出） */
 function ok(): ReactCEvent {
   const output: AgentOutput = {
-    agentId: "yanqi", text: "", confidence: 1, tokensUsed: 0, model: "memory-stub", riskTags: [],
+    agentId: "yanqi",
+    text: "",
+    confidence: 1,
+    tokensUsed: 0,
+    model: "memory-stub",
+    riskTags: [],
   };
   return { type: "STEP_OK", output };
 }
@@ -122,10 +127,16 @@ describe("[react-c-machine] A · 线性主路径", () => {
   it("全程主路径：SUBMIT 起 10 事件恰好走完九步，无回环即 v1 线性语义", () => {
     let state = createInitialReactCState();
     const events: ReactCEvent[] = [
-      { type: "SUBMIT" }, ok(), ok(), ok(), ok(), ok(),
+      { type: "SUBMIT" },
+      ok(),
+      ok(),
+      ok(),
+      ok(),
+      ok(),
       { type: "OBSERVED", observation: "obs" },
       { type: "VERDICT", pass: true, score: 0.9 },
-      { type: "REVISED" }, ok(),
+      { type: "REVISED" },
+      ok(),
     ];
     for (const event of events) state = transition(state, event, NOW);
     expect(state.step).toBe("done");
@@ -232,7 +243,18 @@ describe("[react-c-machine] D · 非法转移（contract-violated）", () => {
 
   it("done 终态零出边：SUBMIT / STEP_OK 均抛（新任务须新状态机实例）", () => {
     let state = createInitialReactCState();
-    for (const event of [{ type: "SUBMIT" } as ReactCEvent, ok(), ok(), ok(), ok(), ok(), { type: "OBSERVED", observation: "o" } as ReactCEvent, { type: "VERDICT", pass: true, score: 1 } as ReactCEvent, { type: "REVISED" } as ReactCEvent, ok()]) {
+    for (const event of [
+      { type: "SUBMIT" } as ReactCEvent,
+      ok(),
+      ok(),
+      ok(),
+      ok(),
+      ok(),
+      { type: "OBSERVED", observation: "o" } as ReactCEvent,
+      { type: "VERDICT", pass: true, score: 1 } as ReactCEvent,
+      { type: "REVISED" } as ReactCEvent,
+      ok(),
+    ]) {
       state = transition(state, event, NOW);
     }
     expect(state.step).toBe("done");
@@ -260,7 +282,14 @@ describe("[react-c-machine] D · 非法转移（contract-violated）", () => {
 });
 
 describe("[react-c-machine] E · evaluateReflect 判定", () => {
-  const base: AgentOutput = { agentId: "yanqi", text: "", confidence: 0.9, tokensUsed: 8, model: "memory-stub", riskTags: [] };
+  const base: AgentOutput = {
+    agentId: "yanqi",
+    text: "",
+    confidence: 0.9,
+    tokensUsed: 8,
+    model: "memory-stub",
+    riskTags: [],
+  };
 
   it("confidence 0.9 无风险标签 → pass，score=0.9（保守基线 0.75）", () => {
     expect(evaluateReflect(base)).toEqual({ pass: true, score: 0.9 });

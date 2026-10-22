@@ -24,11 +24,7 @@ export interface ProgressScrubberProps {
   onScrub: (frame: number) => void;
 }
 
-export const ProgressScrubber: React.FC<ProgressScrubberProps> = ({
-  progressPercent,
-  totalFrames,
-  onScrub,
-}) => {
+export const ProgressScrubber: React.FC<ProgressScrubberProps> = ({ progressPercent, totalFrames, onScrub }) => {
   return (
     <div className="px-4 pt-3 pb-1 bg-[#0c1a30]">
       <div

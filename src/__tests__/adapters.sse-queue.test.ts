@@ -80,9 +80,7 @@ describe("adapters/local · SSE 任务队列", () => {
   });
 
   it("enqueue：引擎非 2xx 拒绝时抛错且不广播", async () => {
-    const rejectingFetch = vi.fn(
-      async () => new Response(null, { status: 503 }),
-    ) as unknown as typeof fetch;
+    const rejectingFetch = vi.fn(async () => new Response(null, { status: 503 })) as unknown as typeof fetch;
     const queue = createSseTaskQueue({ endpoint: "/api/task-queue", fetchImpl: rejectingFetch });
     const events: QueueEvent[] = [];
     queue.onEvent((e) => events.push(e));
@@ -101,12 +99,8 @@ describe("adapters/local · SSE 任务队列", () => {
     const events: QueueEvent<{ n: number }>[] = [];
     queue.onEvent((e) => events.push(e));
 
-    source.dispatch(
-      JSON.stringify({ type: "enqueued", task: task("e-1"), at: "2026-10-16T00:00:00Z" }),
-    );
-    source.dispatch(
-      JSON.stringify({ type: "enqueued", task: task("e-2"), at: "2026-10-16T00:00:01Z" }),
-    );
+    source.dispatch(JSON.stringify({ type: "enqueued", task: task("e-1"), at: "2026-10-16T00:00:00Z" }));
+    source.dispatch(JSON.stringify({ type: "enqueued", task: task("e-2"), at: "2026-10-16T00:00:01Z" }));
     expect(queue.size()).toBe(2);
 
     const first = await queue.dequeue();
@@ -127,9 +121,7 @@ describe("adapters/local · SSE 任务队列", () => {
     });
 
     await queue.enqueue(task("dup-1"));
-    source.dispatch(
-      JSON.stringify({ type: "enqueued", task: task("dup-1"), at: "2026-10-16T00:00:00Z" }),
-    );
+    source.dispatch(JSON.stringify({ type: "enqueued", task: task("dup-1"), at: "2026-10-16T00:00:00Z" }));
     expect(queue.size()).toBe(1);
   });
 
@@ -143,12 +135,8 @@ describe("adapters/local · SSE 任务队列", () => {
     const events: QueueEvent<{ n: number }>[] = [];
     queue.onEvent((e) => events.push(e));
 
-    source.dispatch(
-      JSON.stringify({ type: "completed", task: task("t-9"), at: "2026-10-16T00:00:02Z" }),
-    );
-    source.dispatch(
-      JSON.stringify({ type: "failed", task: task("t-10"), at: "2026-10-16T00:00:03Z" }),
-    );
+    source.dispatch(JSON.stringify({ type: "completed", task: task("t-9"), at: "2026-10-16T00:00:02Z" }));
+    source.dispatch(JSON.stringify({ type: "failed", task: task("t-10"), at: "2026-10-16T00:00:03Z" }));
     expect(events.map((e) => e.type)).toEqual(["completed", "failed"]);
   });
 
@@ -163,9 +151,7 @@ describe("adapters/local · SSE 任务队列", () => {
     const unsubscribe = queue.onEvent((e) => events.push(e));
     unsubscribe();
 
-    source.dispatch(
-      JSON.stringify({ type: "enqueued", task: task("t-1"), at: "2026-10-16T00:00:00Z" }),
-    );
+    source.dispatch(JSON.stringify({ type: "enqueued", task: task("t-1"), at: "2026-10-16T00:00:00Z" }));
     expect(events).toHaveLength(0);
     expect(queue.size()).toBe(1); // 缓冲回填不受退订影响
   });
@@ -203,12 +189,8 @@ describe("adapters/local · SSE 任务队列", () => {
       fetchImpl: createAcceptingFetch(),
       eventSourceFactory: () => source,
     });
-    source.dispatch(
-      JSON.stringify({ type: "enqueued", task: task("a"), at: "2026-10-16T00:00:00Z" }),
-    );
-    source.dispatch(
-      JSON.stringify({ type: "enqueued", task: task("b"), at: "2026-10-16T00:00:01Z" }),
-    );
+    source.dispatch(JSON.stringify({ type: "enqueued", task: task("a"), at: "2026-10-16T00:00:00Z" }));
+    source.dispatch(JSON.stringify({ type: "enqueued", task: task("b"), at: "2026-10-16T00:00:01Z" }));
 
     const flushed = queue.drain();
     expect(flushed.map((t) => t.id)).toEqual(["a", "b"]);

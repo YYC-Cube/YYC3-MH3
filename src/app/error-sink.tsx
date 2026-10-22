@@ -63,10 +63,7 @@ export function ErrorSink() {
     };
     const onRejection = (event: PromiseRejectionEvent) => {
       const reason: unknown = event.reason;
-      reportClientError(
-        reason instanceof Error ? reason.message : String(reason),
-        "未处理的 Promise 拒绝",
-      );
+      reportClientError(reason instanceof Error ? reason.message : String(reason), "未处理的 Promise 拒绝");
     };
     window.addEventListener("error", onError);
     window.addEventListener("unhandledrejection", onRejection);

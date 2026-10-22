@@ -33,9 +33,7 @@ export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
   onTroubleshootFix,
   className = "",
 }) => {
-  const [levelFilter, setLevelFilter] = useState<"all" | "info" | "warn" | "error" | "success">(
-    "all",
-  );
+  const [levelFilter, setLevelFilter] = useState<"all" | "info" | "warn" | "error" | "success">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [autoScroll, setAutoScroll] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -51,11 +49,7 @@ export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
     if (levelFilter !== "all" && log.level !== levelFilter) return false;
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      return (
-        log.message.toLowerCase().includes(q) ||
-        log.stage.toLowerCase().includes(q) ||
-        log.timestamp.includes(q)
-      );
+      return log.message.toLowerCase().includes(q) || log.stage.toLowerCase().includes(q) || log.timestamp.includes(q);
     }
     return true;
   });
@@ -157,24 +151,14 @@ export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
       </div>
 
       {/* Logs stream container */}
-      <div
-        ref={scrollRef}
-        className="p-3 h-52 overflow-y-auto space-y-1.5 bg-[#071425] selection:bg-[#00d4aa]/30"
-      >
+      <div ref={scrollRef} className="p-3 h-52 overflow-y-auto space-y-1.5 bg-[#071425] selection:bg-[#00d4aa]/30">
         {filteredLogs.length === 0 ? (
-          <div className="h-full flex items-center justify-center text-[#8b949e] text-xs">
-            暂无匹配日志记录
-          </div>
+          <div className="h-full flex items-center justify-center text-[#8b949e] text-xs">暂无匹配日志记录</div>
         ) : (
           filteredLogs.map((log) => (
-            <div
-              key={log.id}
-              className="leading-relaxed hover:bg-[#0c1a30]/50 p-1 rounded transition-colors group"
-            >
+            <div key={log.id} className="leading-relaxed hover:bg-[#0c1a30]/50 p-1 rounded transition-colors group">
               <div className="flex items-start gap-2">
-                <span className="text-[#8b949e] text-[11px] select-none flex-shrink-0">
-                  {log.timestamp}
-                </span>
+                <span className="text-[#8b949e] text-[11px] select-none flex-shrink-0">{log.timestamp}</span>
                 <span
                   className={`text-[9px] uppercase px-1.5 py-0.2 rounded border font-semibold flex-shrink-0 ${getLevelBadge(
                     log.level,
@@ -183,9 +167,7 @@ export const TerminalLogPanel: React.FC<TerminalLogPanelProps> = ({
                   {log.level}
                 </span>
                 <span className="text-[#8b949e] text-[11px] flex-shrink-0">[{log.stage}]</span>
-                <span className={`flex-1 break-all ${getLevelColor(log.level)}`}>
-                  {log.message}
-                </span>
+                <span className={`flex-1 break-all ${getLevelColor(log.level)}`}>{log.message}</span>
               </div>
 
               {/* Troubleshooting action recommendation if present */}

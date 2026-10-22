@@ -38,16 +38,10 @@ export const VideoScreen: React.FC<VideoScreenProps> = ({
 }) => {
   return (
     <div className="relative aspect-video w-full bg-[#071425] overflow-hidden flex items-center justify-center select-none group">
-      <img
-        src={posterUrl}
-        alt="AI Digital Human Preview"
-        className="w-full h-full object-cover filter brightness-95"
-      />
+      <img src={posterUrl} alt="AI Digital Human Preview" className="w-full h-full object-cover filter brightness-95" />
 
       {/* Shutter flash effect */}
-      {flash && (
-        <div className="absolute inset-0 bg-white z-40 pointer-events-none transition-opacity" />
-      )}
+      {flash && <div className="absolute inset-0 bg-white z-40 pointer-events-none transition-opacity" />}
 
       {/* SyncNet HUD bounding box simulation */}
       {showLipBox && (

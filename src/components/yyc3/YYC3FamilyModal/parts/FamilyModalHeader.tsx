@@ -25,20 +25,12 @@ export interface FamilyModalHeaderProps {
   onClose: () => void;
 }
 
-export const FamilyModalHeader: React.FC<FamilyModalHeaderProps> = ({
-  isFullscreen,
-  onToggleFullscreen,
-  onClose,
-}) => {
+export const FamilyModalHeader: React.FC<FamilyModalHeaderProps> = ({ isFullscreen, onToggleFullscreen, onClose }) => {
   return (
     <div className="h-14 px-6 border-b border-[#1e2f47] bg-[#0c1a30]/90 flex items-center justify-between select-none z-10 flex-shrink-0">
       <div className="flex items-center gap-3">
         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0c2440] to-[#0a1b2f] border border-[#00e0b8]/40 flex items-center justify-center p-1 shadow-[0_0_12px_rgba(0,224,184,0.4)]">
-          <img
-            src="/yyc3-icons/yyc3-logo.png"
-            alt="YYC³ AI Family"
-            className="w-full h-full object-contain"
-          />
+          <img src="/yyc3-icons/yyc3-logo.png" alt="YYC³ AI Family" className="w-full h-full object-contain" />
         </div>
         <div>
           <div className="flex items-center gap-2">

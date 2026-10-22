@@ -42,12 +42,10 @@ export function createIndexeddbBatchRepository(
   /** 懒播种（失败重置允许重试；成功后本进程内仅执行一次） */
   const ensureSeeded = (): Promise<void> => {
     if (seedPromise === null) {
-      seedPromise = seedIfEmpty(db, "batches", INITIAL_BATCHES, (b) => b.id).catch(
-        (err: unknown) => {
-          seedPromise = null;
-          throw err;
-        },
-      );
+      seedPromise = seedIfEmpty(db, "batches", INITIAL_BATCHES, (b) => b.id).catch((err: unknown) => {
+        seedPromise = null;
+        throw err;
+      });
     }
     return seedPromise;
   };

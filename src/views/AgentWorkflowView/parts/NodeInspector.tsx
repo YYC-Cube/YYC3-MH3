@@ -43,10 +43,7 @@ export const NodeInspector: React.FC<NodeInspectorProps> = ({
         <div className="flex items-center justify-between pb-2 border-b border-[#1e2f47]">
           <div className="flex items-center gap-2">
             <span className="font-semibold text-[#e8f0f8]">节点属性配置</span>
-            <span
-              className="w-2.5 h-2.5 rounded-full"
-              style={{ backgroundColor: selectedNode.roleColor }}
-            />
+            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: selectedNode.roleColor }} />
           </div>
           <div className="flex items-center gap-1">
             <button

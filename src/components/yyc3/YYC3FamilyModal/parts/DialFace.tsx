@@ -75,13 +75,8 @@ export const DialFace: React.FC<DialFaceProps> = ({ selectedMember, onSelectMemb
         </div>
 
         {/* Digital Clock + 日期星期（中心圆正下方，不遮挡三针） */}
-        <div
-          className="absolute left-1/2 -translate-x-1/2 text-center whitespace-nowrap"
-          style={{ top: 104 }}
-        >
-          <div className="font-mono text-xs font-bold text-[#00e0b8] tracking-wider">
-            {currentTimeStr}
-          </div>
+        <div className="absolute left-1/2 -translate-x-1/2 text-center whitespace-nowrap" style={{ top: 104 }}>
+          <div className="font-mono text-xs font-bold text-[#00e0b8] tracking-wider">{currentTimeStr}</div>
           <div className="text-[9px] font-mono flex items-center justify-center gap-1 leading-none mt-0.5">
             <span className="text-[#8b949e]">{dateStr}</span>
             <span

@@ -21,13 +21,7 @@ import { describe, expect, it } from "vitest";
 import { PERMISSION_MATRIX, canAccess, createAuditEvent, estimateCost } from "../domains/admin";
 import { REACT_C_STEPS, buildAgentTopology, isReactCComplete, nextReactCStep } from "../domains/ai";
 import { groupTasksByPlatform, isDispatchComplete, platformLabel } from "../domains/distribution";
-import {
-  applyTemplate,
-  buildRenderPlan,
-  sortClips,
-  totalDurationOf,
-  type EditTemplate,
-} from "../domains/editing";
+import { applyTemplate, buildRenderPlan, sortClips, totalDurationOf, type EditTemplate } from "../domains/editing";
 import type { AgentNode, MediaClipItem, PushTaskItem } from "../types";
 
 /* ---------------- ai：ReAct-C 九步闭环 + Agent 集群拓扑 ---------------- */
@@ -194,10 +188,7 @@ describe("domains/distribution", () => {
     expect(isDispatchComplete([])).toBe(false);
     expect(isDispatchComplete([makePushTask("t1", "completed", ["douyin"])])).toBe(true);
     expect(
-      isDispatchComplete([
-        makePushTask("t1", "completed", ["douyin"]),
-        makePushTask("t2", "queued", ["channels"]),
-      ]),
+      isDispatchComplete([makePushTask("t1", "completed", ["douyin"]), makePushTask("t2", "queued", ["channels"])]),
     ).toBe(false);
   });
 
@@ -213,11 +204,7 @@ describe("domains/distribution", () => {
   });
 });
 
-function makePushTask(
-  id: string,
-  status: PushTaskItem["status"],
-  platforms: PushTaskItem["platforms"],
-): PushTaskItem {
+function makePushTask(id: string, status: PushTaskItem["status"], platforms: PushTaskItem["platforms"]): PushTaskItem {
   return {
     id,
     title: id,

@@ -19,12 +19,7 @@
  * dependencies: ../../domains/platform/queue/ports
  * exports: createInMemoryQueue
  */
-import {
-  QueueEvent,
-  QueueEventType,
-  QueueTask,
-  TaskQueuePort,
-} from "../../domains/platform/queue/ports";
+import { QueueEvent, QueueEventType, QueueTask, TaskQueuePort } from "../../domains/platform/queue/ports";
 
 /** 事件监听器集合类型 */
 type QueueListener<TPayload> = (event: QueueEvent<TPayload>) => void;

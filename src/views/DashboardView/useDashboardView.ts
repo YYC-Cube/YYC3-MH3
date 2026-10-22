@@ -39,10 +39,7 @@ export interface UseDashboardViewResult {
   setIsHwModalOpen: (open: boolean) => void;
 }
 
-export function useDashboardView({
-  batches,
-  onShowToast,
-}: UseDashboardViewOptions): UseDashboardViewResult {
+export function useDashboardView({ batches, onShowToast }: UseDashboardViewOptions): UseDashboardViewResult {
   const [isBigScreenMode, setIsBigScreenMode] = useState(false);
   const [trendPeriod] = useState<"weekly" | "monthly">("weekly");
   const [filterQuery, setFilterQuery] = useState("");

@@ -39,20 +39,14 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
         <div className="flex items-center gap-2.5">
-          <h1
-            className={`font-bold text-[#e8f0f8] tracking-tight ${
-              isBigScreenMode ? "text-2xl" : "text-xl"
-            }`}
-          >
+          <h1 className={`font-bold text-[#e8f0f8] tracking-tight ${isBigScreenMode ? "text-2xl" : "text-xl"}`}>
             总览驾驶舱 · Executive Cockpit
           </h1>
           <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-[#00e0b8]/15 text-[#00e0b8] border border-[#00e0b8]/30 font-mono shadow-[0_0_8px_rgba(0,224,184,0.2)]">
             7×24H 生产中枢在线
           </span>
         </div>
-        <p className="text-xs text-[#8a97a8] mt-1">
-          实时汇总 MiniMax-H3 推理管线性能、SyncNet 评分闭环与本地硬件负载
-        </p>
+        <p className="text-xs text-[#8a97a8] mt-1">实时汇总 MiniMax-H3 推理管线性能、SyncNet 评分闭环与本地硬件负载</p>
       </div>
 
       <div className="flex items-center gap-2.5">
@@ -77,12 +71,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           一键显存整理
         </Button>
 
-        <Button
-          variant="primary"
-          size="sm"
-          icon={<Cpu className="w-4 h-4" />}
-          onClick={() => onNavigate("workbench")}
-        >
+        <Button variant="primary" size="sm" icon={<Cpu className="w-4 h-4" />} onClick={() => onNavigate("workbench")}>
           进入流水线工作台
         </Button>
       </div>

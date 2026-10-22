@@ -41,10 +41,7 @@ function okResponse(body: unknown, status = 200): Response {
 
 type FetchMock = (url: string, init?: RequestInit) => Promise<Response>;
 
-function makeOptions(
-  fetchImpl: FetchMock,
-  extra?: Partial<LocalAdapterOptions>,
-): LocalAdapterOptions {
+function makeOptions(fetchImpl: FetchMock, extra?: Partial<LocalAdapterOptions>): LocalAdapterOptions {
   return { baseUrl: BASE, timeoutMs: 200, fetchImpl, ...extra };
 }
 
@@ -101,9 +98,7 @@ describe("local telemetry · 正常供数（fetch 命中）", () => {
   });
 
   it("listMetrics / listAlarms 分别命中 /metrics 与 /alarms", async () => {
-    const remoteMetrics = [
-      { time: "11:00", gpuVram: 1, gpuUtil: 1, cpuUtil: 1, memUtil: 1, diskIops: 1, temp: 1 },
-    ];
+    const remoteMetrics = [{ time: "11:00", gpuVram: 1, gpuUtil: 1, cpuUtil: 1, memUtil: 1, diskIops: 1, temp: 1 }];
     const fetchImpl = vi.fn<FetchMock>(async (url) => {
       if (url === `${BASE}/metrics`) return okResponse(remoteMetrics);
       if (url === `${BASE}/alarms`) return okResponse([]);
@@ -155,9 +150,7 @@ describe("local telemetry · 降级触发（06 §4：网络错/非2xx/超时）"
   });
 
   it("非 2xx（500）→ 回退 memory 快照 + 降级留痕（detail 含 HTTP 500）", async () => {
-    const fetchImpl = vi.fn<FetchMock>(async () =>
-      okResponse({ error: { code: "X", message: "x" } }, 500),
-    );
+    const fetchImpl = vi.fn<FetchMock>(async () => okResponse({ error: { code: "X", message: "x" } }, 500));
     const telemetry = createLocalTelemetry(makeOptions(fetchImpl));
     expect(await telemetry.listAlarms()).toEqual(SYSTEM_ALARMS);
     const traces = await traceLogs(telemetry);
@@ -222,9 +215,7 @@ describe("local batch · 读路径 + 404 业务空值", () => {
   });
 
   it("getById 404 → null（业务空值，不降级不留痕，06 §2 v1.0.1 细化）", async () => {
-    const fetchImpl = vi.fn<FetchMock>(async () =>
-      okResponse({ error: { code: "NOT_FOUND", message: "x" } }, 404),
-    );
+    const fetchImpl = vi.fn<FetchMock>(async () => okResponse({ error: { code: "NOT_FOUND", message: "x" } }, 404));
     const telemetry = createLocalTelemetry(makeOptions(fetchImpl));
     const repo = createLocalBatchRepository({ ...makeOptions(fetchImpl), telemetry });
     expect(await repo.getById("BATCH-NOT-EXIST")).toBeNull();
@@ -302,9 +293,7 @@ describe("local telemetry · resolveAlarm 写路径（06 §2 #5 PATCH /alarms/:i
   });
 
   it("404 → null（业务空值，不降级不留痕，06 §2 v1.0.1 细化）", async () => {
-    const fetchImpl = vi.fn<FetchMock>(async () =>
-      okResponse({ error: { code: "NOT_FOUND", message: "x" } }, 404),
-    );
+    const fetchImpl = vi.fn<FetchMock>(async () => okResponse({ error: { code: "NOT_FOUND", message: "x" } }, 404));
     const telemetry = createLocalTelemetry(makeOptions(fetchImpl));
     expect(await telemetry.resolveAlarm("ALARM-NOT-EXIST")).toBeNull();
     expect(await traceLogs(telemetry)).toHaveLength(0);

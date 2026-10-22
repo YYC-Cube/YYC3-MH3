@@ -38,9 +38,7 @@ export const WorkflowToolbar: React.FC<WorkflowToolbarProps> = ({
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
           <Network className="w-4 h-4 text-[#00e0b8]" />
-          <span className="text-xs font-semibold text-[#e8f0f8]">
-            漫剧分镜多 Agent 智能协同流水线
-          </span>
+          <span className="text-xs font-semibold text-[#e8f0f8]">漫剧分镜多 Agent 智能协同流水线</span>
         </div>
         <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#15294a] text-[#00e0b8] border border-[#1e2f47]">
           YYC³ AI Family 8 大成员体系全量对齐
@@ -48,12 +46,7 @@ export const WorkflowToolbar: React.FC<WorkflowToolbarProps> = ({
       </div>
 
       <div className="flex items-center gap-2">
-        <Button
-          variant="ghost"
-          size="xs"
-          icon={<Download className="w-3.5 h-3.5" />}
-          onClick={onExportTopology}
-        >
+        <Button variant="ghost" size="xs" icon={<Download className="w-3.5 h-3.5" />} onClick={onExportTopology}>
           导出拓扑 (JSON)
         </Button>
         <Button

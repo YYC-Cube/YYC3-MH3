@@ -31,12 +31,7 @@ import { MemberDrawer } from "./parts/MemberDrawer";
 
 export type { FamilyActionPayload, YYC3FamilyModalProps } from "./parts/types";
 
-export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
-  isOpen,
-  onClose,
-  onApplyAction,
-  onShowToast,
-}) => {
+export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({ isOpen, onClose, onApplyAction, onShowToast }) => {
   const [selectedMember, setSelectedMember] = useState<YYC3Member>(
     YYC3_MEMBERS[4]!, // mock 常量数组恒非空，静态索引安全
   ); // Default to Yuanqi / Tianxu
@@ -68,9 +63,7 @@ export const YYC3FamilyModal: React.FC<YYC3FamilyModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-[#071222]/85 backdrop-blur-md animate-in fade-in duration-200">
       <div
         className={`bg-[#0a1628] border border-[#1e2f47] rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 relative ${
-          isFullscreen
-            ? "w-[98vw] h-[95vh]"
-            : "w-full max-w-5xl h-[94dvh] md:h-[660px] md:max-h-[94dvh]"
+          isFullscreen ? "w-[98vw] h-[95vh]" : "w-full max-w-5xl h-[94dvh] md:h-[660px] md:max-h-[94dvh]"
         }`}
         style={{
           boxShadow: "0 0 32px rgba(0, 224, 184, 0.08), 0 20px 48px rgba(0, 0, 0, 0.6)",

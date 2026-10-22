@@ -146,9 +146,7 @@ const RAW_BATCHES: BatchItem[] = [
 ];
 
 /** 演示快照（顶层冻结 + 逐项浅拷贝；注意 tags 等嵌套引用与 RAW 共享，禁止就地修改） */
-export const INITIAL_BATCHES: readonly BatchItem[] = Object.freeze(
-  RAW_BATCHES.map((b) => ({ ...b })),
-);
+export const INITIAL_BATCHES: readonly BatchItem[] = Object.freeze(RAW_BATCHES.map((b) => ({ ...b })));
 
 /* --------------------------------------------------------------
  * YYC³ · 言启象限 | 语枢未来 · 万象归元于云枢 | 深栈智启新纪元

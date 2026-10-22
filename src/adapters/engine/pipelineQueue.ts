@@ -24,12 +24,7 @@
  * exports: PIPELINE_TASK_TYPE, PipelineRunPayload, EngineRunStatus, EngineLogLine, EngineFileChange,
  *          NamedEventSourceLike, EnginePipelineQueueOptions, createEnginePipelineQueue
  */
-import {
-  QueueEvent,
-  QueueEventType,
-  QueueTask,
-  TaskQueuePort,
-} from "../../domains/platform/queue/ports";
+import { QueueEvent, QueueEventType, QueueTask, TaskQueuePort } from "../../domains/platform/queue/ports";
 
 /** 本适配器唯一受理的任务类型 */
 export const PIPELINE_TASK_TYPE = "pipeline.run";
@@ -93,9 +88,7 @@ function parseJson<T>(raw: string | undefined, consume: (value: T) => void): voi
   }
 }
 
-export function createEnginePipelineQueue(
-  options: EnginePipelineQueueOptions,
-): TaskQueuePort<PipelineRunPayload> {
+export function createEnginePipelineQueue(options: EnginePipelineQueueOptions): TaskQueuePort<PipelineRunPayload> {
   const listeners = new Set<Listener>();
   const fetchImpl = options.fetchImpl ?? fetch;
   let source: NamedEventSourceLike | null = null;
@@ -125,8 +118,7 @@ export function createEnginePipelineQueue(
 
   const ensureStream = (): void => {
     if (source) return;
-    const factory =
-      options.eventSourceFactory ?? ((url: string) => new EventSource(url) as NamedEventSourceLike);
+    const factory = options.eventSourceFactory ?? ((url: string) => new EventSource(url) as NamedEventSourceLike);
     try {
       source = factory(`${options.baseUrl}/pipeline/stream`);
     } catch {
@@ -134,12 +126,8 @@ export function createEnginePipelineQueue(
       return;
     }
     source.addEventListener("state", (e) => parseJson<EngineRunStatus>(e.data, handleState));
-    source.addEventListener("log", (e) =>
-      parseJson<EngineLogLine>(e.data, (line) => options.onLog?.(line)),
-    );
-    source.addEventListener("file", (e) =>
-      parseJson<EngineFileChange>(e.data, (change) => options.onFile?.(change)),
-    );
+    source.addEventListener("log", (e) => parseJson<EngineLogLine>(e.data, (line) => options.onLog?.(line)));
+    source.addEventListener("file", (e) => parseJson<EngineFileChange>(e.data, (change) => options.onFile?.(change)));
   };
 
   return {

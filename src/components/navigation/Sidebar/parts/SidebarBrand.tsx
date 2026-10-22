@@ -40,9 +40,7 @@ export const SidebarBrand: React.FC<SidebarBrandProps> = ({ collapsed, onToggleC
         </div>
         {!collapsed && (
           <div className="flex flex-col truncate">
-            <span className="text-xs font-bold text-[#e8f0f8] tracking-wide truncate">
-              MiniMax-H3 DiffSynth
-            </span>
+            <span className="text-xs font-bold text-[#e8f0f8] tracking-wide truncate">MiniMax-H3 DiffSynth</span>
             <span className="text-[10px] text-[#00e0b8] font-mono tracking-tight flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-[#00e0b8] animate-pulse" />
               本地版 v2.1 PRO

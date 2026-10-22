@@ -78,9 +78,7 @@ export const NightlyConsoleView: React.FC<NightlyConsoleViewProps> = ({ onShowTo
         <div>
           <div className="flex items-center gap-2">
             <Moon className="w-4 h-4 text-[#00e0b8]" />
-            <h1 className="text-base font-bold text-[#e8f0f8]">
-              夜间批量无人值守控制台 · Nightly Console
-            </h1>
+            <h1 className="text-base font-bold text-[#e8f0f8]">夜间批量无人值守控制台 · Nightly Console</h1>
             <Badge variant="brand" size="xs">
               低蓝光护眼暖色调
             </Badge>
@@ -135,9 +133,7 @@ export const NightlyConsoleView: React.FC<NightlyConsoleViewProps> = ({ onShowTo
                     {task.start} - {task.end} ({task.duration})
                   </span>
                   <Badge
-                    variant={
-                      task.priority === "高" ? "brand" : task.priority === "中" ? "info" : "neutral"
-                    }
+                    variant={task.priority === "高" ? "brand" : task.priority === "中" ? "info" : "neutral"}
                     size="xs"
                   >
                     优先级 {task.priority}
@@ -176,9 +172,7 @@ export const NightlyConsoleView: React.FC<NightlyConsoleViewProps> = ({ onShowTo
 
         <Card title="晨间完成报告推送 (Webhook 推送通知)">
           <div className="space-y-3">
-            <p className="text-[#8a97a8]">
-              任务完成或遇异常时，向本地通知服务回环地址推送晨间简报（不出公网）：
-            </p>
+            <p className="text-[#8a97a8]">任务完成或遇异常时，向本地通知服务回环地址推送晨间简报（不出公网）：</p>
             <Input
               label="本地 Webhook 地址（演示初始值，可改为自建服务）"
               value={webhookUrl}

@@ -42,11 +42,7 @@ export function createBatchId(existingCount: number, now = new Date()): string {
  * 以 S 级演示基线分启动（95.2），五步流水线自 generation 起步，10% 进度入列。
  * 编号沿用 createBatchId；now 参数注入便于测试确定性。
  */
-export function createBatchItem(
-  draft: NewBatchDraft,
-  existingCount: number,
-  now = new Date(),
-): BatchItem {
+export function createBatchItem(draft: NewBatchDraft, existingCount: number, now = new Date()): BatchItem {
   return {
     id: createBatchId(existingCount, now),
     name: draft.name,

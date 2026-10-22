@@ -31,12 +31,7 @@ export interface FamilyChatProps {
   onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
-export const FamilyChat: React.FC<FamilyChatProps> = ({
-  selectedMember,
-  chat,
-  onApplyAction,
-  onShowToast,
-}) => {
+export const FamilyChat: React.FC<FamilyChatProps> = ({ selectedMember, chat, onApplyAction, onShowToast }) => {
   const { messages, chatInput, setChatInput, handleSendMessage } = chat;
 
   return (
@@ -44,10 +39,7 @@ export const FamilyChat: React.FC<FamilyChatProps> = ({
       {/* Chat Message List */}
       <div className="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
         {messages.map((m) => (
-          <div
-            key={m.id}
-            className={`flex flex-col ${m.sender === "user" ? "items-end" : "items-start"}`}
-          >
+          <div key={m.id} className={`flex flex-col ${m.sender === "user" ? "items-end" : "items-start"}`}>
             {m.sender === "agent" && (
               <div className="flex items-center gap-1.5 mb-1 text-[11px] font-semibold text-[#00e0b8]">
                 <span
@@ -92,17 +84,15 @@ export const FamilyChat: React.FC<FamilyChatProps> = ({
 
       {/* Preset Prompts Chips */}
       <div className="p-2 border-t border-[#1e2f47] bg-[#0c1a30]/80 overflow-x-auto flex gap-1.5 flex-shrink-0">
-        {(PRESET_CHAT_PROMPTS[selectedMember.id] ?? PRESET_CHAT_PROMPTS.yuanqi ?? []).map(
-          (p, i) => (
-            <button
-              key={i}
-              onClick={() => handleSendMessage(p)}
-              className="text-[10px] px-2.5 py-1 rounded-full bg-[#15294a] text-[#8a97a8] hover:text-[#00e0b8] border border-[#1e2f47] hover:border-[#00e0b8]/40 whitespace-nowrap transition-colors cursor-pointer"
-            >
-              {p}
-            </button>
-          ),
-        )}
+        {(PRESET_CHAT_PROMPTS[selectedMember.id] ?? PRESET_CHAT_PROMPTS.yuanqi ?? []).map((p, i) => (
+          <button
+            key={i}
+            onClick={() => handleSendMessage(p)}
+            className="text-[10px] px-2.5 py-1 rounded-full bg-[#15294a] text-[#8a97a8] hover:text-[#00e0b8] border border-[#1e2f47] hover:border-[#00e0b8]/40 whitespace-nowrap transition-colors cursor-pointer"
+          >
+            {p}
+          </button>
+        ))}
       </div>
 
       {/* Chat Input Bar */}

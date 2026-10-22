@@ -82,18 +82,12 @@ export const TestSidebar: React.FC<TestSidebarProps> = ({
         {isTesting ? (
           <div className="aspect-video rounded-xl bg-[#15294a] border border-[#1e2f47] flex flex-col items-center justify-center p-6 text-center space-y-3">
             <div className="w-8 h-8 rounded-full border-2 border-[#00e0b8] border-t-transparent animate-spin" />
-            <span className="text-xs text-[#00e0b8] font-mono">
-              DiffSynth 正在提取 30 步潜空间特征...
-            </span>
+            <span className="text-xs text-[#00e0b8] font-mono">DiffSynth 正在提取 30 步潜空间特征...</span>
           </div>
         ) : testResult ? (
           <div className="space-y-3 animate-in fade-in">
             <div className="aspect-video rounded-xl overflow-hidden border border-[#00e0b8] relative group">
-              <img
-                src={testResult.preview}
-                alt="Test Result"
-                className="w-full h-full object-cover"
-              />
+              <img src={testResult.preview} alt="Test Result" className="w-full h-full object-cover" />
               <div className="absolute top-2 right-2 px-2 py-0.5 rounded bg-[#0a1628]/80 text-[#00e0b8] font-mono text-xs font-bold border border-[#00e0b8]">
                 {testResult.score} 分
               </div>

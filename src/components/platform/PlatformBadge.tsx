@@ -55,11 +55,7 @@ export function PlatformBadge({ platform }: { platform: SocialPlatformKey }) {
     label: platform,
     color: "bg-[#15294a] text-[#8a97a8]",
   };
-  return (
-    <span className={`text-[10px] px-1.5 py-0.2 rounded font-medium border ${item.color}`}>
-      {item.label}
-    </span>
-  );
+  return <span className={`text-[10px] px-1.5 py-0.2 rounded font-medium border ${item.color}`}>{item.label}</span>;
 }
 
 /* --------------------------------------------------------------

@@ -24,14 +24,7 @@ import { ConfigModule } from "../components/platform/ConfigModule";
 import { DispatchModule } from "../components/platform/DispatchModule";
 import { MediaModule } from "../components/platform/MediaModule";
 import { NewPushModal } from "../components/platform/NewPushModal";
-import {
-  MediaClipItem,
-  NavTabId,
-  NavigateExtra,
-  PushTaskItem,
-  ShowToast,
-  SocialPlatformKey,
-} from "../types";
+import { MediaClipItem, NavTabId, NavigateExtra, PushTaskItem, ShowToast, SocialPlatformKey } from "../types";
 
 /** 平台管理子模块页签 ID */
 export type PlatformModule = "dispatch" | "media" | "analytics" | "config";
@@ -137,11 +130,7 @@ export const PlatformManagementView: FC<PlatformManagementViewProps> = ({ onShow
 
   // New Push Job Modal（状态存视图层：头部与调度台双入口触发）
   const [isNewPushModalOpen, setIsNewPushModalOpen] = useState(false);
-  const [selectedPlatforms, setSelectedPlatforms] = useState<SocialPlatformKey[]>([
-    "douyin",
-    "channels",
-    "nas",
-  ]);
+  const [selectedPlatforms, setSelectedPlatforms] = useState<SocialPlatformKey[]>(["douyin", "channels", "nas"]);
 
   const togglePlatform = (p: SocialPlatformKey) => {
     setSelectedPlatforms((prev) => (prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]));
@@ -162,11 +151,7 @@ export const PlatformManagementView: FC<PlatformManagementViewProps> = ({ onShow
     };
     setPushTasks((prev) => [newTask, ...prev]);
     setIsNewPushModalOpen(false);
-    onShowToast(
-      "success",
-      "已启动多平台一键分发任务",
-      "推送任务已入本地队列异步执行（演示，无外部出站）",
-    );
+    onShowToast("success", "已启动多平台一键分发任务", "推送任务已入本地队列异步执行（演示，无外部出站）");
   };
 
   return (
@@ -212,9 +197,7 @@ export const PlatformManagementView: FC<PlatformManagementViewProps> = ({ onShow
             key={tab.id}
             onClick={() => setActiveModule(tab.id)}
             className={`pb-3 font-medium transition-colors cursor-pointer relative ${
-              activeModule === tab.id
-                ? "text-[#00e0b8] font-semibold text-sm"
-                : "text-[#8a97a8] hover:text-[#e8f0f8]"
+              activeModule === tab.id ? "text-[#00e0b8] font-semibold text-sm" : "text-[#8a97a8] hover:text-[#e8f0f8]"
             }`}
           >
             {tab.label}
@@ -272,9 +255,7 @@ export const PlatformManagementView: FC<PlatformManagementViewProps> = ({ onShow
           </Button>
         }
       >
-        <p className="text-xs text-[#8a97a8]">
-          包含生产效能、多平台分发回执、算力成本核算与 Seed 演进全量数据分析。
-        </p>
+        <p className="text-xs text-[#8a97a8]">包含生产效能、多平台分发回执、算力成本核算与 Seed 演进全量数据分析。</p>
       </Modal>
     </div>
   );

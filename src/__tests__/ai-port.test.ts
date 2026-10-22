@@ -120,13 +120,16 @@ describe("AgentPort v2 组合根契约 · 内存实现", () => {
     expect(caught!.message).toContain("ghost");
   });
 
-  it.each(REACT_C_STEPS.map((s) => s.key))("九步单步推进 · %s：同 traceId 串联、artifacts 按步区分", async (stepKey) => {
-    const ai = createMemoryAgent();
-    const res = await ai.invokeStep(request({ stepKey }));
-    expect(res.agentId).toBe("yanqi");
-    expect(res.text).toContain(stepKey);
-    expect(res.artifacts).toEqual([`memory:yanqi:${stepKey}`]);
-  });
+  it.each(REACT_C_STEPS.map((s) => s.key))(
+    "九步单步推进 · %s：同 traceId 串联、artifacts 按步区分",
+    async (stepKey) => {
+      const ai = createMemoryAgent();
+      const res = await ai.invokeStep(request({ stepKey }));
+      expect(res.agentId).toBe("yanqi");
+      expect(res.text).toContain(stepKey);
+      expect(res.artifacts).toEqual([`memory:yanqi:${stepKey}`]);
+    },
+  );
 
   it("组合根实际供给 ai 端口（AppPorts 接线断裂即红）：八员目录 + 端到端确定性", async () => {
     const ports = getPorts();

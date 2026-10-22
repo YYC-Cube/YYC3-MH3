@@ -38,8 +38,7 @@ export interface SettingsDataSectionProps {
 }
 
 /** 当前持久化模式标注（运行时探测，与组合根 auto 回退判定同源） */
-const PERSISTENCE_MODE_LABEL =
-  typeof indexedDB !== "undefined" ? "IndexedDB 本地持久化" : "内存会话（无持久化）";
+const PERSISTENCE_MODE_LABEL = typeof indexedDB !== "undefined" ? "IndexedDB 本地持久化" : "内存会话（无持久化）";
 
 /** 导出文件名时间戳：YYYYMMDD-HHmmss（本地时区） */
 function formatStamp(date: Date): string {
@@ -57,10 +56,7 @@ function joinSkippedNotes(skipped: ImportSkipped): string {
     .join("；");
 }
 
-export const SettingsDataSection: React.FC<SettingsDataSectionProps> = ({
-  dataPortability,
-  onShowToast,
-}) => {
+export const SettingsDataSection: React.FC<SettingsDataSectionProps> = ({ dataPortability, onShowToast }) => {
   const [busy, setBusy] = useState<"export" | "import" | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -171,11 +167,7 @@ export const SettingsDataSection: React.FC<SettingsDataSectionProps> = ({
         </div>
 
         <div className="p-3 rounded-lg bg-[#122340] border border-[#30363d] text-[11px] text-[#8b949e] space-y-1">
-          <p>
-            {
-              "· 导出文件名：yyc3-mh3-export-{YYYYMMDD-HHmmss}.json，导出同时在本地留痕（last-export-meta）。"
-            }
-          </p>
+          <p>{"· 导出文件名：yyc3-mh3-export-{YYYYMMDD-HHmmss}.json，导出同时在本地留痕（last-export-meta）。"}</p>
           <p>
             · 导入按 id 去重合并（不覆盖现有数据）：批次 / 种子 / 日志 / 告警 / 服务 /
             指标六表全量写回；个别装配缺失写通道时诚实注明跳过。

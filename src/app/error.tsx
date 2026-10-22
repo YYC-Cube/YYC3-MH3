@@ -23,18 +23,9 @@ import { useEffect } from "react";
 
 import { reportClientError } from "./error-sink";
 
-export default function Error({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
-    reportClientError(
-      error.message || "路由段渲染错误",
-      error.digest ? `digest: ${error.digest}` : undefined,
-    );
+    reportClientError(error.message || "路由段渲染错误", error.digest ? `digest: ${error.digest}` : undefined);
   }, [error]);
 
   return (

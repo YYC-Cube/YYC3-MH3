@@ -40,13 +40,7 @@ export interface NewPushModalProps {
 }
 
 /** 新建多平台矩阵分发推送作业弹窗（组件常驻挂载，仅弹层随 isOpen 显隐） */
-export function NewPushModal({
-  isOpen,
-  onClose,
-  selectedPlatforms,
-  onTogglePlatform,
-  onConfirm,
-}: NewPushModalProps) {
+export function NewPushModal({ isOpen, onClose, selectedPlatforms, onTogglePlatform, onConfirm }: NewPushModalProps) {
   return (
     <Modal
       isOpen={isOpen}
@@ -65,9 +59,7 @@ export function NewPushModal({
     >
       <div className="space-y-4 text-xs">
         <div>
-          <label className="block text-xs font-medium text-[#8a97a8] mb-1.5">
-            目标分发平台与渠道（支持多选）
-          </label>
+          <label className="block text-xs font-medium text-[#8a97a8] mb-1.5">目标分发平台与渠道（支持多选）</label>
           <div className="grid grid-cols-2 gap-2">
             {PUSH_PLATFORM_OPTIONS.map((plat) => {
               const isSelected = selectedPlatforms.includes(plat.id);

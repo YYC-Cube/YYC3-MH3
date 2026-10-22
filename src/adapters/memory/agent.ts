@@ -23,16 +23,26 @@
  */
 import { AGENT_REGISTRY } from "../../data/aiRegistry";
 import type { ReactCStepKey } from "../../domains/ai";
-import { type AgentError, type AgentInput, type AgentOutput, type AgentPort, type AgentTool } from "../../domains/ai/ports";
+import {
+  type AgentError,
+  type AgentInput,
+  type AgentOutput,
+  type AgentPort,
+  type AgentTool,
+} from "../../domains/ai/ports";
 import type { AgentContext } from "../../domains/ai/ports";
 
 export interface MemoryAgentDeps {
   /** 档案表（默认 AGENT_REGISTRY；测试可注入替身） */
-  profiles?: readonly typeof AGENT_REGISTRY[number][];
+  profiles?: readonly (typeof AGENT_REGISTRY)[number][];
 }
 
 /** 结构化 AgentError 构造（code/retryable/锚点必填） */
-function agentError(code: AgentError["code"], message: string, anchors: { traceId: string; agentId: string; stepKey?: ReactCStepKey }): AgentError {
+function agentError(
+  code: AgentError["code"],
+  message: string,
+  anchors: { traceId: string; agentId: string; stepKey?: ReactCStepKey },
+): AgentError {
   const error = new Error(message) as AgentError;
   error.name = "AgentError";
   error.code = code;

@@ -32,13 +32,7 @@ export interface MediaModuleProps {
 /** 时间线总时长（秒）— 游标与片段宽度换算基准 */
 const TIMELINE_TOTAL_SEC = 10;
 
-export function MediaModule({
-  clips,
-  activeClipId,
-  onSelectClip,
-  playhead,
-  onShowToast,
-}: MediaModuleProps) {
+export function MediaModule({ clips, activeClipId, onSelectClip, playhead, onShowToast }: MediaModuleProps) {
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Multi-Track Timeline Editor */}
@@ -94,9 +88,7 @@ export function MediaModule({
             {/* Track 1: Video Track */}
             <div className="space-y-1">
               <div className="text-[11px] text-[#8a97a8] flex items-center justify-between font-sans">
-                <span className="font-semibold text-[#e8f0f8]">
-                  Track 1: 4K 视频画面轨 (Video Track)
-                </span>
+                <span className="font-semibold text-[#e8f0f8]">Track 1: 4K 视频画面轨 (Video Track)</span>
                 <span>1080×1920 @ 30fps</span>
               </div>
               <div className="h-14 rounded-lg bg-[#15294a] border border-[#1e2f47] p-1 flex gap-2 overflow-hidden relative">
@@ -125,9 +117,7 @@ export function MediaModule({
                         <span className="text-[#00e0b8]">{clip.durationSec}s</span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <span className="text-[9px] px-1 rounded bg-[#0a1628] text-[#8a97a8]">
-                          转场: 溶入
-                        </span>
+                        <span className="text-[9px] px-1 rounded bg-[#0a1628] text-[#8a97a8]">转场: 溶入</span>
                       </div>
                     </div>
                   );
@@ -138,9 +128,7 @@ export function MediaModule({
             {/* Track 2: Audio Track & Waveform */}
             <div className="space-y-1 pt-1">
               <div className="text-[11px] text-[#8a97a8] flex items-center justify-between font-sans">
-                <span className="font-semibold text-[#e8f0f8]">
-                  Track 2: 音频音素对齐轨 (Audio Waveform)
-                </span>
+                <span className="font-semibold text-[#e8f0f8]">Track 2: 音频音素对齐轨 (Audio Waveform)</span>
                 <span>48kHz PCM · 嘴型对齐置信度 98.4%</span>
               </div>
               <div className="h-10 rounded-lg bg-[#15294a] border border-[#1e2f47] p-1 flex items-end gap-1 overflow-hidden relative">
@@ -151,11 +139,7 @@ export function MediaModule({
                 {Array.from({ length: 60 }).map((_, i) => {
                   const h = Math.sin(i * 0.4) * 40 + 50;
                   return (
-                    <div
-                      key={i}
-                      className="flex-1 bg-[#00b4d8] rounded-t opacity-80"
-                      style={{ height: `${h}%` }}
-                    />
+                    <div key={i} className="flex-1 bg-[#00b4d8] rounded-t opacity-80" style={{ height: `${h}%` }} />
                   );
                 })}
               </div>
@@ -164,9 +148,7 @@ export function MediaModule({
             {/* Track 3: Subtitle Track */}
             <div className="space-y-1 pt-1">
               <div className="text-[11px] text-[#8a97a8] flex items-center justify-between font-sans">
-                <span className="font-semibold text-[#e8f0f8]">
-                  Track 3: 口型智能同步字幕轨 (Subtitles)
-                </span>
+                <span className="font-semibold text-[#e8f0f8]">Track 3: 口型智能同步字幕轨 (Subtitles)</span>
                 <button
                   onClick={() => onShowToast("success", "已导出 SRT 字幕文件")}
                   className="text-[#00e0b8] hover:underline cursor-pointer"

@@ -44,9 +44,7 @@ export const RadarScoreChart: React.FC<RadarScoreChartProps> = ({
   const selectedDim = hoveredDim || activeDim || dimensions[0]!;
 
   return (
-    <div
-      className={`p-4 rounded-xl bg-[#0c1a30] border border-[#30363d] flex flex-col ${className}`}
-    >
+    <div className={`p-4 rounded-xl bg-[#0c1a30] border border-[#30363d] flex flex-col ${className}`}>
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold text-[#e6edf3]">多维质量雷达评估</span>

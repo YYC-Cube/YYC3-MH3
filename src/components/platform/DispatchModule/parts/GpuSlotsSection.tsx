@@ -81,11 +81,7 @@ export const GpuSlotsSection: React.FC<GpuSlotsSectionProps> = ({ onShowToast })
           <Badge variant="brand" size="xs">
             3 卡在线负载均衡
           </Badge>
-          <Button
-            variant="secondary"
-            size="xs"
-            onClick={() => onShowToast("info", "多卡并行负载已自动再平衡")}
-          >
+          <Button variant="secondary" size="xs" onClick={() => onShowToast("info", "多卡并行负载已自动再平衡")}>
             算力动态再平衡
           </Button>
         </div>

@@ -46,9 +46,7 @@ export const Card: React.FC<CardProps> = ({
   return (
     <div
       onClick={onClick}
-      className={`rounded-lg transition-all duration-200 ease-out border ${
-        glow ? "glass-panel-glow" : "glass-panel"
-      } ${
+      className={`rounded-lg transition-all duration-200 ease-out border ${glow ? "glass-panel-glow" : "glass-panel"} ${
         hoverable
           ? "hover:border-[#00d4aa]/40 hover:bg-[#0e2038] hover:shadow-[0_4px_24px_rgba(0,0,0,0.35)] cursor-pointer"
           : ""
@@ -58,16 +56,12 @@ export const Card: React.FC<CardProps> = ({
         <div className="px-4 py-3 border-b border-[#30363d]/70 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0">
             {typeof title === "string" ? (
-              <h3 className="text-sm font-semibold text-[#e6edf3] tracking-wide truncate">
-                {title}
-              </h3>
+              <h3 className="text-sm font-semibold text-[#e6edf3] tracking-wide truncate">{title}</h3>
             ) : (
               title
             )}
             {badge}
-            {subtitle && (
-              <span className="text-xs text-[#8b949e] font-normal truncate">{subtitle}</span>
-            )}
+            {subtitle && <span className="text-xs text-[#8b949e] font-normal truncate">{subtitle}</span>}
           </div>
           {action && <div className="flex items-center gap-2 flex-shrink-0">{action}</div>}
         </div>

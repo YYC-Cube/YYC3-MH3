@@ -28,14 +28,7 @@ export interface DrawerProps {
   width?: string;
 }
 
-export const Drawer: React.FC<DrawerProps> = ({
-  isOpen,
-  onClose,
-  title,
-  children,
-  footer,
-  width = "max-w-md",
-}) => {
+export const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, title, children, footer, width = "max-w-md" }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
@@ -50,10 +43,7 @@ export const Drawer: React.FC<DrawerProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
-      <div
-        className="absolute inset-0 bg-[#071425]/75 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-[#071425]/75 backdrop-blur-sm transition-opacity" onClick={onClose} />
       <div className="fixed inset-y-0 right-0 pl-10 max-w-full flex">
         <div
           className={`w-screen ${width} bg-[#0c1a30] border-l border-[#30363d] shadow-2xl flex flex-col transform transition ease-in-out duration-200`}

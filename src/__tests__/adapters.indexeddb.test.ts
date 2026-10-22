@@ -27,12 +27,7 @@ import { createIndexeddbStorage } from "../adapters/indexeddb/kv";
 import { createIndexeddbSeedRepository } from "../adapters/indexeddb/seedRepository";
 import { createIndexeddbTelemetry } from "../adapters/indexeddb/telemetryRepository";
 import { INITIAL_BATCHES } from "../adapters/memory/fixtures/batch";
-import {
-  INITIAL_LOGS,
-  OPS_METRICS,
-  SERVICES_LIST,
-  SYSTEM_ALARMS,
-} from "../adapters/memory/fixtures/ops";
+import { INITIAL_LOGS, OPS_METRICS, SERVICES_LIST, SYSTEM_ALARMS } from "../adapters/memory/fixtures/ops";
 import { INITIAL_SEEDS } from "../adapters/memory/fixtures/seed";
 import { createInMemoryQueue } from "../adapters/memory/queue";
 import { createPorts } from "../app/composition";

@@ -65,10 +65,7 @@ export const MetricsCurves: React.FC<MetricsCurvesProps> = ({ metrics }) => {
         <div className="h-20 w-full flex items-end gap-1.5 pt-2">
           {metrics.map((m, idx) => (
             <div key={idx} className="flex-1 flex flex-col items-center gap-1 group relative">
-              <div
-                className="w-full bg-[#00b4d8] rounded-t transition-all"
-                style={{ height: `${m.gpuUtil}%` }}
-              />
+              <div className="w-full bg-[#00b4d8] rounded-t transition-all" style={{ height: `${m.gpuUtil}%` }} />
               <span className="text-[9px] font-mono text-[#8b949e]">{m.time}</span>
             </div>
           ))}

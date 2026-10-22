@@ -56,9 +56,7 @@ export function usePipelineExecution({
   engineQueue,
 }: UsePipelineExecutionOptions): PipelineExecutionState {
   const [isRunning, setIsRunning] = useState(currentBatch?.status === "running");
-  const [currentStage, setCurrentStage] = useState<PipelineStageKey>(
-    currentBatch?.currentStage ?? "generation",
-  );
+  const [currentStage, setCurrentStage] = useState<PipelineStageKey>(currentBatch?.currentStage ?? "generation");
   const [progress, setProgress] = useState(currentBatch?.progress ?? 0);
   /** 引擎在途标记：仅受理本 hook 发起任务期间的队列事件（单飞语义，与后端 pipelineManager 对齐） */
   const engineActiveRef = useRef(false);
@@ -85,11 +83,7 @@ export function usePipelineExecution({
           setCurrentStage(stage);
           if (completed) {
             setIsRunning(false);
-            onShowToast(
-              "success",
-              PIPELINE_COMPLETION_NOTICE.title,
-              PIPELINE_COMPLETION_NOTICE.detail,
-            );
+            onShowToast("success", PIPELINE_COMPLETION_NOTICE.title, PIPELINE_COMPLETION_NOTICE.detail);
           }
           return progress;
         });
@@ -120,11 +114,7 @@ export function usePipelineExecution({
       } else if (event.type === "failed") {
         engineActiveRef.current = false;
         setIsRunning(false);
-        onShowToast(
-          "error",
-          "引擎流水线失败",
-          `任务 ${event.task.id} 终态 failed，原因见日志面板（stage=engine）`,
-        );
+        onShowToast("error", "引擎流水线失败", `任务 ${event.task.id} 终态 failed，原因见日志面板（stage=engine）`);
       }
     });
   }, [engineMode, engineQueue, onShowToast]);

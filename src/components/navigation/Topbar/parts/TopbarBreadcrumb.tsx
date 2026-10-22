@@ -178,9 +178,7 @@ export const TopbarBreadcrumb: React.FC<TopbarBreadcrumbProps> = ({
       {/* Secondary jump menu dropdown */}
       {isBreadcrumbOpen && (
         <div className="absolute top-8 left-16 w-56 rounded-xl bg-[#0c1a30] border border-[#1e2f47] shadow-2xl p-1.5 space-y-1 z-40 animate-in fade-in zoom-in-95 backdrop-blur-md">
-          <div className="text-[10px] uppercase font-semibold text-[#8b949e] px-2 py-1">
-            同层级功能快捷直达
-          </div>
+          <div className="text-[10px] uppercase font-semibold text-[#8b949e] px-2 py-1">同层级功能快捷直达</div>
           {meta.siblings.map((sib) => (
             <button
               key={sib.id}

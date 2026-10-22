@@ -28,8 +28,7 @@ const RAW_LOGS: LogEntry[] = [
     timestamp: "10:24:18.102",
     level: "info",
     stage: "生成引擎",
-    message:
-      "[DiffSynth] 初始化模型权重 DiffSynth-MiniMax-H3-v2.1-HQ (FP8 量化已启用，显存占用 8.2GB)",
+    message: "[DiffSynth] 初始化模型权重 DiffSynth-MiniMax-H3-v2.1-HQ (FP8 量化已启用，显存占用 8.2GB)",
   },
   {
     id: "LOG-002",
@@ -50,24 +49,21 @@ const RAW_LOGS: LogEntry[] = [
     timestamp: "10:25:02.124",
     level: "success",
     stage: "初评流水线",
-    message:
-      "[SyncNet-v3] 口型吻合度初评完成：平均帧误差 0.042s，基准口型得分 95.8 (远超 85分阈值)",
+    message: "[SyncNet-v3] 口型吻合度初评完成：平均帧误差 0.042s，基准口型得分 95.8 (远超 85分阈值)",
   },
   {
     id: "LOG-005",
     timestamp: "10:25:12.780",
     level: "warn",
     stage: "精评阶段",
-    message:
-      "[MicroExpression] 检测到第 142-156 帧眨眼间隔微小迟滞 (380ms vs 基线 250ms)，未触发严重缺陷",
+    message: "[MicroExpression] 检测到第 142-156 帧眨眼间隔微小迟滞 (380ms vs 基线 250ms)，未触发严重缺陷",
   },
   {
     id: "LOG-006",
     timestamp: "10:25:28.910",
     level: "info",
     stage: "精评阶段",
-    message:
-      "[Temporal Stability] 时序连续性打分 93.5，下颌线轮廓无跳帧伪影，正在进行 5 维雷达投影聚合...",
+    message: "[Temporal Stability] 时序连续性打分 93.5，下颌线轮廓无跳帧伪影，正在进行 5 维雷达投影聚合...",
   },
 ];
 
@@ -216,9 +212,7 @@ export const INITIAL_LOGS: readonly LogEntry[] = Object.freeze(RAW_LOGS.map((l) 
 
 export const OPS_METRICS: readonly OpsMetric[] = Object.freeze(RAW_METRICS.map((m) => ({ ...m })));
 
-export const SERVICES_LIST: readonly ServiceStatus[] = Object.freeze(
-  RAW_SERVICES.map((s) => ({ ...s })),
-);
+export const SERVICES_LIST: readonly ServiceStatus[] = Object.freeze(RAW_SERVICES.map((s) => ({ ...s })));
 
 export const SYSTEM_ALARMS: readonly AlarmItem[] = Object.freeze(RAW_ALARMS.map((a) => ({ ...a })));
 

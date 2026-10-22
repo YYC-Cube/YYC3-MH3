@@ -61,11 +61,7 @@ export const TokensTab: React.FC<TokensTabProps> = ({ copiedHex, onCopyColor, on
                       style={{ backgroundColor: c.hex }}
                     >
                       <span className="text-[10px] font-mono font-bold opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 px-1 rounded text-white">
-                        {isCopied ? (
-                          <Check className="w-3 h-3 text-[#00d4aa]" />
-                        ) : (
-                          <Copy className="w-3 h-3" />
-                        )}
+                        {isCopied ? <Check className="w-3 h-3 text-[#00d4aa]" /> : <Copy className="w-3 h-3" />}
                       </span>
                     </div>
                     <span className="font-mono text-xs font-bold text-[#e6edf3] group-hover:text-[#00d4aa] transition-colors">
@@ -73,9 +69,7 @@ export const TokensTab: React.FC<TokensTabProps> = ({ copiedHex, onCopyColor, on
                     </span>
                   </div>
                   <div className="text-xs font-semibold text-[#e6edf3] truncate">{c.name}</div>
-                  <div className="text-[11px] text-[#8b949e] mt-1 leading-relaxed line-clamp-2">
-                    {c.role}
-                  </div>
+                  <div className="text-[11px] text-[#8b949e] mt-1 leading-relaxed line-clamp-2">{c.role}</div>
                 </div>
                 <div className="mt-3 pt-2 border-t border-[#30363d]/60 flex items-center justify-between text-[10px] text-[#8b949e]">
                   <span>点击复制 HEX</span>
@@ -133,17 +127,14 @@ export const TokensTab: React.FC<TokensTabProps> = ({ copiedHex, onCopyColor, on
             <Sliders className="w-4 h-4 text-[#9B59B6]" />
             动效与质感系统 (Motion & Elevation Tokens)
           </h2>
-          <p className="text-xs text-[#8b949e] mt-0.5">
-            克制高效，服务反馈，微玻璃拟态 + 细边框分层，无冗余打扰动效
-          </p>
+          <p className="text-xs text-[#8b949e] mt-0.5">克制高效，服务反馈，微玻璃拟态 + 细边框分层，无冗余打扰动效</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-4 rounded-xl bg-[#0c1a30] border border-[#30363d] space-y-2">
             <span className="text-xs font-semibold text-[#00d4aa]">微动效时长 (0.15s)</span>
             <p className="text-xs text-[#8b949e] leading-relaxed">
-              用于按钮 hover/active、输入框聚焦光圈、Tooltip
-              滑出与下拉箭头展开，提供即时敏捷的操作触觉反馈。
+              用于按钮 hover/active、输入框聚焦光圈、Tooltip 滑出与下拉箭头展开，提供即时敏捷的操作触觉反馈。
             </p>
             <div className="pt-2 flex items-center gap-2">
               <Button variant="secondary" size="xs">

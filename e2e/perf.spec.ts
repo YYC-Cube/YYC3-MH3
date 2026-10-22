@@ -36,9 +36,7 @@ test("运行时健康预算：错误率 ≤1%，导航 p95 <2s，长任务 p95 �
 
   // 等待 PerfSink 挂载并暴露调试探针
   await page.waitForFunction(
-    () =>
-      typeof (window as { __YYC3_RUNTIME_METRICS__?: unknown }).__YYC3_RUNTIME_METRICS__ ===
-      "function",
+    () => typeof (window as { __YYC3_RUNTIME_METRICS__?: unknown }).__YYC3_RUNTIME_METRICS__ === "function",
   );
 
   // 观察窗口：等待导航耗时样本与可能的长任务样本落窗

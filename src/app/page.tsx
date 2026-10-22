@@ -20,12 +20,7 @@
 "use client";
 
 import { DesignSystemView } from "@/views/DesignSystemView";
-import {
-  useAuthContext,
-  useOpsTelemetryContext,
-  useToastContext,
-  useUIShellContext,
-} from "./contexts";
+import { useAuthContext, useOpsTelemetryContext, useToastContext, useUIShellContext } from "./contexts";
 
 export default function Page() {
   const { showToast } = useToastContext();

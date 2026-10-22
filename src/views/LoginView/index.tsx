@@ -33,11 +33,7 @@ export interface LoginViewProps {
   onShowToast: ShowToastFn;
 }
 
-export const LoginView: React.FC<LoginViewProps> = ({
-  onLoginSuccess,
-  onPreviewBypass,
-  onShowToast,
-}) => {
+export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onPreviewBypass, onShowToast }) => {
   const state = useLoginView({ onLoginSuccess, onShowToast });
 
   return (
@@ -76,10 +72,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
         {/* Real-time 6-Node Verification Status Indicator during login */}
         {state.isVerifying && (
-          <LoginVerificationStatus
-            verificationStep={state.verificationStep}
-            verificationLog={state.verificationLog}
-          />
+          <LoginVerificationStatus verificationStep={state.verificationStep} verificationLog={state.verificationLog} />
         )}
       </div>
 

@@ -155,9 +155,9 @@ describe("adapters/engine · 流水线队列（后端 /api/pipeline 契约）", 
     });
     const events: QueueEvent[] = [];
     rejecting.onEvent((e) => events.push(e));
-    await expect(
-      rejecting.enqueue({ id: "bad", type: "render", payload: { batch: null } }),
-    ).rejects.toThrow(PIPELINE_TASK_TYPE);
+    await expect(rejecting.enqueue({ id: "bad", type: "render", payload: { batch: null } })).rejects.toThrow(
+      PIPELINE_TASK_TYPE,
+    );
     await expect(rejecting.enqueue(runTask("r-409"))).rejects.toThrow("HTTP 409");
     expect(events).toEqual([]);
 

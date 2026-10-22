@@ -57,7 +57,12 @@ function run(cmd: readonly string[], timeoutMs: number): Promise<number> {
 }
 
 /** 轮询等待远端就绪（ok() 返回 true 即通过） */
-async function waitFor(name: string, url: string, ok: (res: Response) => Promise<boolean>, timeoutMs: number): Promise<void> {
+async function waitFor(
+  name: string,
+  url: string,
+  ok: (res: Response) => Promise<boolean>,
+  timeoutMs: number,
+): Promise<void> {
   const deadline = Date.now() + timeoutMs;
   let last = "never";
   while (Date.now() < deadline) {
@@ -88,7 +93,12 @@ let upDone = false;
 
 try {
   console.log(`[1/6] docker compose up（deploy/observability）`);
-  if ((await run(["docker", "compose", "-f", "deploy/observability/docker-compose.yml", "up", "-d", "--wait"], 480_000)) !== 0) {
+  if (
+    (await run(
+      ["docker", "compose", "-f", "deploy/observability/docker-compose.yml", "up", "-d", "--wait"],
+      480_000,
+    )) !== 0
+  ) {
     throw new Error("docker compose up 失败（确认 Docker Desktop 已启动）");
   }
   upDone = true;
@@ -159,6 +169,9 @@ try {
   if (registry) registry.kill();
   if (upDone) {
     console.log(`[cleanup] docker compose down -v`);
-    await run(["docker", "compose", "-f", "deploy/observability/docker-compose.yml", "down", "-v", "--remove-orphans"], 120_000);
+    await run(
+      ["docker", "compose", "-f", "deploy/observability/docker-compose.yml", "down", "-v", "--remove-orphans"],
+      120_000,
+    );
   }
 }

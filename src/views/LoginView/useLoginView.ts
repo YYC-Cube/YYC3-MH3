@@ -29,15 +29,10 @@ const FIELD_ERROR_MESSAGES = {
 } as const;
 
 /** 原生 select 值为运行时 string，收窄至 UserRole 的类型守卫 */
-export const isUserRole = (v: string): v is UserRole =>
-  v === "admin" || v === "operator" || v === "guest";
+export const isUserRole = (v: string): v is UserRole => v === "admin" || v === "operator" || v === "guest";
 
 /** Toast 上报回调签名（容器与各分区共用） */
-export type ShowToastFn = (
-  type: "success" | "error" | "warning" | "info",
-  msg: string,
-  sub?: string,
-) => void;
+export type ShowToastFn = (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 
 export interface UseLoginViewOptions {
   onLoginSuccess: (user: AuthUser) => void;
@@ -163,18 +158,14 @@ export function useLoginView({ onLoginSuccess, onShowToast }: UseLoginViewOption
     setTimeout(() => {
       setVerificationStep(2);
       setVerificationLog(
-        authMode === "local"
-          ? "正在匹配本地安全加密凭证库 (Argon2id)..."
-          : "正在请求企业身份服务端鉴权...",
+        authMode === "local" ? "正在匹配本地安全加密凭证库 (Argon2id)..." : "正在请求企业身份服务端鉴权...",
       );
 
       setTimeout(() => {
         // Node 3: Role & Permission mapping
         setVerificationStep(3);
         setVerificationLog(
-          `匹配角色权限矩阵: [${
-            selectedRole === "admin" ? "超级管理员 (Full Access)" : "生产线操作员"
-          }]`,
+          `匹配角色权限矩阵: [${selectedRole === "admin" ? "超级管理员 (Full Access)" : "生产线操作员"}]`,
         );
 
         setTimeout(() => {
@@ -185,9 +176,7 @@ export function useLoginView({ onLoginSuccess, onShowToast }: UseLoginViewOption
           setTimeout(() => {
             // Node 5: Audit logging
             setVerificationStep(5);
-            setVerificationLog(
-              "正在写入本地遥测留痕（浏览器环境持久化）(设备: LocalStation-01)...",
-            );
+            setVerificationLog("正在写入本地遥测留痕（浏览器环境持久化）(设备: LocalStation-01)...");
 
             setTimeout(() => {
               // Node 6: Session initialization & entrance
@@ -229,9 +218,7 @@ export function useLoginView({ onLoginSuccess, onShowToast }: UseLoginViewOption
     if (nextAttempts >= 3) {
       setIsLocked(true);
       setLockCountdown(30);
-      setErrorMessage(
-        `密码连续输入错误已达 ${nextAttempts} 次，系统已启动安全防护，账号锁定 30 秒`,
-      );
+      setErrorMessage(`密码连续输入错误已达 ${nextAttempts} 次，系统已启动安全防护，账号锁定 30 秒`);
       onShowToast("error", "触发账号安全防爆破锁定", "已拦截异常密码尝试");
     } else {
       setErrorMessage(`密码错误，剩余 ${3 - nextAttempts} 次尝试机会`);

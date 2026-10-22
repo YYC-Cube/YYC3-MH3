@@ -42,14 +42,9 @@ export const DiffModal: React.FC<DiffModalProps> = ({ isOpen, onClose }) => {
           <span>上一个基线版本 (v3.1)</span>
         </div>
         <div className="p-3 rounded-lg bg-[#15294a] font-mono leading-relaxed space-y-1">
-          <p className="text-[#00e0b8]">
-            + Direct eye gaze at camera with gentle professional authority
-          </p>
+          <p className="text-[#00e0b8]">+ Direct eye gaze at camera with gentle professional authority</p>
           <p className="text-[#ff7a45]">- Static eye gaze looking forward</p>
-          <p className="text-[#e8f0f8]">
-            {" "}
-            Ultra-detailed facial epidermis pores, realistic 8k skin
-          </p>
+          <p className="text-[#e8f0f8]"> Ultra-detailed facial epidermis pores, realistic 8k skin</p>
         </div>
       </div>
     </Modal>

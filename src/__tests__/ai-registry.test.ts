@@ -25,13 +25,7 @@ import { describe, expect, it } from "vitest";
 import { AGENT_REGISTRY } from "../data/aiRegistry";
 import { YYC3_MEMBERS } from "../data/yyc3Data";
 import { REACT_C_STEPS } from "../domains/ai";
-import type {
-  AgentContext,
-  AgentInput,
-  AgentOutput,
-  AgentPort,
-  AgentTool,
-} from "../domains/ai/ports";
+import type { AgentContext, AgentInput, AgentOutput, AgentPort, AgentTool } from "../domains/ai/ports";
 import type { AgentProfile } from "../types";
 
 describe("[ai-registry] PR-1 · 八员调用主体注册表", () => {

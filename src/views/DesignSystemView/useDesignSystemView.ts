@@ -61,9 +61,7 @@ export interface UseDesignSystemViewResult {
   copyPromptText: (title: string, text: string) => void;
 }
 
-export function useDesignSystemView({
-  onShowToast,
-}: UseDesignSystemViewOptions): UseDesignSystemViewResult {
+export function useDesignSystemView({ onShowToast }: UseDesignSystemViewOptions): UseDesignSystemViewResult {
   const [activeTab, setActiveTab] = useState<DesignTab>("tokens");
   const [copiedHex, setCopiedHex] = useState<string | null>(null);
 
@@ -93,11 +91,7 @@ export function useDesignSystemView({
 
   const copyPromptText = (title: string, text: string) => {
     navigator.clipboard.writeText(text);
-    onShowToast(
-      "success",
-      `已复制 ${title} 提示词`,
-      "已放入剪贴板，可直接发送给 AI 绘图/代码生成器",
-    );
+    onShowToast("success", `已复制 ${title} 提示词`, "已放入剪贴板，可直接发送给 AI 绘图/代码生成器");
   };
 
   return {

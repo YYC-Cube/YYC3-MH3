@@ -28,14 +28,7 @@ export interface LoginAuthCardProps {
 }
 
 export const LoginAuthCard: React.FC<LoginAuthCardProps> = ({ state, onShowToast }) => {
-  const {
-    authMode,
-    setAuthMode,
-    errorMessage,
-    setErrorMessage,
-    setIsOfflineExplainOpen,
-    handleSimulateFail,
-  } = state;
+  const { authMode, setAuthMode, errorMessage, setErrorMessage, setIsOfflineExplainOpen, handleSimulateFail } = state;
 
   return (
     <div
@@ -51,21 +44,14 @@ export const LoginAuthCard: React.FC<LoginAuthCardProps> = ({ state, onShowToast
             <AlertTriangle className="w-4 h-4 flex-shrink-0" />
             <span>{errorMessage}</span>
           </div>
-          <button
-            onClick={() => setErrorMessage(null)}
-            className="text-[#ff7a45] hover:opacity-80 p-0.5"
-          >
+          <button onClick={() => setErrorMessage(null)} className="text-[#ff7a45] hover:opacity-80 p-0.5">
             ✕
           </button>
         </div>
       )}
 
       {/* Mode Switcher Tabs (Local Offline vs. Team Cloud) */}
-      <LoginModeTabs
-        authMode={authMode}
-        setAuthMode={setAuthMode}
-        setErrorMessage={setErrorMessage}
-      />
+      <LoginModeTabs authMode={authMode} setAuthMode={setAuthMode} setErrorMessage={setErrorMessage} />
 
       {/* Form */}
       <LoginForm state={state} onShowToast={onShowToast} />

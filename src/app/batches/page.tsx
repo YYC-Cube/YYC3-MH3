@@ -31,14 +31,7 @@ export default function Page() {
   const { batches, activeBatchId } = useProductionDataContext();
   const navigate = useAppNavigate();
 
-  return (
-    <BatchDetailView
-      batchId={activeBatchId}
-      batches={batches}
-      onNavigate={navigate}
-      onShowToast={showToast}
-    />
-  );
+  return <BatchDetailView batchId={activeBatchId} batches={batches} onNavigate={navigate} onShowToast={showToast} />;
 }
 
 /* --------------------------------------------------------------

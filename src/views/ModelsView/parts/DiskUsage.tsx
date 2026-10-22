@@ -36,21 +36,9 @@ export const DiskUsage: React.FC<DiskUsageProps> = ({ onShowToast }) => {
               <span className="font-mono text-[#00e0b8] font-bold">642 GB / 1,860 GB (34.5%)</span>
             </div>
             <div className="w-full bg-[#15294a] h-3 rounded-full overflow-hidden flex">
-              <div
-                className="bg-[#00e0b8] h-full"
-                style={{ width: "18%" }}
-                title="模型权重 340GB"
-              />
-              <div
-                className="bg-[#00b4d8] h-full"
-                style={{ width: "10%" }}
-                title="输出视频 180GB"
-              />
-              <div
-                className="bg-[#ff7a45] h-full"
-                style={{ width: "6.5%" }}
-                title="临时切片 122GB"
-              />
+              <div className="bg-[#00e0b8] h-full" style={{ width: "18%" }} title="模型权重 340GB" />
+              <div className="bg-[#00b4d8] h-full" style={{ width: "10%" }} title="输出视频 180GB" />
+              <div className="bg-[#ff7a45] h-full" style={{ width: "6.5%" }} title="临时切片 122GB" />
             </div>
             <div className="grid grid-cols-3 gap-2 text-center pt-2">
               <div className="p-2 rounded bg-[#15294a]">
@@ -73,9 +61,7 @@ export const DiskUsage: React.FC<DiskUsageProps> = ({ onShowToast }) => {
             <span className="font-semibold text-[#e8f0f8]">大文件占用排行：</span>
             <div className="space-y-1.5 font-mono text-[11px]">
               <div className="flex justify-between p-2 rounded bg-[#15294a]">
-                <span className="text-[#8a97a8] truncate max-w-xs">
-                  diffsynth-h3-v2.1.safetensors
-                </span>
+                <span className="text-[#8a97a8] truncate max-w-xs">diffsynth-h3-v2.1.safetensors</span>
                 <span className="text-[#00e0b8]">14.8 GB</span>
               </div>
               <div className="flex justify-between p-2 rounded bg-[#15294a]">
@@ -83,9 +69,7 @@ export const DiskUsage: React.FC<DiskUsageProps> = ({ onShowToast }) => {
                 <span className="text-[#00e0b8]">9.2 GB</span>
               </div>
               <div className="flex justify-between p-2 rounded bg-[#15294a]">
-                <span className="text-[#8a97a8] truncate max-w-xs">
-                  eval-cache-temp-frames-4k.tar
-                </span>
+                <span className="text-[#8a97a8] truncate max-w-xs">eval-cache-temp-frames-4k.tar</span>
                 <span className="text-[#ff7a45]">98.4 GB</span>
               </div>
             </div>

@@ -32,11 +32,7 @@ export interface WorkspaceRightColumnProps {
   onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
-export const WorkspaceRightColumn: React.FC<WorkspaceRightColumnProps> = ({
-  vm,
-  currentBatch,
-  onShowToast,
-}) => {
+export const WorkspaceRightColumn: React.FC<WorkspaceRightColumnProps> = ({ vm, currentBatch, onShowToast }) => {
   return (
     <div className="w-96 border-l border-[#1e2f47] bg-[#0c1a30] flex flex-col flex-shrink-0 overflow-y-auto p-4 space-y-4">
       <div className="flex items-center justify-between pb-2 border-b border-[#1e2f47]">

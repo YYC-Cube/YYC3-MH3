@@ -69,11 +69,7 @@ export const Topbar: React.FC<TopbarProps> = ({
 
       {/* Right Quick Controls & Notifications */}
       <div className="flex items-center gap-3">
-        <TopbarQuickActions
-          onNavigate={onNavigate}
-          onOpenYYC3={onOpenYYC3}
-          onNewBatchClick={onNewBatchClick}
-        />
+        <TopbarQuickActions onNavigate={onNavigate} onOpenYYC3={onOpenYYC3} onNewBatchClick={onNewBatchClick} />
 
         <TopbarNotifications
           notifRef={state.notifRef}

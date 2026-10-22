@@ -20,12 +20,7 @@
 import { TelemetryPort } from "../../domains/platform/telemetry/ports";
 import { AlarmItem, LogEntry, OpsMetric, ServiceStatus } from "../../types";
 import { createMemoryTelemetry } from "../memory/telemetryRepository";
-import {
-  createResilientGateway,
-  makeTraceEntry,
-  RegistryError,
-  type LocalAdapterOptions,
-} from "./http";
+import { createResilientGateway, makeTraceEntry, RegistryError, type LocalAdapterOptions } from "./http";
 
 export interface LocalTelemetryOptions extends LocalAdapterOptions {
   /** 降级回退与留痕通道（缺省自建；组合根可注入共享实例） */

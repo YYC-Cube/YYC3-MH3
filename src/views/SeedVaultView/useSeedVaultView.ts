@@ -21,11 +21,7 @@ import { generateSeedNumber } from "../../domains/production/seed";
 import { NavigateExtra, NavTabId, SeedItem } from "../../types";
 
 /** Toast 上报回调签名（容器与各分区共用） */
-export type ShowToastFn = (
-  type: "success" | "error" | "warning" | "info",
-  msg: string,
-  sub?: string,
-) => void;
+export type ShowToastFn = (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 
 export interface UseSeedVaultViewOptions {
   seeds: SeedItem[];
@@ -137,11 +133,7 @@ export function useSeedVaultView({
   };
 
   const handleLaunchBreeding = () => {
-    onShowToast(
-      "success",
-      `已基于 Seed #${breedingSeed?.seedNumber} 启动定向培育`,
-      "已生成 6 组探索衍生变异批次",
-    );
+    onShowToast("success", `已基于 Seed #${breedingSeed?.seedNumber} 启动定向培育`, "已生成 6 组探索衍生变异批次");
     setIsBreedingModalOpen(false);
   };
 

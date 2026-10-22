@@ -49,13 +49,7 @@ import { BatchItem } from "../types";
 
 describe("domains/pipeline", () => {
   it("PIPELINE_STAGE_ORDER 为五阶段且顺序恒定", () => {
-    expect(PIPELINE_STAGE_ORDER).toEqual([
-      "generation",
-      "scoring",
-      "fine_eval",
-      "analysis",
-      "seed_iter",
-    ]);
+    expect(PIPELINE_STAGE_ORDER).toEqual(["generation", "scoring", "fine_eval", "analysis", "seed_iter"]);
   });
 
   it("getStageIndex 返回阶段索引，未知阶段返回 -1", () => {
@@ -137,14 +131,8 @@ describe("domains/pipeline · 执行留痕与完机规则", () => {
   });
 
   it("executionRequestLogEntry 为纯函数：时钟字段全由入参注入，两次调用同参同果", () => {
-    const a = executionRequestLogEntry(
-      { steps: 32, guidanceScale: 7.2, seedNumber: 1 },
-      { id: "X", timestamp: "T" },
-    );
-    const b = executionRequestLogEntry(
-      { steps: 32, guidanceScale: 7.2, seedNumber: 1 },
-      { id: "X", timestamp: "T" },
-    );
+    const a = executionRequestLogEntry({ steps: 32, guidanceScale: 7.2, seedNumber: 1 }, { id: "X", timestamp: "T" });
+    const b = executionRequestLogEntry({ steps: 32, guidanceScale: 7.2, seedNumber: 1 }, { id: "X", timestamp: "T" });
     expect(a).toEqual(b);
   });
 
@@ -371,10 +359,7 @@ describe("domains/seed", () => {
 
 describe("domains/quality", () => {
   it("averageDimensionScore 计算多维均分", () => {
-    expect(averageDimensionScore([{ score: 95.8 }, { score: 92.4 }, { score: 97.2 }])).toBeCloseTo(
-      95.1333,
-      4,
-    );
+    expect(averageDimensionScore([{ score: 95.8 }, { score: 92.4 }, { score: 97.2 }])).toBeCloseTo(95.1333, 4);
   });
 
   it("averageDimensionScore 空集合返回 0（防 NaN 泄漏）", () => {

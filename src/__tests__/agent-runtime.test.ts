@@ -25,11 +25,7 @@
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import {
-  createAgentRuntime,
-  getAgentRuntime,
-  resetAgentRuntime,
-} from "../app/agent-runtime";
+import { createAgentRuntime, getAgentRuntime, resetAgentRuntime } from "../app/agent-runtime";
 import type { AgentOutput, AgentPort } from "../domains/ai/ports";
 import type { AgentTaskEvent } from "../orchestrator/protocol";
 

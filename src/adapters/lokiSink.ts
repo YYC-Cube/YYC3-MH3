@@ -78,7 +78,10 @@ export function createLokiSink(options: LokiSinkOptions): LokiSink {
   const fetchImpl = options.fetchImpl ?? fetch;
 
   async function sendPayload(payload: LokiPushPayload): Promise<LokiPushResult> {
-    const total = payload.streams.reduce((sum: number, stream: LokiPushPayload["streams"][number]) => sum + stream.values.length, 0);
+    const total = payload.streams.reduce(
+      (sum: number, stream: LokiPushPayload["streams"][number]) => sum + stream.values.length,
+      0,
+    );
     if (total === 0) return { ok: true, pushed: 0 };
     if (!enabled) return { ok: true, pushed: 0, reason: "disabled" };
     try {

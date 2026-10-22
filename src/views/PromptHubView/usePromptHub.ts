@@ -49,8 +49,7 @@ export function usePromptHub(onShowToast: ShowToast): UsePromptHubReturn {
   const [selectedTemplateId, setSelectedTemplateId] = useState(
     PROMPT_TEMPLATES[0]!.id, // mock 常量数组恒非空，静态索引安全
   );
-  const activeTemplate =
-    PROMPT_TEMPLATES.find((p) => p.id === selectedTemplateId) || PROMPT_TEMPLATES[0];
+  const activeTemplate = PROMPT_TEMPLATES.find((p) => p.id === selectedTemplateId) || PROMPT_TEMPLATES[0];
 
   const [editorText, setEditorText] = useState(activeTemplate?.text ?? "");
   const [isTesting, setIsTesting] = useState(false);

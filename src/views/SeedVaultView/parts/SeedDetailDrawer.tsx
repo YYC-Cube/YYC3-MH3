@@ -57,9 +57,7 @@ export const SeedDetailDrawer: React.FC<SeedDetailDrawerProps> = ({
         <div className="p-3.5 rounded-xl bg-[#15294a] border border-[#1e2f47] space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-base font-bold text-[#e8f0f8]">{selectedSeed.name}</span>
-            <Badge variant={selectedSeed.tier === "S" ? "brand" : "info"}>
-              {selectedSeed.tier} 级基线
-            </Badge>
+            <Badge variant={selectedSeed.tier === "S" ? "brand" : "info"}>{selectedSeed.tier} 级基线</Badge>
           </div>
           <p className="text-[#8a97a8] leading-relaxed">{selectedSeed.notes}</p>
         </div>
@@ -69,9 +67,7 @@ export const SeedDetailDrawer: React.FC<SeedDetailDrawerProps> = ({
           <div className="space-y-1.5 font-mono text-[11px]">
             <div className="flex justify-between p-2 rounded bg-[#0a1628] border border-[#1e2f47]">
               <span className="text-[#8a97a8]">无分类器引导缩放 (Guidance Scale)</span>
-              <span className="text-[#00e0b8] font-semibold">
-                {selectedSeed.params.guidanceScale}
-              </span>
+              <span className="text-[#00e0b8] font-semibold">{selectedSeed.params.guidanceScale}</span>
             </div>
             <div className="flex justify-between p-2 rounded bg-[#0a1628] border border-[#1e2f47]">
               <span className="text-[#8a97a8]">扩散采样步数 (Steps)</span>
@@ -79,9 +75,7 @@ export const SeedDetailDrawer: React.FC<SeedDetailDrawerProps> = ({
             </div>
             <div className="flex justify-between p-2 rounded bg-[#0a1628] border border-[#1e2f47]">
               <span className="text-[#8a97a8]">降噪强度 (Denoise Strength)</span>
-              <span className="text-[#00e0b8] font-semibold">
-                {selectedSeed.params.denoiseStrength}
-              </span>
+              <span className="text-[#00e0b8] font-semibold">{selectedSeed.params.denoiseStrength}</span>
             </div>
             <div className="flex justify-between p-2 rounded bg-[#0a1628] border border-[#1e2f47]">
               <span className="text-[#8a97a8]">口型 CFG 引导 (CFG LipSync)</span>
@@ -117,10 +111,7 @@ export const SeedDetailDrawer: React.FC<SeedDetailDrawerProps> = ({
                 note: "实验性冷启动",
               },
             ].map((vh, idx) => (
-              <div
-                key={idx}
-                className="p-2.5 rounded-lg bg-[#0c1a30] border border-[#1e2f47] space-y-1"
-              >
+              <div key={idx} className="p-2.5 rounded-lg bg-[#0c1a30] border border-[#1e2f47] space-y-1">
                 <div className="flex justify-between items-center font-mono">
                   <span className="font-bold text-[#00e0b8]">{vh.ver}</span>
                   <span className="text-[#8b949e] text-[10px]">

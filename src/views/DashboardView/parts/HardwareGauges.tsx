@@ -45,10 +45,7 @@ export const HardwareGauges: React.FC<HardwareGaugesProps> = ({ onNavigate, onOp
             <span className="font-mono text-[#00e0b8] font-bold">91%</span>
           </div>
           <div className="w-full bg-[#15294a] h-2 rounded-full overflow-hidden">
-            <div
-              className="bg-[#00e0b8] h-full shadow-[0_0_8px_rgba(0,224,184,0.6)]"
-              style={{ width: "91%" }}
-            />
+            <div className="bg-[#00e0b8] h-full shadow-[0_0_8px_rgba(0,224,184,0.6)]" style={{ width: "91%" }} />
           </div>
         </div>
 
@@ -58,10 +55,7 @@ export const HardwareGauges: React.FC<HardwareGaugesProps> = ({ onNavigate, onOp
             <span className="font-mono text-[#00b4d8] font-bold">19.4 / 24.0 GB</span>
           </div>
           <div className="w-full bg-[#15294a] h-2 rounded-full overflow-hidden">
-            <div
-              className="bg-[#00b4d8] h-full shadow-[0_0_8px_rgba(0,180,216,0.6)]"
-              style={{ width: "80.8%" }}
-            />
+            <div className="bg-[#00b4d8] h-full shadow-[0_0_8px_rgba(0,180,216,0.6)]" style={{ width: "80.8%" }} />
           </div>
         </div>
 
@@ -78,10 +72,7 @@ export const HardwareGauges: React.FC<HardwareGaugesProps> = ({ onNavigate, onOp
 
       <div className="mt-3 pt-2 border-t border-[#1e2f47]/60 flex items-center justify-between text-[11px] text-[#8b949e]">
         <span>看门狗探活周期: 1000ms</span>
-        <button
-          onClick={() => onNavigate("ops")}
-          className="text-[#00b4d8] hover:underline cursor-pointer"
-        >
+        <button onClick={() => onNavigate("ops")} className="text-[#00b4d8] hover:underline cursor-pointer">
           运维大屏 →
         </button>
       </div>

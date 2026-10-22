@@ -64,9 +64,7 @@ describe("Workbench 引擎执行分支（F-1 末跳）", () => {
 
   it("start：enqueue pipeline.run（dryRun=true，批次号自 id 提取）且 enqueued→isRunning", async () => {
     const queue = createFakeQueue();
-    const { result } = renderHook(() =>
-      usePipelineExecution({ onShowToast: toast, engineQueue: queue }),
-    );
+    const { result } = renderHook(() => usePipelineExecution({ onShowToast: toast, engineQueue: queue }));
     await act(async () => {
       result.current.start();
     });
@@ -78,9 +76,7 @@ describe("Workbench 引擎执行分支（F-1 末跳）", () => {
 
   it("事件驱动：dequeued→20，completed→100+停跑+success toast", async () => {
     const queue = createFakeQueue();
-    const { result } = renderHook(() =>
-      usePipelineExecution({ onShowToast: toast, engineQueue: queue }),
-    );
+    const { result } = renderHook(() => usePipelineExecution({ onShowToast: toast, engineQueue: queue }));
     await act(async () => {
       result.current.start();
     });
@@ -94,9 +90,7 @@ describe("Workbench 引擎执行分支（F-1 末跳）", () => {
 
   it("failed→停跑+error toast；enqueue 拒绝→回滚 isRunning", async () => {
     const queue = createFakeQueue();
-    const { result } = renderHook(() =>
-      usePipelineExecution({ onShowToast: toast, engineQueue: queue }),
-    );
+    const { result } = renderHook(() => usePipelineExecution({ onShowToast: toast, engineQueue: queue }));
     await act(async () => {
       result.current.start();
     });
@@ -105,9 +99,7 @@ describe("Workbench 引擎执行分支（F-1 末跳）", () => {
     expect(toast).toHaveBeenCalledWith("error", "引擎流水线失败", expect.any(String));
 
     const rejecting = createFakeQueue(false);
-    const r2 = renderHook(() =>
-      usePipelineExecution({ onShowToast: toast, engineQueue: rejecting }),
-    );
+    const r2 = renderHook(() => usePipelineExecution({ onShowToast: toast, engineQueue: rejecting }));
     await act(async () => {
       r2.result.current.start();
     });
@@ -119,9 +111,7 @@ describe("Workbench 引擎执行分支（F-1 末跳）", () => {
     vi.stubEnv("NEXT_PUBLIC_ENGINE_BASE_URL", "");
     const queue = createFakeQueue();
     vi.useFakeTimers();
-    const { result } = renderHook(() =>
-      usePipelineExecution({ onShowToast: toast, engineQueue: queue }),
-    );
+    const { result } = renderHook(() => usePipelineExecution({ onShowToast: toast, engineQueue: queue }));
     act(() => result.current.start());
     expect(queue.enqueued).toHaveLength(0);
     expect(result.current.isRunning).toBe(true);

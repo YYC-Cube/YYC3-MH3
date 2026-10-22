@@ -23,11 +23,7 @@ export const LoginBrandHeader: React.FC = () => {
     <div className="flex flex-col items-center text-center mb-6 space-y-2">
       <div className="relative">
         <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#0c2440] via-[#0f2d4e] to-[#0a1b2f] border-2 border-[#00e0b8] flex items-center justify-center p-2.5 shadow-[0_0_24px_rgba(0,224,184,0.35)] animate-in zoom-in-95 duration-300">
-          <img
-            src="/yyc3-icons/logo.png"
-            alt="YYC3 Logo"
-            className="w-full h-full object-contain"
-          />
+          <img src="/yyc3-icons/logo.png" alt="YYC3 Logo" className="w-full h-full object-contain" />
         </div>
         <span className="absolute -bottom-1 -right-1 flex h-3 w-3">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00e0b8] opacity-75" />

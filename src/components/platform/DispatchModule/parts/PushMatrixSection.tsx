@@ -28,22 +28,13 @@ export interface PushMatrixSectionProps {
   onShowToast: ShowToast;
 }
 
-export const PushMatrixSection: React.FC<PushMatrixSectionProps> = ({
-  pushTasks,
-  onNewPushClick,
-  onShowToast,
-}) => {
+export const PushMatrixSection: React.FC<PushMatrixSectionProps> = ({ pushTasks, onNewPushClick, onShowToast }) => {
   return (
     <Card
       title="多平台账号矩阵分发看板 (Multi-Platform Matrix Push)"
       subtitle="支持一键推送到本地 NAS、云端存储与多平台分发 (抖音/视频号/B站/快手/小红书)"
       action={
-        <Button
-          variant="primary"
-          size="xs"
-          icon={<Send className="w-3.5 h-3.5" />}
-          onClick={onNewPushClick}
-        >
+        <Button variant="primary" size="xs" icon={<Send className="w-3.5 h-3.5" />} onClick={onNewPushClick}>
           新建推送作业
         </Button>
       }
@@ -81,20 +72,13 @@ export const PushMatrixSection: React.FC<PushMatrixSectionProps> = ({
                 <td className="py-3 px-3 w-40">
                   <div className="space-y-1">
                     <div className="flex justify-between font-mono text-[10px]">
-                      <span
-                        className={
-                          task.status === "completed" ? "text-[#00e0b8]" : "text-[#8a97a8]"
-                        }
-                      >
+                      <span className={task.status === "completed" ? "text-[#00e0b8]" : "text-[#8a97a8]"}>
                         {task.status === "completed" ? "已完成" : "传输中"}
                       </span>
                       <span className="text-[#00e0b8] font-bold">{task.progress}%</span>
                     </div>
                     <div className="w-full bg-[#15294a] h-1.5 rounded-full overflow-hidden">
-                      <div
-                        className="bg-[#00e0b8] h-full transition-all"
-                        style={{ width: `${task.progress}%` }}
-                      />
+                      <div className="bg-[#00e0b8] h-full transition-all" style={{ width: `${task.progress}%` }} />
                     </div>
                   </div>
                 </td>

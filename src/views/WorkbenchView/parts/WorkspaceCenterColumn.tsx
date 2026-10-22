@@ -29,10 +29,7 @@ export interface WorkspaceCenterColumnProps {
   onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
-export const WorkspaceCenterColumn: React.FC<WorkspaceCenterColumnProps> = ({
-  vm,
-  onShowToast,
-}) => {
+export const WorkspaceCenterColumn: React.FC<WorkspaceCenterColumnProps> = ({ vm, onShowToast }) => {
   return (
     <div className="flex-1 flex flex-col overflow-y-auto p-4 space-y-4 border-r border-[#1e2f47]">
       {/* Five-Stage Closed-Loop Pipeline Visualizer */}

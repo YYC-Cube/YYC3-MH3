@@ -26,11 +26,7 @@ export interface SearchInputBarProps {
   onClose: () => void;
 }
 
-export const SearchInputBar: React.FC<SearchInputBarProps> = ({
-  query,
-  onQueryChange,
-  onClose,
-}) => {
+export const SearchInputBar: React.FC<SearchInputBarProps> = ({ query, onQueryChange, onClose }) => {
   return (
     <div className="p-3.5 border-b border-[#1e2f47] flex items-center gap-3 bg-[#0c1a30]">
       <Search className="w-5 h-5 text-[#00e0b8] flex-shrink-0" />

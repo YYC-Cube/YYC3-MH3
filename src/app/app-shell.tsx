@@ -37,12 +37,7 @@ import { Topbar } from "../components/navigation/Topbar";
 import { YYC3FloatingTrigger } from "../components/yyc3/YYC3FloatingTrigger";
 import { tabFromPathname } from "../kernel/config";
 import { NewBatchDraft } from "../types";
-import {
-  useAuthContext,
-  useProductionDataContext,
-  useToastContext,
-  useUIShellContext,
-} from "./contexts";
+import { useAuthContext, useProductionDataContext, useToastContext, useUIShellContext } from "./contexts";
 import { reportClientError } from "./error-sink";
 import { useAppNavigate } from "./navigation";
 import { useKeyboardShortcuts } from "./useKeyboardShortcuts";
@@ -68,8 +63,7 @@ const NewBatchModal = dynamic(
 export function AppShell({ children }: { children: React.ReactNode }) {
   // 领域状态（P2 Provider 树共享）
   const { toasts, showToast, dismissToast } = useToastContext();
-  const { currentUser, isLoginViewOpen, setIsLoginViewOpen, login, bypassLogin, logout } =
-    useAuthContext();
+  const { currentUser, isLoginViewOpen, setIsLoginViewOpen, login, bypassLogin, logout } = useAuthContext();
   const { batches, seeds, createBatch } = useProductionDataContext();
 
   // 外壳 UI 态（P3 UIShell 域）
@@ -97,9 +91,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   /** 渲染错误兜底：子树渲染异常经应用层 sink 留痕（P0 可观测最小闭环） */
   const withErrorBoundary = (node: React.ReactNode) => (
-    <ErrorBoundary onError={(error) => reportClientError(error.message, "React 渲染错误")}>
-      {node}
-    </ErrorBoundary>
+    <ErrorBoundary onError={(error) => reportClientError(error.message, "React 渲染错误")}>{node}</ErrorBoundary>
   );
 
   // If in Login view or not authenticated
@@ -141,11 +133,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Industrial Bottom Status Bar (Requirement 2.3) */}
-      <StatusBar
-        onNavigateOps={() => navigate("ops")}
-        onOpenYYC3={ui.openYYC3}
-        onShowToast={showToast}
-      />
+      <StatusBar onNavigateOps={() => navigate("ops")} onOpenYYC3={ui.openYYC3} onShowToast={showToast} />
 
       {/* Global Search Modal (Ctrl + K) — 条件挂载：关闭时不加载分块 */}
       {ui.isSearchOpen && (

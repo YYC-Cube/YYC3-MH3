@@ -58,14 +58,7 @@ const LAYER_DIRS: Readonly<Record<string, string>> = {
 const CONFIG_LEAF = path.join(SRC_ROOT, "kernel", "config.ts");
 
 /** 六域根名（src/domains/<域>/** 归属判定；非六域命名的 domains 内文件归 "domains" 根） */
-const DOMAIN_ROOTS: readonly string[] = [
-  "production",
-  "platform",
-  "ai",
-  "admin",
-  "editing",
-  "distribution",
-];
+const DOMAIN_ROOTS: readonly string[] = ["production", "platform", "ai", "admin", "editing", "distribution"];
 const DOMAINS_DIR = path.join(SRC_ROOT, "domains");
 
 /** 依赖方向矩阵：键 = 所在层，值 = 允许引用的内部层（跨层方向铁律，同层放行） */
@@ -92,13 +85,7 @@ function isEdgeViolation(fromLayer: string, toLayer: string): boolean {
 
 /** TS 模块解析候选：显式扩展名 / 省略扩展名 / 目录 index（对齐 tsc 解析语义） */
 function resolveCandidates(absPath: string): string[] {
-  return [
-    absPath,
-    `${absPath}.ts`,
-    `${absPath}.tsx`,
-    path.join(absPath, "index.ts"),
-    path.join(absPath, "index.tsx"),
-  ];
+  return [absPath, `${absPath}.ts`, `${absPath}.tsx`, path.join(absPath, "index.ts"), path.join(absPath, "index.tsx")];
 }
 
 /** 按路径解析所在层；未纳入分层的内部文件返回 null */
@@ -148,10 +135,7 @@ const DYNAMIC_RE = /\bimport\s*\(\s*["'](\.[^"']+)["']\s*\)/g;
 function extractInternalSpecs(content: string): string[] {
   // 捕获组索引经 noUncheckedIndexedAccess 推断可空，静态正则组恒存在（既有约定：非空断言 + 中文注释）
   const capture = (m: RegExpMatchArray): string => m[1] as string;
-  return [
-    ...[...content.matchAll(STATIC_RE)].map(capture),
-    ...[...content.matchAll(DYNAMIC_RE)].map(capture),
-  ];
+  return [...[...content.matchAll(STATIC_RE)].map(capture), ...[...content.matchAll(DYNAMIC_RE)].map(capture)];
 }
 
 describe("[boundary-guard] 六域分层 · 依赖方向零越界", () => {
@@ -218,9 +202,7 @@ describe("[boundary-guard] 六域分层 · 依赖方向零越界", () => {
             );
           }
         } else {
-          violations.push(
-            `${path.relative(PROJECT_ROOT, file)}: ${spec} → 引用未纳入六域分层的内部文件`,
-          );
+          violations.push(`${path.relative(PROJECT_ROOT, file)}: ${spec} → 引用未纳入六域分层的内部文件`);
         }
       }
     }
@@ -245,10 +227,7 @@ describe("[boundary-guard] 六域分层 · 依赖方向零越界", () => {
         }
       }
     }
-    expect(
-      violations,
-      ["同层跨域引用违规（域隔离红线，见 roadmap §1.3）：", ...violations].join("\n"),
-    ).toEqual([]);
+    expect(violations, ["同层跨域引用违规（域隔离红线，见 roadmap §1.3）：", ...violations].join("\n")).toEqual([]);
   });
 });
 

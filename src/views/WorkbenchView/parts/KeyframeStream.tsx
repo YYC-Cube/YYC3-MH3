@@ -90,16 +90,9 @@ export const KeyframeStream: React.FC<KeyframeStreamProps> = ({ keyframes }) => 
             className="w-20 flex-shrink-0 rounded-lg bg-[#15294a] border border-[#1e2f47] overflow-hidden p-1 space-y-1 group hover:border-[#00e0b8]/40 transition-colors cursor-pointer"
           >
             <div className="aspect-square rounded overflow-hidden relative">
-              <img
-                src={kf.thumbnail}
-                alt={`F${kf.frameNumber}`}
-                className="w-full h-full object-cover"
-              />
+              <img src={kf.thumbnail} alt={`F${kf.frameNumber}`} className="w-full h-full object-cover" />
               {kf.anomaly && (
-                <span
-                  className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-[#ff7a45]"
-                  title={kf.anomaly}
-                />
+                <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-[#ff7a45]" title={kf.anomaly} />
               )}
             </div>
             <div className="flex items-center justify-between text-[9px] font-mono">

@@ -61,9 +61,7 @@ export const SeedList: React.FC<SeedListProps> = ({ state }) => {
                   {seed.tier} 级
                 </Badge>
               </td>
-              <td className="py-3 px-4 font-mono font-semibold text-[#00e0b8]">
-                {seed.avgScore} 分
-              </td>
+              <td className="py-3 px-4 font-mono font-semibold text-[#00e0b8]">{seed.avgScore} 分</td>
               <td className="py-3 px-4 font-mono text-[#8a97a8]">{seed.generationCount} 批</td>
               <td className="py-3 px-4 text-[#8a97a8]">{seed.lastUsed}</td>
               <td className="py-3 px-4 text-right">

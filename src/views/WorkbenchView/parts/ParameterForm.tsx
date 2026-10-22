@@ -118,14 +118,7 @@ export const ParameterForm: React.FC<ParameterFormProps> = ({
           mono
         />
 
-        <Slider
-          label="采样步数 (Steps)"
-          min={20}
-          max={50}
-          step={1}
-          value={steps}
-          onChange={onStepsChange}
-        />
+        <Slider label="采样步数 (Steps)" min={20} max={50} step={1} value={steps} onChange={onStepsChange} />
 
         <Slider
           label="CFG 强度 (Guidance)"

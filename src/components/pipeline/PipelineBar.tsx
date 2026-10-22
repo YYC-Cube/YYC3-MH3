@@ -88,9 +88,7 @@ export const PipelineBar: React.FC<PipelineBarProps> = ({
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-[#00d4aa] animate-ping" />
-          <span className="text-xs font-semibold text-[#e6edf3] tracking-wide uppercase">
-            五步闭环生产流水线
-          </span>
+          <span className="text-xs font-semibold text-[#e6edf3] tracking-wide uppercase">五步闭环生产流水线</span>
           <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#00d4aa]/15 text-[#00d4aa] font-mono border border-[#00d4aa]/30">
             {isRunning ? "RUNNING · SSE 实时流" : "PAUSED"}
           </span>
@@ -171,11 +169,7 @@ export const PipelineBar: React.FC<PipelineBarProps> = ({
                         : "bg-transparent"
                   }`}
                   style={{
-                    width: isCurrent
-                      ? `${((progress % 20) / 20) * 100 || 60}%`
-                      : isDone
-                        ? "100%"
-                        : "0%",
+                    width: isCurrent ? `${((progress % 20) / 20) * 100 || 60}%` : isDone ? "100%" : "0%",
                   }}
                 />
               </div>

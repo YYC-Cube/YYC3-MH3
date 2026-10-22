@@ -88,25 +88,17 @@ export const BusinessTab: React.FC<BusinessTabProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7 space-y-2">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-[#e6edf3]">
-              2. 视频预览播放器 (Video Preview Player)
-            </h3>
-            <span className="text-[11px] text-[#8b949e]">
-              逐帧步进 · 0.5x~2x倍速 · 截图 · 快捷键 Space
-            </span>
+            <h3 className="text-sm font-semibold text-[#e6edf3]">2. 视频预览播放器 (Video Preview Player)</h3>
+            <span className="text-[11px] text-[#8b949e]">逐帧步进 · 0.5x~2x倍速 · 截图 · 快捷键 Space</span>
           </div>
           <VideoPreviewPlayer
-            onSnapshot={() =>
-              onShowToast("success", "样张已捕获", "已保存至本地 runs/snapshots/ 目录")
-            }
+            onSnapshot={() => onShowToast("success", "样张已捕获", "已保存至本地 runs/snapshots/ 目录")}
           />
         </div>
 
         <div className="lg:col-span-5 space-y-2">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-[#e6edf3]">
-              3. 口型评分雷达图 (5-Dimension Radar Chart)
-            </h3>
+            <h3 className="text-sm font-semibold text-[#e6edf3]">3. 口型评分雷达图 (5-Dimension Radar Chart)</h3>
             <span className="text-[11px] text-[#8b949e]">五维度 · 历史均值叠层 · 告警建议</span>
           </div>
           <RadarScoreChart />
@@ -116,9 +108,7 @@ export const BusinessTab: React.FC<BusinessTabProps> = ({
       {/* 4. Terminal Log Panel */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-[#e6edf3]">
-            4. 本地终端日志面板 (Terminal Log Console)
-          </h3>
+          <h3 className="text-sm font-semibold text-[#e6edf3]">4. 本地终端日志面板 (Terminal Log Console)</h3>
           <span className="text-[11px] text-[#8b949e]">Info/Warn/Error分色 · 错误排障建议入口</span>
         </div>
         <TerminalLogPanel
@@ -141,12 +131,7 @@ export const BusinessTab: React.FC<BusinessTabProps> = ({
               融合环形时钟架构与 8 位全职能 AI 代理，常驻右下角浮窗，支持快捷键 Ctrl+/ 全域唤起
             </p>
           </div>
-          <Button
-            variant="primary"
-            size="xs"
-            icon={<Sparkles className="w-3.5 h-3.5" />}
-            onClick={onOpenYYC3}
-          >
+          <Button variant="primary" size="xs" icon={<Sparkles className="w-3.5 h-3.5" />} onClick={onOpenYYC3}>
             即刻体验环形时钟浮窗 (Ctrl+/)
           </Button>
         </div>

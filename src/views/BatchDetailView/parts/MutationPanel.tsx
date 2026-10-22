@@ -54,9 +54,7 @@ export const MutationPanel: React.FC<MutationPanelProps> = ({
         </div>
         <div className="p-3.5 rounded-xl bg-[#15294a] border border-[#1e2f47] space-y-1">
           <span className="text-[#8a97a8]">变异维度 3: 降噪微调</span>
-          <div className="font-mono text-sm text-[#9d7cd8] font-bold">
-            Denoise 0.60 / 0.65 / 0.70
-          </div>
+          <div className="font-mono text-sm text-[#9d7cd8] font-bold">Denoise 0.60 / 0.65 / 0.70</div>
         </div>
       </div>
 

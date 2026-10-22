@@ -75,11 +75,7 @@ export const PromptHubView: React.FC<PromptHubViewProps> = ({ onShowToast }) => 
 
       <DiffModal isOpen={view.isDiffModalOpen} onClose={view.closeDiffModal} />
 
-      <BatchTestModal
-        isOpen={view.isBatchTestModalOpen}
-        onClose={view.closeBatchTestModal}
-        onShowToast={onShowToast}
-      />
+      <BatchTestModal isOpen={view.isBatchTestModalOpen} onClose={view.closeBatchTestModal} onShowToast={onShowToast} />
     </div>
   );
 };

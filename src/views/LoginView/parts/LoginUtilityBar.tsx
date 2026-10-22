@@ -25,11 +25,7 @@ export interface LoginUtilityBarProps {
   onPreviewBypass?: () => void;
 }
 
-export const LoginUtilityBar: React.FC<LoginUtilityBarProps> = ({
-  isNightMode,
-  setIsNightMode,
-  onPreviewBypass,
-}) => {
+export const LoginUtilityBar: React.FC<LoginUtilityBarProps> = ({ isNightMode, setIsNightMode, onPreviewBypass }) => {
   return (
     <div className="w-full max-w-6xl flex items-center justify-between text-xs text-[#8a97a8] z-20 pt-2">
       <div className="flex items-center gap-2">

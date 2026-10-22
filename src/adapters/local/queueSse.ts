@@ -28,12 +28,7 @@
  * dependencies: ../../domains/platform/queue/ports
  * exports: EventSourceLike, SseQueueOptions, createSseTaskQueue
  */
-import {
-  QueueEvent,
-  QueueEventType,
-  QueueTask,
-  TaskQueuePort,
-} from "../../domains/platform/queue/ports";
+import { QueueEvent, QueueEventType, QueueTask, TaskQueuePort } from "../../domains/platform/queue/ports";
 
 /** EventSource 最小结构（测试替身可注入；原生实例天然满足） */
 export interface EventSourceLike {

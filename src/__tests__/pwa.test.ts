@@ -20,9 +20,7 @@ import { describe, expect, it } from "vitest";
 const ROOT = resolve(__dirname, "../..");
 
 describe("PWA · manifest.webmanifest 安装面", () => {
-  const manifest = JSON.parse(
-    readFileSync(resolve(ROOT, "public/manifest.webmanifest"), "utf8"),
-  ) as {
+  const manifest = JSON.parse(readFileSync(resolve(ROOT, "public/manifest.webmanifest"), "utf8")) as {
     name: string;
     short_name: string;
     display: string;
@@ -83,10 +81,7 @@ describe("多端 logo 全链路引用", () => {
       resolve(ROOT, "src/components/yyc3/YYC3FamilyModal/parts/FamilyModalHeader.tsx"),
       "utf8",
     );
-    const trigger = readFileSync(
-      resolve(ROOT, "src/components/yyc3/YYC3FloatingTrigger.tsx"),
-      "utf8",
-    );
+    const trigger = readFileSync(resolve(ROOT, "src/components/yyc3/YYC3FloatingTrigger.tsx"), "utf8");
     expect(modal).toContain("/yyc3-icons/yyc3-logo.png");
     expect(trigger).toContain("/yyc3-icons/yyc3-logo.png");
   });

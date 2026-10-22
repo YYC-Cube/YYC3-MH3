@@ -24,11 +24,7 @@ export interface LoginModeTabsProps {
   setErrorMessage: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-export const LoginModeTabs: React.FC<LoginModeTabsProps> = ({
-  authMode,
-  setAuthMode,
-  setErrorMessage,
-}) => {
+export const LoginModeTabs: React.FC<LoginModeTabsProps> = ({ authMode, setAuthMode, setErrorMessage }) => {
   return (
     <div className="flex border-b border-[#1e2f47] pb-3 mb-6 select-none">
       <button

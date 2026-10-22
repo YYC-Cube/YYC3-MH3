@@ -20,12 +20,7 @@
  * exports: useOpsTelemetry
  */
 import { useEffect, useMemo, useState } from "react";
-import {
-  INITIAL_LOGS,
-  OPS_METRICS,
-  SERVICES_LIST,
-  SYSTEM_ALARMS,
-} from "../adapters/memory/fixtures/ops";
+import { INITIAL_LOGS, OPS_METRICS, SERVICES_LIST, SYSTEM_ALARMS } from "../adapters/memory/fixtures/ops";
 import { AlarmItem, LogEntry, OpsMetric, ServiceStatus } from "../types";
 import { getPorts } from "./composition";
 import { reportClientError } from "./error-sink";
@@ -53,21 +48,14 @@ export function useOpsTelemetry() {
   const telemetry = useMemo(() => getPorts().telemetry, []);
 
   // 夹具顶层冻结：拷贝出可变副本引导（防就地污染，StrictMode 双挂载安全）
-  const [services, setServices] = useState<ServiceStatus[]>(() =>
-    SERVICES_LIST.map((s) => ({ ...s })),
-  );
+  const [services, setServices] = useState<ServiceStatus[]>(() => SERVICES_LIST.map((s) => ({ ...s })));
   const [metrics, setMetrics] = useState<OpsMetric[]>(() => OPS_METRICS.map((m) => ({ ...m })));
   const [alarms, setAlarms] = useState<AlarmItem[]>(() => SYSTEM_ALARMS.map((a) => ({ ...a })));
   const [logs, setLogs] = useState<LogEntry[]>(() => INITIAL_LOGS.map((l) => ({ ...l })));
 
   useEffect(() => {
     let cancelled = false;
-    void Promise.all([
-      telemetry.listServices(),
-      telemetry.listMetrics(),
-      telemetry.listAlarms(),
-      telemetry.listLogs(),
-    ])
+    void Promise.all([telemetry.listServices(), telemetry.listMetrics(), telemetry.listAlarms(), telemetry.listLogs()])
       .then(([s, m, a, l]) => {
         if (cancelled) return;
         setServices(s);

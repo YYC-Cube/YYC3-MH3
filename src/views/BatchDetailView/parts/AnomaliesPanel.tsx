@@ -45,9 +45,7 @@ export const AnomaliesPanel: React.FC<AnomaliesPanelProps> = ({ anomalies, onFix
           <div
             key={ano.frame}
             className={`p-3.5 rounded-xl border transition-all flex items-center justify-between gap-4 ${
-              ano.fixed
-                ? "bg-[#15294a]/40 border-[#1e2f47] opacity-60"
-                : "bg-[#15294a] border-[#ff7a45]/50"
+              ano.fixed ? "bg-[#15294a]/40 border-[#1e2f47] opacity-60" : "bg-[#15294a] border-[#ff7a45]/50"
             }`}
           >
             <div className="flex items-center gap-3">

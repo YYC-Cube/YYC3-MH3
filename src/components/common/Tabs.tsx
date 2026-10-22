@@ -44,9 +44,7 @@ export function Tabs<T extends string = string>({
 }: TabsProps<T>) {
   if (variant === "pills") {
     return (
-      <div
-        className={`flex items-center gap-1.5 p-1 bg-[#122340]/90 rounded-lg border border-[#30363d] ${className}`}
-      >
+      <div className={`flex items-center gap-1.5 p-1 bg-[#122340]/90 rounded-lg border border-[#30363d] ${className}`}>
         {tabs.map((tab) => {
           const isActive = tab.id === activeTab;
           return (

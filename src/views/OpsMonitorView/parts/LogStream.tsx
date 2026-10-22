@@ -29,12 +29,7 @@ export interface LogStreamProps {
   onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
-export const LogStream: React.FC<LogStreamProps> = ({
-  logs,
-  isLogStreaming,
-  onToggleLogStreaming,
-  onShowToast,
-}) => {
+export const LogStream: React.FC<LogStreamProps> = ({ logs, isLogStreaming, onToggleLogStreaming, onShowToast }) => {
   return (
     <Card
       title="值守大屏实时终端日志流 (Live Terminal Stream)"
@@ -76,9 +71,7 @@ export const LogStream: React.FC<LogStreamProps> = ({
               {log.level}
             </span>
             <span className="text-[#8a97a8]">[{log.stage}]</span>
-            <span className={log.level === "error" ? "text-[#ff7a45]" : "text-[#e8f0f8]"}>
-              {log.message}
-            </span>
+            <span className={log.level === "error" ? "text-[#ff7a45]" : "text-[#e8f0f8]"}>{log.message}</span>
           </div>
         ))}
       </div>

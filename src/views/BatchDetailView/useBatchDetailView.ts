@@ -110,11 +110,7 @@ export function useBatchDetailView({
     setIsGeneratingMutations(true);
     setTimeout(() => {
       setIsGeneratingMutations(false);
-      onShowToast(
-        "success",
-        `成功生成 ${mutationCount} 组变异批次`,
-        "已自动加入队列，包含 Seed±1 与 CFG±0.5 变异",
-      );
+      onShowToast("success", `成功生成 ${mutationCount} 组变异批次`, "已自动加入队列，包含 Seed±1 与 CFG±0.5 变异");
     }, 1500);
   };
 

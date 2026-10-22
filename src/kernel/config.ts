@@ -44,10 +44,7 @@ export const TAB_HREF: Readonly<Record<NavTabId, string>> = {
 
 /** 反查表（href 去尾斜杠后精确匹配） */
 const HREF_TAB: ReadonlyMap<string, NavTabId> = new Map(
-  (Object.entries(TAB_HREF) as [NavTabId, string][]).map(([tab, href]) => [
-    href.replace(/\/+$/, "") || "/",
-    tab,
-  ]),
+  (Object.entries(TAB_HREF) as [NavTabId, string][]).map(([tab, href]) => [href.replace(/\/+$/, "") || "/", tab]),
 );
 
 export function hrefForTab(tab: NavTabId): string {

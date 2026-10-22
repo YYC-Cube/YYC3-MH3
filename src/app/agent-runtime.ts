@@ -30,11 +30,7 @@ import { createMemoryAgent } from "../adapters/memory/agent";
 import { createInMemoryQueue } from "../adapters/memory/queue";
 import type { AgentPort } from "../domains/ai/ports";
 import { createCommandBus } from "../orchestrator/command-bus";
-import {
-  type AgentCommand,
-  type AgentTaskEvent,
-  createEventBus,
-} from "../orchestrator/protocol";
+import { type AgentCommand, type AgentTaskEvent, createEventBus } from "../orchestrator/protocol";
 import { runTask } from "../orchestrator/runner";
 import { createMemoryCheckpointStore } from "../orchestrator/resilience";
 import { createAgentWorker } from "../orchestrator/worker";
@@ -111,7 +107,7 @@ export function createAgentRuntime(options: AgentRuntimeOptions = {}): AgentRunt
     },
   });
 
-  const shouldAutoStart = options.autoStart ?? (options.isBrowser?.() ?? typeof window !== "undefined");
+  const shouldAutoStart = options.autoStart ?? options.isBrowser?.() ?? typeof window !== "undefined";
   if (shouldAutoStart) worker.start();
 
   return {

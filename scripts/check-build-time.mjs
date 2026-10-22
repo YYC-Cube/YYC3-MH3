@@ -38,9 +38,7 @@ try {
 const elapsedS = (Date.now() - startedAt) / 1000;
 
 const distDir = fs.existsSync(DIST_DIR) ? DIST_DIR : null;
-console.log(
-  `构建完成：${distDir ?? "(无产物目录)"} · 耗时 ${elapsedS.toFixed(1)}s / 预算 ${BUILD_TIME_BUDGET_S}s`,
-);
+console.log(`构建完成：${distDir ?? "(无产物目录)"} · 耗时 ${elapsedS.toFixed(1)}s / 预算 ${BUILD_TIME_BUDGET_S}s`);
 
 if (elapsedS > BUILD_TIME_BUDGET_S) {
   console.error(`✗ 超预算：${elapsedS.toFixed(1)}s > ${BUILD_TIME_BUDGET_S}s —— 构建时间门禁阻断`);

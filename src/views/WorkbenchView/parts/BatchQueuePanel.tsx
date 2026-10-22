@@ -27,11 +27,7 @@ export interface BatchQueuePanelProps {
   onSelectBatch: (id: string) => void;
 }
 
-export const BatchQueuePanel: React.FC<BatchQueuePanelProps> = ({
-  batches,
-  currentBatchId,
-  onSelectBatch,
-}) => {
+export const BatchQueuePanel: React.FC<BatchQueuePanelProps> = ({ batches, currentBatchId, onSelectBatch }) => {
   return (
     <div className="w-64 border-r border-[#1e2f47] bg-[#0c1a30] flex flex-col flex-shrink-0">
       <div className="p-3 border-b border-[#1e2f47] flex items-center justify-between">
@@ -99,9 +95,7 @@ export const BatchQueuePanel: React.FC<BatchQueuePanelProps> = ({
 
       <div className="p-3 border-t border-[#1e2f47] bg-[#0a1628]/60 flex items-center justify-between text-[11px] text-[#8a97a8]">
         <span>提示: 双击直接载入参数</span>
-        <kbd className="px-1.5 py-0.5 rounded bg-[#15294a] border border-[#1e2f47] text-[10px]">
-          Ctrl+Enter
-        </kbd>
+        <kbd className="px-1.5 py-0.5 rounded bg-[#15294a] border border-[#1e2f47] text-[10px]">Ctrl+Enter</kbd>
       </div>
     </div>
   );

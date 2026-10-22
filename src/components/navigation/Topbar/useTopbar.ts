@@ -23,11 +23,7 @@ import { NotificationItem } from "../../../types";
 export type NotifTab = "all" | "alarm" | "completed" | "system";
 
 /** Toast 上报回调签名（容器与各分区共用） */
-export type ShowToastFn = (
-  type: "success" | "error" | "warning" | "info",
-  msg: string,
-  sub?: string,
-) => void;
+export type ShowToastFn = (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 
 const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   {
@@ -53,8 +49,7 @@ const INITIAL_NOTIFICATIONS: NotificationItem[] = [
     id: "notif-3",
     type: "system",
     title: "看门狗自愈服务探活正常",
-    description:
-      "本地遥测聚合与 DiffSynth Worker 保持 1s 心跳探活，连续稳定运行 14 天（演示快照）。",
+    description: "本地遥测聚合与 DiffSynth Worker 保持 1s 心跳探活，连续稳定运行 14 天（演示快照）。",
     timestamp: "08:00",
     read: true,
     targetTab: "ops",

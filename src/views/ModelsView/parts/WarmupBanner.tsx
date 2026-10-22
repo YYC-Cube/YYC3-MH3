@@ -26,16 +26,11 @@ export const WarmupBanner: React.FC<WarmupBannerProps> = ({ warmupProgress }) =>
   return (
     <div className="p-3.5 rounded-xl bg-[#0f1f38] border border-[#00e0b8]/40 space-y-2 animate-in fade-in">
       <div className="flex justify-between text-xs">
-        <span className="font-semibold text-[#00e0b8]">
-          正在执行 CUDA 权重预热与显存常驻加载...
-        </span>
+        <span className="font-semibold text-[#00e0b8]">正在执行 CUDA 权重预热与显存常驻加载...</span>
         <span className="font-mono text-[#00e0b8] font-bold">{warmupProgress}%</span>
       </div>
       <div className="w-full bg-[#15294a] h-2 rounded-full overflow-hidden">
-        <div
-          className="bg-[#00e0b8] h-full transition-all duration-300"
-          style={{ width: `${warmupProgress}%` }}
-        />
+        <div className="bg-[#00e0b8] h-full transition-all duration-300" style={{ width: `${warmupProgress}%` }} />
       </div>
     </div>
   );

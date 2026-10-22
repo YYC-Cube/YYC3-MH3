@@ -141,7 +141,10 @@ async function main() {
     directives.set("script-src", scriptSrc);
     const hardenedHtml = CHECK_ONLY
       ? page.html
-      : page.html.replace(META_RE, () => `<meta http-equiv="Content-Security-Policy" content="${encodeAttr(renderPolicy(directives))}"/>`);
+      : page.html.replace(
+          META_RE,
+          () => `<meta http-equiv="Content-Security-Policy" content="${encodeAttr(renderPolicy(directives))}"/>`,
+        );
     if (!CHECK_ONLY) await writeFile(page.file, hardenedHtml, "utf8");
 
     /* 4. 门禁校验：本页内联块全部被哈希覆盖且无 unsafe-inline */
@@ -160,7 +163,9 @@ async function main() {
       }
     }
     if (policy.has("frame-ancestors")) {
-      console.error(`[csp] ${path.relative(DIST_DIR, page.file)} meta 不应含 frame-ancestors（浏览器忽略，须由响应头承接）`);
+      console.error(
+        `[csp] ${path.relative(DIST_DIR, page.file)} meta 不应含 frame-ancestors（浏览器忽略，须由响应头承接）`,
+      );
       failure += 1;
     }
   }

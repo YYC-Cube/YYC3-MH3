@@ -28,14 +28,7 @@ export interface ModalProps {
   maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "4xl";
 }
 
-export const Modal: React.FC<ModalProps> = ({
-  isOpen,
-  onClose,
-  title,
-  children,
-  footer,
-  maxWidth = "md",
-}) => {
+export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, footer, maxWidth = "md" }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {

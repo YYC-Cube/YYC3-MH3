@@ -41,10 +41,7 @@ export interface EditTemplate {
 }
 
 /** 模板引擎规则：以模板输出规格重写全部片段分辨率/画幅（返回新数组） */
-export function applyTemplate(
-  template: EditTemplate,
-  clips: readonly MediaClipItem[],
-): MediaClipItem[] {
+export function applyTemplate(template: EditTemplate, clips: readonly MediaClipItem[]): MediaClipItem[] {
   return clips.map((clip) => ({
     ...clip,
     resolution: template.outputResolution,

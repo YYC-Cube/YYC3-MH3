@@ -19,12 +19,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { INITIAL_BATCHES } from "../src/adapters/memory/fixtures/batch";
-import {
-  INITIAL_LOGS,
-  OPS_METRICS,
-  SERVICES_LIST,
-  SYSTEM_ALARMS,
-} from "../src/adapters/memory/fixtures/ops";
+import { INITIAL_LOGS, OPS_METRICS, SERVICES_LIST, SYSTEM_ALARMS } from "../src/adapters/memory/fixtures/ops";
 import { INITIAL_SEEDS } from "../src/adapters/memory/fixtures/seed";
 import type { SeedItem } from "../src/types";
 import type { RegistryRequest } from "./registryApi";
@@ -98,9 +93,7 @@ describe("server/registryApi · GET /api/services", () => {
   });
 
   it("POST /api/services → 405 方法不允许", () => {
-    const res = createRegistryApi().handleRequest(
-      makeRequest({ method: "POST", path: "/api/services" }),
-    );
+    const res = createRegistryApi().handleRequest(makeRequest({ method: "POST", path: "/api/services" }));
     expect(res.status).toBe(405);
     expect((res.json as { error: { code: string } }).error.code).toBe("METHOD_NOT_ALLOWED");
   });
@@ -262,9 +255,7 @@ describe("server/registryApi · GET/POST /api/seeds", () => {
 
   it("POST 新种子 → 201 原样返回且进程内持久（GET 长度 +1）", () => {
     const api = createRegistryApi();
-    const created = api.handleRequest(
-      makeRequest({ method: "POST", path: "/api/seeds", body: NEW_SEED }),
-    );
+    const created = api.handleRequest(makeRequest({ method: "POST", path: "/api/seeds", body: NEW_SEED }));
     expect(created.status).toBe(201);
     expect(created.json).toEqual(NEW_SEED);
     const after = api.handleRequest(makeRequest({ path: "/api/seeds" })).json as {
@@ -296,9 +287,7 @@ describe("server/registryApi · 错误约定与回环防护（06 §1.1/§2）", 
   });
 
   it("非回环 Host → 403 拒绝（API 面回环 only）", () => {
-    const res = createRegistryApi().handleRequest(
-      makeRequest({ path: "/api/services", host: "evil.example:3031" }),
-    );
+    const res = createRegistryApi().handleRequest(makeRequest({ path: "/api/services", host: "evil.example:3031" }));
     expect(res.status).toBe(403);
     expect((res.json as { error: { code: string } }).error.code).toBe("FORBIDDEN");
   });

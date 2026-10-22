@@ -39,10 +39,7 @@ export interface FamilyReplyDecision {
  * 按成员分支的罐装回复决策（纯函数）：
  * 未命中专属成员时走默认调度口径（回显指令 + 参数约束负载）。
  */
-export function familyReply(
-  member: Pick<YYC3Member, "id" | "name">,
-  prompt: string,
-): FamilyReplyDecision {
+export function familyReply(member: Pick<YYC3Member, "id" | "name">, prompt: string): FamilyReplyDecision {
   let text = `已接收您的指令「${prompt}」。已通过 ${member.name} 调度本地 DiffSynth 推理引擎，参数约束已就绪。`;
   let actionLabel = "应用调优方案至流水线";
   let payload: FamilyReplyPayload = { guidanceScale: 7.2, steps: 32 };
@@ -52,13 +49,11 @@ export function familyReply(
       "针对第 142 帧轻微迟滞分析：系眨眼间隔（380ms）略高于黄金基准（250ms）。已生成唇形掩码平滑补偿权重，建议采用。";
     actionLabel = "一键应用唇形时序补偿补丁";
   } else if (member.id === "qianli") {
-    text =
-      "已从种子库比对出与当前人物面容最贴合的 S 级基线 Seed #81923011，该种子具备 96.8 分抗抖动特性。";
+    text = "已从种子库比对出与当前人物面容最贴合的 S 级基线 Seed #81923011，该种子具备 96.8 分抗抖动特性。";
     actionLabel = "载入 S 级种子 #81923011";
     payload = { seedNumber: 81923011 };
   } else if (member.id === "zhiyun") {
-    text =
-      "已检测到当前 VRAM 占用 19.4GB。已执行显存碎片平滑整理与 24h 前临时切片清除，释放出 3.4GB 缓冲空间。";
+    text = "已检测到当前 VRAM 占用 19.4GB。已执行显存碎片平滑整理与 24h 前临时切片清除，释放出 3.4GB 缓冲空间。";
     actionLabel = "查看运维自愈日志";
   }
 

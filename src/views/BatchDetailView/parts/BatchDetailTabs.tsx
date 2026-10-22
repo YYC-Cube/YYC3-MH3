@@ -34,15 +34,11 @@ export const BatchDetailTabs: React.FC<BatchDetailTabsProps> = ({ activeTab, onS
             key={tab.id}
             onClick={() => onSelectTab(tab.id)}
             className={`pb-2.5 font-medium transition-colors cursor-pointer relative ${
-              activeTab === tab.id
-                ? "text-[#00e0b8] font-semibold"
-                : "text-[#8a97a8] hover:text-[#e8f0f8]"
+              activeTab === tab.id ? "text-[#00e0b8] font-semibold" : "text-[#8a97a8] hover:text-[#e8f0f8]"
             }`}
           >
             {tab.label}
-            {activeTab === tab.id && (
-              <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#00e0b8]" />
-            )}
+            {activeTab === tab.id && <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#00e0b8]" />}
           </button>
         ))}
       </div>

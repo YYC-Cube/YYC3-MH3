@@ -60,8 +60,7 @@ export function maskPii(value: string): string {
   out = out.replace(/(^|\D)(1[3-9]\d)\d{4}(\d{4})(?=\D|$)/g, "$1$2****$3");
   out = out.replace(
     /(^|\D)(\d{6,})(\d{2})(?=\D|$)/g,
-    (_match, lead: string, digits: string, tail: string) =>
-      `${lead}${"*".repeat(digits.length)}${tail}`,
+    (_match, lead: string, digits: string, tail: string) => `${lead}${"*".repeat(digits.length)}${tail}`,
   );
   return out;
 }

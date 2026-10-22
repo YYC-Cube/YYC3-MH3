@@ -88,9 +88,7 @@ export const WorkflowModals: React.FC<WorkflowModalsProps> = ({
         }
       >
         <div className="space-y-3 text-xs">
-          <p className="text-[#8a97a8]">
-            包含 8 位 AI Family 成员拓扑连接、端口映射与各节点超参数：
-          </p>
+          <p className="text-[#8a97a8]">包含 8 位 AI Family 成员拓扑连接、端口映射与各节点超参数：</p>
           <textarea
             rows={8}
             readOnly

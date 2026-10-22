@@ -26,11 +26,7 @@ export interface SeedVaultHeaderProps {
   onGenerateSeed: () => void;
 }
 
-export const SeedVaultHeader: React.FC<SeedVaultHeaderProps> = ({
-  compareCount,
-  onOpenCompare,
-  onGenerateSeed,
-}) => {
+export const SeedVaultHeader: React.FC<SeedVaultHeaderProps> = ({ compareCount, onOpenCompare, onGenerateSeed }) => {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
@@ -47,12 +43,7 @@ export const SeedVaultHeader: React.FC<SeedVaultHeaderProps> = ({
 
       <div className="flex items-center gap-2.5">
         {compareCount > 0 && (
-          <Button
-            variant="primary"
-            size="sm"
-            icon={<Scale className="w-3.5 h-3.5" />}
-            onClick={onOpenCompare}
-          >
+          <Button variant="primary" size="sm" icon={<Scale className="w-3.5 h-3.5" />} onClick={onOpenCompare}>
             对比已选种子 ({compareCount}/3)
           </Button>
         )}

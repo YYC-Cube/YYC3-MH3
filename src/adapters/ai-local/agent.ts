@@ -26,10 +26,16 @@ import { type AgentError, type AgentOutput, type AgentPort } from "../../domains
 import { createResilientGateway, type LocalAdapterOptions } from "../local/http";
 
 /** 网关失败 → 结构化 AgentError（404 = 服务端无此 agent；其余可重试） */
-function mapGatewayError(raw: unknown, anchors: { traceId: string; agentId: string; stepKey?: ReactCStepKey }): AgentError {
+function mapGatewayError(
+  raw: unknown,
+  anchors: { traceId: string; agentId: string; stepKey?: ReactCStepKey },
+): AgentError {
   const error = new Error(raw instanceof Error ? raw.message : String(raw)) as AgentError;
   error.name = "AgentError";
-  error.code = raw instanceof Error && "status" in raw && (raw as { status?: number }).status === 404 ? "unknown-agent" : "tool-failed";
+  error.code =
+    raw instanceof Error && "status" in raw && (raw as { status?: number }).status === 404
+      ? "unknown-agent"
+      : "tool-failed";
   error.retryable = error.code === "tool-failed";
   error.traceId = anchors.traceId;
   error.agentId = anchors.agentId;
@@ -44,7 +50,7 @@ export function createLocalAgent(options: LocalAdapterOptions = {}): AgentPort {
   return {
     async listAgents() {
       try {
-        return await gateway<typeof AGENT_REGISTRY[number][]>("/ai/agents/profiles");
+        return await gateway<(typeof AGENT_REGISTRY)[number][]>("/ai/agents/profiles");
       } catch {
         // 目录失败回退本地注册表（供数降级不阻断编排前置校验）
         return AGENT_REGISTRY;

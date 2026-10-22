@@ -121,7 +121,13 @@ export function runTask(command: AgentCommand, deps: AgentRunDeps): AgentRunHand
           type: "TASK_FAILED",
           taskId,
           traceId,
-          error: asAgentError(new Error("cancelled"), { code: "cancelled", retryable: false, traceId, agentId: command.agentId, stepKey }),
+          error: asAgentError(new Error("cancelled"), {
+            code: "cancelled",
+            retryable: false,
+            traceId,
+            agentId: command.agentId,
+            stepKey,
+          }),
         },
       };
     }
@@ -131,14 +137,31 @@ export function runTask(command: AgentCommand, deps: AgentRunDeps): AgentRunHand
     if (deadlineMs !== undefined && now() - startedAt >= deadlineMs) {
       const timedOut = drive(
         state,
-        { type: "STEP_FAIL", error: asAgentError(new Error("budget"), { code: "budget-exceeded", retryable: true, traceId, agentId: command.agentId, stepKey }) },
+        {
+          type: "STEP_FAIL",
+          error: asAgentError(new Error("budget"), {
+            code: "budget-exceeded",
+            retryable: true,
+            traceId,
+            agentId: command.agentId,
+            stepKey,
+          }),
+        },
         now(),
       );
       await persist(taskId, timedOut);
       return {
         terminal: {
-          type: "TASK_FAILED", taskId, traceId,
-          error: asAgentError(new Error(`deadline ${deadlineMs}ms exceeded`), { code: "budget-exceeded", retryable: true, traceId, agentId: command.agentId, stepKey }),
+          type: "TASK_FAILED",
+          taskId,
+          traceId,
+          error: asAgentError(new Error(`deadline ${deadlineMs}ms exceeded`), {
+            code: "budget-exceeded",
+            retryable: true,
+            traceId,
+            agentId: command.agentId,
+            stepKey,
+          }),
         },
       };
     }
@@ -152,7 +175,10 @@ export function runTask(command: AgentCommand, deps: AgentRunDeps): AgentRunHand
         tools,
       });
       emit({
-        type: "STEP_EXITED", taskId, traceId, stepKey,
+        type: "STEP_EXITED",
+        taskId,
+        traceId,
+        stepKey,
         durationMs: now() - stepStart,
         tokensUsed: output.tokensUsed,
         model: output.model,
@@ -180,11 +206,23 @@ export function runTask(command: AgentCommand, deps: AgentRunDeps): AgentRunHand
     const profiles = await agent.listAgents().catch(() => null);
     if (!profiles || !profiles.some((p) => p.id === command.agentId)) {
       const terminal: AgentTaskEvent = {
-        type: "TASK_FAILED", taskId, traceId,
-        error: asAgentError(new Error("unknown-agent"), { code: "unknown-agent", retryable: false, traceId, agentId: command.agentId }),
+        type: "TASK_FAILED",
+        taskId,
+        traceId,
+        error: asAgentError(new Error("unknown-agent"), {
+          code: "unknown-agent",
+          retryable: false,
+          traceId,
+          agentId: command.agentId,
+        }),
       };
       emit(terminal);
-      emit({ type: "HANDOFF_REQUIRED", taskId, traceId, checkpoint: { taskId, traceId, agentId: command.agentId, state: createInitialReactCState(), at: now() } });
+      emit({
+        type: "HANDOFF_REQUIRED",
+        taskId,
+        traceId,
+        checkpoint: { taskId, traceId, agentId: command.agentId, state: createInitialReactCState(), at: now() },
+      });
       resolveDone(terminal);
       return;
     }
@@ -203,7 +241,12 @@ export function runTask(command: AgentCommand, deps: AgentRunDeps): AgentRunHand
       const result = await stepOnce(taskId, state, stepKey, command.input);
       if ("terminal" in result) {
         emit(result.terminal);
-        emit({ type: "HANDOFF_REQUIRED", taskId, traceId, checkpoint: { taskId, traceId, agentId: command.agentId, state, at: now() } });
+        emit({
+          type: "HANDOFF_REQUIRED",
+          taskId,
+          traceId,
+          checkpoint: { taskId, traceId, agentId: command.agentId, state, at: now() },
+        });
         resolveDone(result.terminal);
         return;
       }
@@ -225,7 +268,13 @@ export function runTask(command: AgentCommand, deps: AgentRunDeps): AgentRunHand
           const roundBefore = state.reviseRound;
           state = drive(state, { type: "VERDICT", ...verdict }, now());
           if (!verdict.pass && roundBefore < 2) {
-            emit({ type: "REVISE_ROUND", taskId, traceId, round: (roundBefore + 1) as 1 | 2, reason: `confidence=${output.confidence}` });
+            emit({
+              type: "REVISE_ROUND",
+              taskId,
+              traceId,
+              round: (roundBefore + 1) as 1 | 2,
+              reason: `confidence=${output.confidence}`,
+            });
           }
           break;
         }
@@ -244,8 +293,18 @@ export function runTask(command: AgentCommand, deps: AgentRunDeps): AgentRunHand
     // 终局（done）：degraded 降级完成 vs 正常完成
     if (state.degraded) {
       const terminal: AgentTaskEvent = {
-        type: "TASK_DEGRADED", taskId, traceId,
-        output: { agentId: command.agentId, text: "", confidence: 0, tokensUsed: 0, model: "n/a", riskTags: ["degraded", "reflect-unresolved"], artifacts: output_artifacts.artifacts },
+        type: "TASK_DEGRADED",
+        taskId,
+        traceId,
+        output: {
+          agentId: command.agentId,
+          text: "",
+          confidence: 0,
+          tokensUsed: 0,
+          model: "n/a",
+          riskTags: ["degraded", "reflect-unresolved"],
+          artifacts: output_artifacts.artifacts,
+        },
         reviseRound: 2,
       };
       emit(terminal);
@@ -254,8 +313,18 @@ export function runTask(command: AgentCommand, deps: AgentRunDeps): AgentRunHand
     }
     const totalMs = now() - startedAt;
     const terminal: AgentTaskEvent = {
-      type: "TASK_COMPLETED", taskId, traceId,
-      output: { agentId: command.agentId, text: "", confidence: 0, tokensUsed: 0, model: "n/a", riskTags: [], artifacts: output_artifacts.artifacts },
+      type: "TASK_COMPLETED",
+      taskId,
+      traceId,
+      output: {
+        agentId: command.agentId,
+        text: "",
+        confidence: 0,
+        tokensUsed: 0,
+        model: "n/a",
+        riskTags: [],
+        artifacts: output_artifacts.artifacts,
+      },
       totalMs,
     };
     emit(terminal);
@@ -265,7 +334,9 @@ export function runTask(command: AgentCommand, deps: AgentRunDeps): AgentRunHand
   void execute().catch((error: unknown) => {
     // 防御性兜底：机器非法转移等契约异常按 failed 终局（不悬置 promise）
     const terminal: AgentTaskEvent = {
-      type: "TASK_FAILED", taskId: command.taskId, traceId,
+      type: "TASK_FAILED",
+      taskId: command.taskId,
+      traceId,
       error: asAgentError(error, { code: "contract-violated", retryable: false, traceId, agentId: command.agentId }),
     };
     emit(terminal);

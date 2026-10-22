@@ -49,11 +49,7 @@ export function NewBatchModal({ isOpen, onClose, onSubmit }: NewBatchModalProps)
           <Button variant="ghost" size="sm" onClick={onClose}>
             取消
           </Button>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => onSubmit({ name, mode, seed, prompt })}
-          >
+          <Button variant="primary" size="sm" onClick={() => onSubmit({ name, mode, seed, prompt })}>
             创建并立即启动五步流水线
           </Button>
         </>

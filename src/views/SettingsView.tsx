@@ -59,9 +59,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onShowToast, dataPor
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-[#e6edf3]">
-              系统设置与硬件配置 · System Settings
-            </h1>
+            <h1 className="text-xl font-bold text-[#e6edf3]">系统设置与硬件配置 · System Settings</h1>
             <Badge variant="brand" size="xs">
               实时生效
             </Badge>
@@ -97,15 +95,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onShowToast, dataPor
             key={tab.id}
             onClick={() => setActiveCategory(tab.id)}
             className={`pb-2.5 font-medium transition-colors cursor-pointer relative ${
-              activeCategory === tab.id
-                ? "text-[#00d4aa] font-semibold"
-                : "text-[#8b949e] hover:text-[#e6edf3]"
+              activeCategory === tab.id ? "text-[#00d4aa] font-semibold" : "text-[#8b949e] hover:text-[#e6edf3]"
             }`}
           >
             {tab.label}
-            {activeCategory === tab.id && (
-              <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#00d4aa]" />
-            )}
+            {activeCategory === tab.id && <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#00d4aa]" />}
           </button>
         ))}
       </div>
@@ -153,9 +147,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onShowToast, dataPor
                   </kbd>
                   <span className="text-[#e6edf3] font-medium">{hk.desc}</span>
                 </div>
-                <span className="text-xs text-[#8b949e] font-mono px-2 py-0.5 rounded bg-[#071425]">
-                  {hk.scope}
-                </span>
+                <span className="text-xs text-[#8b949e] font-mono px-2 py-0.5 rounded bg-[#071425]">{hk.scope}</span>
               </div>
             ))}
           </div>

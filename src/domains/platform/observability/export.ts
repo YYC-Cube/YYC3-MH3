@@ -56,11 +56,36 @@ export function renderRuntimePrometheus(snapshot: RuntimeMetricsSnapshot): strin
     (snapshot.overBudget.p95LatencyMs ? 1 : 0) +
     (snapshot.overBudget.p95LongTaskMs ? 1 : 0);
   const families: Array<{ name: string; type: "counter" | "gauge"; help: string; value: number }> = [
-    { name: "yyc3_runtime_page_views_total", type: "counter", help: "页面视图累计（错误率分母）", value: snapshot.pageViews },
-    { name: "yyc3_runtime_client_errors_total", type: "counter", help: "客户端错误累计（error-sink 上报）", value: snapshot.errors },
-    { name: "yyc3_runtime_error_rate", type: "gauge", help: "错误率（errors/pageViews，预算 <0.01）", value: snapshot.errorRate },
-    { name: "yyc3_runtime_nav_latency_p95_ms", type: "gauge", help: "导航耗时 p95（ms，预算 <2000）", value: snapshot.p95LatencyMs },
-    { name: "yyc3_runtime_long_task_p95_ms", type: "gauge", help: "长任务 p95（ms，预算 <50）", value: snapshot.p95LongTaskMs },
+    {
+      name: "yyc3_runtime_page_views_total",
+      type: "counter",
+      help: "页面视图累计（错误率分母）",
+      value: snapshot.pageViews,
+    },
+    {
+      name: "yyc3_runtime_client_errors_total",
+      type: "counter",
+      help: "客户端错误累计（error-sink 上报）",
+      value: snapshot.errors,
+    },
+    {
+      name: "yyc3_runtime_error_rate",
+      type: "gauge",
+      help: "错误率（errors/pageViews，预算 <0.01）",
+      value: snapshot.errorRate,
+    },
+    {
+      name: "yyc3_runtime_nav_latency_p95_ms",
+      type: "gauge",
+      help: "导航耗时 p95（ms，预算 <2000）",
+      value: snapshot.p95LatencyMs,
+    },
+    {
+      name: "yyc3_runtime_long_task_p95_ms",
+      type: "gauge",
+      help: "长任务 p95（ms，预算 <50）",
+      value: snapshot.p95LongTaskMs,
+    },
     { name: "yyc3_runtime_budget_violations", type: "gauge", help: "越界预算计数（0-3）", value: violations },
   ];
   const lines: string[] = [];
@@ -97,9 +122,7 @@ function toNanoseconds(iso: string): string {
 
 /** logfmt 值转义（含空白或引号的值以引号包裹，内部引号反斜杠转义） */
 function logfmtValue(value: string): string {
-  return /\s|"/.test(value)
-    ? `"${value.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`
-    : value;
+  return /\s|"/.test(value) ? `"${value.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"` : value;
 }
 
 /** 单条 LogEntry → logfmt 行（traceId 在行内可检索，P0-2 全链路串联口径） */

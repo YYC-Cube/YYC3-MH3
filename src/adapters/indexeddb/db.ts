@@ -83,17 +83,11 @@ function runRequest<T>(
 function createIdbBackend(ready: Promise<IDBDatabase>): DbBackend {
   return {
     get: (store, key) =>
-      runRequest(ready, store, "readonly", (os) => os.get(key)).then((row) =>
-        row === undefined ? null : row,
-      ),
-    put: (store, value) =>
-      runRequest(ready, store, "readwrite", (os) => os.put(value)).then(() => undefined),
-    getAll: (store) =>
-      runRequest(ready, store, "readonly", (os) => os.getAll()).then((rows) => [...rows]),
-    delete: (store, key) =>
-      runRequest(ready, store, "readwrite", (os) => os.delete(key)).then(() => undefined),
-    clear: (store) =>
-      runRequest(ready, store, "readwrite", (os) => os.clear()).then(() => undefined),
+      runRequest(ready, store, "readonly", (os) => os.get(key)).then((row) => (row === undefined ? null : row)),
+    put: (store, value) => runRequest(ready, store, "readwrite", (os) => os.put(value)).then(() => undefined),
+    getAll: (store) => runRequest(ready, store, "readonly", (os) => os.getAll()).then((rows) => [...rows]),
+    delete: (store, key) => runRequest(ready, store, "readwrite", (os) => os.delete(key)).then(() => undefined),
+    clear: (store) => runRequest(ready, store, "readwrite", (os) => os.clear()).then(() => undefined),
   };
 }
 

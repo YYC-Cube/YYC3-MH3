@@ -31,9 +31,7 @@ export const PipelineFlow: React.FC<PipelineFlowProps> = ({ onNavigate }) => {
     <div className="lg:col-span-8 p-5 rounded-xl bg-[#0f1f38] border border-[#1e2f47] flex flex-col justify-between shadow-lg">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-sm font-semibold text-[#e8f0f8]">
-            五步闭环生产流水线 · 实时吞吐流转图
-          </h2>
+          <h2 className="text-sm font-semibold text-[#e8f0f8]">五步闭环生产流水线 · 实时吞吐流转图</h2>
           <p className="text-xs text-[#8a97a8]">任务从生成至 Seed 基因回写的端到端自动化漏斗</p>
         </div>
         <div className="flex items-center gap-2">

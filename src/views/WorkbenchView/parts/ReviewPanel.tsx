@@ -123,13 +123,7 @@ export const ReviewPanel: React.FC<ReviewPanelProps> = ({
           variant={isAdopted ? "outline" : "primary"}
           size="md"
           className="w-full"
-          icon={
-            isAdopted ? (
-              <CheckCircle2 className="w-4 h-4 text-[#00e0b8]" />
-            ) : (
-              <Dna className="w-4 h-4" />
-            )
-          }
+          icon={isAdopted ? <CheckCircle2 className="w-4 h-4 text-[#00e0b8]" /> : <Dna className="w-4 h-4" />}
           onClick={onAdoptSeed}
           disabled={isAdopted}
         >

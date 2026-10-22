@@ -75,37 +75,17 @@ export const ModeActionBar: React.FC<ModeActionBarProps> = ({
         <Button
           variant={isRunning ? "danger" : "primary"}
           size="sm"
-          icon={
-            isRunning ? (
-              <Pause className="w-4 h-4 fill-current" />
-            ) : (
-              <Play className="w-4 h-4 fill-current" />
-            )
-          }
+          icon={isRunning ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
           onClick={onToggleRun}
         >
-          {isRunning
-            ? "暂停生成 (Pause)"
-            : progress >= 100
-              ? "重新运行当前批次"
-              : "启动生成 (Ctrl+Enter)"}
+          {isRunning ? "暂停生成 (Pause)" : progress >= 100 ? "重新运行当前批次" : "启动生成 (Ctrl+Enter)"}
         </Button>
 
-        <Button
-          variant="secondary"
-          size="sm"
-          icon={<Square className="w-3.5 h-3.5" />}
-          onClick={onTerminate}
-        >
+        <Button variant="secondary" size="sm" icon={<Square className="w-3.5 h-3.5" />} onClick={onTerminate}>
           终止
         </Button>
 
-        <Button
-          variant="outline"
-          size="sm"
-          icon={<Bookmark className="w-3.5 h-3.5" />}
-          onClick={onSaveTemplate}
-        >
+        <Button variant="outline" size="sm" icon={<Bookmark className="w-3.5 h-3.5" />} onClick={onSaveTemplate}>
           保存模板
         </Button>
       </div>

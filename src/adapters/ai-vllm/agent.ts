@@ -45,7 +45,11 @@ function resolveBaseUrl(options: VllmAgentOptions): string {
   return base.replace(/\/$/, "");
 }
 
-function vllmError(message: string, retryable: boolean, anchors: { traceId: string; agentId: string; stepKey?: ReactCStepKey }): AgentError {
+function vllmError(
+  message: string,
+  retryable: boolean,
+  anchors: { traceId: string; agentId: string; stepKey?: ReactCStepKey },
+): AgentError {
   const error = new Error(message) as AgentError;
   error.name = "AgentError";
   error.code = "tool-failed";
@@ -93,7 +97,10 @@ export function createVllmAgent(options: VllmAgentOptions = {}): AgentPort {
           body: JSON.stringify({
             model: profile.defaultModel,
             messages: [
-              { role: "system", content: `你是「${profile.name}」（${profile.roleDefinition}），当前执行 ReAct-C 步骤：${stepKey}。` },
+              {
+                role: "system",
+                content: `你是「${profile.name}」（${profile.roleDefinition}），当前执行 ReAct-C 步骤：${stepKey}。`,
+              },
               { role: "user", content: `${input.prompt}${artifacts}` },
             ],
             temperature: typeof input.params?.temperature === "number" ? input.params.temperature : 0.7,

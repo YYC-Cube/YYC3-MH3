@@ -27,11 +27,7 @@ export interface MemberBioProps {
   onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
-export const MemberBio: React.FC<MemberBioProps> = ({
-  selectedMember,
-  onOpenChat,
-  onShowToast,
-}) => {
+export const MemberBio: React.FC<MemberBioProps> = ({ selectedMember, onOpenChat, onShowToast }) => {
   return (
     <div className="flex-1 p-5 space-y-4 text-xs overflow-y-auto">
       {/* Quote Card matching attachment 2 */}
@@ -92,29 +88,25 @@ export const MemberBio: React.FC<MemberBioProps> = ({
           <div className="p-2.5 rounded-lg bg-[#15294a]/80 border border-[#1e2f47]">
             <div className="text-[10px] text-[#8a97a8]">今日处理</div>
             <div className="font-mono text-sm font-bold text-[#00e0b8] mt-0.5">
-              {selectedMember.metrics.todayTasks}{" "}
-              <span className="text-[10px] text-[#8a97a8] font-normal">tasks</span>
+              {selectedMember.metrics.todayTasks} <span className="text-[10px] text-[#8a97a8] font-normal">tasks</span>
             </div>
           </div>
           <div className="p-2.5 rounded-lg bg-[#15294a]/80 border border-[#1e2f47]">
             <div className="text-[10px] text-[#8a97a8]">平均延迟</div>
             <div className="font-mono text-sm font-bold text-[#00b4d8] mt-0.5">
-              {selectedMember.metrics.avgLatencyMs}{" "}
-              <span className="text-[10px] text-[#8a97a8] font-normal">ms</span>
+              {selectedMember.metrics.avgLatencyMs} <span className="text-[10px] text-[#8a97a8] font-normal">ms</span>
             </div>
           </div>
           <div className="p-2.5 rounded-lg bg-[#15294a]/80 border border-[#1e2f47]">
             <div className="text-[10px] text-[#8a97a8]">准确率</div>
             <div className="font-mono text-sm font-bold text-[#00e0b8] mt-0.5">
-              {selectedMember.metrics.accuracyRate}{" "}
-              <span className="text-[10px] text-[#8a97a8] font-normal">%</span>
+              {selectedMember.metrics.accuracyRate} <span className="text-[10px] text-[#8a97a8] font-normal">%</span>
             </div>
           </div>
           <div className="p-2.5 rounded-lg bg-[#15294a]/80 border border-[#1e2f47]">
             <div className="text-[10px] text-[#8a97a8]">协作次数</div>
             <div className="font-mono text-sm font-bold text-[#9d7cd8] mt-0.5">
-              {selectedMember.metrics.collabCalls}{" "}
-              <span className="text-[10px] text-[#8a97a8] font-normal">calls</span>
+              {selectedMember.metrics.collabCalls} <span className="text-[10px] text-[#8a97a8] font-normal">calls</span>
             </div>
           </div>
         </div>
@@ -122,12 +114,7 @@ export const MemberBio: React.FC<MemberBioProps> = ({
 
       {/* Bottom Actions matching screenshot 2 */}
       <div className="pt-3 border-t border-[#1e2f47] grid grid-cols-2 gap-2.5">
-        <Button
-          variant="primary"
-          size="sm"
-          icon={<MessageSquare className="w-3.5 h-3.5" />}
-          onClick={onOpenChat}
-        >
+        <Button variant="primary" size="sm" icon={<MessageSquare className="w-3.5 h-3.5" />} onClick={onOpenChat}>
           对话
         </Button>
         <Button
@@ -135,11 +122,7 @@ export const MemberBio: React.FC<MemberBioProps> = ({
           size="sm"
           icon={<Sparkles className="w-3.5 h-3.5 text-[#00e0b8]" />}
           onClick={() => {
-            onShowToast(
-              "success",
-              `任务已分派给「${selectedMember.name}」`,
-              "将自动对当前生产线进行实时优化分析",
-            );
+            onShowToast("success", `任务已分派给「${selectedMember.name}」`, "将自动对当前生产线进行实时优化分析");
           }}
         >
           任务分派

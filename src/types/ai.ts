@@ -26,15 +26,7 @@ export interface AgentNode {
   role: string;
   roleColor: string;
   memberId: string; // aligned with YYC3Member id (yanqi, yushu, etc.)
-  type:
-  | "script"
-  | "storyboard"
-  | "voice"
-  | "diffsynth"
-  | "quality"
-  | "predict"
-  | "recommend"
-  | "security";
+  type: "script" | "storyboard" | "voice" | "diffsynth" | "quality" | "predict" | "recommend" | "security";
   x: number;
   y: number;
   status: "idle" | "active" | "success" | "error";

@@ -60,10 +60,7 @@ export function StatusBar({ onNavigateOps, onOpenYYC3, onShowToast }: StatusBarP
           本地预览 :{APP_PORT}
         </button>
         <span className="text-[#1e2f47]">|</span>
-        <button
-          onClick={onOpenYYC3}
-          className="flex items-center gap-1 text-[#00e0b8] hover:underline cursor-pointer"
-        >
+        <button onClick={onOpenYYC3} className="flex items-center gap-1 text-[#00e0b8] hover:underline cursor-pointer">
           <span className="w-1.5 h-1.5 rounded-full bg-[#00e0b8] animate-pulse" />
           <span>YYC³ AI 协同已连接</span>
         </button>

@@ -49,11 +49,7 @@ export function RoleGate({ permission, children, fallback, onDeny }: RoleGatePro
   onDeny?.(role, permission);
   return (
     fallback ?? (
-      <div
-        role="alert"
-        className="flex h-full w-full items-center justify-center p-8"
-        data-testid="rbac-denied"
-      >
+      <div role="alert" className="flex h-full w-full items-center justify-center p-8" data-testid="rbac-denied">
         <div className="max-w-md rounded-lg border border-red-500/30 bg-red-500/10 p-6 text-center">
           <p className="text-lg font-semibold text-red-300">访问被拒绝</p>
           <p className="mt-2 text-sm text-red-200/80">

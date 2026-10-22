@@ -26,13 +26,7 @@ export interface SwitchProps {
   disabled?: boolean;
 }
 
-export const Switch: React.FC<SwitchProps> = ({
-  checked,
-  onChange,
-  label,
-  description,
-  disabled = false,
-}) => {
+export const Switch: React.FC<SwitchProps> = ({ checked, onChange, label, description, disabled = false }) => {
   return (
     <label
       className={`flex items-start gap-3 cursor-pointer select-none ${

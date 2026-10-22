@@ -204,8 +204,7 @@ const medTbt = median(runReports.map((r) => r.tbt_ms));
 const minA11y = Math.min(...runReports.map((r) => r.scores.accessibility ?? 0));
 const minBp = Math.min(...runReports.map((r) => r.scores["best-practices"] ?? 0));
 
-const cspAudit =
-  JSON.parse(readFileSync(`${reportPrefix}.run1.report.json`, "utf8")).audits?.["csp-xss"] ?? null;
+const cspAudit = JSON.parse(readFileSync(`${reportPrefix}.run1.report.json`, "utf8")).audits?.["csp-xss"] ?? null;
 const summary = {
   generated_at: STAMP,
   url: URL,
@@ -216,7 +215,11 @@ const summary = {
   csp_xss: cspAudit
     ? { score: cspAudit.score, displayValue: cspAudit.displayValue ?? null, title: cspAudit.title }
     : null,
-  gate: { ...GATE, tbt_ms: TBT_GATE_MS, strategy: "performance/TBT=median-of-3; accessibility/best-practices=min-of-3" },
+  gate: {
+    ...GATE,
+    tbt_ms: TBT_GATE_MS,
+    strategy: "performance/TBT=median-of-3; accessibility/best-practices=min-of-3",
+  },
 };
 writeFileSync(join(REPORT_DIR, `${STAMP}.summary.json`), `${JSON.stringify(summary, null, 2)}\n`);
 

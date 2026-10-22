@@ -83,22 +83,39 @@ describe("[ai-matrix] local / registry（韧性网关通道）", () => {
     return new Response(JSON.stringify(body), { status: 200 });
   }
 
-  const STEP_OUTPUT: AgentOutput = { agentId: "yanqi", text: "网关步进", confidence: 0.9, tokensUsed: 16, model: "gateway-stub", riskTags: [] };
+  const STEP_OUTPUT: AgentOutput = {
+    agentId: "yanqi",
+    text: "网关步进",
+    confidence: 0.9,
+    tokensUsed: 16,
+    model: "gateway-stub",
+    riskTags: [],
+  };
 
   it.each([
-    ["local", () => createLocalAgent({
-      baseUrl: "http://gw.test/api", fetchImpl: async (url, init) => {
-        expect(url).toBe("http://gw.test/api/ai/agents/yanqi/step");
-        expect((init?.body as string)).toContain('"stepKey":"perceive"');
-        return okResponse(STEP_OUTPUT);
-      }
-    })],
-    ["registry", () => createRegistryAgent({
-      baseUrl: "http://gw.test/api", fetchImpl: async (url) => {
-        expect(url).toBe("http://gw.test/api/server/ai/agents/yanqi/step");
-        return okResponse(STEP_OUTPUT);
-      }
-    })],
+    [
+      "local",
+      () =>
+        createLocalAgent({
+          baseUrl: "http://gw.test/api",
+          fetchImpl: async (url, init) => {
+            expect(url).toBe("http://gw.test/api/ai/agents/yanqi/step");
+            expect(init?.body as string).toContain('"stepKey":"perceive"');
+            return okResponse(STEP_OUTPUT);
+          },
+        }),
+    ],
+    [
+      "registry",
+      () =>
+        createRegistryAgent({
+          baseUrl: "http://gw.test/api",
+          fetchImpl: async (url) => {
+            expect(url).toBe("http://gw.test/api/server/ai/agents/yanqi/step");
+            return okResponse(STEP_OUTPUT);
+          },
+        }),
+    ],
   ])("%s：step 契约直通且出参六必填", async (_name, make) => {
     const output = await make().invokeStep(stepRequest());
     expectOutputShape(output, "yanqi");
@@ -106,8 +123,16 @@ describe("[ai-matrix] local / registry（韧性网关通道）", () => {
   });
 
   it.each([
-    ["local", (fetchImpl: (url: string, init?: RequestInit) => Promise<Response>) => createLocalAgent({ baseUrl: "http://gw.test/api", fetchImpl })],
-    ["registry", (fetchImpl: (url: string, init?: RequestInit) => Promise<Response>) => createRegistryAgent({ baseUrl: "http://gw.test/api", fetchImpl })],
+    [
+      "local",
+      (fetchImpl: (url: string, init?: RequestInit) => Promise<Response>) =>
+        createLocalAgent({ baseUrl: "http://gw.test/api", fetchImpl }),
+    ],
+    [
+      "registry",
+      (fetchImpl: (url: string, init?: RequestInit) => Promise<Response>) =>
+        createRegistryAgent({ baseUrl: "http://gw.test/api", fetchImpl }),
+    ],
   ])("%s：HTTP 500 → tool-failed 可重试；404 → unknown-agent 不可重试", async (_name, make) => {
     const agent500 = make(async () => new Response("boom", { status: 500 }));
     await agent500.invokeStep(stepRequest()).then(
@@ -128,8 +153,19 @@ describe("[ai-matrix] local / registry（韧性网关通道）", () => {
   });
 
   it.each([
-    ["local", () => createLocalAgent({ baseUrl: "http://gw.test/api", fetchImpl: async () => new Response("[]", { status: 500 }) })],
-    ["registry", () => createRegistryAgent({ baseUrl: "http://gw.test/api", fetchImpl: async () => new Response("[]", { status: 500 }) })],
+    [
+      "local",
+      () =>
+        createLocalAgent({ baseUrl: "http://gw.test/api", fetchImpl: async () => new Response("[]", { status: 500 }) }),
+    ],
+    [
+      "registry",
+      () =>
+        createRegistryAgent({
+          baseUrl: "http://gw.test/api",
+          fetchImpl: async () => new Response("[]", { status: 500 }),
+        }),
+    ],
   ])("%s：listAgents HTTP 失败 → 回退本地注册表八员（供数降级不阻断）", async (_name, make) => {
     const profiles = await make().listAgents();
     expect(profiles.map((p) => p.id)).toEqual(AGENT_REGISTRY.map((p) => p.id));
@@ -157,10 +193,13 @@ describe("[ai-matrix] vLLM 通道", () => {
       fetchImpl: async (url, init) => {
         capture.url = url;
         capture.body = JSON.parse(init?.body as string);
-        return new Response(JSON.stringify({
-          choices: [{ message: { content: "分镜已生成" } }],
-          usage: { total_tokens: 321 },
-        }), { status: 200 });
+        return new Response(
+          JSON.stringify({
+            choices: [{ message: { content: "分镜已生成" } }],
+            usage: { total_tokens: 321 },
+          }),
+          { status: 200 },
+        );
       },
     });
     const output = await agent.invokeStep({
@@ -194,7 +233,12 @@ describe("[ai-matrix] vLLM 通道", () => {
       () => expect.unreachable(),
       (e: AgentError) => expect(e.retryable).toBe(false),
     );
-    const net = createVllmAgent({ ...base, fetchImpl: async () => { throw new Error("econnrefused"); } });
+    const net = createVllmAgent({
+      ...base,
+      fetchImpl: async () => {
+        throw new Error("econnrefused");
+      },
+    });
     await net.invokeStep(stepRequest()).then(
       () => expect.unreachable(),
       (e: AgentError) => expect(e.retryable).toBe(true),
@@ -203,7 +247,10 @@ describe("[ai-matrix] vLLM 通道", () => {
   });
 
   it("listAgents：以本地注册表为准（部署与档案解耦）", async () => {
-    const agent = createVllmAgent({ baseUrl: "http://127.0.0.1:8000", fetchImpl: async () => new Response("{}", { status: 200 }) });
+    const agent = createVllmAgent({
+      baseUrl: "http://127.0.0.1:8000",
+      fetchImpl: async () => new Response("{}", { status: 200 }),
+    });
     const profiles = await agent.listAgents();
     expect(profiles).toHaveLength(8);
   });
@@ -214,7 +261,13 @@ describe("[ai-matrix] 端口形状统一", () => {
     const agents: readonly [string, AgentPort][] = [
       ["memory", createMemoryAgent()],
       ["local", createLocalAgent({ fetchImpl: async () => new Response("{}", { status: 500 }) })],
-      ["vllm", createVllmAgent({ baseUrl: "http://127.0.0.1:8000", fetchImpl: async () => new Response("{}", { status: 200 }) })],
+      [
+        "vllm",
+        createVllmAgent({
+          baseUrl: "http://127.0.0.1:8000",
+          fetchImpl: async () => new Response("{}", { status: 200 }),
+        }),
+      ],
       ["registry", createRegistryAgent({ fetchImpl: async () => new Response("{}", { status: 500 }) })],
     ];
     for (const [name, agent] of agents) {

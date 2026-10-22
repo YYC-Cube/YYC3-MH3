@@ -24,9 +24,7 @@ export interface ResourceSchedulingSectionProps {
   onShowToast: ShowToast;
 }
 
-export const ResourceSchedulingSection: React.FC<ResourceSchedulingSectionProps> = ({
-  onShowToast,
-}) => {
+export const ResourceSchedulingSection: React.FC<ResourceSchedulingSectionProps> = ({ onShowToast }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div className="p-4 rounded-xl bg-[#0f1f38] border border-[#1e2f47] space-y-3">
@@ -64,15 +62,9 @@ export const ResourceSchedulingSection: React.FC<ResourceSchedulingSectionProps>
           </Badge>
         </div>
         <p className="text-xs text-[#8a97a8] leading-relaxed">
-          网络抖动或平台限流时，采用指数退避算法（30s、60s、120s）自动重试，失败满 3
-          次自动转入人工复核队列。
+          网络抖动或平台限流时，采用指数退避算法（30s、60s、120s）自动重试，失败满 3 次自动转入人工复核队列。
         </p>
-        <Button
-          variant="outline"
-          size="xs"
-          className="w-full"
-          onClick={() => onShowToast("info", "策略已更新")}
-        >
+        <Button variant="outline" size="xs" className="w-full" onClick={() => onShowToast("info", "策略已更新")}>
           配置重试超参数
         </Button>
       </div>

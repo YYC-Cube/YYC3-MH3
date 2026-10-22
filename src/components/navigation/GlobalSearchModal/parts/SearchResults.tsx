@@ -66,9 +66,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                   <LayoutDashboard className="w-4 h-4 text-[#8a97a8] group-hover:text-[#00e0b8]" />
                   <span className="font-medium">{p.title}</span>
                 </div>
-                <span className="text-[10px] text-[#8b949e] group-hover:text-[#8a97a8] font-mono">
-                  {p.category}
-                </span>
+                <span className="text-[10px] text-[#8b949e] group-hover:text-[#8a97a8] font-mono">{p.category}</span>
               </div>
             ))}
           </div>
@@ -96,9 +94,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
                   <span className="font-mono text-[#00e0b8] font-semibold">{b.id}</span>
                   <span className="truncate max-w-xs">{b.name}</span>
                 </div>
-                <span className="font-mono text-[11px] text-[#8a97a8]">
-                  Score: {b.score || "--"}
-                </span>
+                <span className="font-mono text-[11px] text-[#8a97a8]">Score: {b.score || "--"}</span>
               </div>
             ))}
           </div>

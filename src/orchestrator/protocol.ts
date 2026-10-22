@@ -50,8 +50,25 @@ export interface TaskCheckpoint {
 /** 编排 → UI：事件回流（全部携带 traceId；STEP_* 附逐步追踪） */
 export type AgentTaskEvent =
   | { type: "TASK_ACCEPTED"; taskId: string; traceId: string; at: number }
-  | { type: "STEP_ENTERED"; taskId: string; traceId: string; stepKey: string; index: number; startedAt: number; reviseRound: number }
-  | { type: "STEP_EXITED"; taskId: string; traceId: string; stepKey: string; durationMs: number; tokensUsed: number; model: string; riskTags: readonly string[] }
+  | {
+      type: "STEP_ENTERED";
+      taskId: string;
+      traceId: string;
+      stepKey: string;
+      index: number;
+      startedAt: number;
+      reviseRound: number;
+    }
+  | {
+      type: "STEP_EXITED";
+      taskId: string;
+      traceId: string;
+      stepKey: string;
+      durationMs: number;
+      tokensUsed: number;
+      model: string;
+      riskTags: readonly string[];
+    }
   | { type: "REVISE_ROUND"; taskId: string; traceId: string; round: 1 | 2; reason: string }
   | { type: "TASK_COMPLETED"; taskId: string; traceId: string; output: AgentOutput; totalMs: number }
   | { type: "TASK_DEGRADED"; taskId: string; traceId: string; output: AgentOutput; reviseRound: 2 }

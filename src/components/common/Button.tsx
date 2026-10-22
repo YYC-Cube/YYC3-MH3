@@ -57,8 +57,7 @@ export const Button: React.FC<ButtonProps> = ({
       "bg-transparent hover:bg-[#122340]/60 text-[#00d4aa] border border-[#00d4aa]/60 hover:border-[#00d4aa] focus:ring-[#00d4aa]",
     danger:
       "bg-[#EE4C2C] hover:bg-[#d9381e] text-white hover:shadow-[0_0_16px_rgba(238,76,44,0.35)] focus:ring-[#EE4C2C]",
-    ghost:
-      "bg-transparent hover:bg-[#122340] text-[#8b949e] hover:text-[#e6edf3] focus:ring-[#30363d]",
+    ghost: "bg-transparent hover:bg-[#122340] text-[#8b949e] hover:text-[#e6edf3] focus:ring-[#30363d]",
     purple:
       "bg-[#9B59B6] hover:bg-[#8e44ad] text-white hover:shadow-[0_0_16px_rgba(155,89,182,0.35)] focus:ring-[#9B59B6]",
   }[variant];

@@ -28,7 +28,9 @@ import { useDesignSystemView } from "./useDesignSystemView";
 
 /* 第七批 ③：非默认页签动态分块（默认 tokens 常载；切换时才拉取，行为零漂移） */
 const AtomsTab = dynamic(() => import("./parts/AtomsTab").then((m) => ({ default: m.AtomsTab })), { ssr: false });
-const BusinessTab = dynamic(() => import("./parts/BusinessTab").then((m) => ({ default: m.BusinessTab })), { ssr: false });
+const BusinessTab = dynamic(() => import("./parts/BusinessTab").then((m) => ({ default: m.BusinessTab })), {
+  ssr: false,
+});
 const PromptsTab = dynamic(() => import("./parts/PromptsTab").then((m) => ({ default: m.PromptsTab })), { ssr: false });
 
 /** 设计系统分区页签 ID（对外保持原视图同名具名导出） */
@@ -41,12 +43,7 @@ export interface DesignSystemViewProps {
   logs: LogEntry[];
 }
 
-export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
-  onOpenYYC3,
-  onOpenLogin,
-  onShowToast,
-  logs,
-}) => {
+export const DesignSystemView: React.FC<DesignSystemViewProps> = ({ onOpenYYC3, onOpenLogin, onShowToast, logs }) => {
   const {
     activeTab,
     setActiveTab,
@@ -84,11 +81,7 @@ export const DesignSystemView: React.FC<DesignSystemViewProps> = ({
 
       {/* TAB 1: DESIGN TOKENS */}
       {activeTab === "tokens" && (
-        <TokensTab
-          copiedHex={copiedHex}
-          onCopyColor={handleCopyColor}
-          onOpenModal={() => setIsModalOpen(true)}
-        />
+        <TokensTab copiedHex={copiedHex} onCopyColor={handleCopyColor} onOpenModal={() => setIsModalOpen(true)} />
       )}
 
       {/* TAB 2: ATOMS & MOLECULES */}

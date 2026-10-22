@@ -51,12 +51,11 @@ export function isDispatchComplete(tasks: readonly PushTaskItem[]): boolean {
 }
 
 /** 按渠道对推送任务分组（返回全渠道键齐备的分组表，空渠道为空数组） */
-export function groupTasksByPlatform(
-  tasks: readonly PushTaskItem[],
-): Record<SocialPlatformKey, PushTaskItem[]> {
-  const grouped = Object.fromEntries(
-    SOCIAL_PLATFORMS.map((key) => [key, [] as PushTaskItem[]]),
-  ) as Record<SocialPlatformKey, PushTaskItem[]>;
+export function groupTasksByPlatform(tasks: readonly PushTaskItem[]): Record<SocialPlatformKey, PushTaskItem[]> {
+  const grouped = Object.fromEntries(SOCIAL_PLATFORMS.map((key) => [key, [] as PushTaskItem[]])) as Record<
+    SocialPlatformKey,
+    PushTaskItem[]
+  >;
   for (const task of tasks) {
     for (const platform of task.platforms) {
       grouped[platform].push(task);

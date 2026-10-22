@@ -65,9 +65,7 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
                 在线
               </span>
               <span className="text-[#8b949e]">|</span>
-              <span className="font-mono text-[11px] text-[#8a97a8]">
-                {selectedMember.clockPosition}
-              </span>
+              <span className="font-mono text-[11px] text-[#8a97a8]">{selectedMember.clockPosition}</span>
             </div>
           </div>
         </div>
@@ -81,11 +79,7 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
 
       {/* Toggle Content: Member Bio VS Chat Stream */}
       {!isChatOpen ? (
-        <MemberBio
-          selectedMember={selectedMember}
-          onOpenChat={onOpenChat}
-          onShowToast={onShowToast}
-        />
+        <MemberBio selectedMember={selectedMember} onOpenChat={onOpenChat} onShowToast={onShowToast} />
       ) : (
         <FamilyChat
           selectedMember={selectedMember}

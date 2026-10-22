@@ -75,10 +75,7 @@ export const PhonemeDictSection: React.FC<PhonemeDictSectionProps> = ({ onShowTo
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
         {PHONEME_DICT.map((lang) => (
-          <div
-            key={lang.code}
-            className="p-3 rounded-lg bg-[#15294a] border border-[#1e2f47] space-y-1.5"
-          >
+          <div key={lang.code} className="p-3 rounded-lg bg-[#15294a] border border-[#1e2f47] space-y-1.5">
             <div className="flex justify-between items-center">
               <span className="font-semibold text-[#e8f0f8] font-sans">{lang.name}</span>
               <Badge variant="brand" size="xs">

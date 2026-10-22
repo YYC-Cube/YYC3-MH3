@@ -84,10 +84,7 @@ async function fetchJson<T>(
   });
   const raceTimer = setTimeout(() => raceReject?.(new TimeoutMarker()), timeoutMs);
   try {
-    const res = await Promise.race([
-      fetchImpl(url, { ...init, signal: controller.signal }),
-      timeoutPromise,
-    ]);
+    const res = await Promise.race([fetchImpl(url, { ...init, signal: controller.signal }), timeoutPromise]);
     if (res.status === 404) throw new RegistryError("not_found", 404);
     if (!res.ok) throw new RegistryError("http", res.status);
     return (await res.json()) as T;

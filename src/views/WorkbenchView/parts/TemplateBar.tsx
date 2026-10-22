@@ -67,11 +67,7 @@ export interface TemplateBarProps {
   onOpenImport: () => void;
 }
 
-export const TemplateBar: React.FC<TemplateBarProps> = ({
-  onApplyTemplate,
-  onOpenDiff,
-  onOpenImport,
-}) => {
+export const TemplateBar: React.FC<TemplateBarProps> = ({ onApplyTemplate, onOpenDiff, onOpenImport }) => {
   return (
     <div className="px-4 py-2 bg-[#0c1a30] border-b border-[#1e2f47] flex items-center justify-between gap-4 text-xs select-none flex-shrink-0">
       <div className="flex items-center gap-2 overflow-x-auto">
@@ -92,20 +88,10 @@ export const TemplateBar: React.FC<TemplateBarProps> = ({
       </div>
 
       <div className="flex items-center gap-2 flex-shrink-0">
-        <Button
-          variant="ghost"
-          size="xs"
-          icon={<History className="w-3.5 h-3.5" />}
-          onClick={onOpenDiff}
-        >
+        <Button variant="ghost" size="xs" icon={<History className="w-3.5 h-3.5" />} onClick={onOpenDiff}>
           参数版本对比
         </Button>
-        <Button
-          variant="secondary"
-          size="xs"
-          icon={<Upload className="w-3.5 h-3.5" />}
-          onClick={onOpenImport}
-        >
+        <Button variant="secondary" size="xs" icon={<Upload className="w-3.5 h-3.5" />} onClick={onOpenImport}>
           批量参数导入
         </Button>
       </div>

@@ -29,11 +29,7 @@ export interface ArtifactsPanelProps {
   onZoomArtifact: (artifact: ZoomedArtifact) => void;
 }
 
-export const ArtifactsPanel: React.FC<ArtifactsPanelProps> = ({
-  currentBatch,
-  onShowToast,
-  onZoomArtifact,
-}) => {
+export const ArtifactsPanel: React.FC<ArtifactsPanelProps> = ({ currentBatch, onShowToast, onZoomArtifact }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {[
@@ -94,11 +90,7 @@ export const ArtifactsPanel: React.FC<ArtifactsPanelProps> = ({
           </div>
           <div className="pt-2 border-t border-[#1e2f47]/60 flex items-center justify-between text-[11px] text-[#8a97a8] font-mono">
             <span className="truncate">{item.meta}</span>
-            <Button
-              variant="ghost"
-              size="xs"
-              onClick={() => onShowToast("success", `已下载产物: ${item.title}`)}
-            >
+            <Button variant="ghost" size="xs" onClick={() => onShowToast("success", `已下载产物: ${item.title}`)}>
               下载
             </Button>
           </div>

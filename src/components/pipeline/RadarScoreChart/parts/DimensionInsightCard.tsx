@@ -50,8 +50,7 @@ export const DimensionInsightCard: React.FC<DimensionInsightCardProps> = ({ sele
         <div className="flex items-start gap-1.5 text-[11px] text-[#8b949e]">
           <Info className="w-3.5 h-3.5 text-[#00b4d8] flex-shrink-0 mt-0.5" />
           <span>
-            基线阈值: {selectedDim.threshold} 分 (
-            {selectedDim.score >= selectedDim.threshold ? "达标" : "未达标"})
+            基线阈值: {selectedDim.threshold} 分 ({selectedDim.score >= selectedDim.threshold ? "达标" : "未达标"})
           </span>
         </div>
         <div className="p-2 rounded bg-[#071425]/60 border border-[#30363d]/60 text-[11px] text-[#e6edf3] leading-relaxed">

@@ -55,9 +55,7 @@ export const TopbarUserMenu: React.FC<TopbarUserMenuProps> = ({
       {isUserMenuOpen && (
         <div className="absolute right-0 top-11 w-64 rounded-xl bg-[#0c1a30] border border-[#1e2f47] shadow-2xl p-3 space-y-3 z-50 animate-in fade-in zoom-in-95 backdrop-blur-md text-xs">
           <div className="pb-2 border-b border-[#1e2f47]">
-            <div className="font-bold text-[#e8f0f8]">
-              {currentUser?.displayName || "本地超级管理员"}
-            </div>
+            <div className="font-bold text-[#e8f0f8]">{currentUser?.displayName || "本地超级管理员"}</div>
             <div className="text-[11px] font-mono text-[#00e0b8]">
               @{currentUser?.username || "admin"} ·{" "}
               {currentUser?.role === "admin" ? "超级管理员 (Full Access)" : "操作员"}

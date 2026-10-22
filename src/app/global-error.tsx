@@ -23,18 +23,9 @@ import { useEffect } from "react";
 
 import { reportClientError } from "./error-sink";
 
-export default function GlobalError({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
-    reportClientError(
-      error.message || "全局渲染错误",
-      error.digest ? `digest: ${error.digest}` : undefined,
-    );
+    reportClientError(error.message || "全局渲染错误", error.digest ? `digest: ${error.digest}` : undefined);
   }, [error]);
 
   return (

@@ -88,9 +88,7 @@ export const DocsCenterView: React.FC<DocsCenterViewProps> = ({ onNavigate, onSh
               >
                 <div className="flex items-center justify-between">
                   <span className="truncate">{doc.title}</span>
-                  <span className="text-[10px] text-[#8b949e] font-mono ml-2 flex-shrink-0">
-                    {doc.readTime}
-                  </span>
+                  <span className="text-[10px] text-[#8b949e] font-mono ml-2 flex-shrink-0">{doc.readTime}</span>
                 </div>
               </div>
             );
@@ -121,8 +119,7 @@ export const DocsCenterView: React.FC<DocsCenterViewProps> = ({ onNavigate, onSh
           </div>
           <h1 className="text-2xl font-bold text-[#e6edf3] tracking-tight">{currentDoc.title}</h1>
           <p className="text-xs text-[#8b949e] leading-relaxed">
-            深入剖析 MiniMax-H3 本地数字人从潜空间扩散采样、音素对齐评测到种子遗传迭代的 5
-            步完整闭环机理。
+            深入剖析 MiniMax-H3 本地数字人从潜空间扩散采样、音素对齐评测到种子遗传迭代的 5 步完整闭环机理。
           </p>
         </div>
 
@@ -158,9 +155,7 @@ export const DocsCenterView: React.FC<DocsCenterViewProps> = ({ onNavigate, onSh
             <h2 className="text-base font-semibold text-[#00b4d8]">2. 关键阶段操作要诀与排障</h2>
             <div className="space-y-2">
               <div className="p-3 rounded-lg bg-[#0c1a30] border border-[#30363d]">
-                <div className="font-semibold text-[#e6edf3] mb-1">
-                  Q: 什么时候应该采纳并回写 Seed？
-                </div>
+                <div className="font-semibold text-[#e6edf3] mb-1">Q: 什么时候应该采纳并回写 Seed？</div>
                 <p className="text-[#8b949e]">
                   当综合加权评分 ≥ 92 分，且「口型吻合度」高于 90 时，应当在工作台右侧点击
                   <strong className="text-[#00d4aa]">「采纳为优质 Seed 并回写种子库」</strong>
@@ -169,9 +164,7 @@ export const DocsCenterView: React.FC<DocsCenterViewProps> = ({ onNavigate, onSh
               </div>
 
               <div className="p-3 rounded-lg bg-[#0c1a30] border border-[#30363d]">
-                <div className="font-semibold text-[#e6edf3] mb-1">
-                  Q: 出现显存 OOM 崩溃如何配置？
-                </div>
+                <div className="font-semibold text-[#e6edf3] mb-1">Q: 出现显存 OOM 崩溃如何配置？</div>
                 <p className="text-[#8b949e]">
                   确保在参数栏勾选 <strong className="text-[#00d4aa]">FP8 TensorRT 显存加速</strong>
                   。24GB 的 RTX 4090 可将峰值显存由 22.8GB 压缩至 18.2GB，完全杜绝 OOM。
@@ -196,9 +189,7 @@ export const DocsCenterView: React.FC<DocsCenterViewProps> = ({ onNavigate, onSh
 
       {/* Right Outline Index (Width: 200px) */}
       <div className="w-56 border-l border-[#30363d] bg-[#0c1a30] p-4 hidden xl:block text-xs">
-        <span className="font-semibold text-[#8b949e] uppercase tracking-wider text-[10px]">
-          本篇大纲索引
-        </span>
+        <span className="font-semibold text-[#8b949e] uppercase tracking-wider text-[10px]">本篇大纲索引</span>
         <div className="mt-3 space-y-2 text-[#8b949e]">
           <a href="#section-1" className="block text-[#00d4aa] hover:underline truncate">
             1. 五步闭环核心价值与架构

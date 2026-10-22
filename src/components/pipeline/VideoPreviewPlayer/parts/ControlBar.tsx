@@ -16,16 +16,7 @@
  * dependencies: react, lucide-react
  * exports: ControlBarProps, ControlBar
  */
-import {
-  Camera,
-  ChevronLeft,
-  ChevronRight,
-  Pause,
-  Play,
-  RotateCcw,
-  Volume2,
-  VolumeX,
-} from "lucide-react";
+import { Camera, ChevronLeft, ChevronRight, Pause, Play, RotateCcw, Volume2, VolumeX } from "lucide-react";
 import React from "react";
 
 export interface ControlBarProps {
@@ -66,11 +57,7 @@ export const ControlBar: React.FC<ControlBarProps> = ({
           className="w-8 h-8 rounded-lg bg-[#122340] hover:bg-[#182e54] text-[#e6edf3] hover:text-[#00d4aa] flex items-center justify-center border border-[#30363d] transition-colors cursor-pointer"
           title="播放/暂停 (Space)"
         >
-          {isPlaying ? (
-            <Pause className="w-4 h-4 fill-current" />
-          ) : (
-            <Play className="w-4 h-4 fill-current ml-0.5" />
-          )}
+          {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
         </button>
 
         <button
@@ -118,9 +105,7 @@ export const ControlBar: React.FC<ControlBarProps> = ({
               key={s}
               onClick={() => onSpeedChange(s)}
               className={`px-1.5 py-0.5 rounded text-[10px] font-mono transition-colors cursor-pointer ${
-                playbackSpeed === s
-                  ? "bg-[#00d4aa] text-[#071425] font-bold"
-                  : "text-[#8b949e] hover:text-[#e6edf3]"
+                playbackSpeed === s ? "bg-[#00d4aa] text-[#071425] font-bold" : "text-[#8b949e] hover:text-[#e6edf3]"
               }`}
             >
               {s}x

@@ -107,9 +107,7 @@ export function AnalyticsModule({ onShowToast }: AnalyticsModuleProps) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7 p-4 rounded-xl bg-[#0f1f38] border border-[#1e2f47] space-y-3 text-xs">
           <div className="flex items-center justify-between pb-2 border-b border-[#1e2f47]">
-            <span className="font-semibold text-sm text-[#e8f0f8]">
-              Seed 种子基因演化评分趋势 (Seed Evolution BI)
-            </span>
+            <span className="font-semibold text-sm text-[#e8f0f8]">Seed 种子基因演化评分趋势 (Seed Evolution BI)</span>
             <Badge variant="brand" size="xs">
               持续正向反哺
             </Badge>
@@ -124,9 +122,7 @@ export function AnalyticsModule({ onShowToast }: AnalyticsModuleProps) {
                   className="w-full bg-gradient-to-t from-[#00b4d8] to-[#00e0b8] rounded-t transition-all group-hover:brightness-125 shadow-sm"
                   style={{ height: `${(item.score - 70) * 3}%` }}
                 />
-                <span className="font-mono text-[10px] text-[#e8f0f8] font-semibold">
-                  {item.round}
-                </span>
+                <span className="font-mono text-[10px] text-[#e8f0f8] font-semibold">{item.round}</span>
                 <span className="font-mono text-[9px] text-[#8b949e]">{item.num}</span>
               </div>
             ))}
@@ -134,8 +130,7 @@ export function AnalyticsModule({ onShowToast }: AnalyticsModuleProps) {
 
           <div className="p-3 rounded-lg bg-[#0a1628] border border-[#1e2f47] text-[11px] text-[#8a97a8] leading-relaxed">
             <strong>演化洞察：</strong>
-            随着五步流水线持续采纳回写，高评分（≥95分）种子占比从最初的 12% 跃升至当前
-            78.4%，口型时延方差降低 62%。
+            随着五步流水线持续采纳回写，高评分（≥95分）种子占比从最初的 12% 跃升至当前 78.4%，口型时延方差降低 62%。
           </div>
         </div>
 
@@ -234,9 +229,7 @@ export function AnalyticsModule({ onShowToast }: AnalyticsModuleProps) {
                   <td className="py-2.5 px-3">
                     <span className="text-[#00e0b8] font-bold">{row.sentiment}%</span>
                   </td>
-                  <td className="py-2.5 px-3 text-[#00e0b8] font-sans text-[11px]">
-                    {row.feedbackSeed}
-                  </td>
+                  <td className="py-2.5 px-3 text-[#00e0b8] font-sans text-[11px]">{row.feedbackSeed}</td>
                 </tr>
               ))}
             </tbody>

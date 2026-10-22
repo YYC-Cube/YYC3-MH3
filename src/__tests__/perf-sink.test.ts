@@ -20,12 +20,7 @@
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import {
-  LONG_TASK_BUDGET_MS,
-  PerfObservation,
-  startPerfObserver,
-  toLogEntry,
-} from "../app/perf-sink";
+import { LONG_TASK_BUDGET_MS, PerfObservation, startPerfObserver, toLogEntry } from "../app/perf-sink";
 
 /** 组装观测样本 */
 function obs(partial: Partial<PerfObservation> = {}): PerfObservation {
@@ -72,9 +67,7 @@ describe("P0-1 运行时性能采集", () => {
     const slow = vi.fn();
     const stopSlow = startPerfObserver(slow);
     stopSlow();
-    expect(slow).toHaveBeenCalledWith(
-      expect.objectContaining({ kind: "navigation", value: 2500, overBudget: true }),
-    );
+    expect(slow).toHaveBeenCalledWith(expect.objectContaining({ kind: "navigation", value: 2500, overBudget: true }));
 
     spy.mockReturnValue([{ duration: 1200 }] as unknown as PerformanceEntry[]);
     const fast = vi.fn();

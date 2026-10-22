@@ -44,11 +44,7 @@ export const KpiCards: React.FC<KpiCardsProps> = ({ trendPeriod }) => {
         </div>
         {/* SVG Gradient Area Sparkline */}
         <div className="mt-3 h-8 w-full">
-          <svg
-            className="w-full h-full overflow-visible"
-            viewBox="0 0 100 24"
-            preserveAspectRatio="none"
-          >
+          <svg className="w-full h-full overflow-visible" viewBox="0 0 100 24" preserveAspectRatio="none">
             <defs>
               <linearGradient id="grad1" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#00e0b8" stopOpacity="0.4" />
@@ -77,11 +73,7 @@ export const KpiCards: React.FC<KpiCardsProps> = ({ trendPeriod }) => {
           <span className="text-xs text-[#8a97a8]">≥85分达标</span>
         </div>
         <div className="mt-3 h-8 w-full">
-          <svg
-            className="w-full h-full overflow-visible"
-            viewBox="0 0 100 24"
-            preserveAspectRatio="none"
-          >
+          <svg className="w-full h-full overflow-visible" viewBox="0 0 100 24" preserveAspectRatio="none">
             <defs>
               <linearGradient id="grad2" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#00b4d8" stopOpacity="0.4" />
@@ -107,11 +99,7 @@ export const KpiCards: React.FC<KpiCardsProps> = ({ trendPeriod }) => {
           <span className="text-xs text-[#8a97a8]">/ 10s 4K</span>
         </div>
         <div className="mt-3 h-8 w-full">
-          <svg
-            className="w-full h-full overflow-visible"
-            viewBox="0 0 100 24"
-            preserveAspectRatio="none"
-          >
+          <svg className="w-full h-full overflow-visible" viewBox="0 0 100 24" preserveAspectRatio="none">
             <defs>
               <linearGradient id="grad3" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#9d7cd8" stopOpacity="0.4" />
@@ -137,10 +125,7 @@ export const KpiCards: React.FC<KpiCardsProps> = ({ trendPeriod }) => {
           <span className="text-xs text-[#8a97a8]">/ 24.0 GB</span>
         </div>
         <div className="mt-3 w-full bg-[#15294a] h-2 rounded-full overflow-hidden">
-          <div
-            className="bg-gradient-to-r from-[#00e0b8] to-[#00b4d8] h-full"
-            style={{ width: "80.8%" }}
-          />
+          <div className="bg-gradient-to-r from-[#00e0b8] to-[#00b4d8] h-full" style={{ width: "80.8%" }} />
         </div>
       </div>
     </div>

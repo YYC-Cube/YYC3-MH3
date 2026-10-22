@@ -82,11 +82,7 @@ export const WorkbenchView: React.FC<WorkbenchViewProps> = ({
       {/* 3-Column Workspace Main Layout */}
       <div className="flex-1 flex overflow-hidden">
         {/* LEFT COLUMN: Batch Queue (Width: 260px) */}
-        <BatchQueuePanel
-          batches={batches}
-          currentBatchId={currentBatch.id}
-          onSelectBatch={onSelectBatch}
-        />
+        <BatchQueuePanel batches={batches} currentBatchId={currentBatch.id} onSelectBatch={onSelectBatch} />
 
         {/* MIDDLE COLUMN: Parameters + Controls + Terminal (Flex 1) */}
         <WorkspaceCenterColumn vm={vm} onShowToast={onShowToast} />

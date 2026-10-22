@@ -18,12 +18,7 @@
  * exports: RegistryRequest, RegistryResponse, createRegistryApi
  */
 import { INITIAL_BATCHES } from "../src/adapters/memory/fixtures/batch";
-import {
-  INITIAL_LOGS,
-  OPS_METRICS,
-  SERVICES_LIST,
-  SYSTEM_ALARMS,
-} from "../src/adapters/memory/fixtures/ops";
+import { INITIAL_LOGS, OPS_METRICS, SERVICES_LIST, SYSTEM_ALARMS } from "../src/adapters/memory/fixtures/ops";
 import { INITIAL_SEEDS } from "../src/adapters/memory/fixtures/seed";
 import type { AlarmItem, BatchItem, SeedItem } from "../src/types";
 
@@ -57,9 +52,7 @@ function deepCopy<T>(value: T): T {
 /** 回环 Host 校验（06 §1.1 本地回环 only）：放行 127.0.0.1 / localhost / ::1（含端口与 IPv6 括号形态） */
 export function isLoopbackHost(host: string): boolean {
   if (!host) return false;
-  const hostname = host.startsWith("[")
-    ? host.slice(1, host.indexOf("]"))
-    : (host.split(":")[0] ?? "");
+  const hostname = host.startsWith("[") ? host.slice(1, host.indexOf("]")) : (host.split(":")[0] ?? "");
   return hostname === "127.0.0.1" || hostname === "localhost" || hostname === "::1";
 }
 

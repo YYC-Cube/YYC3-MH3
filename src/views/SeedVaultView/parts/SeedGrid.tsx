@@ -26,14 +26,7 @@ export interface SeedGridProps {
 }
 
 export const SeedGrid: React.FC<SeedGridProps> = ({ state }) => {
-  const {
-    filteredSeeds,
-    compareSeedIds,
-    toggleCompareSeed,
-    handleOpenBreeding,
-    handleOpenDetail,
-    handleApply,
-  } = state;
+  const { filteredSeeds, compareSeedIds, toggleCompareSeed, handleOpenBreeding, handleOpenDetail, handleApply } = state;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -58,13 +51,8 @@ export const SeedGrid: React.FC<SeedGridProps> = ({ state }) => {
                     className="rounded accent-[#00e0b8] cursor-pointer"
                     title="勾选加入多种子对比"
                   />
-                  <span className="font-mono text-sm font-bold text-[#00e0b8]">
-                    #{seed.seedNumber}
-                  </span>
-                  <Badge
-                    variant={seed.tier === "S" ? "brand" : seed.tier === "A" ? "info" : "purple"}
-                    size="xs"
-                  >
+                  <span className="font-mono text-sm font-bold text-[#00e0b8]">#{seed.seedNumber}</span>
+                  <Badge variant={seed.tier === "S" ? "brand" : seed.tier === "A" ? "info" : "purple"} size="xs">
                     {seed.tier} 级种子
                   </Badge>
                 </div>

@@ -28,11 +28,7 @@ export interface DesignBannerProps {
   onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
-export const DesignBanner: React.FC<DesignBannerProps> = ({
-  activeTab,
-  onTabChange,
-  onShowToast,
-}) => {
+export const DesignBanner: React.FC<DesignBannerProps> = ({ activeTab, onTabChange, onShowToast }) => {
   return (
     <div className="relative rounded-2xl bg-gradient-to-r from-[#0c1a30] via-[#122340] to-[#0c1a30] p-6 border border-[#30363d] overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#00d4aa]/5 rounded-full blur-3xl pointer-events-none" />
@@ -42,9 +38,7 @@ export const DesignBanner: React.FC<DesignBannerProps> = ({
             <span className="text-[10px] uppercase font-bold tracking-widest px-2.5 py-0.5 rounded-full bg-[#00d4aa]/20 text-[#00d4aa] border border-[#00d4aa]/40">
               Design System v2.0
             </span>
-            <span className="text-xs text-[#8b949e]">
-              · 深色科技生产力风格 · 本地闭环AI流水线专属
-            </span>
+            <span className="text-xs text-[#8b949e]">· 深色科技生产力风格 · 本地闭环AI流水线专属</span>
           </div>
           <h1 className="text-2xl font-bold text-[#e6edf3] tracking-tight">
             MiniMax-H3 本地数字人生产线 · UI设计系统与组件规范
@@ -60,9 +54,7 @@ export const DesignBanner: React.FC<DesignBannerProps> = ({
             variant="primary"
             size="sm"
             icon={<Sparkles className="w-4 h-4" />}
-            onClick={() =>
-              onShowToast("info", "设计规范已就绪", "当前系统遵循五步闭环流水线标准设计")
-            }
+            onClick={() => onShowToast("info", "设计规范已就绪", "当前系统遵循五步闭环流水线标准设计")}
           >
             导出设计规范 (JSON)
           </Button>

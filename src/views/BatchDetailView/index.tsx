@@ -40,12 +40,7 @@ export interface BatchDetailViewProps {
   onShowToast: (type: "success" | "error" | "warning" | "info", msg: string, sub?: string) => void;
 }
 
-export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
-  batchId,
-  batches,
-  onNavigate,
-  onShowToast,
-}) => {
+export const BatchDetailView: React.FC<BatchDetailViewProps> = ({ batchId, batches, onNavigate, onShowToast }) => {
   const {
     currentBatch,
     activeTab,
@@ -90,11 +85,7 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
 
       {/* TAB A: 5 Artifacts Matrix */}
       {activeTab === "artifacts" && (
-        <ArtifactsPanel
-          currentBatch={currentBatch}
-          onShowToast={onShowToast}
-          onZoomArtifact={setZoomedArtifact}
-        />
+        <ArtifactsPanel currentBatch={currentBatch} onShowToast={onShowToast} onZoomArtifact={setZoomedArtifact} />
       )}
 
       {/* TAB B: Radar Comparison with Baseline */}
@@ -110,17 +101,13 @@ export const BatchDetailView: React.FC<BatchDetailViewProps> = ({
       )}
 
       {/* TAB D: Anomaly Frame Locator & Annotator (Requirement 2.1) */}
-      {activeTab === "anomalies" && (
-        <AnomaliesPanel anomalies={anomalies} onFixAnomaly={handleFixAnomaly} />
-      )}
+      {activeTab === "anomalies" && <AnomaliesPanel anomalies={anomalies} onFixAnomaly={handleFixAnomaly} />}
 
       {/* TAB Timeline */}
       {activeTab === "timeline" && <TimelinePanel />}
 
       {/* Zoom Artifact Modal */}
-      {zoomedArtifact && (
-        <ZoomArtifactModal artifact={zoomedArtifact} onClose={() => setZoomedArtifact(null)} />
-      )}
+      {zoomedArtifact && <ZoomArtifactModal artifact={zoomedArtifact} onClose={() => setZoomedArtifact(null)} />}
     </div>
   );
 };

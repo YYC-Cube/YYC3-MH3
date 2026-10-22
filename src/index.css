@@ -16,7 +16,7 @@
  * dependencies: —
  * exports: —
  */
-@import 'tailwindcss';
+@import "tailwindcss";
 
 /* 自托管字体（@fontsource，离线可用，替代 Google Fonts CDN）
    第七批 ③ 裁剪记录：移除 Noto Sans SC —— 全量 CJK 子集 × 3 字重实测传输
@@ -26,8 +26,8 @@
    第九批：静态 7 字重（inter 400-700 + jbmono 400-600，latin 实测传输
    162,794B）→ 可变字体 2 文件（inter latin wght 48,256B + jbmono latin wght
    40,404B = 88,660B，-45.6%），wght 轴覆盖全部使用字重，请求数 7→2 */
-@import '@fontsource-variable/inter';
-@import '@fontsource-variable/jetbrains-mono';
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
 
 @theme {
   --color-bg-primary: #0a1628;
@@ -51,9 +51,9 @@
   --color-border-bright: #294060;
 
   --font-sans:
-    'Inter Variable', system-ui, -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
-    'Noto Sans CJK SC', sans-serif;
-  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+    "Inter Variable", system-ui, -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Noto Sans CJK SC", sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 }
 
 @layer base {
@@ -149,7 +149,7 @@
 }
 
 .card-running-shimmer::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -1px;
   left: -1px;

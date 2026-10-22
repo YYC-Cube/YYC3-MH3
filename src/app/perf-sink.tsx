@@ -106,7 +106,7 @@ export function toLogEntry(obs: PerfObservation): LogEntry {
  * 全环境安全降级：jsdom / SSR / 无 PerformanceObserver 均不抛错，返回 no-op 停止。
  */
 export function startPerfObserver(onObserve: (obs: PerfObservation) => void): () => void {
-  if (typeof performance === "undefined") return () => { };
+  if (typeof performance === "undefined") return () => {};
 
   const traceId = currentTraceId() ?? newTraceId();
   const stamp = (kind: PerfKind, value: number, unit: "ms" | "MB", overBudget: boolean): void => {

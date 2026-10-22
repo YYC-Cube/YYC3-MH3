@@ -65,10 +65,7 @@ export const AtomsTab: React.FC<AtomsTabProps> = ({
   return (
     <div className="space-y-8 animate-in fade-in duration-200">
       {/* Buttons Showcase */}
-      <Card
-        title="按钮组件体系 (Buttons)"
-        subtitle="包含 6 种类型与 Default/Hover/Active/Loading/Disabled 全态"
-      >
+      <Card title="按钮组件体系 (Buttons)" subtitle="包含 6 种类型与 Default/Hover/Active/Loading/Disabled 全态">
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-3">
             <Button variant="primary" onClick={() => onShowToast("success", "主按钮已触发")}>
@@ -117,10 +114,7 @@ export const AtomsTab: React.FC<AtomsTabProps> = ({
       </Card>
 
       {/* Form Controls Showcase */}
-      <Card
-        title="表单输入组件体系 (Form Controls)"
-        subtitle="实时校验、格式化输入、极细滑块与选择器"
-      >
+      <Card title="表单输入组件体系 (Form Controls)" subtitle="实时校验、格式化输入、极细滑块与选择器">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Input
             label="模型权重路径 (Model Weight Path)"
@@ -181,9 +175,7 @@ export const AtomsTab: React.FC<AtomsTabProps> = ({
           </div>
 
           <div className="space-y-2">
-            <label className="block text-xs font-medium text-[#8b949e]">
-              弹窗与抽屉容器触发 (Containers)
-            </label>
+            <label className="block text-xs font-medium text-[#8b949e]">弹窗与抽屉容器触发 (Containers)</label>
             <div className="flex items-center gap-3 pt-1">
               <Button variant="secondary" size="sm" onClick={onOpenModal}>
                 打开模态框 (Modal)
@@ -197,10 +189,7 @@ export const AtomsTab: React.FC<AtomsTabProps> = ({
       </Card>
 
       {/* Badges & Status Tags Showcase */}
-      <Card
-        title="状态徽标与标签 (Badges & Status Tags)"
-        subtitle="语义化色彩，支持运行呼吸灯与微型点"
-      >
+      <Card title="状态徽标与标签 (Badges & Status Tags)" subtitle="语义化色彩，支持运行呼吸灯与微型点">
         <div className="flex flex-wrap items-center gap-3">
           <Badge variant="brand" pulse>
             运行中 (Running)
@@ -219,12 +208,7 @@ export const AtomsTab: React.FC<AtomsTabProps> = ({
         title="登录页面组件与六步闭环审核体系 (Login Component & 6-Node Security Pipeline)"
         subtitle="兼顾「本地离线认证」与「团队云端权限认证」双模式 · 传递数据主权核心调性"
         action={
-          <Button
-            variant="primary"
-            size="xs"
-            icon={<Sparkles className="w-3.5 h-3.5" />}
-            onClick={onOpenLogin}
-          >
+          <Button variant="primary" size="xs" icon={<Sparkles className="w-3.5 h-3.5" />} onClick={onOpenLogin}>
             模拟进入登录准入大厅
           </Button>
         }
@@ -233,8 +217,7 @@ export const AtomsTab: React.FC<AtomsTabProps> = ({
           <div className="p-3 rounded-xl bg-[#15294a] border border-[#1e2f47] space-y-2">
             <span className="font-semibold text-[#00e0b8]">模式 1: 本地离线认证</span>
             <p className="text-[11px] text-[#8a97a8] leading-relaxed">
-              纯本地 Argon2id 加密比对，数据不出设备，单端口 3031
-              环回通信，默认赋予全流水线超级管理员权限。
+              纯本地 Argon2id 加密比对，数据不出设备，单端口 3031 环回通信，默认赋予全流水线超级管理员权限。
             </p>
             <Badge variant="brand" size="xs">
               100% 离线主权
@@ -244,8 +227,7 @@ export const AtomsTab: React.FC<AtomsTabProps> = ({
           <div className="p-3 rounded-xl bg-[#15294a] border border-[#1e2f47] space-y-2">
             <span className="font-semibold text-[#00b4d8]">模式 2: 团队云端认证</span>
             <p className="text-[11px] text-[#8a97a8] leading-relaxed">
-              支持企业 SAML 2.0 / OIDC
-              单点登录与移动端（飞书/企微）扫码准入，支持细粒度操作员与审片角色匹配。
+              支持企业 SAML 2.0 / OIDC 单点登录与移动端（飞书/企微）扫码准入，支持细粒度操作员与审片角色匹配。
             </p>
             <Badge variant="info" size="xs">
               企业 SSO / 扫码

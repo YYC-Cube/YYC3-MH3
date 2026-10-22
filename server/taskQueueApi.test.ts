@@ -75,11 +75,7 @@ describe("server/taskQueueApi · 引擎核心（纯函数）", () => {
     engine.dispatch({ type: "completed", taskId: "t-2" });
     expect(engine.snapshot().size).toBe(0);
     engine.dispatch({ type: "failed", taskId: "external-9" }); // 队外
-    expect(events.map((e) => `${e.type}:${e.task.id}`)).toEqual([
-      "dequeued:t-1",
-      "completed:t-2",
-      "failed:external-9",
-    ]);
+    expect(events.map((e) => `${e.type}:${e.task.id}`)).toEqual(["dequeued:t-1", "completed:t-2", "failed:external-9"]);
   });
 });
 

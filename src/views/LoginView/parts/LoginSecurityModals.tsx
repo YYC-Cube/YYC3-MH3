@@ -81,19 +81,13 @@ export const LoginSecurityModals: React.FC<LoginSecurityModalsProps> = ({
       </Modal>
 
       {/* QR Code Login Modal */}
-      <Modal
-        isOpen={isQrLoginOpen}
-        onClose={() => setIsQrLoginOpen(false)}
-        title="企业移动端安全扫码准入"
-      >
+      <Modal isOpen={isQrLoginOpen} onClose={() => setIsQrLoginOpen(false)} title="企业移动端安全扫码准入">
         <div className="flex flex-col items-center justify-center p-4 space-y-3 text-xs text-center">
           <div className="w-48 h-48 rounded-xl bg-white p-3 flex items-center justify-center border-2 border-[#00e0b8] shadow-lg">
             <QrCode className="w-full h-full text-[#0a1628]" />
           </div>
           <p className="text-[#8a97a8]">请使用 企业微信 或 飞书 扫描上方二维码以完成身份核验</p>
-          <span className="text-[10px] text-[#8b949e] font-mono">
-            二维码有效期 60 秒 · 已启用端到端加密
-          </span>
+          <span className="text-[10px] text-[#8b949e] font-mono">二维码有效期 60 秒 · 已启用端到端加密</span>
         </div>
       </Modal>
     </>

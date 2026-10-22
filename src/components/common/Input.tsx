@@ -28,10 +28,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  (
-    { label, hint, error, prefixIcon, suffixIcon, mono = false, className = "", id, ...props },
-    ref,
-  ) => {
+  ({ label, hint, error, prefixIcon, suffixIcon, mono = false, className = "", id, ...props }, ref) => {
     const inputId = id || (label ? label.toLowerCase().replace(/\s+/g, "-") : undefined);
 
     return (
@@ -46,9 +43,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         <div className="relative flex items-center">
           {prefixIcon && (
-            <div className="absolute left-3 pointer-events-none text-[#8b949e] flex items-center">
-              {prefixIcon}
-            </div>
+            <div className="absolute left-3 pointer-events-none text-[#8b949e] flex items-center">{prefixIcon}</div>
           )}
           <input
             ref={ref}
@@ -63,14 +58,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {suffixIcon && (
-            <div className="absolute right-3 pointer-events-none text-[#8b949e] flex items-center">
-              {suffixIcon}
-            </div>
+            <div className="absolute right-3 pointer-events-none text-[#8b949e] flex items-center">{suffixIcon}</div>
           )}
         </div>
-        {error && (
-          <p className="text-[11px] text-[#EE4C2C] mt-1 flex items-center gap-1">{error}</p>
-        )}
+        {error && <p className="text-[11px] text-[#EE4C2C] mt-1 flex items-center gap-1">{error}</p>}
       </div>
     );
   },

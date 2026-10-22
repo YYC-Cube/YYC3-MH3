@@ -26,11 +26,7 @@ export interface WorkflowCanvasProps {
   onSelectNode: (nodeId: string) => void;
 }
 
-export const WorkflowCanvas: React.FC<WorkflowCanvasProps> = ({
-  nodes,
-  selectedNode,
-  onSelectNode,
-}) => {
+export const WorkflowCanvas: React.FC<WorkflowCanvasProps> = ({ nodes, selectedNode, onSelectNode }) => {
   return (
     <div className="flex-1 relative bg-[#0a1628] overflow-hidden select-none">
       {/* Subtle Grid Background */}
@@ -54,26 +50,11 @@ export const WorkflowCanvas: React.FC<WorkflowCanvasProps> = ({
           className="animate-pulse"
         />
         {/* Chuangxiang -> Yuanqi */}
-        <path
-          d="M 480 80 C 530 80, 530 150, 580 150"
-          fill="none"
-          stroke="#FF7A5C"
-          strokeWidth="2"
-        />
+        <path d="M 480 80 C 530 80, 530 150, 580 150" fill="none" stroke="#FF7A5C" strokeWidth="2" />
         {/* Yanqi -> Yuanqi */}
-        <path
-          d="M 220 110 C 400 110, 400 150, 580 150"
-          fill="none"
-          stroke="#00e0b8"
-          strokeWidth="2"
-        />
+        <path d="M 220 110 C 400 110, 400 150, 580 150" fill="none" stroke="#00e0b8" strokeWidth="2" />
         {/* Yuanqi -> Gewu */}
-        <path
-          d="M 760 150 C 820 150, 820 110, 880 110"
-          fill="none"
-          stroke="#C0C0C0"
-          strokeWidth="2"
-        />
+        <path d="M 760 150 C 820 150, 820 110, 880 110" fill="none" stroke="#C0C0C0" strokeWidth="2" />
         {/* Yuanqi -> Yushu */}
         <path
           d="M 670 170 C 670 230, 480 230, 480 290"
@@ -85,12 +66,7 @@ export const WorkflowCanvas: React.FC<WorkflowCanvasProps> = ({
         {/* Yushu -> Qianli */}
         <path d="M 480 290 L 580 340" fill="none" stroke="#FFFFFF" strokeWidth="2" />
         {/* Qianli -> Zhiyun */}
-        <path
-          d="M 760 340 C 820 340, 820 300, 880 300"
-          fill="none"
-          stroke="#9d7cd8"
-          strokeWidth="2"
-        />
+        <path d="M 760 340 C 820 340, 820 300, 880 300" fill="none" stroke="#9d7cd8" strokeWidth="2" />
         {/* Yujian -> Zhiyun */}
         <path
           d="M 220 310 C 500 380, 700 380, 880 300"
@@ -115,9 +91,7 @@ export const WorkflowCanvas: React.FC<WorkflowCanvasProps> = ({
               boxShadow: isSelected ? `0 0 20px ${node.roleColor}80` : undefined,
             }}
             className={`absolute w-44 rounded-xl bg-[#0c1a30] border-2 transition-all cursor-pointer p-3 space-y-1.5 shadow-xl ${
-              isSelected
-                ? "shadow-[0_0_24px_rgba(0,224,184,0.35)] scale-105 z-20"
-                : "hover:border-white/40 z-10"
+              isSelected ? "shadow-[0_0_24px_rgba(0,224,184,0.35)] scale-105 z-20" : "hover:border-white/40 z-10"
             }`}
           >
             <div className="flex items-center justify-between">

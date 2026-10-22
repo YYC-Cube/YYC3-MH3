@@ -107,16 +107,10 @@ export const RecentBatchesTable: React.FC<RecentBatchesTableProps> = ({
                 <td className="py-3 px-3">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded bg-[#0a1628] border border-[#1e2f47] overflow-hidden flex-shrink-0">
-                      <img
-                        src={b.previewThumbnail}
-                        alt={b.name}
-                        className="w-full h-full object-cover"
-                      />
+                      <img src={b.previewThumbnail} alt={b.name} className="w-full h-full object-cover" />
                     </div>
                     <div>
-                      <div className="font-mono text-[#00e0b8] font-semibold text-xs group-hover:underline">
-                        {b.id}
-                      </div>
+                      <div className="font-mono text-[#00e0b8] font-semibold text-xs group-hover:underline">{b.id}</div>
                       <div className="text-[#e8f0f8] font-medium truncate max-w-xs">{b.name}</div>
                     </div>
                   </div>
@@ -145,11 +139,7 @@ export const RecentBatchesTable: React.FC<RecentBatchesTableProps> = ({
                   {b.score > 0 ? (
                     <span
                       className={`font-mono font-bold text-xs ${
-                        b.score >= 90
-                          ? "text-[#00e0b8]"
-                          : b.score >= 80
-                            ? "text-[#00b4d8]"
-                            : "text-[#ff7a45]"
+                        b.score >= 90 ? "text-[#00e0b8]" : b.score >= 80 ? "text-[#00b4d8]" : "text-[#ff7a45]"
                       }`}
                     >
                       {b.score} 分
@@ -160,11 +150,7 @@ export const RecentBatchesTable: React.FC<RecentBatchesTableProps> = ({
                 </td>
                 <td className="py-3 px-3 text-right" onClick={(e) => e.stopPropagation()}>
                   <div className="flex items-center justify-end gap-1.5">
-                    <Button
-                      variant="secondary"
-                      size="xs"
-                      onClick={() => onNavigate("batch-detail", { batchId: b.id })}
-                    >
+                    <Button variant="secondary" size="xs" onClick={() => onNavigate("batch-detail", { batchId: b.id })}>
                       复盘
                     </Button>
                     <Button

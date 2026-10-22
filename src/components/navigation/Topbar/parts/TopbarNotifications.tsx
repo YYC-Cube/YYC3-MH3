@@ -81,10 +81,7 @@ export const TopbarNotifications: React.FC<TopbarNotificationsProps> = ({
                 </Badge>
               )}
             </div>
-            <button
-              onClick={handleMarkAllRead}
-              className="text-[11px] text-[#00e0b8] hover:underline cursor-pointer"
-            >
+            <button onClick={handleMarkAllRead} className="text-[11px] text-[#00e0b8] hover:underline cursor-pointer">
               全部标为已读
             </button>
           </div>
@@ -133,20 +130,12 @@ export const TopbarNotifications: React.FC<TopbarNotificationsProps> = ({
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-0.5">
-                      <span
-                        className={`font-semibold truncate ${
-                          !n.read ? "text-[#e8f0f8]" : "text-[#8a97a8]"
-                        }`}
-                      >
+                      <span className={`font-semibold truncate ${!n.read ? "text-[#e8f0f8]" : "text-[#8a97a8]"}`}>
                         {n.title}
                       </span>
-                      <span className="font-mono text-[10px] text-[#8b949e] ml-2 flex-shrink-0">
-                        {n.timestamp}
-                      </span>
+                      <span className="font-mono text-[10px] text-[#8b949e] ml-2 flex-shrink-0">{n.timestamp}</span>
                     </div>
-                    <p className="text-[11px] text-[#8a97a8] leading-relaxed line-clamp-2">
-                      {n.description}
-                    </p>
+                    <p className="text-[11px] text-[#8a97a8] leading-relaxed line-clamp-2">{n.description}</p>
                   </div>
                 </div>
               ))

@@ -25,17 +25,9 @@ export interface HardwareTimelineModalProps {
   onClose: () => void;
 }
 
-export const HardwareTimelineModal: React.FC<HardwareTimelineModalProps> = ({
-  isOpen,
-  onClose,
-}) => {
+export const HardwareTimelineModal: React.FC<HardwareTimelineModalProps> = ({ isOpen, onClose }) => {
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title="24小时本地算力与显存详细时序监控大图"
-      maxWidth="2xl"
-    >
+    <Modal isOpen={isOpen} onClose={onClose} title="24小时本地算力与显存详细时序监控大图" maxWidth="2xl">
       <div className="space-y-4 text-xs font-mono">
         <div className="flex justify-between text-[#8a97a8]">
           <span>RTX 4090 显存波动走势</span>

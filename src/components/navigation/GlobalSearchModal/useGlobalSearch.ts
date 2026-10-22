@@ -60,12 +60,7 @@ export interface UseGlobalSearchResult {
   modelMatches: SearchModelMatch[];
 }
 
-export function useGlobalSearch({
-  isOpen,
-  onClose,
-  batches,
-  seeds,
-}: UseGlobalSearchOptions): UseGlobalSearchResult {
+export function useGlobalSearch({ isOpen, onClose, batches, seeds }: UseGlobalSearchOptions): UseGlobalSearchResult {
   const [query, setQuery] = useState("");
   const [searchCategory, setSearchCategory] = useState<SearchCategory>("all");
 

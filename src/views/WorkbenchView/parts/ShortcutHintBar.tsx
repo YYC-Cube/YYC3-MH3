@@ -23,30 +23,22 @@ export const ShortcutHintBar: React.FC = () => {
   return (
     <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-[#0c1a30]/90 border border-[#1e2f47] shadow-xl backdrop-blur-md flex items-center gap-4 text-[11px] text-[#8a97a8] pointer-events-none select-none z-20">
       <span className="flex items-center gap-1.5">
-        <kbd className="px-1 py-0.2 rounded bg-[#15294a] text-[#00e0b8] font-mono text-[10px]">
-          Space
-        </kbd>
+        <kbd className="px-1 py-0.2 rounded bg-[#15294a] text-[#00e0b8] font-mono text-[10px]">Space</kbd>
         <span>播放/暂停</span>
       </span>
       <span className="text-[#1e2f47]">|</span>
       <span className="flex items-center gap-1.5">
-        <kbd className="px-1 py-0.2 rounded bg-[#15294a] text-[#00e0b8] font-mono text-[10px]">
-          Ctrl+Enter
-        </kbd>
+        <kbd className="px-1 py-0.2 rounded bg-[#15294a] text-[#00e0b8] font-mono text-[10px]">Ctrl+Enter</kbd>
         <span>启动生成</span>
       </span>
       <span className="text-[#1e2f47]">|</span>
       <span className="flex items-center gap-1.5">
-        <kbd className="px-1 py-0.2 rounded bg-[#15294a] text-[#00e0b8] font-mono text-[10px]">
-          Ctrl+S
-        </kbd>
+        <kbd className="px-1 py-0.2 rounded bg-[#15294a] text-[#00e0b8] font-mono text-[10px]">Ctrl+S</kbd>
         <span>保存模板</span>
       </span>
       <span className="text-[#1e2f47]">|</span>
       <span className="flex items-center gap-1.5">
-        <kbd className="px-1 py-0.2 rounded bg-[#15294a] text-[#00e0b8] font-mono text-[10px]">
-          Ctrl+/
-        </kbd>
+        <kbd className="px-1 py-0.2 rounded bg-[#15294a] text-[#00e0b8] font-mono text-[10px]">Ctrl+/</kbd>
         <span>YYC³ AI协同</span>
       </span>
     </div>

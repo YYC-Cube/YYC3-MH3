@@ -28,10 +28,7 @@ export interface ServicesTableProps {
 
 export const ServicesTable: React.FC<ServicesTableProps> = ({ services, onShowToast }) => {
   return (
-    <Card
-      title="本地微服务看门狗监控 (Services Watchdog)"
-      subtitle="TelemetryPort 本地遥测聚合 · memory 演示快照供数"
-    >
+    <Card title="本地微服务看门狗监控 (Services Watchdog)" subtitle="TelemetryPort 本地遥测聚合 · memory 演示快照供数">
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs">
           <thead>
@@ -65,9 +62,7 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({ services, onShowTo
                     {[100, 100, idx === 1 ? 75 : 100, 100, 100, 100, 100].map((val, i) => (
                       <div
                         key={i}
-                        className={`flex-1 rounded-xs transition-all ${
-                          val === 100 ? "bg-[#00e0b8]" : "bg-[#ff7a45]"
-                        }`}
+                        className={`flex-1 rounded-xs transition-all ${val === 100 ? "bg-[#00e0b8]" : "bg-[#ff7a45]"}`}
                         style={{ height: `${val}%` }}
                       />
                     ))}

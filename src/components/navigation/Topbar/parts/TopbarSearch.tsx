@@ -32,9 +32,7 @@ export const TopbarSearch: React.FC<TopbarSearchProps> = ({ onOpenSearch }) => {
       >
         <div className="flex items-center gap-2">
           <Search className="w-3.5 h-3.5 text-[#8a97a8] group-hover:text-[#00e0b8] transition-colors" />
-          <span className="text-[#8b949e] group-hover:text-[#8a97a8]">
-            全局搜索批次ID / 种子名称 / 文档 / 模型...
-          </span>
+          <span className="text-[#8b949e] group-hover:text-[#8a97a8]">全局搜索批次ID / 种子名称 / 文档 / 模型...</span>
         </div>
         <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-[#8a97a8] bg-[#0a1628] rounded border border-[#1e2f47]">
           Ctrl K

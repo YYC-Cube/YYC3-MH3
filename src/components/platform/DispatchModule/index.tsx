@@ -35,11 +35,7 @@ export function DispatchModule({ pushTasks, onNewPushClick, onShowToast }: Dispa
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Section: One-Click Push & Distribution Matrix */}
-      <PushMatrixSection
-        pushTasks={pushTasks}
-        onNewPushClick={onNewPushClick}
-        onShowToast={onShowToast}
-      />
+      <PushMatrixSection pushTasks={pushTasks} onNewPushClick={onNewPushClick} onShowToast={onShowToast} />
 
       {/* Section: Multi-GPU Distributed Parallel Scheduling Slots (Requirement 1) */}
       <GpuSlotsSection onShowToast={onShowToast} />

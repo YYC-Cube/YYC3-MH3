@@ -11,5 +11,6 @@
     "*.md",
     "package.json",
     "tsconfig.json"
-  ]
+  ],
+  "printWidth": 120
 }

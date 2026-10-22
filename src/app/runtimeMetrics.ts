@@ -20,11 +20,7 @@
  * dependencies: ../domains/platform/observability/metrics
  * exports: getRuntimeMetricsWindow, recordClientPageView, recordClientError, recordClientLatency, recordClientLongTask, snapshotRuntimeMetrics, exposeRuntimeMetricsDebug
  */
-import {
-  MetricsWindow,
-  RuntimeMetricsSnapshot,
-  createMetricsWindow,
-} from "../domains/platform/observability/metrics";
+import { MetricsWindow, RuntimeMetricsSnapshot, createMetricsWindow } from "../domains/platform/observability/metrics";
 
 /** 模块级单例（同一页面会话共享同一窗口） */
 let singleton: MetricsWindow | null = null;

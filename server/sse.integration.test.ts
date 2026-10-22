@@ -110,9 +110,7 @@ async function adapt(req: IncomingMessage, res: ServerResponse): Promise<void> {
     return;
   }
   // SSE 长流：客户端断开 → res close → pipeline 取消 Web 流 → 引擎退订 + 心跳清理
-  await pipeline(Readable.fromWeb(webRes.body as unknown as NodeWebReadableStream), res).catch(
-    () => undefined,
-  );
+  await pipeline(Readable.fromWeb(webRes.body as unknown as NodeWebReadableStream), res).catch(() => undefined);
 }
 
 let server: Server;
@@ -207,9 +205,7 @@ describe("server/taskQueueApi ↔ adapters/local/queueSse · 全链路（真实 
     });
     expect(dispatch.status).toBe(202);
 
-    const seen = await waitFor(() =>
-      events.includes("completed:link-2") ? "completed:link-2" : null,
-    );
+    const seen = await waitFor(() => (events.includes("completed:link-2") ? "completed:link-2" : null));
     expect(seen).toBe("completed:link-2");
 
     // 队内任务已被流转移除（快照相对 before 回落 1）

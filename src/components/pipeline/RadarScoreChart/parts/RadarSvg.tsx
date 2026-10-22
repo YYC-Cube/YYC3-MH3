@@ -38,16 +38,7 @@ export const RadarSvg: React.FC<RadarSvgProps> = ({
   onHoverDim,
   onSelectDim,
 }) => {
-  const {
-    size,
-    center,
-    radius,
-    angleStep,
-    getCoordinates,
-    currentPoints,
-    benchmarkPoints,
-    thresholdPoints,
-  } = geometry;
+  const { size, center, radius, angleStep, getCoordinates, currentPoints, benchmarkPoints, thresholdPoints } = geometry;
 
   return (
     <div className="relative flex-shrink-0">
@@ -75,17 +66,7 @@ export const RadarSvg: React.FC<RadarSvgProps> = ({
           const angle = i * angleStep - Math.PI / 2;
           const x2 = center + radius * Math.cos(angle);
           const y2 = center + radius * Math.sin(angle);
-          return (
-            <line
-              key={i}
-              x1={center}
-              y1={center}
-              x2={x2}
-              y2={y2}
-              stroke="#1c2d48"
-              strokeWidth="1"
-            />
-          );
+          return <line key={i} x1={center} y1={center} x2={x2} y2={y2} stroke="#1c2d48" strokeWidth="1" />;
         })}
 
         {/* Pass Threshold Baseline (85) */}

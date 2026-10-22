@@ -35,9 +35,7 @@ export const LoginVerificationStatus: React.FC<LoginVerificationStatusProps> = (
           <Sparkles className="w-3.5 h-3.5 animate-spin" />
           <span>闭环审核节点 {verificationStep}/6</span>
         </span>
-        <span className="text-[11px] text-[#8a97a8] font-mono">
-          {Math.round((verificationStep / 6) * 100)}%
-        </span>
+        <span className="text-[11px] text-[#8a97a8] font-mono">{Math.round((verificationStep / 6) * 100)}%</span>
       </div>
       <div className="w-full bg-[#15294a] h-1.5 rounded-full overflow-hidden">
         <div

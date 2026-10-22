@@ -58,11 +58,7 @@ type QueueEventListener = (event: QueueWireEvent) => void;
 function isWireTask(value: unknown): value is QueueWireTask {
   if (typeof value !== "object" || value === null) return false;
   const candidate = value as Record<string, unknown>;
-  return (
-    typeof candidate.id === "string" &&
-    candidate.id.length > 0 &&
-    typeof candidate.type === "string"
-  );
+  return typeof candidate.id === "string" && candidate.id.length > 0 && typeof candidate.type === "string";
 }
 
 /** dispatch 请求体守卫：type 三态 + taskId 非空字符串 */
@@ -75,9 +71,7 @@ function isDispatchBody(value: unknown): value is DispatchBody {
   if (typeof value !== "object" || value === null) return false;
   const candidate = value as Record<string, unknown>;
   return (
-    (candidate.type === "dequeued" ||
-      candidate.type === "completed" ||
-      candidate.type === "failed") &&
+    (candidate.type === "dequeued" || candidate.type === "completed" || candidate.type === "failed") &&
     typeof candidate.taskId === "string" &&
     candidate.taskId.length > 0
   );
@@ -186,22 +180,13 @@ export async function handleTaskQueueRequest(req: Request): Promise<Response> {
   const engine = getEngineSingleton();
   const pathname = new URL(req.url).pathname;
 
-  if (
-    req.method === "GET" &&
-    (pathname === "/api/task-queue/events" || pathname.endsWith("/task-queue/events"))
-  ) {
+  if (req.method === "GET" && (pathname === "/api/task-queue/events" || pathname.endsWith("/task-queue/events"))) {
     return createEventStreamResponse(engine);
   }
-  if (
-    req.method === "GET" &&
-    (pathname === "/api/task-queue" || pathname.endsWith("/task-queue"))
-  ) {
+  if (req.method === "GET" && (pathname === "/api/task-queue" || pathname.endsWith("/task-queue"))) {
     return json({ ok: true, ...engine.snapshot() }, 200);
   }
-  if (
-    req.method === "POST" &&
-    (pathname === "/api/task-queue" || pathname.endsWith("/task-queue"))
-  ) {
+  if (req.method === "POST" && (pathname === "/api/task-queue" || pathname.endsWith("/task-queue"))) {
     let body: unknown;
     try {
       body = await req.json();
@@ -209,18 +194,12 @@ export async function handleTaskQueueRequest(req: Request): Promise<Response> {
       return json({ ok: false, error: "请求体必须为合法 JSON" }, 400);
     }
     if (!isWireTask(body)) {
-      return json(
-        { ok: false, error: "任务形状校验失败：id（非空字符串）与 type（字符串）必填" },
-        400,
-      );
+      return json({ ok: false, error: "任务形状校验失败：id（非空字符串）与 type（字符串）必填" }, 400);
     }
     engine.enqueue(body);
     return json({ ok: true, size: engine.snapshot().size }, 202);
   }
-  if (
-    req.method === "POST" &&
-    (pathname === "/api/task-queue/dispatch" || pathname.endsWith("/task-queue/dispatch"))
-  ) {
+  if (req.method === "POST" && (pathname === "/api/task-queue/dispatch" || pathname.endsWith("/task-queue/dispatch"))) {
     let body: unknown;
     try {
       body = await req.json();

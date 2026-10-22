@@ -29,15 +29,11 @@ export const BatchMetaCards: React.FC<BatchMetaCardsProps> = ({ currentBatch }) 
     <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 text-xs">
       <div className="p-3 rounded-lg bg-[#0f1f38] border border-[#1e2f47]">
         <span className="text-[#8a97a8]">总推理耗时</span>
-        <div className="font-mono text-sm font-bold text-[#e8f0f8] mt-1">
-          {currentBatch.duration}
-        </div>
+        <div className="font-mono text-sm font-bold text-[#e8f0f8] mt-1">{currentBatch.duration}</div>
       </div>
       <div className="p-3 rounded-lg bg-[#0f1f38] border border-[#1e2f47]">
         <span className="text-[#8a97a8]">综合评分</span>
-        <div className="font-mono text-sm font-bold text-[#00e0b8] mt-1">
-          {currentBatch.score} 分
-        </div>
+        <div className="font-mono text-sm font-bold text-[#00e0b8] mt-1">{currentBatch.score} 分</div>
       </div>
       <div className="p-3 rounded-lg bg-[#0f1f38] border border-[#1e2f47]">
         <span className="text-[#8a97a8]">输出规格</span>
@@ -47,21 +43,15 @@ export const BatchMetaCards: React.FC<BatchMetaCardsProps> = ({ currentBatch }) 
       </div>
       <div className="p-3 rounded-lg bg-[#0f1f38] border border-[#1e2f47]">
         <span className="text-[#8a97a8]">显存占用峰值</span>
-        <div className="font-mono text-sm font-bold text-[#00b4d8] mt-1">
-          {currentBatch.vramUsageGb} GB
-        </div>
+        <div className="font-mono text-sm font-bold text-[#00b4d8] mt-1">{currentBatch.vramUsageGb} GB</div>
       </div>
       <div className="p-3 rounded-lg bg-[#0f1f38] border border-[#1e2f47]">
         <span className="text-[#8a97a8]">模型主干权重</span>
-        <div className="font-mono text-[11px] font-semibold text-[#e8f0f8] mt-1 truncate">
-          DiffSynth H3 v2.1
-        </div>
+        <div className="font-mono text-[11px] font-semibold text-[#e8f0f8] mt-1 truncate">DiffSynth H3 v2.1</div>
       </div>
       <div className="p-3 rounded-lg bg-[#0f1f38] border border-[#1e2f47]">
         <span className="text-[#8a97a8]">本地硬件设备</span>
-        <div className="font-mono text-[11px] font-semibold text-[#00e0b8] mt-1">
-          CUDA:0 (RTX 4090)
-        </div>
+        <div className="font-mono text-[11px] font-semibold text-[#00e0b8] mt-1">CUDA:0 (RTX 4090)</div>
       </div>
     </div>
   );

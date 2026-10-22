@@ -27,12 +27,7 @@ export interface SeedTagPanelProps {
   setSelectedTag: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const SeedTagPanel: React.FC<SeedTagPanelProps> = ({
-  seeds,
-  allTags,
-  selectedTag,
-  setSelectedTag,
-}) => {
+export const SeedTagPanel: React.FC<SeedTagPanelProps> = ({ seeds, allTags, selectedTag, setSelectedTag }) => {
   return (
     <div className="w-56 border-r border-[#1e2f47] bg-[#0c1a30] flex flex-col flex-shrink-0 p-3 space-y-3 select-none">
       <div className="flex items-center gap-2 pb-2 border-b border-[#1e2f47]">

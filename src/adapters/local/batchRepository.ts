@@ -20,12 +20,7 @@ import type { TelemetryPort } from "../../domains/platform/telemetry/ports";
 import type { BatchRepository } from "../../domains/production/batch/ports";
 import type { BatchItem } from "../../types";
 import { createMemoryBatchRepository } from "../memory/batchRepository";
-import {
-  createResilientGateway,
-  makeTraceEntry,
-  RegistryError,
-  type LocalAdapterOptions,
-} from "./http";
+import { createResilientGateway, makeTraceEntry, RegistryError, type LocalAdapterOptions } from "./http";
 
 export interface LocalBatchOptions extends LocalAdapterOptions {
   /** 降级回退通道（缺省自建 memory） */

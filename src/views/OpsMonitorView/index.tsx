@@ -19,14 +19,7 @@
  * exports: OpsMonitorViewProps, OpsMonitorView
  */
 import React from "react";
-import {
-  AlarmItem,
-  LogEntry,
-  NavigateExtra,
-  NavTabId,
-  OpsMetric,
-  ServiceStatus,
-} from "../../types";
+import { AlarmItem, LogEntry, NavigateExtra, NavTabId, OpsMetric, ServiceStatus } from "../../types";
 import { useOpsMonitorView } from "./useOpsMonitorView";
 import { AlarmsPanel } from "./parts/AlarmsPanel";
 import { LogStream } from "./parts/LogStream";

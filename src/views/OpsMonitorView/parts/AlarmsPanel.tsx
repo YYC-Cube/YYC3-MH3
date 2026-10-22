@@ -33,9 +33,7 @@ export const AlarmsPanel: React.FC<AlarmsPanelProps> = ({ alarms, onFixAlarm }) 
       <div className="flex items-center justify-between pb-2 border-b border-[#1e2f47]">
         <div className="flex items-center gap-2">
           <ShieldAlert className="w-4 h-4 text-[#ff7a45]" />
-          <span className="text-xs font-semibold text-[#e8f0f8]">
-            实时告警与自愈中心 (Incidents)
-          </span>
+          <span className="text-xs font-semibold text-[#e8f0f8]">实时告警与自愈中心 (Incidents)</span>
         </div>
         <span className="text-[10px] font-mono text-[#8a97a8]">
           未解除告警: {alarms.filter((a) => !a.resolved).length}

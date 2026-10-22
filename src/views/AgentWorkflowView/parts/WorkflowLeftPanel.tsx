@@ -99,15 +99,10 @@ export const WorkflowLeftPanel: React.FC<WorkflowLeftPanelProps> = ({
               className="p-2 rounded-lg bg-[#0f1f38] border border-[#1e2f47] flex items-center justify-between hover:border-white/40 transition-colors cursor-pointer"
             >
               <div className="flex items-center gap-2">
-                <span
-                  className="w-2.5 h-2.5 rounded-full"
-                  style={{ backgroundColor: ag.roleColor }}
-                />
+                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: ag.roleColor }} />
                 <div>
                   <div className="font-medium text-[#e8f0f8]">{ag.name}</div>
-                  <div className="text-[10px] text-[#8a97a8] truncate max-w-[130px]">
-                    {ag.roleDefinition}
-                  </div>
+                  <div className="text-[10px] text-[#8a97a8] truncate max-w-[130px]">{ag.roleDefinition}</div>
                 </div>
               </div>
               <span className="font-mono text-[10px] text-[#8b949e]">{ag.clockPosition}</span>

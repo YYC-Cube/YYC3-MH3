@@ -99,11 +99,7 @@ export const ModelsGrid: React.FC<ModelsGridProps> = ({ onWarmup, onShowToast })
               >
                 预热测试
               </Button>
-              <Button
-                variant="secondary"
-                size="xs"
-                onClick={() => onShowToast("info", `${m.name} 状态已更新`)}
-              >
+              <Button variant="secondary" size="xs" onClick={() => onShowToast("info", `${m.name} 状态已更新`)}>
                 {m.status === "loaded" ? "释放显存" : "载入显存"}
               </Button>
             </div>

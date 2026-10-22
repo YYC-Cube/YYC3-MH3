@@ -29,9 +29,7 @@ export const ComparePanel: React.FC = () => {
       </div>
       <div className="lg:col-span-6 p-5 rounded-xl bg-[#0f1f38] border border-[#1e2f47] space-y-4 text-xs">
         <div className="flex items-center justify-between pb-2 border-b border-[#1e2f47]">
-          <h3 className="font-semibold text-sm text-[#e8f0f8]">
-            历史 50 批次基准超参对比与差异百分比
-          </h3>
+          <h3 className="font-semibold text-sm text-[#e8f0f8]">历史 50 批次基准超参对比与差异百分比</h3>
           <Badge variant="brand" size="xs">
             领先基准 +5.4%
           </Badge>

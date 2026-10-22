@@ -18,14 +18,7 @@
  */
 
 // Platform Management Types
-export type SocialPlatformKey =
-  | "douyin"
-  | "channels"
-  | "bilibili"
-  | "kuaishou"
-  | "redbook"
-  | "nas"
-  | "cloud";
+export type SocialPlatformKey = "douyin" | "channels" | "bilibili" | "kuaishou" | "redbook" | "nas" | "cloud";
 
 export interface PushTaskItem {
   id: string;

@@ -38,9 +38,7 @@ export const SidebarNavGroup: React.FC<SidebarNavGroupProps> = ({
   return (
     <div className="space-y-1">
       {!collapsed && (
-        <div className="px-2 text-[10px] uppercase font-semibold text-[#8b949e] tracking-wider mb-1">
-          {title}
-        </div>
+        <div className="px-2 text-[10px] uppercase font-semibold text-[#8b949e] tracking-wider mb-1">{title}</div>
       )}
       {items.map((item) => {
         const isActive = activeTab === item.id;
@@ -55,12 +53,8 @@ export const SidebarNavGroup: React.FC<SidebarNavGroupProps> = ({
             }`}
             title={collapsed ? item.label : undefined}
           >
-            {isActive && (
-              <span className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-[#00d4aa] rounded-r" />
-            )}
-            <span className={`${isActive ? "text-[#00d4aa]" : "group-hover:text-[#e6edf3]"}`}>
-              {item.icon}
-            </span>
+            {isActive && <span className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-[#00d4aa] rounded-r" />}
+            <span className={`${isActive ? "text-[#00d4aa]" : "group-hover:text-[#e6edf3]"}`}>{item.icon}</span>
             {!collapsed && <span className="truncate">{item.label}</span>}
             {!collapsed && item.badge && (
               <span

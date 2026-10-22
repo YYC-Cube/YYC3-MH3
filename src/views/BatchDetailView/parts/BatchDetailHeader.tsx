@@ -66,9 +66,7 @@ export const BatchDetailHeader: React.FC<BatchDetailHeaderProps> = ({
           variant="secondary"
           size="sm"
           icon={<Archive className="w-3.5 h-3.5" />}
-          onClick={() =>
-            onShowToast("success", "已归档至本地 NAS", `归档路径: /nas/archive/${currentBatch.id}`)
-          }
+          onClick={() => onShowToast("success", "已归档至本地 NAS", `归档路径: /nas/archive/${currentBatch.id}`)}
         >
           NAS 归档
         </Button>

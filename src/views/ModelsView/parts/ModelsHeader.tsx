@@ -30,9 +30,7 @@ export const ModelsHeader: React.FC<ModelsHeaderProps> = ({ onShowToast }) => {
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="text-xl font-bold text-[#e8f0f8]">
-            本地模型与计算资源管控 · Models & Resources
-          </h1>
+          <h1 className="text-xl font-bold text-[#e8f0f8]">本地模型与计算资源管控 · Models & Resources</h1>
           <Badge variant="brand" size="xs">
             本地安全隔离
           </Badge>

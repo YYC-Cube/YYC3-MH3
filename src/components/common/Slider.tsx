@@ -29,16 +29,7 @@ export interface SliderProps {
   hint?: string;
 }
 
-export const Slider: React.FC<SliderProps> = ({
-  label,
-  min,
-  max,
-  step = 1,
-  value,
-  onChange,
-  unit = "",
-  hint,
-}) => {
+export const Slider: React.FC<SliderProps> = ({ label, min, max, step = 1, value, onChange, unit = "", hint }) => {
   const percentage = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100));
 
   return (

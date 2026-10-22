@@ -48,10 +48,13 @@ export async function handleWebRequest(req: Request): Promise<Response> {
   /* P2-2 Prometheus scrape：文本暴露格式直出（回环校验与 registryApi 同口径，06 §1.1） */
   if (url.pathname === METRICS_SCRAPE_PATH) {
     if (!isLoopbackHost(req.headers.get("host") ?? "")) {
-      return new Response(JSON.stringify({ error: { code: "FORBIDDEN", message: "metrics scrape 仅接受本地回环访问（06 §1.1）" } }), {
-        status: 403,
-        headers: { "content-type": "application/json; charset=utf-8" },
-      });
+      return new Response(
+        JSON.stringify({ error: { code: "FORBIDDEN", message: "metrics scrape 仅接受本地回环访问（06 §1.1）" } }),
+        {
+          status: 403,
+          headers: { "content-type": "application/json; charset=utf-8" },
+        },
+      );
     }
     return new Response(renderOpsPrometheus(OPS_METRICS), {
       status: 200,

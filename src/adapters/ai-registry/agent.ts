@@ -26,7 +26,10 @@ import type { ReactCStepKey } from "../../domains/ai";
 import { type AgentError, type AgentOutput, type AgentPort } from "../../domains/ai/ports";
 import { createResilientGateway, type LocalAdapterOptions } from "../local/http";
 
-function mapGatewayError(raw: unknown, anchors: { traceId: string; agentId: string; stepKey?: ReactCStepKey }): AgentError {
+function mapGatewayError(
+  raw: unknown,
+  anchors: { traceId: string; agentId: string; stepKey?: ReactCStepKey },
+): AgentError {
   const status = raw instanceof Error && "status" in raw ? (raw as { status?: number }).status : undefined;
   const error = new Error(raw instanceof Error ? raw.message : String(raw)) as AgentError;
   error.name = "AgentError";
@@ -45,7 +48,7 @@ export function createRegistryAgent(options: LocalAdapterOptions = {}): AgentPor
   return {
     async listAgents() {
       try {
-        return await gateway<typeof AGENT_REGISTRY[number][]>("/server/ai/profiles");
+        return await gateway<(typeof AGENT_REGISTRY)[number][]>("/server/ai/profiles");
       } catch {
         return AGENT_REGISTRY;
       }

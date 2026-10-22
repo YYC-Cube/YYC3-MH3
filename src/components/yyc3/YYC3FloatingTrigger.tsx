@@ -24,10 +24,7 @@ export interface YYC3FloatingTriggerProps {
   hasUnread?: boolean;
 }
 
-export const YYC3FloatingTrigger: React.FC<YYC3FloatingTriggerProps> = ({
-  onClick,
-  hasUnread = true,
-}) => {
+export const YYC3FloatingTrigger: React.FC<YYC3FloatingTriggerProps> = ({ onClick, hasUnread = true }) => {
   return (
     <div className="fixed bottom-5 right-5 z-40 flex items-center group select-none">
       {/* Tooltip on hover */}

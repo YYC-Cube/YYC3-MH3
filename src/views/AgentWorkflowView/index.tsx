@@ -92,11 +92,7 @@ export const AgentWorkflowView: React.FC<AgentWorkflowViewProps> = ({ onShowToas
         />
 
         {/* Middle: Visual Node Canvas (Flex 1) */}
-        <WorkflowCanvas
-          nodes={nodes}
-          selectedNode={selectedNode}
-          onSelectNode={setSelectedNodeId}
-        />
+        <WorkflowCanvas nodes={nodes} selectedNode={selectedNode} onSelectNode={setSelectedNodeId} />
 
         {/* Right: Draggable, Floating, Dockable Node Property Card (Requirement 3.2) */}
         <NodeInspector

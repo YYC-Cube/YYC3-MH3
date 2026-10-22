@@ -76,7 +76,15 @@ function makeDeps(agent: AgentPort, overrides: Partial<AgentRunDeps> = {}) {
 }
 
 function output(stepText: string, over: Partial<AgentOutput> = {}): AgentOutput {
-  return { agentId: "yanqi", text: stepText, confidence: 0.9, tokensUsed: 8, model: "memory-stub", riskTags: [], ...over };
+  return {
+    agentId: "yanqi",
+    text: stepText,
+    confidence: 0.9,
+    tokensUsed: 8,
+    model: "memory-stub",
+    riskTags: [],
+    ...over,
+  };
 }
 
 /** 一次 invokeStep 即成功的桩（按 stepKey 回文本） */
@@ -159,7 +167,15 @@ describe("[orchestrator] C · runner 成功生命周期", () => {
     const steps = events.filter((e) => e.type === "STEP_ENTERED");
     expect(steps).toHaveLength(9);
     expect(steps.map((e) => e.stepKey)).toEqual([
-      "perceive", "reason", "retrieve", "plan", "act", "observe", "reflect", "revise", "consolidate",
+      "perceive",
+      "reason",
+      "retrieve",
+      "plan",
+      "act",
+      "observe",
+      "reflect",
+      "revise",
+      "consolidate",
     ]);
     for (const event of events) expect(event.traceId).toBe(TRACE);
     expect(events[events.length - 1]?.type).toBe("TASK_COMPLETED");
@@ -335,7 +351,10 @@ describe("[orchestrator] F · 断点与恢复", () => {
     expect(saves[saves.length - 1]).toBe("done");
     const loaded = await store.load("t-1");
     expect(loaded?.traceId).toBe(TRACE);
-    const summary = rollback({ taskId: "t-1", traceId: TRACE, agentId: "yanqi", state: createInitialReactCState(), at: NOW }, NOW);
+    const summary = rollback(
+      { taskId: "t-1", traceId: TRACE, agentId: "yanqi", state: createInitialReactCState(), at: NOW },
+      NOW,
+    );
     expect(summary).toEqual({ taskId: "t-1", traceId: TRACE, discardedStep: "idle", reviseRound: 0, at: NOW });
     expect((await store.load("t-1"))?.state.step).toBe("done"); // 回滚为纯函数，断点不被改写
   });
@@ -380,7 +399,11 @@ describe("[orchestrator] G · worker 泵（注入调度）", () => {
     const queue = memoryQueue();
     await queue.enqueue({ id: "w-1", type: AGENT_TASK_TYPE, payload: command({ taskId: "w-1" }) });
     const { events, deps } = makeDeps(okAgent());
-    const worker = createAgentWorker({ queue, run: (cmd) => runTask(cmd, deps).promise, schedule: immediateSchedule().schedule });
+    const worker = createAgentWorker({
+      queue,
+      run: (cmd) => runTask(cmd, deps).promise,
+      schedule: immediateSchedule().schedule,
+    });
     worker.start();
     await worker.tick();
     worker.stop();
@@ -391,7 +414,11 @@ describe("[orchestrator] G · worker 泵（注入调度）", () => {
   it("空队列空转与 stop 生效：stop 后 tick 为无操作（泵守卫）", async () => {
     const queue = memoryQueue();
     const { deps } = makeDeps(okAgent());
-    const worker = createAgentWorker({ queue, run: (cmd) => runTask(cmd, deps).promise, schedule: immediateSchedule().schedule });
+    const worker = createAgentWorker({
+      queue,
+      run: (cmd) => runTask(cmd, deps).promise,
+      schedule: immediateSchedule().schedule,
+    });
     worker.start();
     expect(worker.running()).toBe(true);
     worker.stop();
@@ -421,8 +448,15 @@ describe("[orchestrator] H · 禁令静态扫描（内核零 UI/IO 原语）", (
   const DIR = path.resolve(__dirname, "../orchestrator");
   const files = readdirSync(DIR).filter((f) => f.endsWith(".ts"));
   const FORBIDDEN = [
-    /from\s+["']react["']/, /from\s+["']next[/"']/, /\bdocument\./, /\bwindow\./,
-    /\blocalStorage\b/, /\bsessionStorage\b/, /\bfetch\s*\(/, /XMLHttpRequest/, /new\s+WebSocket/,
+    /from\s+["']react["']/,
+    /from\s+["']next[/"']/,
+    /\bdocument\./,
+    /\bwindow\./,
+    /\blocalStorage\b/,
+    /\bsessionStorage\b/,
+    /\bfetch\s*\(/,
+    /XMLHttpRequest/,
+    /new\s+WebSocket/,
   ];
 
   it("orchestrator 目录文件齐备且全部通过禁令扫描", () => {

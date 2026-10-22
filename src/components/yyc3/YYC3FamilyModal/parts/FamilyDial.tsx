@@ -55,9 +55,7 @@ export const FamilyDial: React.FC<FamilyDialProps> = ({
 
       {/* Bottom Motto matching screenshot */}
       <div className="mt-auto pt-2 text-center text-xs text-[#8a97a8] select-none">
-        <p className="tracking-widest font-medium text-[#e8f0f8]/90">
-          亦师亦友亦伯乐 · 一言一语一协同
-        </p>
+        <p className="tracking-widest font-medium text-[#e8f0f8]/90">亦师亦友亦伯乐 · 一言一语一协同</p>
         <p className="text-[10px] text-[#8b949e] tracking-wider mt-0.5 font-mono">
           Words Initiate Quadrants, Language Serves as Core for Future
         </p>

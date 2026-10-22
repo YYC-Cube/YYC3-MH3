@@ -26,11 +26,7 @@ export interface TopbarQuickActionsProps {
   onNewBatchClick: () => void;
 }
 
-export const TopbarQuickActions: React.FC<TopbarQuickActionsProps> = ({
-  onNavigate,
-  onOpenYYC3,
-  onNewBatchClick,
-}) => {
+export const TopbarQuickActions: React.FC<TopbarQuickActionsProps> = ({ onNavigate, onOpenYYC3, onNewBatchClick }) => {
   return (
     <>
       {/* Hardware quick badge */}

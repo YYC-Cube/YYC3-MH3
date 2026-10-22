@@ -121,11 +121,7 @@ export async function importAllData(ports: AppPorts, json: string): Promise<Impo
   if (parsed.version !== ENVELOPE_VERSION) {
     return { ok: false, error: `信封校验失败：不支持的信封版本（${String(parsed.version)}）` };
   }
-  if (
-    !Array.isArray(parsed.batches) ||
-    !Array.isArray(parsed.seeds) ||
-    !isPlainObject(parsed.telemetry)
-  ) {
+  if (!Array.isArray(parsed.batches) || !Array.isArray(parsed.seeds) || !isPlainObject(parsed.telemetry)) {
     return { ok: false, error: "信封校验失败：batches / seeds 必须为数组且 telemetry 必须为对象" };
   }
   const telemetry = parsed.telemetry;

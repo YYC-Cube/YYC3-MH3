@@ -42,17 +42,12 @@ export const SeedCompareModal: React.FC<SeedCompareModalProps> = ({
     >
       <div className="space-y-4 text-xs">
         <div className="grid grid-cols-4 gap-3 font-mono">
-          <div className="p-2.5 rounded-lg bg-[#0c1a30] text-[#8a97a8] font-bold">
-            维度 / 参数项
-          </div>
+          <div className="p-2.5 rounded-lg bg-[#0c1a30] text-[#8a97a8] font-bold">维度 / 参数项</div>
           {compareSeedIds.map((id) => {
             const s = seeds.find((x) => x.id === id);
             if (!s) return null;
             return (
-              <div
-                key={id}
-                className="p-2.5 rounded-lg bg-[#15294a] text-center border border-[#1e2f47]"
-              >
+              <div key={id} className="p-2.5 rounded-lg bg-[#15294a] text-center border border-[#1e2f47]">
                 <div className="text-[#00e0b8] font-bold">#{s.seedNumber}</div>
                 <div className="text-[11px] text-[#e8f0f8] truncate">{s.name}</div>
               </div>
@@ -88,10 +83,7 @@ export const SeedCompareModal: React.FC<SeedCompareModalProps> = ({
               getter: (s: SeedItem) => s.recommendedModel,
             },
           ].map((row, i) => (
-            <div
-              key={i}
-              className="grid grid-cols-4 gap-3 p-2 rounded-lg bg-[#0c1a30] border border-[#1e2f47]/50"
-            >
+            <div key={i} className="grid grid-cols-4 gap-3 p-2 rounded-lg bg-[#0c1a30] border border-[#1e2f47]/50">
               <span className="text-[#8a97a8] font-medium">{row.label}</span>
               {compareSeedIds.map((id) => {
                 const s = seeds.find((x) => x.id === id);

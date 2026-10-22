@@ -62,11 +62,7 @@ export const Select: React.FC<SelectProps> = ({
           {...props}
         >
           {options.map((opt) => (
-            <option
-              key={opt.value}
-              value={opt.value}
-              className="bg-[#0c1a30] text-[#e6edf3] py-1.5"
-            >
+            <option key={opt.value} value={opt.value} className="bg-[#0c1a30] text-[#e6edf3] py-1.5">
               {opt.label} {opt.badge ? `(${opt.badge})` : ""}
             </option>
           ))}

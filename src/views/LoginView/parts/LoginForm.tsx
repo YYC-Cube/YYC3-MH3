@@ -55,9 +55,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ state, onShowToast }) => {
           <label className="text-[#8a97a8] font-medium">
             {authMode === "local" ? "本地管理员账号" : "企业员工账号 / 邮箱"}
           </label>
-          {authMode === "local" && (
-            <span className="text-[10px] text-[#00e0b8] font-mono">免联网本地校验</span>
-          )}
+          {authMode === "local" && <span className="text-[10px] text-[#00e0b8] font-mono">免联网本地校验</span>}
         </div>
         <div className="relative flex items-center">
           <User className="w-4 h-4 text-[#8a97a8] absolute left-3 pointer-events-none" />
@@ -74,9 +72,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ state, onShowToast }) => {
             }`}
           />
         </div>
-        {fieldErrors.username && (
-          <p className="text-[11px] text-[#ff7a45]">{fieldErrors.username}</p>
-        )}
+        {fieldErrors.username && <p className="text-[11px] text-[#ff7a45]">{fieldErrors.username}</p>}
       </div>
 
       {/* Password Input */}
@@ -113,9 +109,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ state, onShowToast }) => {
             {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
         </div>
-        {fieldErrors.password && (
-          <p className="text-[11px] text-[#ff7a45]">{fieldErrors.password}</p>
-        )}
+        {fieldErrors.password && <p className="text-[11px] text-[#ff7a45]">{fieldErrors.password}</p>}
       </div>
 
       {/* Role select & remember options */}

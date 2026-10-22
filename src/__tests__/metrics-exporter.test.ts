@@ -27,11 +27,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createLokiSink } from "../adapters/lokiSink";
-import {
-  readMetricsExportConfig,
-  startMetricsExporter,
-  startRuntimeMetricsExport,
-} from "../app/metrics-exporter";
+import { readMetricsExportConfig, startMetricsExporter, startRuntimeMetricsExport } from "../app/metrics-exporter";
 import type { LokiPushPayload } from "../domains/platform/observability/export";
 import { toLokiMetricsPayload } from "../domains/platform/observability/export";
 import type { RuntimeMetricsSnapshot } from "../domains/platform/observability/metrics";
@@ -109,9 +105,7 @@ describe("readMetricsExportConfig · 配置钳制", () => {
 
   it("间隔钳制到 [5s, 1h]", () => {
     expect(readMetricsExportConfig({ NEXT_PUBLIC_METRICS_EXPORT_MS: "1000" }).intervalMs).toBe(5_000);
-    expect(
-      readMetricsExportConfig({ NEXT_PUBLIC_METRICS_EXPORT_MS: "99999999" }).intervalMs,
-    ).toBe(3_600_000);
+    expect(readMetricsExportConfig({ NEXT_PUBLIC_METRICS_EXPORT_MS: "99999999" }).intervalMs).toBe(3_600_000);
   });
 });
 
